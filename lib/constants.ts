@@ -12,19 +12,19 @@ export const PRODUCT_CATEGORIES = [
   {
     id: 'engine-oil',
     title: 'روغن موتور',
-    image: '/categories/engine-oil.jpg',
+    image: '/images/406618088_4cf1da23-4ada-498f-9987-8e38474b39b9 1.svg',
     description: 'روغن موتور با کیفیت بالا',
   },
   {
     id: 'gearbox-oil',
     title: 'روغن گیربکس',
-    image: '/categories/gearbox-oil.jpg',
+    image: '/images/image 2.svg',
     description: 'روغن گیربکس فول سینتتیک',
   },
   {
     id: 'industrial-oil',
     title: 'روغن های صنعتی',
-    image: '/categories/industrial-oil.jpg',
+    image: '/images/image 2.svg',
     description: 'توربین، کمپرسور، ترانسفورمر، حرارتی، یافت و...',
   },
   {
