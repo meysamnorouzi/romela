@@ -1,0 +1,160 @@
+export interface WordPressPost {
+  id: number
+  date: string
+  date_gmt: string
+  guid: {
+    rendered: string
+  }
+  modified: string
+  modified_gmt: string
+  slug: string
+  status: string
+  type: string
+  link: string
+  title: {
+    rendered: string
+  }
+  content: {
+    rendered: string
+    protected: boolean
+  }
+  excerpt: {
+    rendered: string
+    protected: boolean
+  }
+  author: number
+  featured_media: number
+  comment_status: string
+  ping_status: string
+  sticky: boolean
+  template: string
+  format: string
+  meta: Record<string, unknown>
+  categories: number[]
+  tags: number[]
+  _links: Record<string, unknown>
+}
+
+export interface WooCommerceProduct {
+  id: number
+  name: string
+  slug: string
+  permalink: string
+  date_created: string
+  date_modified: string
+  type: string
+  status: string
+  featured: boolean
+  catalog_visibility: string
+  description: string
+  short_description: string
+  sku: string
+  price: string
+  regular_price: string
+  sale_price: string
+  date_on_sale_from: string | null
+  date_on_sale_to: string | null
+  on_sale: boolean
+  purchasable: boolean
+  total_sales: number
+  virtual: boolean
+  downloadable: boolean
+  downloads: unknown[]
+  download_limit: number
+  download_expiry: number
+  external_url: string
+  button_text: string
+  tax_status: string
+  tax_class: string
+  manage_stock: boolean
+  stock_quantity: number | null
+  stock_status: string
+  backorders: string
+  backorders_allowed: boolean
+  backordered: boolean
+  sold_individually: boolean
+  weight: string
+  dimensions: {
+    length: string
+    width: string
+    height: string
+  }
+  shipping_required: boolean
+  shipping_taxable: boolean
+  shipping_class: string
+  shipping_class_id: number
+  reviews_allowed: boolean
+  average_rating: string
+  rating_count: number
+  related_ids: number[]
+  upsell_ids: number[]
+  cross_sell_ids: number[]
+  parent_id: number
+  purchase_note: string
+  categories: Array<{
+    id: number
+    name: string
+    slug: string
+  }>
+  tags: Array<{
+    id: number
+    name: string
+    slug: string
+  }>
+  images: Array<{
+    id: number
+    date_created: string
+    date_modified: string
+    src: string
+    name: string
+    alt: string
+  }>
+  attributes: Array<{
+    id: number
+    name: string
+    slug: string
+    position: number
+    visible: boolean
+    variation: boolean
+    options: string[]
+  }>
+  default_attributes: unknown[]
+  variations: number[]
+  grouped_products: number[]
+  menu_order: number
+  meta_data: Array<{
+    id: number
+    key: string
+    value: unknown
+  }>
+  _links: Record<string, unknown>
+}
+
+export interface WooCommerceCategory {
+  id: number
+  name: string
+  slug: string
+  parent: number
+  description: string
+  display: string
+  image: {
+    id: number
+    src: string
+    name: string
+    alt: string
+  } | null
+  menu_order: number
+  count: number
+  _links: Record<string, unknown>
+}
+
+export interface CartItem {
+  id: number
+  name: string
+  price: number
+  quantity: number
+  image: string
+  slug: string
+  stock_quantity?: number | null
+}
+
