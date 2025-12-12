@@ -24,7 +24,7 @@ export const PRODUCT_CATEGORIES = [
   {
     id: 'industrial-oil',
     title: 'روغن های صنعتی',
-    image: '/images/image 2.svg',
+    image: '/images/image 8.svg',
     description: 'توربین، کمپرسور، ترانسفورمر، حرارتی، یافت و...',
   },
   {
@@ -36,7 +36,7 @@ export const PRODUCT_CATEGORIES = [
   {
     id: 'grease',
     title: 'گریس',
-    image: '/categories/grease.jpg',
+    image: '/images/image 3.svg',
     description: 'گریس صنعتی',
   },
   {
