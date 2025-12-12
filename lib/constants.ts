@@ -30,7 +30,7 @@ export const PRODUCT_CATEGORIES = [
   {
     id: 'hydraulic-oil',
     title: 'روغن هیدرولیک',
-    image: '/categories/hydraulic-oil.jpg',
+    image: '/images/image 6.svg',
     description: 'روغن هیدرولیک با کیفیت',
   },
   {
@@ -42,13 +42,13 @@ export const PRODUCT_CATEGORIES = [
   {
     id: 'brake-fluid',
     title: 'روغن ترمز',
-    image: '/categories/brake-fluid.jpg',
+    image: '/images/image 5.svg',
     description: 'روغن ترمز استاندارد',
   },
   {
     id: 'special-additives',
     title: 'افزودنی های خاص',
-    image: '/categories/additives.jpg',
+    image: '/images/image 7.svg',
     description: 'افزودنی های خاص',
   },
 ] as const
