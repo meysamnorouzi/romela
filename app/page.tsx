@@ -12,43 +12,33 @@ export default async function HomePage() {
     <>
       <HeroSection />
       <CategoryGrid />
-      
+
       {/* About Romela Section */}
-      <section className="py-12 md:py-16 lg:py-20 bg-dark-lighter">
-        <div className="container mx-auto px-4 md:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl overflow-hidden relative">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-32 h-32 bg-gold/20 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-16 h-16 text-gold"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+      <section className="py-12 md:py-16 lg:py-20 bg-black">
+        <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start">
+            {/* Text Content */}
+            <div className="text-right">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
                 معرفی Romela آلمان
               </h2>
-              <div className="text-gray-300 space-y-4 text-justify">
-                <p>
+              <div className="text-white space-y-4 leading-relaxed">
+                <p className="text-base md:text-lg">
                   لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد.
                 </p>
-                <p>
+                <p className="text-base md:text-lg">
                   تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
+                </p>
+                <p className="text-base md:text-lg">
+                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
                 </p>
               </div>
             </div>
+            {/* Engine Image Container */}
+            <div className="bg-[#2D2D2D] rounded-2xl overflow-hidden relative aspect-[4/3]">
+              <img src="/images/image 9.png" alt="romela-about-us" className="w-full h-full object-cover" />
+            </div>
+
           </div>
         </div>
       </section>

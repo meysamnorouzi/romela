@@ -9,37 +9,18 @@ export function HeroSection() {
   const [viscosity, setViscosity] = useState('')
 
   return (
-    <section className="relative bg-gradient-to-b from-dark to-dark-lighter py-20 md:py-32 overflow-hidden">
+    <section className="relative bg-[#0000004D] pt-52 pb-24">
       {/* Background Effect */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gold rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue rounded-full blur-3xl"></div>
+      <div className="absolute inset-0">
+       <img src="/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png" alt="hero-bg" className="w-full h-full object-cover rounded-3xl" />
       </div>
 
       <div className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           {/* Title */}
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            پادراد ارس نمایندگی رسمی محصولات{' '}
-            <span className="text-gold">ROMELA OIL GERMANY</span>
-            <span className="inline-block mr-2">
-              <svg
-                className="w-8 h-8 md:w-10 md:h-10 inline-block"
-                viewBox="0 0 640 512"
-                fill="currentColor"
-              >
-                <path d="M320 0C196.3 0 96 100.3 96 224c0 70.1 36.9 132.1 93.1 166.7l-9.4 30.9c-2.2 7.2-1.3 15 2.4 21.4 3.7 6.4 10.1 10.8 17.5 12.1l30.9 5.2c7.4 1.2 15.1-.2 21.2-3.9l25.2-15.1c26.8-16.1 57.7-25.1 90.1-25.1C443.7 416 544 315.7 544 192S443.7 0 320 0zm0 352c-35.3 0-64-28.7-64-64s28.7-64 64-64 64 28.7 64 64-28.7 64-64 64z" />
-              </svg>
-            </span>
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-20">
+          پادراد ارس نمایندگی رسمی محصولات ROMELA OIL GERMANY 🇩🇪
           </h1>
-
-          {/* Search Prompt */}
-          <p className="text-xl md:text-2xl text-gray-300 mb-4">
-            جستجو روغن مناسب کاربری شما
-          </p>
-          <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-            برای تجربه عملکرد بهتر موتور، روغن سازگار با نیازهای فنی خودروی خود را همینجا جستجو کنید.
-          </p>
 
           {/* Search Form */}
           <div className="bg-dark-lighter rounded-2xl p-6 md:p-8 shadow-2xl">

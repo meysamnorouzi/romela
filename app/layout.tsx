@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa" dir="rtl">
-      <body>
+      <body className='pt-6 px-6'>
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />
