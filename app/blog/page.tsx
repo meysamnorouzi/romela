@@ -53,7 +53,7 @@ export default async function BlogPage() {
                   )}
                 </div>
                 <div className="p-6">
-                  <h2
+                  <h2 
                     className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-gold transition-colors"
                     dangerouslySetInnerHTML={{ __html: post.title.rendered }}
                   />
