@@ -8,9 +8,10 @@ const categoryConfig = {
   'industrial-oil': {
     gradientFrom: '#A0522D',
     gradientTo: '#1a1a1a',
-    textColor: '#FFB6C1',
+    textColor: '#FFFFFF',
     linkColor: '#D3D3D3',
     description: 'توربین، کمپرسور، ترانسفورمر، حرارتی، بافت و ...',
+    showDescription: true,
   },
   'engine-oil': {
     gradientFrom: '#B8860B',
@@ -18,6 +19,7 @@ const categoryConfig = {
     textColor: '#FFD700',
     linkColor: '#FFD700',
     description: 'روغن موتور با کیفیت بالا',
+    showDescription: false,
   },
   'gearbox-oil': {
     gradientFrom: '#5A5A5A',
@@ -25,6 +27,7 @@ const categoryConfig = {
     textColor: '#FFFFFF',
     linkColor: '#FFFFFF',
     description: 'روغن گیربکس فول سینتتیک',
+    showDescription: false,
   },
   'brake-fluid': {
     gradientFrom: '#DC143C',
@@ -32,6 +35,7 @@ const categoryConfig = {
     textColor: '#FF0000',
     linkColor: '#FF0000',
     description: 'روغن ترمز استاندارد',
+    showDescription: false,
   },
   'hydraulic-oil': {
     gradientFrom: '#4169E1',
@@ -39,6 +43,7 @@ const categoryConfig = {
     textColor: '#00BFFF',
     linkColor: '#00BFFF',
     description: 'روغن هیدرولیک با کیفیت',
+    showDescription: false,
   },
   'grease': {
     gradientFrom: '#FF8C00',
@@ -46,6 +51,15 @@ const categoryConfig = {
     textColor: '#FFA500',
     linkColor: '#FFA500',
     description: 'گریس صنعتی',
+    showDescription: false,
+  },
+  'special-additives': {
+    gradientFrom: '#9370DB',
+    gradientTo: '#4B0082',
+    textColor: '#DDA0DD',
+    linkColor: '#DDA0DD',
+    description: 'افزودنی های خاص',
+    showDescription: false,
   },
 } as const
 
@@ -57,6 +71,7 @@ const categoryOrder = [
   'brake-fluid',
   'hydraulic-oil',
   'grease',
+  'special-additives',
 ] as const
 
 type CategoryWithConfig = {
@@ -68,6 +83,7 @@ type CategoryWithConfig = {
   gradientTo: string
   textColor: string
   linkColor: string
+  showDescription?: boolean
 }
 
 export function CategoryGrid() {
@@ -86,7 +102,7 @@ export function CategoryGrid() {
     .filter((cat): cat is CategoryWithConfig => cat !== null)
 
   return (
-    <section className="w-full py-16 px-6">
+    <section className="w-full py-16 px-6 bg-[#1A1A1A]">
       {/* Title */}
       <h2 className="text-center text-white text-3xl font-bold mb-12">
         دسته بندی محصولات Romela Oil
@@ -99,23 +115,28 @@ export function CategoryGrid() {
             <Link
               key={category.id}
               href={`/products?category=${category.id}`}
-              className="group relative rounded-2xl overflow-hidden h-[450px] flex flex-col"
+              className="group relative rounded-2xl overflow-hidden h-[450px] flex flex-col cursor-pointer transition-transform hover:scale-[1.02]"
             >
-              {/* Gradient Background - from top-left to bottom-right */}
+              {/* Gradient Background - from top-right to bottom-left (RTL) */}
               <div
                 className="absolute inset-0"
                 style={{
-                  background: `linear-gradient(to bottom right, ${category.gradientFrom}, ${category.gradientTo})`,
+                  background: `linear-gradient(135deg, ${category.gradientFrom} 0%, ${category.gradientTo} 100%)`,
                 }}
               />
 
-              {/* Image Container - positioned to show illustration */}
-              <div className="relative flex-1 flex items-center justify-center p-8">
-                <div className="relative w-full h-full flex items-center justify-center">
+              {/* Image Container - positioned on the left side (RTL) */}
+              <div className="relative flex-1 flex items-center justify-start overflow-hidden">
+                <div className="relative h-full w-full flex items-center justify-start">
                   <img
                     src={category.image}
                     alt={category.title}
-                    className="w-full h-full object-contain opacity-90"
+                    className="h-full w-auto object-contain opacity-90"
+                    style={{ 
+                      maxWidth: '85%',
+                      height: '100%',
+                      objectPosition: 'left center'
+                    }}
                     onError={(e) => {
                       const target = e.target as HTMLImageElement
                       target.style.display = 'none'
@@ -124,22 +145,30 @@ export function CategoryGrid() {
                 </div>
               </div>
 
-              {/* Content Overlay - positioned at top-right (RTL) */}
-              <div className="absolute inset-0 z-10 flex flex-col justify-between">
+              {/* Content Overlay - positioned at top-right and bottom-right (RTL) */}
+              <div className="absolute inset-0 z-10 flex flex-col justify-between p-8 md:p-10 pointer-events-none">
                 {/* Category Title and Description - Top Right (RTL) */}
-                <div className="text-right">
+                <div className="text-right pointer-events-auto pr-0">
                   <h3
                     className="text-2xl font-bold mb-2"
-                   >
+                    style={{ color: category.textColor }}
+                  >
                     {category.title}
                   </h3>
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    {category.description}
-                  </p>
+                  {category.showDescription && (
+                    <p 
+                      className="text-sm leading-relaxed mt-1"
+                      style={{ 
+                        color: category.id === 'industrial-oil' ? '#D3D3D3' : undefined 
+                      }}
+                    >
+                      {category.description}
+                    </p>
+                  )}
                 </div>
 
                 {/* View Products Link - Bottom Right (RTL) */}
-                <div className="flex items-center justify-end gap-2">
+                <div className="flex items-center justify-end gap-2 pointer-events-auto pr-0">
                   <span
                     className="text-sm font-medium"
                     style={{ color: category.linkColor }}
@@ -147,7 +176,7 @@ export function CategoryGrid() {
                     مشاهده محصولات
                   </span>
                   <svg
-                    className="w-5 h-5"
+                    className="w-5 h-5 flex-shrink-0"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

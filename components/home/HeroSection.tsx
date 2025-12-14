@@ -1,100 +1,144 @@
 'use client'
 
-import { useState } from 'react'
-import { Button } from '@/components/ui/Button'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { NAVIGATION_ITEMS } from '@/lib/constants'
+import { cn } from '@/lib/utils'
 
 export function HeroSection() {
-  const [oilType, setOilType] = useState('')
-  const [application, setApplication] = useState('')
-  const [viscosity, setViscosity] = useState('')
+  const pathname = usePathname()
 
   return (
-    <section className="relative bg-[#0000004D] pt-52 pb-24">
-      {/* Background Effect */}
-      <div className="absolute inset-0">
-       <img src="/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png" alt="hero-bg" className="w-full h-full object-cover rounded-3xl" />
-      </div>
+    <section 
+      className="relative w-full min-h-screen flex flex-col"
+      style={{
+        backgroundImage: "url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      {/* Overlay */}
+      <div 
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundColor: '#0000004D',
+        }}
+      />
 
-      <div className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Title */}
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-20">
-          پادراد ارس نمایندگی رسمی محصولات ROMELA OIL GERMANY 🇩🇪
-          </h1>
+      {/* Main Hero Content - Centered */}
+      <div className="relative flex-1 flex flex-col items-center justify-center px-6 pb-20 z-10">
+        <div className="container mx-auto max-w-6xl w-full">
+          {/* Main Headline */}
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-[2.75rem] font-bold text-white leading-tight drop-shadow-lg">
+              پادراد ارس نمایندگی رسمی محصولات - ROMELA OIL GERMANY 🇩🇪
+            </h1>
+          </div>
 
-          {/* Search Form */}
-          <div className="bg-dark-lighter rounded-2xl p-6 md:p-8 shadow-2xl">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2 text-right">
-                  نوع روغن
-                </label>
-                <select
-                  value={oilType}
-                  onChange={(e) => setOilType(e.target.value)}
-                  className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-gold"
-                >
-                  <option value="">انتخاب کنید</option>
-                  <option value="engine">روغن موتور</option>
-                  <option value="gearbox">روغن گیربکس</option>
-                  <option value="hydraulic">روغن هیدرولیک</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2 text-right">
-                  کاربرد روغن
-                </label>
-                <select
-                  value={application}
-                  onChange={(e) => setApplication(e.target.value)}
-                  className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-gold"
-                >
-                  <option value="">انتخاب کنید</option>
-                  <option value="light">سواری سبک</option>
-                  <option value="heavy">سواری سنگین</option>
-                  <option value="marine">کشتی</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2 text-right">
-                  ویسکوزیته
-                </label>
-                <select
-                  value={viscosity}
-                  onChange={(e) => setViscosity(e.target.value)}
-                  className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-gold"
-                >
-                  <option value="">انتخاب کنید</option>
-                  <option value="5w20">5W-20</option>
-                  <option value="5w30">5W-30</option>
-                  <option value="10w40">10W-40</option>
-                </select>
-              </div>
+          {/* Search/Filter Module */}
+          <div className="bg-[#FFFFFF14] backdrop-blur-md  px-8 py-4 shadow-xl border border-[rgba(255,255,255,0.1)] rounded-[35px] p-10 md:p-12">
+            {/* Module Title */}
+            <div className="text-right mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                جستجو روغن مناسب کاربری شما
+              </h2>
+              <p className="text-gray-200/90 text-base md:text-lg leading-relaxed pr-2">
+                برای تجربه عملکرد بهتر موتور، روغن سازگار با نیازهای فنی خودروی خود را همینجا جستجو کنید.
+              </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-gold hover:bg-gold-dark text-white px-8 py-4 text-lg">
-                جستجو محصول
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="px-8 py-4 text-lg"
-              >
-                <svg
-                  className="w-5 h-5 inline-block ml-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+
+            {/* Oil Selection Guide Button */}
+            <div className="mb-8 flex justify-end">
+              <button className="bg-gray-800/90 hover:bg-gray-700/90 text-white px-7 py-3.5 rounded-full flex items-center gap-2.5 text-sm font-medium transition-all border border-gray-600/60 shadow-md">
+                <span className="w-6 h-6 rounded-full bg-white/25 flex items-center justify-center text-xs font-bold">?</span>
                 راهنمای انتخاب روغن
-              </Button>
+              </button>
+            </div>
+
+            {/* Dropdown Filters and Search Button */}
+            <div className="flex flex-col md:flex-row items-stretch md:items-center gap-5">
+              {/* Dropdown Filters */}
+              <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-5">
+                <div className="relative">
+                  <select className="w-full bg-gray-800/90 text-white px-6 py-4.5 rounded-full border border-gray-500/60 appearance-none cursor-pointer hover:bg-gray-700/90 transition-all text-sm font-medium pr-12 focus:outline-none focus:ring-2 focus:ring-gold/50">
+                    <option value="" className="bg-gray-800">نوع روغن</option>
+                    <option value="engine" className="bg-gray-800">روغن موتور</option>
+                    <option value="gearbox" className="bg-gray-800">روغن گیربکس</option>
+                    <option value="industrial" className="bg-gray-800">روغن صنعتی</option>
+                  </select>
+                  <svg 
+                    className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-white pointer-events-none"
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+
+                <div className="relative">
+                  <select className="w-full bg-gray-800/90 text-white px-6 py-4.5 rounded-full border border-gray-500/60 appearance-none cursor-pointer hover:bg-gray-700/90 transition-all text-sm font-medium pr-12 focus:outline-none focus:ring-2 focus:ring-gold/50">
+                    <option value="" className="bg-gray-800">کاربرد روغن</option>
+                    <option value="passenger" className="bg-gray-800">خودروی سواری</option>
+                    <option value="commercial" className="bg-gray-800">خودروی تجاری</option>
+                    <option value="industrial" className="bg-gray-800">صنعتی</option>
+                  </select>
+                  <svg 
+                    className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-white pointer-events-none"
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+
+                <div className="relative">
+                  <select className="w-full bg-gray-800/90 text-white px-6 py-4.5 rounded-full border border-gray-500/60 appearance-none cursor-pointer hover:bg-gray-700/90 transition-all text-sm font-medium pr-12 focus:outline-none focus:ring-2 focus:ring-gold/50">
+                    <option value="" className="bg-gray-800">ویسکوزیتو</option>
+                    <option value="5w30" className="bg-gray-800">5W-30</option>
+                    <option value="5w40" className="bg-gray-800">5W-40</option>
+                    <option value="10w40" className="bg-gray-800">10W-40</option>
+                    <option value="15w40" className="bg-gray-800">15W-40</option>
+                  </select>
+                  <svg 
+                    className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-white pointer-events-none"
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+
+                <div className="relative">
+                  <select className="w-full bg-gray-800/90 text-white px-6 py-4.5 rounded-full border border-gray-500/60 appearance-none cursor-pointer hover:bg-gray-700/90 transition-all text-sm font-medium pr-12 focus:outline-none focus:ring-2 focus:ring-gold/50">
+                    <option value="" className="bg-gray-800">سطح کیفیت</option>
+                    <option value="premium" className="bg-gray-800">پریمیوم</option>
+                    <option value="standard" className="bg-gray-800">استاندارد</option>
+                    <option value="economy" className="bg-gray-800">اقتصادی</option>
+                  </select>
+                  <svg 
+                    className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-white pointer-events-none"
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Search Product Button */}
+              <button 
+                className="text-white px-10 py-4.5 rounded-full font-bold text-base md:text-lg shadow-xl transition-all transform hover:scale-105 active:scale-100 whitespace-nowrap"
+                style={{
+                  background: 'linear-gradient(to left, #d97706, #f59e0b)',
+                }}
+              >
+                جستجو محصول
+              </button>
             </div>
           </div>
         </div>
