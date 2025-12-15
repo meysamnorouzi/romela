@@ -1,113 +1,131 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { NAVIGATION_ITEMS } from '@/lib/constants'
 
 export function Footer() {
+  const socialLinks = [
+    { label: 'اینستاگرام', href: '#' },
+    { label: 'تلگرام', href: '#' },
+    { label: 'لینکدین', href: '#' },
+    { label: 'واتساپ', href: '#' },
+  ]
+
   return (
-    <footer className="bg-dark border-t border-gray-800">
-      <div className="container mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-          {/* دسترسی ها */}
-          <div>
-            <h3 className="text-white font-bold text-lg mb-4">دسترسی ها</h3>
-            <ul className="space-y-2">
-              {NAVIGATION_ITEMS.slice(0, 5).map((item) => (
-                <li key={item.href}>
+    <footer className="relative w-full bg-[#0e0e0e] mt-16 md:mt-24 lg:mt-32">
+      {/* Main Footer Container */}
+      <div className="px-4 sm:px-6 lg:px-8 xl:px-12 py-8 md:py-12 lg:py-16">
+        {/* Background Box with Border */}
+        <div className="relative bg-[rgba(119,119,119,0.16)] border border-[#fcd856] rounded-3xl shadow-lg p-6 md:p-8 lg:p-12">
+          
+          {/* Grid Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-10 lg:gap-12">
+
+            {/* دسترسی ها */}
+            <div>
+              <h3 className="text-white font-bold text-lg md:text-xl mb-4 md:mb-6 text-right">
+                دسترسی ها
+              </h3>
+              <div className="h-px w-full bg-white/40 mb-4 md:mb-6" />
+              <ul className="space-y-2 md:space-y-3">
+                {NAVIGATION_ITEMS.slice(0, 5).map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="text-white text-sm md:text-base hover:text-[#fcd856] transition-colors text-right block"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* شبکه های اجتماعی */}
+            <div>
+              <h3 className="text-white font-bold text-lg md:text-xl mb-4 md:mb-6 text-right">
+                شبکه های اجتماعی
+              </h3>
+              <div className="h-px w-full bg-white/40 mb-4 md:mb-6" />
+              <ul className="space-y-2 md:space-y-3">
+                {socialLinks.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-white text-sm md:text-base hover:text-[#fcd856] transition-colors text-right block"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+                <li>
                   <Link
-                    href={item.href}
-                    className="text-gray-400 hover:text-gold transition-colors text-sm"
+                    href="#"
+                    className="text-white text-sm md:text-base hover:text-[#fcd856] transition-colors text-right block"
                   >
-                    {item.label}
+                    سوالات متداول
                   </Link>
                 </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* شبکه های اجتماعی */}
-          <div>
-            <h3 className="text-white font-bold text-lg mb-4">شبکه های اجتماعی</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 hover:text-gold transition-colors text-sm"
-                >
-                  اینستاگرام
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 hover:text-gold transition-colors text-sm"
-                >
-                  تلگرام
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 hover:text-gold transition-colors text-sm"
-                >
-                  لینکدین
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 hover:text-gold transition-colors text-sm"
-                >
-                  واتساپ
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 hover:text-gold transition-colors text-sm"
-                >
-                  سوالات متداول
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* دفتر مرکزی */}
-          <div>
-            <h3 className="text-white font-bold text-lg mb-4">دفتر مرکزی</h3>
-            <div className="text-gray-400 text-sm space-y-2">
-              <p>جاده مخصوص کرج، گرمدره، خیابان تاج بخش، خیابان زرشکی، پلاک 14</p>
-              <p>تا پنج شنبه / ۸ الی ۲۳</p>
-              <p>تلفن: ۰۰۹۸۲۱۴۴۹۹۰۵۷۱</p>
+              </ul>
             </div>
-          </div>
 
-          {/* کارخانه */}
-          <div>
-            <h3 className="text-white font-bold text-lg mb-4">کارخانه</h3>
-            <div className="text-gray-400 text-sm space-y-2">
-              <p>منطقه آزاد تجاری صنعتی ارس فاز یک صنعتی خیابان 13</p>
-              <p>پاسخگویی با هماهنگی قبلی</p>
-              <p>تلفن: ۰۰۹۸۴۱۴۲۰۲۷۰۷۷</p>
+            {/* دفتر مرکزی */}
+            <div>
+              <h3 className="text-white font-bold text-lg md:text-xl mb-4 md:mb-6 text-right">
+                دفتر مرکزی
+              </h3>
+              <div className="h-px w-full bg-white/40 mb-4 md:mb-6" />
+              <div className="space-y-3 md:space-y-4 text-right">
+                <p className="text-white text-xs md:text-sm leading-relaxed">
+                  جاده مخصوص کرج، گرمدره، خیابان تاج بخش، خیابان زرشکی، پلاک 14، عمارت سام
+                </p>
+                <p className="text-white text-xs md:text-sm font-medium">
+                  تماس شنبه تا پنج شنبه / ۸ الی ۱۶:۳۰
+                </p>
+                <p className="text-white text-xs md:text-sm" dir="rtl">
+                  تلفن: ۳۶۱۰۸۵۰۰-۰۲۶
+                </p>
+              </div>
+            </div>
+
+            {/* کارخانه */}
+            <div>
+              <h3 className="text-white font-bold text-lg md:text-xl mb-4 md:mb-6 text-right">
+                کارخانه
+              </h3>
+              <div className="h-px w-full bg-white/40 mb-4 md:mb-6" />
+              <div className="space-y-3 md:space-y-4 text-right">
+                <p className="text-white text-xs md:text-sm leading-relaxed">
+                  منطقه آزاد تجاری صنعتی ارس، فاز یک صنعتی، خیابان 8/3
+                </p>
+                <p className="text-white text-xs md:text-sm font-medium">
+                  پاسخگویی با هماهنگی قبلی
+                </p>
+                <p className="text-white text-xs md:text-sm" dir="rtl">
+                  تلفن: ۴۲۰۳۱۴۱۰-۰۴۱
+                </p>
+              </div>
+            </div>
+            
+            {/* Logo Section - Full width on mobile, first column on desktop */}
+            <div className="md:col-span-2 lg:col-span-1 order-1 lg:order-1">
+              <div className="bg-white rounded-3xl p-6 md:p-8 flex items-center justify-center h-full min-h-[200px] md:min-h-[250px] lg:min-h-[300px]">
+                <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48">
+                  <Image
+                    src="/images/romela new logo 4.svg"
+                    alt="Romela Logo"
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 128px, (max-width: 1024px) 160px, 192px"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Bottom Logo */}
-        <div className="mt-12 pt-8 border-t border-gray-800 flex justify-center">
-          <div className="flex flex-col items-center">
-            <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center mb-4">
-              <svg
-                className="w-10 h-10 text-dark"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-              </svg>
-            </div>
-            <span className="text-3xl font-bold text-white">ROMELA</span>
-          </div>
-        </div>
+      </div>
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 pt-8 md:pt-12 lg:pt-16">
+      <img src="/images/Group 50.svg" alt="Footer Background" className="w-full h-full object-cover" />
       </div>
     </footer>
   )
 }
-
