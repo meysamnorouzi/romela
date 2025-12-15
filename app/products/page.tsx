@@ -18,7 +18,7 @@ const imgRomelaNewLogo4 = "/images/romela new logo 4.svg";
 const imgImage11 = "/images/image 11.png";
 const imgImage13 = "/images/image 13.png";
 const imgImage17 = "/images/image 17.png";
-const imgImage12 = "/images/image 12.png";
+const imgImage12 = "/images/image 12.svg";
 const imgImage14 = "/images/image 14.png";
 const imgMockupAtfXlBackgroundRemoved = "/images/mockup-atf-zf.png";
 const imgMockupAtfZfBackgroundRemoved = "/images/mockup-atf-zf.png";
@@ -28,32 +28,6 @@ const imgRectangle45 = "/images/rectangle-45.svg";
 export default function App() {
   return (
     <div className="bg-[#0e0e0e] relative size-full" data-name="romela-Product Details Page">
-      {/* Frame3 - Navigation */}
-      <div className="absolute bg-[rgba(255,255,255,0.08)] content-stretch flex h-[82px] items-center justify-center left-[calc(50%+0.5px)] px-[30px] py-[10px] rounded-[70px] top-[56px] translate-x-[-50%]">
-        <div className="content-stretch flex font-['IRANYekanX:Bold',sans-serif] gap-[70px] items-center justify-center leading-[0] not-italic px-[30px] py-0 relative shrink-0 text-[16px] text-center text-white">
-          <div className="flex flex-col justify-center relative shrink-0 text-nowrap">
-            <p className="leading-[normal]" dir="auto">مقالات</p>
-          </div>
-          <div className="flex flex-col justify-center relative shrink-0 text-nowrap">
-            <p className="leading-[normal]" dir="auto">نمایندگی</p>
-          </div>
-          <div className="flex flex-col justify-center relative shrink-0 text-nowrap">
-            <p className="leading-[normal]" dir="auto">شرایط فروش</p>
-          </div>
-          <div className="flex flex-col justify-center relative shrink-0 text-nowrap">
-            <p className="leading-[normal]" dir="auto">تماس با ما</p>
-          </div>
-          <div className="flex flex-col justify-center relative shrink-0 text-nowrap">
-            <p className="leading-[normal]" dir="auto">درباره ما</p>
-          </div>
-          <div className="flex flex-col justify-center relative shrink-0 w-[80px]">
-            <p className="leading-[normal]" dir="auto">محصولات</p>
-          </div>
-          <div className="flex flex-col justify-center relative shrink-0 text-nowrap">
-            <p className="leading-[normal]" dir="auto">صفحه اصلی</p>
-          </div>
-        </div>
-      </div>
 
       {/* Brand Logo */}
       <div className="absolute bg-white content-stretch flex h-[82px] items-center justify-end left-[calc(50%+763px)] px-[30px] py-[10px] rounded-[24px] top-[56px] translate-x-[-50%]" data-name="Brand">
