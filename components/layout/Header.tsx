@@ -12,7 +12,7 @@ export function Header() {
 
   return (
     <header className="absolute top-14 left-0 w-full z-10 container mx-auto">
-      {/* Content Container */}
+      {/* Content Container */} 
         <div className="w-full flex items-center justify-between">
           {/* Logo - Far Right (RTL) */}
           <Link href="/" className="flex-shrink-0 ml-6">
