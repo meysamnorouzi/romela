@@ -1,0 +1,17 @@
+/* TEAM */
+Developer: Romela Oil Germany Development Team
+Contact: info [at] romela-oil.com
+Location: Iran
+
+/* THANKS */
+Next.js - https://nextjs.org/
+React - https://reactjs.org/
+Tailwind CSS - https://tailwindcss.com/
+WordPress - https://wordpress.org/
+WooCommerce - https://woocommerce.com/
+
+/* SITE */
+Last update: 2024/01/01
+Standards: HTML5, CSS3, JavaScript ES6+
+Components: React, Next.js 14
+Software: Visual Studio Code, Git

@@ -26,7 +26,10 @@ const config: Config = {
         },
       },
       fontFamily: {
-        persian: ['Vazir', 'Tahoma', 'Arial', 'sans-serif'],
+        sans: ['IranSans', 'Tahoma', 'Arial', 'sans-serif'],
+        title: ['IranYekan', 'IranSans', 'Tahoma', 'Arial', 'sans-serif'],
+        iransans: ['IranSans', 'Tahoma', 'Arial', 'sans-serif'],
+        iranyekan: ['IranYekan', 'IranSans', 'Tahoma', 'Arial', 'sans-serif'],
       },
     },
   },

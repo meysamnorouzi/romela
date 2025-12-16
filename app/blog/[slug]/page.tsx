@@ -32,8 +32,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <article className="py-8 md:py-12">
         <div className="container mx-auto px-4 md:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            {/* Header */}
-            <header className="mb-8">
+            {/* Post Title and Metadata */}
+            <div className="mb-8">
               <h1
                 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4"
                 dangerouslySetInnerHTML={{ __html: post.title.rendered }}
@@ -43,7 +43,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <span>•</span>
                 <span>خواندن {Math.ceil(post.content.rendered.length / 1000)} دقیقه</span>
               </div>
-            </header>
+            </div>
 
             {/* Featured Image */}
             {post.featured_media && (

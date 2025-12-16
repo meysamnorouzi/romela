@@ -1,7 +1,206 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;500;600;700&display=swap');
+
+/* IranSans Font Face Declarations */
+@font-face {
+  font-family: 'IranSans';
+  src: url('/fonts/iransans/woff2/IRANSansX-Thin.woff2') format('woff2'),
+       url('/fonts/iransans/woff/IRANSansX-Thin.woff') format('woff');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranSans';
+  src: url('/fonts/iransans/woff2/IRANSansX-UltraLight.woff2') format('woff2'),
+       url('/fonts/iransans/woff/IRANSansX-UltraLight.woff') format('woff');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranSans';
+  src: url('/fonts/iransans/woff2/IRANSansX-Light.woff2') format('woff2'),
+       url('/fonts/iransans/woff/IRANSansX-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranSans';
+  src: url('/fonts/iransans/woff2/IRANSansX-Regular.woff2') format('woff2'),
+       url('/fonts/iransans/woff/IRANSansX-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranSans';
+  src: url('/fonts/iransans/woff2/IRANSansX-Medium.woff2') format('woff2'),
+       url('/fonts/iransans/woff/IRANSansX-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranSans';
+  src: url('/fonts/iransans/woff2/IRANSansX-DemiBold.woff2') format('woff2'),
+       url('/fonts/iransans/woff/IRANSansX-DemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranSans';
+  src: url('/fonts/iransans/woff2/IRANSansX-Bold.woff2') format('woff2'),
+       url('/fonts/iransans/woff/IRANSansX-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranSans';
+  src: url('/fonts/iransans/woff2/IRANSansX-ExtraBold.woff2') format('woff2'),
+       url('/fonts/iransans/woff/IRANSansX-ExtraBold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranSans';
+  src: url('/fonts/iransans/woff2/IRANSansX-Heavy.woff2') format('woff2'),
+       url('/fonts/iransans/woff/IRANSansX-Heavy.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranSans';
+  src: url('/fonts/iransans/woff2/IRANSansX-Black.woff2') format('woff2'),
+       url('/fonts/iransans/woff/IRANSansX-Black.woff') format('woff');
+  font-weight: 950;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranSans';
+  src: url('/fonts/iransans/woff2/IRANSansX-ExtraBlack.woff2') format('woff2'),
+       url('/fonts/iransans/woff/IRANSansX-ExtraBlack.woff') format('woff');
+  font-weight: 975;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* IranYekan Font Face Declarations */
+@font-face {
+  font-family: 'IranYekan';
+  src: url('/fonts/iranyekan/woff2/IRANYekanX-Thin.woff2') format('woff2'),
+       url('/fonts/iranyekan/woff/IRANYekanX-Thin.woff') format('woff');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: url('/fonts/iranyekan/woff2/IRANYekanX-UltraLight.woff2') format('woff2'),
+       url('/fonts/iranyekan/woff/IRANYekanX-UltraLight.woff') format('woff');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: url('/fonts/iranyekan/woff2/IRANYekanX-Light.woff2') format('woff2'),
+       url('/fonts/iranyekan/woff/IRANYekanX-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: url('/fonts/iranyekan/woff2/IRANYekanX-Regular.woff2') format('woff2'),
+       url('/fonts/iranyekan/woff/IRANYekanX-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: url('/fonts/iranyekan/woff2/IRANYekanX-Medium.woff2') format('woff2'),
+       url('/fonts/iranyekan/woff/IRANYekanX-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: url('/fonts/iranyekan/woff2/IRANYekanX-DemiBold.woff2') format('woff2'),
+       url('/fonts/iranyekan/woff/IRANYekanX-DemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: url('/fonts/iranyekan/woff2/IRANYekanX-Bold.woff2') format('woff2'),
+       url('/fonts/iranyekan/woff/IRANYekanX-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: url('/fonts/iranyekan/woff2/IRANYekanX-ExtraBold.woff2') format('woff2'),
+       url('/fonts/iranyekan/woff/IRANYekanX-ExtraBold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: url('/fonts/iranyekan/woff2/IRANYekanX-Heavy.woff2') format('woff2'),
+       url('/fonts/iranyekan/woff/IRANYekanX-Heavy.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: url('/fonts/iranyekan/woff2/IRANYekanX-Black.woff2') format('woff2'),
+       url('/fonts/iranyekan/woff/IRANYekanX-Black.woff') format('woff');
+  font-weight: 950;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: url('/fonts/iranyekan/woff2/IRANYekanX-ExtraBlack.woff2') format('woff2'),
+       url('/fonts/iranyekan/woff/IRANYekanX-ExtraBlack.woff') format('woff');
+  font-weight: 975;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --foreground-rgb: 255, 255, 255;
@@ -20,7 +219,7 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   direction: rtl;
-  font-family: 'Vazir', 'Tahoma', 'Arial', sans-serif;
+  font-family: 'IranSans', 'Tahoma', 'Arial', sans-serif;
 }
 
 body {
@@ -33,9 +232,23 @@ a {
   text-decoration: none;
 }
 
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'IranYekan', 'IranSans', 'Tahoma', 'Arial', sans-serif;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  
+  .font-title {
+    font-family: 'IranYekan', 'IranSans', 'Tahoma', 'Arial', sans-serif;
+  }
+  
+  .font-text {
+    font-family: 'IranSans', 'Tahoma', 'Arial', sans-serif;
   }
 }
 

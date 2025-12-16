@@ -1,0 +1,20 @@
+{
+  "name": "Romela Oil Germany",
+  "short_name": "Romela Oil",
+  "description": "نمایندگی رسمی محصولات Romela Oil Germany",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0e0e0e",
+  "theme_color": "#e6a816",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/romela new logo 4.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "lang": "fa",
+  "dir": "rtl"
+}

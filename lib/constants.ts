@@ -1,11 +1,12 @@
 export const NAVIGATION_ITEMS = [
   { label: 'صفحه اصلی', href: '/' },
   { label: 'محصولات', href: '/products' },
-  { label: 'درباره ما', href: '/about-us' },
-  { label: 'تماس با ما', href: '/contact-us' },
+  { label: 'مقالات', href: '/blog' },
   { label: 'شرایط فروش', href: '/شرایط-فروش' },
   { label: 'نمایندگی', href: '/نمایندگی' },
-  { label: 'مقالات', href: '/blog' },
+  { label: 'درباره ما', href: '/about-us' },
+  { label: 'تماس با ما', href: '/contact-us' },
+
 ] as const
 
 export const PRODUCT_CATEGORIES = [
