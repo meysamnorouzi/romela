@@ -48,15 +48,13 @@ export default function ContactUsPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-[#0e0e0e] w-full overflow-hidden">
+    <div className="relative min-h-screen bg-[#0e0e0e] w-full overflow-hidden pt-32">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ 
-            backgroundImage: "url('/images/image 9.png')",
-            maskImage: imgImage24 ? `url('${imgImage24}')` : undefined,
-            WebkitMaskImage: imgImage24 ? `url('${imgImage24}')` : undefined,
+            backgroundImage: "url('/images/image 24.png')",
           }}
         />
         <div className="absolute inset-0 bg-black/30" />
@@ -64,12 +62,6 @@ export default function ContactUsPage() {
 
       {/* Content Container */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-        {/* Title */}
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h1 className="font-['IRANYekanX:Bold',sans-serif] text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white drop-shadow-lg">
-            تماس با پادراد ارس
-          </h1>
-        </div>
 
         {/* Contact Cards and Form Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-7 mb-8 lg:mb-12">
@@ -304,7 +296,7 @@ export default function ContactUsPage() {
             <img 
               alt="نقشه" 
               className="w-full h-full object-cover" 
-              src={imgScreenshot20251215At1246271.src} 
+              src="/images/Screenshot 2025-12-15 at 12.46.27 1.png" 
             />
           </div>
         </div>
