@@ -40,21 +40,21 @@ export default function App() {
   return (
     <div className="bg-[#0e0e0e] min-h-screen w-full">
       {/* Container */}
-      <div className="px-4 sm:px-6 lg:px-8 xl:px-12 pb-8 md:pb-12 lg:pb-16 pt-8 md:pt-12">
+      <div className="px-4 sm:px-6 lg:px-8 xl:px-12 pb-8 pt-56">
         
         {/* Breadcrumb */}
         <div className="max-w-7xl mx-auto mb-6 md:mb-8">
           <div className="flex items-center gap-2 text-right justify-end">
-            <span className="font-['IRANSansX:Regular',sans-serif] text-[#717171] text-lg" dir="auto">روغن گیربکس</span>
-            <span className="font-['IRANSansX:Regular',sans-serif] text-[#717171] text-lg"> / </span>
-            <span className="font-['IRANSansX:Regular',sans-serif] text-[#717171] text-lg" dir="auto">روغن نوع یک</span>
-            <span className="font-['IRANSansX:Regular',sans-serif] text-[#717171] text-lg"> / </span>
-            <span className="font-['IRANSansX:Bold',sans-serif] text-[#f58f4a] text-lg" dir="auto">زیر صفحه نوع دو</span>
+            <span className=" text-[#717171] text-lg" dir="auto">روغن گیربکس</span>
+            <span className=" text-[#717171] text-lg"> / </span>
+            <span className=" text-[#717171] text-lg" dir="auto">روغن نوع یک</span>
+            <span className=" text-[#717171] text-lg"> / </span>
+            <span className=" text-[#f58f4a] text-lg" dir="auto">زیر صفحه نوع دو</span>
           </div>
         </div>
 
         {/* Product Header Section */}
-        <div className="max-w-7xl mx-auto mb-12 md:mb-16">
+        <div className="w-full mb-12 md:mb-16">
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
             {/* Product Image */}
             <div className="w-full lg:w-1/2">
@@ -70,19 +70,19 @@ export default function App() {
               {/* Badges */}
               <div className="flex flex-wrap gap-4">
                 <div className="bg-[#f9bd65] px-6 py-2 rounded-[120px]">
-                  <span className="font-['IRANSansX:Bold',sans-serif] text-black text-base" dir="auto">
+                  <span className=" text-black text-base" dir="auto">
                     دارای استاندارد xum
                   </span>
                 </div>
                 <div className="bg-[#65cdf9] px-6 py-2 rounded-[120px]">
-                  <span className="font-['IRANSansX:Bold',sans-serif] text-black text-base" dir="auto">
+                  <span className=" text-black text-base" dir="auto">
                     ۳ لیتر
                   </span>
                 </div>
               </div>
 
               {/* Product Title */}
-              <h1 className="font-['IRANSansX:Bold',sans-serif] text-2xl md:text-3xl lg:text-4xl text-[#fcfbee] text-right" dir="auto">
+              <h1 className=" text-2xl md:text-3xl lg:text-4xl text-[#fcfbee] text-right" dir="auto">
                 روغن گیربکس فول سینتتیک Romela ATF-XL
               </h1>
 
@@ -143,12 +143,12 @@ export default function App() {
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <button className="bg-white flex items-center justify-center h-[56px] px-8 rounded-[70px] flex-1 sm:flex-none">
-                  <span className="font-['IRANYekanX:Bold',sans-serif] text-black text-base" dir="auto">
+                  <span className=" text-black text-base" dir="auto">
                     افزودن به سبد
                   </span>
                 </button>
                 <button className="border border-white flex items-center justify-center h-[56px] px-8 rounded-[70px] flex-1 sm:flex-none">
-                  <span className="font-['IRANYekanX:Bold',sans-serif] text-white text-base" dir="auto">
+                  <span className=" text-white text-base" dir="auto">
                     ثبت سفارش
                   </span>
                 </button>
@@ -160,8 +160,8 @@ export default function App() {
         <Divider />
 
         {/* Introduction Section */}
-        <section className="max-w-7xl mx-auto mb-12 md:mb-16">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-['IRANYekanX:Bold',sans-serif] text-white text-center mb-8 md:mb-12" dir="auto">
+        <section className="w-full mb-12 md:mb-16">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl  text-white text-center mb-8 md:mb-12" dir="auto">
             معرفی روغنX
           </h2>
 
@@ -189,8 +189,8 @@ export default function App() {
         <Divider />
 
         {/* Product Variants Section */}
-        <section className="max-w-7xl mx-auto mb-12 md:mb-16">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-['IRANYekanX:Bold',sans-serif] text-white text-center mb-8 md:mb-12" dir="auto">
+        <section className="w-full mb-12 md:mb-16">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl  text-white text-center mb-8 md:mb-12" dir="auto">
             مدل های مختلف  این محصول
           </h2>
 
@@ -199,10 +199,10 @@ export default function App() {
               {/* Table Header */}
               <div className="bg-[#242424] rounded-t-3xl p-4">
                 <div className="grid grid-cols-4 gap-4 text-right">
-                  <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">تصویر محصول</div>
-                  <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">نام محصول</div>
-                  <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">حجم</div>
-                  <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">قیمت</div>
+                  <div className=" text-[#f9bd65] text-lg" dir="auto">تصویر محصول</div>
+                  <div className=" text-[#f9bd65] text-lg" dir="auto">نام محصول</div>
+                  <div className=" text-[#f9bd65] text-lg" dir="auto">حجم</div>
+                  <div className=" text-[#f9bd65] text-lg" dir="auto">قیمت</div>
                 </div>
               </div>
 
@@ -222,7 +222,7 @@ export default function App() {
                       (انتخاب شده)
                     </p>
                   </div>
-                  <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">۱ لیتر</div>
+                  <div className=" text-[#f9bd65] text-lg" dir="auto">۱ لیتر</div>
                   <div className="font-['IRANSansX:Black',sans-serif] text-[#f9bd65] text-lg" dir="auto">۲۳,۰۰۰,۰۰۰ تومان</div>
                 </div>
               </div>
@@ -234,11 +234,11 @@ export default function App() {
                       <img alt="" className="absolute inset-0 w-full h-full object-contain pointer-events-none" src={imgMockupAtfXlBackgroundRemoved.src} />
                     </div>
                   </div>
-                  <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">
+                  <div className=" text-[#f9bd65] text-lg" dir="auto">
                     روغن گیربکس فول سینتتیک Romela ATF-XL
                   </div>
-                  <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">۳ لیتر</div>
-                  <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">۲۳,۰۰۰,۰۰۰ تومان</div>
+                  <div className=" text-[#f9bd65] text-lg" dir="auto">۳ لیتر</div>
+                  <div className=" text-[#f9bd65] text-lg" dir="auto">۲۳,۰۰۰,۰۰۰ تومان</div>
                 </div>
               </div>
 
@@ -249,11 +249,11 @@ export default function App() {
                       <img alt="" className="absolute inset-0 w-full h-full object-contain pointer-events-none" src={imgMockupAtfXlBackgroundRemoved.src} />
                     </div>
                   </div>
-                  <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">
+                  <div className=" text-[#f9bd65] text-lg" dir="auto">
                     روغن گیربکس فول سینتتیک Romela ATF-XL
                   </div>
-                  <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">۳ لیتر</div>
-                  <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">۲۳,۰۰۰,۰۰۰ تومان</div>
+                  <div className=" text-[#f9bd65] text-lg" dir="auto">۳ لیتر</div>
+                  <div className=" text-[#f9bd65] text-lg" dir="auto">۲۳,۰۰۰,۰۰۰ تومان</div>
                 </div>
               </div>
             </div>
@@ -263,8 +263,8 @@ export default function App() {
         <Divider />
 
         {/* Data Sheet Section */}
-        <section className="max-w-7xl mx-auto mb-12 md:mb-16">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-['IRANYekanX:Bold',sans-serif] text-white text-center mb-8 md:mb-12" dir="auto">
+        <section className="w-full mb-12 md:mb-16">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl  text-white text-center mb-8 md:mb-12" dir="auto">
             دیتاشیت محصول
           </h2>
 
@@ -274,7 +274,7 @@ export default function App() {
             </p>
             <div className="flex flex-wrap gap-4">
               <button className="bg-[#fdba74] flex items-center gap-2 h-[56px] px-6 rounded-[70px]">
-                <span className="font-['IRANYekanX:Bold',sans-serif] text-black text-base" dir="auto">دانلود دیتا شیت</span>
+                <span className=" text-black text-base" dir="auto">دانلود دیتا شیت</span>
                 <div className="size-6">
                   <svg className="block size-full" fill="none" viewBox="0 0 24 24">
                     <path d={svgPaths.p173bbf80} fill="black" />
@@ -282,7 +282,7 @@ export default function App() {
                 </div>
               </button>
               <button className="bg-[#fdba74] flex items-center gap-2 h-[56px] px-6 rounded-[70px]">
-                <span className="font-['IRANYekanX:Bold',sans-serif] text-black text-base" dir="auto">دانلود کاتالوگ</span>
+                <span className=" text-black text-base" dir="auto">دانلود کاتالوگ</span>
                 <div className="size-6">
                   <svg className="block size-full" fill="none" viewBox="0 0 24 24">
                     <path d={svgPaths.p16f45de0} fill="black" />
@@ -298,9 +298,9 @@ export default function App() {
               {/* Table Header */}
               <div className="bg-[#202020] rounded-t-3xl p-4">
                 <div className="grid grid-cols-3 gap-4 text-right">
-                  <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">ویژگی (Property)</div>
-                  <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">مقدار (Typical Value)</div>
-                  <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">استاندارد/روش آزمون</div>
+                  <div className=" text-[#f9bd65] text-lg" dir="auto">ویژگی (Property)</div>
+                  <div className=" text-[#f9bd65] text-lg" dir="auto">مقدار (Typical Value)</div>
+                  <div className=" text-[#f9bd65] text-lg" dir="auto">استاندارد/روش آزمون</div>
                 </div>
               </div>
 
@@ -311,7 +311,7 @@ export default function App() {
                     <div className="font-['IRANSansX:Black',sans-serif] text-[#f9bd65] text-lg" dir="auto">
                       Kinematic viscosity @40°C
                     </div>
-                    <div className="font-['IRANSansX:Bold',sans-serif] text-[#f9bd65] text-lg" dir="auto">
+                    <div className=" text-[#f9bd65] text-lg" dir="auto">
                       29 mm²/s
                     </div>
                     <div className="font-['IRANSansX:Black',sans-serif] text-[#f9bd65] text-lg" dir="auto">
@@ -327,8 +327,8 @@ export default function App() {
         <Divider />
 
         {/* Photo Gallery Section */}
-        <section className="max-w-7xl mx-auto mb-12 md:mb-16">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-['IRANYekanX:Bold',sans-serif] text-white text-center mb-8 md:mb-12" dir="auto">
+        <section className="w-full mb-12 md:mb-16">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl  text-white text-center mb-8 md:mb-12" dir="auto">
             تصویر محصول
           </h2>
 
@@ -348,10 +348,10 @@ export default function App() {
         <Divider />
 
         {/* Similar Products Section */}
-        <section className="max-w-7xl mx-auto mb-12 md:mb-16">
+        <section className="w-full mb-12 md:mb-16">
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
             <div className="w-full lg:w-1/2">
-              <h2 className="text-2xl md:text-3xl font-['IRANYekanX:Bold',sans-serif] text-white text-right mb-6" dir="auto">
+              <h2 className="text-2xl md:text-3xl  text-white text-right mb-6" dir="auto">
                 محصولا مشابه
               </h2>
               <p className="font-['IRANYekanX:Regular',sans-serif] text-base md:text-lg text-white text-right leading-relaxed" dir="auto">

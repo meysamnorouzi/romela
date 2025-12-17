@@ -121,7 +121,7 @@ function ProductCard({ image, title, bgColor, textColor, href = '#' }: ProductCa
       <div className='w-[full] flex items-center justify-center z-10 -mt-5'>
         <div className="absolute bg-[#ededed] h-[54px] rounded-[120px] w-[90%]" />
         <div className="bg-[rgba(177,177,177,0.1)] content-stretch flex h-[54px] items-center justify-center overflow-clip p-[10px] rounded-[120px] w-[90%]">
-          <div className="flex flex-col font-['IRANSansX:Bold',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[16px] text-black text-center text-nowrap">
+          <div className=" justify-center leading-[0] not-italic relative shrink-0 text-[16px] text-black text-center text-nowrap">
             <p className="leading-[16px]" dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
           </div>
         </div>

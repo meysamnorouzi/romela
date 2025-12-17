@@ -83,7 +83,7 @@ export default function ContactUsPage() {
                   </defs>
                 </svg>
               </div>
-              <h3 className="font-['IRANYekanX:Bold',sans-serif] text-lg sm:text-xl text-white text-center">
+              <h3 className=" text-lg sm:text-xl text-white text-center">
                 کارخانه
               </h3>
             </div>
@@ -98,7 +98,7 @@ export default function ContactUsPage() {
                     </g>
                   </svg>
                 </div>
-                <p className="font-['IRANYekanX:Bold',sans-serif] text-sm sm:text-base text-white text-right flex-1">
+                <p className=" text-sm sm:text-base text-white text-right flex-1">
                   منطقه آزاد ارس، فاز یک صنعتی، خیابان۸/۳
                 </p>
               </div>
@@ -112,7 +112,7 @@ export default function ContactUsPage() {
                     </g>
                   </svg>
                 </div>
-                <p className="font-['IRANYekanX:Bold',sans-serif] text-sm sm:text-base text-white">
+                <p className=" text-sm sm:text-base text-white">
                   ۰۴۱-۴۲۰۳۱۴۱۰
                 </p>
               </div>
@@ -126,7 +126,7 @@ export default function ContactUsPage() {
                     </g>
                   </svg>
                 </div>
-                <p className="font-['IRANYekanX:Bold',sans-serif] text-sm sm:text-base text-white text-right">
+                <p className=" text-sm sm:text-base text-white text-right">
                   ساعت ۸ صبح تا ۱۷
                   <br />
                   با هماهنگی قبلی
@@ -153,7 +153,7 @@ export default function ContactUsPage() {
                   </defs>
                 </svg>
               </div>
-              <h3 className="font-['IRANYekanX:Bold',sans-serif] text-lg sm:text-xl text-white text-center">
+              <h3 className=" text-lg sm:text-xl text-white text-center">
                 دفتر مرکزی
               </h3>
             </div>
@@ -168,7 +168,7 @@ export default function ContactUsPage() {
                     </g>
                   </svg>
                 </div>
-                <p className="font-['IRANYekanX:Bold',sans-serif] text-sm sm:text-base text-white text-right flex-1">
+                <p className=" text-sm sm:text-base text-white text-right flex-1">
                   جاده مخصوص کرج، گرمدره، خیابان تاج‌بخش، خیابان زرشکی، پلاک ۱۴، عمارت سام
                 </p>
               </div>
@@ -182,7 +182,7 @@ export default function ContactUsPage() {
                     </g>
                   </svg>
                 </div>
-                <p className="font-['IRANYekanX:Bold',sans-serif] text-sm sm:text-base text-white">
+                <p className=" text-sm sm:text-base text-white">
                   ۰۲۶-۳۶۱۰۸۵۰۰
                 </p>
               </div>
@@ -196,7 +196,7 @@ export default function ContactUsPage() {
                     </g>
                   </svg>
                 </div>
-                <p className="font-['IRANYekanX:Bold',sans-serif] text-sm sm:text-base text-white text-right">
+                <p className=" text-sm sm:text-base text-white text-right">
                   ساعت ۸ صبح تا ۱۷
                   <br />
                   با هماهنگی قبلی
@@ -214,7 +214,7 @@ export default function ContactUsPage() {
                   {...register('name')}
                   type="text"
                   placeholder="نام کامل"
-                  className="w-full bg-white/36 rounded-full px-6 py-3 sm:py-4 text-right text-black placeholder:text-black/70 font-['IRANSansX:DemiBold',sans-serif] text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#F9BD65] transition-all"
+                  className="w-full bg-white/36 rounded-full px-6 py-3 sm:py-4 text-right text-black placeholder:text-black/70  text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#F9BD65] transition-all"
                   dir="auto"
                 />
                 {errors.name && (
@@ -228,7 +228,7 @@ export default function ContactUsPage() {
                   {...register('phone')}
                   type="tel"
                   placeholder="شماره تماس"
-                  className="w-full bg-white/36 rounded-full px-6 py-3 sm:py-4 text-right text-black placeholder:text-black/70 font-['IRANSansX:DemiBold',sans-serif] text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#F9BD65] transition-all"
+                  className="w-full bg-white/36 rounded-full px-6 py-3 sm:py-4 text-right text-black placeholder:text-black/70  text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#F9BD65] transition-all"
                   dir="auto"
                 />
                 {errors.phone && (
@@ -242,7 +242,7 @@ export default function ContactUsPage() {
                   {...register('email')}
                   type="email"
                   placeholder="ایمیل"
-                  className="w-full bg-white/36 rounded-full px-6 py-3 sm:py-4 text-right text-black placeholder:text-black/70 font-['IRANSansX:DemiBold',sans-serif] text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#F9BD65] transition-all"
+                  className="w-full bg-white/36 rounded-full px-6 py-3 sm:py-4 text-right text-black placeholder:text-black/70  text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#F9BD65] transition-all"
                   dir="auto"
                 />
                 {errors.email && (
@@ -256,7 +256,7 @@ export default function ContactUsPage() {
                   {...register('subject')}
                   type="text"
                   placeholder="موضوع"
-                  className="w-full bg-white/36 rounded-full px-6 py-3 sm:py-4 text-right text-black placeholder:text-black/70 font-['IRANSansX:DemiBold',sans-serif] text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#F9BD65] transition-all"
+                  className="w-full bg-white/36 rounded-full px-6 py-3 sm:py-4 text-right text-black placeholder:text-black/70  text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#F9BD65] transition-all"
                   dir="auto"
                 />
                 {errors.subject && (
@@ -270,7 +270,7 @@ export default function ContactUsPage() {
                   {...register('message')}
                   placeholder="پیام شما"
                   rows={4}
-                  className="w-full bg-white/36 rounded-3xl px-6 py-3 sm:py-4 text-right text-black placeholder:text-black/70 font-['IRANSansX:DemiBold',sans-serif] text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#F9BD65] transition-all resize-none"
+                  className="w-full bg-white/36 rounded-3xl px-6 py-3 sm:py-4 text-right text-black placeholder:text-black/70  text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#F9BD65] transition-all resize-none"
                   dir="auto"
                 />
                 {errors.message && (
@@ -282,7 +282,7 @@ export default function ContactUsPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[rgba(230,168,22,0.6)] hover:bg-[rgba(230,168,22,0.8)] rounded-full px-6 py-3 sm:py-4 text-[#fcfbee] font-['IRANSansX:Bold',sans-serif] text-base sm:text-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[rgba(230,168,22,0.6)] hover:bg-[rgba(230,168,22,0.8)] rounded-full px-6 py-3 sm:py-4 text-[#fcfbee]  text-base sm:text-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? 'در حال ارسال...' : isSubmitted ? 'پیام ارسال شد!' : 'ارسال پیام'}
               </button>
@@ -388,7 +388,7 @@ export default function ContactUsPage() {
               href="mailto:info@padradarasoil.com"
               className="bg-white rounded-full px-4 sm:px-6 py-2 sm:py-3 flex items-center gap-2 sm:gap-3 hover:bg-gray-100 transition-colors"
             >
-              <p className="font-['IRANYekanX:Bold',sans-serif] text-xs sm:text-sm text-black">
+              <p className=" text-xs sm:text-sm text-black">
                 info@padradarasoil.com
               </p>
               <div className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0">

@@ -11,7 +11,7 @@ export function Header() {
   const cartCount = getItemCount()
 
   return (
-    <header className="absolute top-14 left-0 w-full z-10 container mx-auto">
+    <header className="absolute top-14 left-0 w-full z-10 px-4 md:px-6 lg:px-32">
       {/* Content Container */} 
         <div className="w-full flex items-center justify-between">
           {/* Logo - Far Right (RTL) */}
