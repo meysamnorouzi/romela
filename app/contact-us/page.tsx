@@ -48,7 +48,7 @@ export default function ContactUsPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-[#0e0e0e] w-full overflow-hidden pt-32">
+    <div className="relative min-h-screen bg-[#0e0e0e] w-full overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <div 

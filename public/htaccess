@@ -1,0 +1,10 @@
+# Rename this file to .htaccess in cPanel (public_html)
+
+RewriteEngine On
+
+# Serve dynamic sitemap
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
+# Pretty URLs for client-rendered detail pages
+RewriteRule ^products/([^/]+)/?$ /products?slug=$1 [L,QSA]
+RewriteRule ^blog/([^/]+)/?$ /blog?slug=$1 [L,QSA]

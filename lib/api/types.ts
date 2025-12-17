@@ -35,6 +35,71 @@ export interface WordPressPost {
   _links: Record<string, unknown>
 }
 
+// Romela Website (custom) API - Blog
+export interface WebsitePostAuthor {
+  id: number | string
+  name: string
+  nicename: string
+}
+
+export interface WebsitePostThumbnail {
+  medium?: string
+  large?: string
+  full?: string
+}
+
+export interface WebsiteTerm {
+  id: number
+  name: string
+  slug: string
+  description?: string
+  link?: string
+  count?: number
+}
+
+export interface WebsitePost {
+  id: number
+  title: string
+  slug: string
+  excerpt: string
+  content: string
+  author?: WebsitePostAuthor
+  date?: string
+  date_full?: string
+  date_unix?: number
+  modified_date?: string
+  link?: string
+  thumbnail?: WebsitePostThumbnail
+  categories?: WebsiteTerm[]
+  category_names?: string[]
+  tags?: WebsiteTerm[]
+  tag_names?: string[]
+  comment_count?: number
+}
+
+export interface WebsitePostsListResponse {
+  total: number | string
+  page: number
+  per_page: number | string
+  posts: WebsitePost[]
+}
+
+export interface WebsitePostsSearchResponse {
+  query: string
+  total: number | string
+  page: number
+  per_page: number | string
+  posts: WebsitePost[]
+}
+
+export interface WebsiteTermsListResponse {
+  total: number | string
+  page: number
+  per_page: number | string
+  categories?: WebsiteTerm[]
+  tags?: WebsiteTerm[]
+}
+
 export interface WooCommerceProduct {
   id: number
   name: string
@@ -146,6 +211,102 @@ export interface WooCommerceCategory {
   menu_order: number
   count: number
   _links: Record<string, unknown>
+}
+
+// Romela Website (custom) API - WooCommerce (wca/v1)
+export interface WcaImageSizes {
+  thumbnail?: string
+  medium?: string
+  medium_large?: string
+  large?: string
+  full?: string
+}
+
+export interface WcaImage {
+  id: number | string
+  url: string
+  alt: string
+  title: string
+  sizes?: WcaImageSizes
+}
+
+export interface WcaCategory {
+  id: number
+  name: string
+  slug: string
+  description?: string
+  count?: number
+  link?: string
+  image?: string
+  parent?: number
+  display?: string | null
+}
+
+export interface WcaProductMeta {
+  title?: string
+  description?: string
+  keywords?: string
+  og_title?: string
+  og_description?: string
+  og_image?: string
+  [key: string]: unknown
+}
+
+export interface WcaProduct {
+  id: number
+  name: string
+  slug: string
+  permalink?: string
+  sku?: string
+  type?: string
+  status?: string
+  featured?: boolean
+  catalog_visibility?: string
+  description?: string
+  short_description?: string
+  price?: string
+  regular_price?: string
+  sale_price?: string
+  price_html?: string
+  on_sale?: boolean
+  purchasable?: boolean
+  in_stock?: boolean
+  stock_status?: string
+  stock_quantity?: number | null
+  manage_stock?: boolean
+  weight?: string
+  length?: string
+  width?: string
+  height?: string
+  date_created?: string
+  date_modified?: string
+  images?: WcaImage[]
+  featured_image?: string
+  categories?: WcaCategory[]
+  tags?: Array<{ id: number; name: string; slug: string }>
+  attributes?: unknown[]
+  meta?: WcaProductMeta
+  related_ids?: Array<number | string>
+  variations?: unknown[]
+}
+
+export interface WcaProductsListResponse {
+  total: number | string
+  page: number
+  per_page: number | string
+  products: WcaProduct[]
+}
+
+export interface WcaCategoriesListResponse {
+  total: number | string
+  page: number
+  per_page: number | string
+  categories: WcaCategory[]
+}
+
+export interface WcaRelatedProductsResponse {
+  product_id: number
+  related_products: WcaProduct[]
 }
 
 export interface CartItem {

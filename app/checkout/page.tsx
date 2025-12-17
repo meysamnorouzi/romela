@@ -149,7 +149,7 @@ export default function CheckoutPage() {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-dark-lighter rounded-xl p-6 md:p-8 sticky top-24">
+              <div className="bg-dark-lighter rounded-xl p-6 md:p-8 sticky top-32">
                 <h2 className="text-2xl font-bold text-white mb-6">خلاصه سفارش</h2>
                 
                 {/* Order Items */}

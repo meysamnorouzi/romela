@@ -1,352 +1,380 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import Image from 'next/image';
+import Link from 'next/link'
+import Image from 'next/image'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
-// Placeholder SVG paths
+import type { WcaProduct, WcaProductsListResponse } from '@/lib/api/types'
+import { getWcaPrimaryImageUrl } from '@/lib/api/wca'
+import { LoadingSpinner } from '@/components/ui/Loading'
+import { stripHtml } from '@/lib/utils/text'
+import { extractStandard, extractVariantsFromFirstHtmlTable } from '@/lib/utils/wca'
+
+import { ProductDetailClient } from './ProductDetailClient'
+
 const svgPaths = {
-  p38ded900: "M15 19l-7-7 7-7",
-  p2788ff80: "M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z",
-};
-
-// Image paths
-const imgRomelaNewLogo4 = "/images/romela new logo 4.svg";
-const imgImage11 = "/images/image 11.png";
-const imgImage13 = "/images/image 13.png";
-const imgImage17 = "/images/image 17.png";
-const imgImage12 = "/images/image 12.svg";
-const imgImage14 = "/images/image 14.png";
-const imgMockupAtfXlBackgroundRemoved = "/images/mockup-atf-zf.png";
-const imgMockupAtfZfBackgroundRemoved = "/images/mockup-atf-zf.png";
-const imgMockupAtfVmBackgroundRemoved = "/images/mockup-atf-zf.png";
-
-// Category Card Component
-interface CategoryCardProps {
-  title: string;
-  description: string;
-  image: string;
-  color: string;
-  bgColor: string;
-  textColor: string;
-  imagePosition?: 'left' | 'right';
-  href?: string;
+  chevronLeft: 'M15 19l-7-7 7-7',
 }
 
-function CategoryCard({
-  title,
-  description,
-  image,
-  color,
-  bgColor,
-  textColor,
-  imagePosition = 'right',
-  href = '#'
-}: CategoryCardProps) {
-  const CardContent = (
-    <div className={`relative bg-[#343434] rounded-2xl overflow-hidden h-full min-h-[260px] md:min-h-[300px] lg:min-h-[350px] flex flex-col ${imagePosition === 'right' ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-      {/* Background blur effect */}
-      <div
-        className={`absolute ${imagePosition === 'right' ? 'left-0 md:left-1/4' : 'right-0 md:right-1/4'} top-1/2 -translate-y-1/2 w-64 h-32 md:w-96 md:h-48 rounded-full blur-3xl opacity-50`}
-        style={{ backgroundColor: bgColor }}
-      />
+const categoryChips = [
+  { id: 'industrial-oil', label: 'روغن صنعتی', icon: '/images/image 8.svg' },
+  { id: 'engine-oil', label: 'روغن موتور', icon: '/images/406618088_4cf1da23-4ada-498f-9987-8e38474b39b9 1.svg' },
+  { id: 'gearbox-oil', label: 'روغن گیربکس', icon: '/images/image 2.svg' },
+  { id: 'brake-fluid', label: 'روغن ترمز', icon: '/images/image 5.svg' },
+  { id: 'hydraulic-oil', label: 'روغن هیدرولیک', icon: '/images/image 6.svg' },
+  { id: 'grease', label: 'گریس', icon: '/images/image 3.svg' },
+]
 
-      {/* Image */}
-      <div className={`relative ${imagePosition === 'right' ? 'order-2' : 'order-1'} w-full md:w-1/2 h-48 md:h-auto flex items-center justify-center p-4 md:p-8`}>
-        <div className="relative w-full h-full max-w-xs">
-          <Image
-            src={image}
-            alt={title}
-            fill
-            className="object-contain"
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
+function CategoryChip({
+  label,
+  icon,
+  selected,
+  onClick,
+}: {
+  label: string
+  icon: string
+  selected?: boolean
+  onClick?: () => void
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={
+        'h-[52px] rounded-[999px] px-5 flex items-center gap-3 shrink-0 border border-white/10 ' +
+        (selected
+          ? 'bg-[#D7B354] text-black'
+          : 'bg-gradient-to-b from-[#3A3A3A] to-[#242424] text-white')
+      }
+      style={{ boxShadow: selected ? '0 18px 40px rgba(0,0,0,0.35)' : undefined }}
+    >
+      <span className="text-[13px] leading-none whitespace-nowrap">{label}</span>
+      <div className="relative w-10 h-10 rounded-full bg-[#2B2B2B] flex items-center justify-center overflow-hidden">
+        <Image src={icon} alt={label} width={30} height={30} className="object-contain" />
+      </div>
+    </button>
+  )
+}
+
+function ProductCardLoading() {
+  return (
+    <div className="flex flex-col items-center">
+      <div className="relative w-full pt-20">
+        <div className="relative w-full h-[230px] rounded-[22px] bg-[#343434] shadow-[0_30px_70px_rgba(0,0,0,0.45)]" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <LoadingSpinner size="lg" />
         </div>
       </div>
 
-      {/* Content */}
-      <div className={`relative ${imagePosition === 'right' ? 'order-1' : 'order-2'} w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-3 md:gap-4`}>
-        <h3
-          className="text-xl md:text-2xl lg:text-3xl font-bold text-right"
-          style={{ color: textColor }}
-        >
-          {title}
-        </h3>
-        <p
-          className="text-sm md:text-base lg:text-lg text-right"
-          style={{ color: textColor }}
-        >
-          {description}
-        </p>
-        <Link
-          href={href}
-          className="flex items-center gap-2 mt-2 md:mt-4 group"
-          style={{ color: textColor }}
-        >
-          <span className="text-sm md:text-base">مشاهده محصولات</span>
-          <svg className="w-5 h-5 md:w-6 md:h-6 transform group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-            <path d={svgPaths.p38ded900} />
-          </svg>
-        </Link>
+      <div className="mt-4 w-[92%]">
+        <div className="h-[34px] rounded-[999px] bg-[#2E2E2E]" />
+        <div className="mt-2 flex gap-2">
+          <div className="h-[30px] rounded-[999px] bg-[#2E2E2E] flex-1" />
+          <div className="h-[30px] rounded-[999px] bg-[#2E2E2E] w-[92px]" />
+        </div>
       </div>
     </div>
-  );
+  )
+}
 
-  if (href && href !== '#') {
-    return (
-      <Link href={href} className="block h-full">
-        {CardContent}
-      </Link>
-    );
+function ProductTile({ product }: { product: WcaProduct }) {
+  const image = getWcaPrimaryImageUrl(product) || ''
+
+  const textForStandard = stripHtml(product.description || product.short_description || product.name || '')
+  const standard = extractStandard(textForStandard)
+
+  const variants = extractVariantsFromFirstHtmlTable(product.description || '')
+  const volume = variants[0]?.volume || ''
+
+  const standardText = standard ? `دارای استاندارد ${standard}` : 'دارای استاندارد'
+  const volumeText = volume || '—'
+
+  return (
+    <Link href={`/products?slug=${encodeURIComponent(product.slug)}`} className="block">
+      <div className="flex flex-col items-center">
+        <div className="relative w-full pt-20">
+          <div className="relative w-full h-[230px] rounded-[22px] bg-[#343434] shadow-[0_30px_70px_rgba(0,0,0,0.45)]" />
+
+          <div className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 w-[185px] h-[270px]">
+            {image ? (
+              <Image
+                src={image}
+                alt={product.name}
+                fill
+                className="object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <LoadingSpinner size="lg" />
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-4 w-[92%]">
+          <div
+            className="h-[34px] rounded-[999px] bg-[#D7B354] text-black flex items-center justify-center px-4 text-[11px] leading-none text-center"
+            style={{ boxShadow: '0 18px 40px rgba(0,0,0,0.35)' }}
+          >
+            <span className="line-clamp-1">{product.name}</span>
+          </div>
+
+          <div className="mt-2 flex gap-2">
+            <div
+              className="h-[30px] rounded-[999px] bg-[#EDEDED] text-black flex items-center justify-center px-3 text-[11px] leading-none flex-1"
+              style={{ boxShadow: '0 18px 40px rgba(0,0,0,0.25)' }}
+              title={standardText}
+            >
+              <span className="line-clamp-1">{standardText}</span>
+            </div>
+            <div
+              className="h-[30px] rounded-[999px] bg-[#EDEDED] text-black flex items-center justify-center px-3 text-[11px] leading-none w-[92px]"
+              style={{ boxShadow: '0 18px 40px rgba(0,0,0,0.25)' }}
+              title={volumeText}
+            >
+              <span className="line-clamp-1">{volumeText}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Link>
+  )
+}
+
+function FiltersPanel() {
+  const [category, setCategory] = useState<'dasteh' | 'dasteh2' | 'dasteh3'>('dasteh')
+  const [viscosity, setViscosity] = useState<'۲۰-W' | '۱۰-W' | '۵-W' | '۳-W'>('۲۰-W')
+  const [volume, setVolume] = useState<'۲۰ لیتر' | '۳۰ لیتر' | 'فیلتر'>('۲۰ لیتر')
+
+  const pillBase = 'h-[36px] rounded-[999px] px-4 flex items-center justify-center text-[12px]'
+  const pillOff = 'bg-[#2D2D2D] text-[#D2D2D2]'
+  const pillOn = 'bg-[#D7B354] text-black'
+
+  return (
+    <aside className="bg-[#343434] rounded-[22px] p-6 border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)]">
+      <h3 className="text-white text-right text-[14px] mb-6">فیلترها</h3>
+
+      <div className="space-y-8">
+        <div>
+          <div className="text-[#D2D2D2] text-right text-[12px] mb-3">دسته بندی ها</div>
+          <div className="flex flex-col gap-3">
+            <button type="button" className={`${pillBase} ${category === 'dasteh' ? pillOn : pillOff}`} onClick={() => setCategory('dasteh')}>
+              دسته بندی ها
+            </button>
+            <button type="button" className={`${pillBase} ${category === 'dasteh2' ? pillOn : pillOff}`} onClick={() => setCategory('dasteh2')}>
+              دسته بندی ها
+            </button>
+            <button type="button" className={`${pillBase} ${category === 'dasteh3' ? pillOn : pillOff}`} onClick={() => setCategory('dasteh3')}>
+              دسته بندی ها
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <div className="text-[#D2D2D2] text-right text-[12px] mb-3">ویسکوزیته</div>
+          <div className="grid grid-cols-2 gap-3">
+            {(['۲۰-W', '۵-W', '۱۰-W', '۳-W'] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                className={`${pillBase} ${viscosity === v ? pillOn : pillOff}`}
+                onClick={() => setViscosity(v)}
+              >
+                {v}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <div className="text-[#D2D2D2] text-right text-[12px] mb-3">حجم</div>
+          <div className="flex flex-col gap-3">
+            {(['۲۰ لیتر', '۳۰ لیتر', 'فیلتر'] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                className={`${pillBase} ${volume === v ? pillOn : pillOff}`}
+                onClick={() => setVolume(v)}
+              >
+                {v}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </aside>
+  )
+}
+
+function matchesChip(product: WcaProduct, chipId: string) {
+  const hay = [
+    product.name || '',
+    stripHtml(product.short_description || ''),
+    stripHtml(product.description || ''),
+    ...(product.categories ?? []).map((c) => `${c.name ?? ''} ${c.slug ?? ''}`),
+  ]
+    .join(' ')
+    .toLowerCase()
+
+  const includesAny = (needles: string[]) => needles.some((n) => hay.includes(n))
+
+  switch (chipId) {
+    case 'industrial-oil':
+      return includesAny(['industrial', 'صنعت', 'توربین', 'کمپرسور', 'transformer', 'ترانسفورمر'])
+    case 'engine-oil':
+      return includesAny(['engine', 'موتور', 'سواری'])
+    case 'gearbox-oil':
+      return includesAny(['gear', 'gearbox', 'گیربکس', 'atf', 'cvt'])
+    case 'brake-fluid':
+      return includesAny(['brake', 'ترمز', 'dot'])
+    case 'hydraulic-oil':
+      return includesAny(['hydraulic', 'هیدرولیک', 'hydraul'])
+    case 'grease':
+      return includesAny(['grease', 'گریس'])
+    default:
+      return true
+  }
+}
+
+export default function ProductsPage() {
+  const sp = useSearchParams()
+  const slug = (sp.get('slug') ?? '').trim()
+
+  const [products, setProducts] = useState<WcaProduct[]>([])
+  const [loadingProducts, setLoadingProducts] = useState(true)
+
+  const chipRowRef = useRef<HTMLDivElement | null>(null)
+  const [activeChip, setActiveChip] = useState<string>('industrial-oil')
+
+  const WP_JSON_BASE_URL = (
+    process.env.NEXT_PUBLIC_WP_JSON_BASE_URL ||
+    process.env.NEXT_PUBLIC_WORDPRESS_URL ||
+    'https://padradarasoil.com/wp-json'
+  ).replace(/\/+$/, '')
+
+  async function fetchJson<T>(url: string): Promise<T> {
+    const res = await fetch(url, { headers: { Accept: 'application/json' }, cache: 'no-store' })
+    if (!res.ok) throw new Error(`Request failed (${res.status})`)
+    return res.json() as Promise<T>
   }
 
-  return CardContent;
-}
+  useEffect(() => {
+    let cancelled = false
+    setLoadingProducts(true)
 
-// Product Card Component
-interface ProductCardProps {
-  image: string;
-  title: string;
-  bgColor: string;
-  textColor: string;
-  href?: string;
-}
+    async function loadProducts() {
+      try {
+        const url = new URL(`${WP_JSON_BASE_URL}/wca/v1/products`)
+        url.searchParams.set('per_page', '100')
+        url.searchParams.set('page', '1')
 
-function ProductCard({ image, title, bgColor, textColor, href = '#' }: ProductCardProps) {
-  const CardContent = (
-    <div className='relative'>
-      <div className="relative bg-[#343434] h-[355px] rounded-[24px] w-full" />
-      <div className="absolute h-[414px] w-full z-10 -top-20" data-name="Mockup ATF-ZF Background Removed">
-        <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved} />
-      </div>
-      <div className='w-[full] flex items-center justify-center z-10 -mt-5'>
-        <div className="absolute bg-[#ededed] h-[54px] rounded-[120px] w-[90%]" />
-        <div className="bg-[rgba(177,177,177,0.1)] content-stretch flex h-[54px] items-center justify-center overflow-clip p-[10px] rounded-[120px] w-[90%]">
-          <div className=" justify-center leading-[0] not-italic relative shrink-0 text-[16px] text-black text-center text-nowrap">
-            <p className="leading-[16px]" dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
+        const raw = await fetchJson<WcaProductsListResponse>(url.toString())
+        if (cancelled) return
+        setProducts(raw.products ?? [])
+      } catch (error) {
+        console.error('Error fetching products:', error)
+        if (!cancelled) setProducts([])
+      } finally {
+        if (!cancelled) setLoadingProducts(false)
+      }
+    }
+
+    loadProducts()
+
+    return () => {
+      cancelled = true
+    }
+  }, [WP_JSON_BASE_URL])
+
+  const visibleProducts = useMemo(() => {
+    const filtered = products.filter((p) => matchesChip(p, activeChip))
+    const withImage = filtered
+      .map((p) => ({ p, image: getWcaPrimaryImageUrl(p) }))
+      .filter((x) => Boolean(x.image))
+      .map((x) => x.p)
+
+    // Layout in the screenshot shows 3 columns x 3 rows
+    return withImage.slice(0, 9)
+  }, [products, activeChip])
+
+  if (slug) {
+    return <ProductDetailClient slug={slug} />
+  }
+
+  return (
+    <div className="bg-[#0e0e0e] min-h-screen w-full relative">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.06),rgba(0,0,0,0)_55%)]" />
+      <div className="relative max-w-[1240px] mx-auto px-6 pt-36 pb-20">
+        {/* Breadcrumb */}
+        <div className="flex justify-end mb-6">
+          <div className="text-[12px] text-[#9A9A9A]">
+            <span>صفحه اصلی</span>
+            <span className="mx-2">/</span>
+            <span className="text-[#D7B354]">محصولات</span>
+          </div>
+        </div>
+
+        {/* Title */}
+        <h1 className="text-center text-white text-[16px] font-bold tracking-wide mb-8">سبد محصولات ROMELA</h1>
+
+        {/* Category chips row */}
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            className="w-11 h-11 rounded-full bg-[#2D2D2D] border border-white/10 flex items-center justify-center text-[#D7B354]"
+            style={{ boxShadow: '0 18px 40px rgba(0,0,0,0.35)' }}
+            onClick={() => {
+              chipRowRef.current?.scrollBy({ left: -240, behavior: 'smooth' })
+            }}
+            aria-label="scroll"
+          >
+            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d={svgPaths.chevronLeft} />
+            </svg>
+          </button>
+
+          <div
+            ref={chipRowRef}
+            className="flex-1 flex gap-4 overflow-x-auto no-scrollbar py-1"
+            style={{ scrollBehavior: 'smooth' }}
+          >
+            {categoryChips.map((c) => (
+              <CategoryChip
+                key={c.id}
+                label={c.label}
+                icon={c.icon}
+                selected={activeChip === c.id}
+                onClick={() => setActiveChip(c.id)}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-6 h-px w-full bg-white/10" />
+
+        {/* Content */}
+        <div dir="ltr" className="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 items-start">
+          {/* Products grid */}
+          <div dir="rtl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
+              {loadingProducts
+                ? Array.from({ length: 9 }).map((_, i) => <ProductCardLoading key={`pl-${i}`} />)
+                : visibleProducts.map((p) => <ProductTile key={p.id} product={p} />)}
+            </div>
+
+            {!loadingProducts && visibleProducts.length === 0 && (
+              <div className="mt-12 text-center text-[#9A9A9A]">محصولی برای نمایش وجود ندارد</div>
+            )}
+          </div>
+
+          {/* Filters */}
+          <div dir="rtl">
+            <FiltersPanel />
           </div>
         </div>
       </div>
     </div>
-  );
-
-  if (href && href !== '#') {
-    return (
-      <Link href={href} className="block h-full">
-        {CardContent}
-      </Link>
-    );
-  }
-
-  return CardContent;
-}
-
-// Divider Component
-function Divider() {
-  return (
-    <div className="w-full h-px my-8 md:my-12 lg:my-16">
-      <svg className="w-full h-full" fill="none" viewBox="0 0 1824 1" preserveAspectRatio="none">
-        <line
-          x1="0.5"
-          y1="0.5"
-          x2="1823.5"
-          y2="0.5"
-          stroke="url(#gradient)"
-          strokeLinecap="round"
-        />
-        <defs>
-          <linearGradient id="gradient" x1="0" x2="1824" y1="1.5" y2="1.5" gradientUnits="userSpaceOnUse">
-            <stop stopColor="white" stopOpacity="0" />
-            <stop offset="0.5" stopColor="white" stopOpacity="0.4" />
-            <stop offset="1" stopColor="white" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>
-  );
-}
-
-export default function ProductsPage() {
-  return (
-    <div className="bg-[#0e0e0e] min-h-screen w-full relative">
-      {/* Container */}
-      <div className="px-4 sm:px-6 lg:px-8 xl:px-12 pb-8 md:pb-12 lg:pb-16 pt-52">
-
-        {/* Main Title */}
-        <div className="text-center mb-8 md:mb-12 lg:mb-16 mt-8 md:mt-12 lg:mt-0">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white text-shadow-lg">
-            دسته بندی محصولات روغن موتور
-          </h1>
-        </div>
-
-        {/* Description Text */}
-        <div className="mb-8 md:mb-12 lg:mb-16">
-          <p className="text-sm md:text-base lg:text-lg text-white text-right leading-relaxed">
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تای و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تای
-          </p>
-        </div>
-
-        {/* Category Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-10 mb-12 md:mb-16 lg:mb-20">
-          {/* روغن موتور سواری سبک */}
-          <CategoryCard
-            title="روغن موتور سواری سبک"
-            description="توربین، کمپرسور، ترانسفورمر، حرارتی، بافت و ..."
-            image={imgImage11}
-            color="#b1b1b1"
-            bgColor="rgba(177,177,177,0.5)"
-            textColor="#b1b1b1"
-            imagePosition="right"
-          />
-
-          {/* روغن موتور سواری سنگین */}
-          <CategoryCard
-            title="روغن موتور سواری سنگین"
-            description="توربین، کمپرسور، ترانسفورمر، حرارتی، بافت و ..."
-            image={imgImage12}
-            color="#b7b7b7"
-            bgColor="rgba(183,183,183,0.5)"
-            textColor="#b7b7b7"
-            imagePosition="left"
-          />
-
-          {/* روغن موتور ماشین آلات راه سازی */}
-          <CategoryCard
-            title="روغن موتور ماشین آلات راه سازی"
-            description="توربین، کمپرسور، ترانسفورمر، حرارتی، بافت و ..."
-            image={imgImage13}
-            color="#e09b1b"
-            bgColor="rgba(224,155,27,0.5)"
-            textColor="#e09b1b"
-            imagePosition="right"
-          />
-
-          {/* روغن موتور کشتی */}
-          <CategoryCard
-            title="روغن موتور کشتی"
-            description="توربین، کمپرسور، ترانسفورمر، حرارتی، بافت و ..."
-            image={imgImage14}
-            color="#77a3f0"
-            bgColor="rgba(119,163,240,0.5)"
-            textColor="#77a3f0"
-            imagePosition="left"
-          />
-
-          {/* روغن موتور سیکلت */}
-          <CategoryCard
-            title="روغن موتور سیکلت"
-            description="توربین، کمپرسور، ترانسفورمر، حرارتی، بافت و ..."
-            image={imgImage17}
-            color="#e0491b"
-            bgColor="rgba(224,73,27,0.5)"
-            textColor="#e0491b"
-            imagePosition="right"
-          />
-        </div>
-
-        {/* Product Sections */}
-        <div className="space-y-16 md:space-y-20 lg:space-y-24">
-          {/* محصولات موتور سواری سبک */}
-          <section>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white text-center mb-8 md:mb-12">
-              محصولات موتور سواری سبک
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 pt-20">
-              {[1, 2, 3, 4].map((i) => (
-                <ProductCard
-                  key={i}
-                  image={i % 2 === 0 ? imgMockupAtfZfBackgroundRemoved : imgMockupAtfXlBackgroundRemoved}
-                  title="روغن گیربکس فول سینتتیک Romela ATF-XL"
-                  bgColor="#ededed"
-                  textColor="#000"
-                />
-              ))}
-            </div>
-            <Divider />
-          </section>
-
-          {/* محصولات موتور سواری سنگین */}
-          <section>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white text-center mb-8 md:mb-12">
-              محصولات موتور سواری سنگین
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 pt-20">
-              {[1, 2, 3, 4].map((i) => (
-                <ProductCard
-                  key={i}
-                  image={i % 2 === 0 ? imgMockupAtfZfBackgroundRemoved : imgMockupAtfXlBackgroundRemoved}
-                  title="روغن گیربکس فول سینتتیک Romela ATF-XL"
-                  bgColor="#b7b7b7"
-                  textColor="#000"
-                />
-              ))}
-            </div>
-            <Divider />
-          </section>
-
-          {/* روغن موتور ماشین آلات راه سازی */}
-          <section>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white text-center mb-8 md:mb-12">
-              روغن موتور ماشین آلات راه سازی
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 pt-20">
-              {[1, 2, 3, 4].map((i) => (
-                <ProductCard
-                  key={i}
-                  image={i % 2 === 0 ? imgMockupAtfZfBackgroundRemoved : imgMockupAtfXlBackgroundRemoved}
-                  title="روغن گیربکس فول سینتتیک Romela ATF-XL"
-                  bgColor="#e09b1b"
-                  textColor="#000"
-                />
-              ))}
-            </div>
-            <Divider />
-          </section>
-
-          {/* روغن موتور کشتی */}
-          <section>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white text-center mb-8 md:mb-12">
-              روغن موتور کشتی
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 pt-20">
-              {[1, 2, 3, 4].map((i) => (
-                <ProductCard
-                  key={i}
-                  image={i % 2 === 0 ? imgMockupAtfZfBackgroundRemoved : imgMockupAtfXlBackgroundRemoved}
-                  title="روغن گیربکس فول سینتتیک Romela ATF-XL"
-                  bgColor="#77a3f0"
-                  textColor="#000"
-                />
-              ))}
-            </div>
-            <Divider />
-          </section>
-
-          {/* روغن موتور سیکلت */}
-          <section>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white text-center mb-8 md:mb-12">
-              روغن موتور سیکلت
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 pt-20">
-              {[1, 2, 3, 4].map((i) => (
-                <ProductCard
-                  key={i}
-                  image={i % 2 === 0 ? imgMockupAtfZfBackgroundRemoved : imgMockupAtfXlBackgroundRemoved}
-                  title="روغن گیربکس فول سینتتیک Romela ATF-XL"
-                  bgColor="#e0491b"
-                  textColor="#fcfbee"
-                />
-              ))}
-            </div>
-          </section>
-        </div>
-
-        {/* Bottom Description Text */}
-        <div className="mt-16 md:mt-20 lg:mt-24">
-          <p className="text-sm md:text-base lg:text-lg text-white text-right leading-relaxed">
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تای و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تای لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تای و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تای
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+  )
 }

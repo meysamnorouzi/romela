@@ -50,7 +50,7 @@ export default function App() {
   const websiteSchema = generateWebSiteSchema();
 
   return (
-    <div className="bg-[#0e0e0e] min-h-screen w-full relative">
+    <div className="bg-[#0e0e0e] min-h-screen w-full relative -mt-24 md:-mt-28">
       {/* Structured Data (JSON-LD) */}
       <script
         type="application/ld+json"

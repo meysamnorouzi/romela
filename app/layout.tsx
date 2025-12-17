@@ -97,9 +97,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa" dir="rtl">
-      <body>
+      <body className="min-h-screen">
         <Header />
-        <main className="min-h-screen pt-4 md:pt-6 px-4 md:px-6">{children}</main>
+        {/* Reserve space for the fixed header on all pages.
+            Home page cancels this with a negative top margin on its hero wrapper. */}
+        <main className="min-h-screen pt-24 md:pt-28">{children}</main>
         <Footer />
       </body>
     </html>
