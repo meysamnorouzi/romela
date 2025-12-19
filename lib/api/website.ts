@@ -163,16 +163,67 @@ export async function searchBlogPosts(params: {
 
 export async function getBlogPostBySlug(slug: string): Promise<WebsitePost | null> {
   try {
-    // Ensure slug is decoded first (in case it's already encoded)
-    const decodedSlug = decodeURIComponent(slug)
-    // Then encode it properly for the URL path
-    const encoded = encodeURIComponent(decodedSlug)
-    const raw = await fetchJson<WebsitePost>(`website/v1/post-by-slug/${encoded}`, {
+    if (!slug || !slug.trim()) {
+      console.error('Empty slug provided to getBlogPostBySlug')
+      return null
+    }
+
+    // The slug should already be decoded (from Next.js params)
+    // But handle both cases: if it contains % it might be encoded, otherwise it's decoded
+    let finalSlug = slug.trim()
+    
+    // Check if slug is URL-encoded (contains %)
+    if (slug.includes('%')) {
+      try {
+        finalSlug = decodeURIComponent(slug)
+      } catch (e) {
+        // If decoding fails, use original
+        finalSlug = slug
+      }
+    }
+    
+    // Encode the slug for the API URL path
+    const encoded = encodeURIComponent(finalSlug)
+    const apiPath = `website/v1/post-by-slug/${encoded}`
+    
+    console.log('🔍 Fetching blog post:')
+    console.log('  Original slug:', slug)
+    console.log('  Final slug:', finalSlug)
+    console.log('  Encoded slug:', encoded)
+    console.log('  API path:', apiPath)
+    
+    // Use buildUrl helper to ensure consistent base URL from env
+    const fullUrl = buildUrl(apiPath)
+    console.log('  Full URL:', fullUrl)
+    
+    // Determine if this is a client-side or server-side call
+    // In browser, we want no-store. On server (build time), we want force-cache
+    const isClient = typeof window !== 'undefined'
+    const cacheMode: RequestCache = isClient ? 'no-store' : 'force-cache'
+    
+    const response = await fetch(fullUrl, {
+      headers: {
+        Accept: 'application/json',
+      },
+      cache: cacheMode,
     })
 
+    if (!response.ok) {
+      console.error(`❌ API request failed: ${response.status} ${response.statusText}`)
+      console.error(`   URL: ${fullUrl}`)
+      throw new Error(`Request failed (${response.status}) for ${apiPath}`)
+    }
+
+    const raw = await response.json() as WebsitePost
+    console.log('✅ Blog post fetched successfully:', raw.title || 'No title')
+    
     return normalizePost(raw)
   } catch (error) {
-    console.error('Error fetching blog post:', error)
+    console.error('❌ Error fetching blog post by slug:', error)
+    console.error('   Slug that failed:', slug)
+    if (error instanceof Error) {
+      console.error('   Error message:', error.message)
+    }
     return null
   }
 }

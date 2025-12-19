@@ -23,20 +23,28 @@ export function BlogDetailClient({ slug }: { slug: string }) {
     setLoading(true)
 
     async function load() {
+      if (!slug) {
+        console.error('No slug provided')
+        router.replace('/blog')
+        return
+      }
+
       try {
-        // The slug from URL query params might be encoded, decode it first
-        // Then pass it to the API function which will encode it properly
-        const decodedSlug = slug ? decodeURIComponent(slug) : slug
-        const p = await getBlogPostBySlug(decodedSlug)
+        // Next.js already decodes URL params, so slug is already decoded
+        // Pass it directly to the API function which will handle encoding for the API call
+        console.log('Fetching blog post with slug:', slug)
+        const p = await getBlogPostBySlug(slug)
         
         if (cancelled) return
         
         if (!p) {
+          console.warn('Blog post not found for slug:', slug)
           // Post not found
           router.replace('/blog')
           return
         }
         
+        console.log('Blog post loaded:', p.title)
         setPost(p)
 
         try {
@@ -50,6 +58,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
         }
       } catch (error) {
         console.error('Error fetching blog post:', error)
+        console.error('Slug that failed:', slug)
         if (cancelled) return
         setPost(null)
         // Client-side: go back to blog list if missing
