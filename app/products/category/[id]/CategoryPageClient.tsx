@@ -3,15 +3,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
-import type { WcaProduct, WcaProductsListResponse, WcaCategory, WcaAttribute, WcaAttributeTerm } from '@/lib/api/types'
+import type { WcaProduct, WcaCategory, WcaAttribute, WcaAttributeTerm } from '@/lib/api/types'
 import { getWcaPrimaryImageUrl, getWcaCategories, getWcaAttributes, getWcaAttributeTerms, getWcaProducts } from '@/lib/api/wca'
 import { LoadingSpinner } from '@/components/ui/Loading'
 import { stripHtml } from '@/lib/utils/text'
 import { extractStandard, extractVariantsFromFirstHtmlTable } from '@/lib/utils/wca'
-
-import { ProductDetailClient } from './ProductDetailClient'
 
 const svgPaths = {
   chevronLeft: 'M15 19l-7-7 7-7',
@@ -19,17 +17,24 @@ const svgPaths = {
 
 function CategoryChip({
   category,
+  selected,
   href,
 }: {
   category: WcaCategory
+  selected?: boolean
   href: string
 }) {
   const icon = category.image || '/images/image 8.svg'
   return (
     <Link
       href={href}
-      className="h-[52px] rounded-[999px] px-5 flex items-center gap-3 shrink-0 border border-white/10 bg-gradient-to-b from-[#3A3A3A] to-[#242424] text-white hover:bg-[#D7B354] hover:text-black transition-colors"
-      style={{ boxShadow: '0 18px 40px rgba(0,0,0,0.35)' }}
+      className={
+        'h-[52px] rounded-[999px] px-5 flex items-center gap-3 shrink-0 border border-white/10 ' +
+        (selected
+          ? 'bg-[#D7B354] text-black'
+          : 'bg-gradient-to-b from-[#3A3A3A] to-[#242424] text-white')
+      }
+      style={{ boxShadow: selected ? '0 18px 40px rgba(0,0,0,0.35)' : undefined }}
     >
       <span className="text-[13px] leading-none whitespace-nowrap">{category.name}</span>
       <div className="relative w-10 h-10 rounded-full bg-[#2B2B2B] flex items-center justify-center overflow-hidden">
@@ -126,14 +131,20 @@ function ProductTile({ product }: { product: WcaProduct }) {
 }
 
 function FiltersPanel({
+  subcategories,
   attributes,
   attributeTermsMap,
+  selectedSubcategoryId,
   selectedAttributeTerms,
+  onSubcategoryChange,
   onAttributeTermToggle,
 }: {
+  subcategories: WcaCategory[]
   attributes: WcaAttribute[]
   attributeTermsMap: Record<number, WcaAttributeTerm[]>
+  selectedSubcategoryId: number | null
   selectedAttributeTerms: number[]
+  onSubcategoryChange: (subcategoryId: number | null) => void
   onAttributeTermToggle: (termId: number) => void
 }) {
   const pillBase = 'h-[36px] rounded-[999px] px-4 flex items-center justify-center text-[12px]'
@@ -145,6 +156,27 @@ function FiltersPanel({
       <h3 className="text-white text-right text-[14px] mb-6">فیلترها</h3>
 
       <div className="space-y-8">
+        {subcategories.length > 0 && (
+          <div>
+            <div className="text-[#D2D2D2] text-right text-[12px] mb-3">زیر دسته‌بندی‌ها</div>
+            <div className="flex flex-col gap-3">
+              {subcategories.map((cat) => {
+                const isSelected = selectedSubcategoryId === cat.id
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    className={`${pillBase} ${isSelected ? pillOn : pillOff}`}
+                    onClick={() => onSubcategoryChange(isSelected ? null : cat.id)}
+                  >
+                    {cat.name}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
         {attributes.map((attr) => {
           const terms = attributeTermsMap[attr.id] || []
           if (terms.length === 0) return null
@@ -177,8 +209,19 @@ function FiltersPanel({
 
 function matchesFilters(
   product: WcaProduct,
+  categoryId: number,
+  subcategoryId: number | null,
   attributeTermIds: number[]
 ) {
+  // Filter by category/subcategory
+  if (subcategoryId !== null) {
+    const hasSubcategory = product.categories?.some((c) => c.id === subcategoryId)
+    if (!hasSubcategory) return false
+  } else {
+    const hasCategory = product.categories?.some((c) => c.id === categoryId)
+    if (!hasCategory) return false
+  }
+
   // Filter by attribute terms
   if (attributeTermIds.length > 0) {
     // For now, we'll do a simple text-based match
@@ -189,65 +232,89 @@ function matchesFilters(
   return true
 }
 
-export default function ProductsPage() {
-  const sp = useSearchParams()
-  const slug = (sp.get('slug') ?? '').trim()
+export function CategoryPageClient({ categoryId }: { categoryId: number }) {
+  const router = useRouter()
 
   const [products, setProducts] = useState<WcaProduct[]>([])
   const [loadingProducts, setLoadingProducts] = useState(true)
-  const [categories, setCategories] = useState<WcaCategory[]>([])
+  const [category, setCategory] = useState<WcaCategory | null>(null)
+  const [subcategories, setSubcategories] = useState<WcaCategory[]>([])
   const [loadingCategories, setLoadingCategories] = useState(true)
   const [attributes, setAttributes] = useState<WcaAttribute[]>([])
   const [attributeTermsMap, setAttributeTermsMap] = useState<Record<number, WcaAttributeTerm[]>>({})
   const [loadingAttributes, setLoadingAttributes] = useState(true)
+  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<number | null>(null)
   const [selectedAttributeTerms, setSelectedAttributeTerms] = useState<number[]>([])
+  const [selectedSubcategory, setSelectedSubcategory] = useState<WcaCategory | null>(null)
 
   const chipRowRef = useRef<HTMLDivElement | null>(null)
 
-  const WP_JSON_BASE_URL = (
-    process.env.NEXT_PUBLIC_WP_JSON_BASE_URL ||
-    process.env.NEXT_PUBLIC_WORDPRESS_URL ||
-    'https://padradarasoil.com/wp-json'
-  ).replace(/\/+$/, '')
-
-  async function fetchJson<T>(url: string): Promise<T> {
-    const res = await fetch(url, { headers: { Accept: 'application/json' }, cache: 'no-store' })
-    if (!res.ok) throw new Error(`Request failed (${res.status})`)
-    return res.json() as Promise<T>
-  }
-
-  // Load root categories
+  // Load category and subcategories
   useEffect(() => {
     let cancelled = false
     setLoadingCategories(true)
 
-    async function loadCategories() {
+    async function loadCategory() {
       try {
-        // Load root categories only
-        const result = await getWcaCategories({ 
-          per_page: 100, 
-          page: 1, 
-          hide_empty: true,
-          parent: 0
-        })
-        if (cancelled) return
-        setCategories(result.categories || [])
-      } catch (error) {
-        console.error('Error fetching categories:', error)
+        // Load all categories to find current one
+        // First try to get it directly, then fallback to fetching all
+        let current: WcaCategory | undefined
+        
+        try {
+          // Try to fetch all categories to find the current one
+          const allCats = await getWcaCategories({ per_page: 100, page: 1, hide_empty: false })
+          current = allCats.categories?.find(c => c.id === categoryId)
+          
+          // If not found in first page, try fetching more pages
+          if (!current) {
+            let page = 2
+            while (page <= 10 && !current) {
+              const moreCats = await getWcaCategories({ per_page: 100, page: page, hide_empty: false })
+              current = moreCats.categories?.find(c => c.id === categoryId)
+              if (moreCats.categories?.length === 0) break
+              page++
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching category details:', error)
+        }
+        
         if (!cancelled) {
-          setCategories([])
+          setCategory(current || null)
+        }
+
+        // Load subcategories (only if this is a parent category, i.e., has no parent or parent is 0)
+        // If current category has a parent, it's a subcategory, so don't load subcategories
+        if (!current || !current.parent || current.parent === 0) {
+          const result = await getWcaCategories({ 
+            per_page: 100, 
+            page: 1, 
+            hide_empty: true,
+            parent: categoryId
+          })
+          if (cancelled) return
+          setSubcategories(result.categories || [])
+        } else {
+          // This is a subcategory, so no subcategories to load
+          setSubcategories([])
+        }
+      } catch (error) {
+        console.error('Error fetching category:', error)
+        if (!cancelled) {
+          setCategory(null)
+          setSubcategories([])
         }
       } finally {
         if (!cancelled) setLoadingCategories(false)
       }
     }
 
-    loadCategories()
+    loadCategory()
 
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [categoryId])
 
   // Load attributes
   useEffect(() => {
@@ -303,6 +370,7 @@ export default function ProductsPage() {
         const params: Parameters<typeof getWcaProducts>[0] = {
           per_page: 100,
           page: 1,
+          category: selectedSubcategoryId || categoryId,
         }
 
         const result = await getWcaProducts(params)
@@ -321,11 +389,11 @@ export default function ProductsPage() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [categoryId, selectedSubcategoryId])
 
   const visibleProducts = useMemo(() => {
     let filtered = products.filter((p) => 
-      matchesFilters(p, selectedAttributeTerms)
+      matchesFilters(p, categoryId, selectedSubcategoryId, selectedAttributeTerms)
     )
     
     const withImage = filtered
@@ -334,7 +402,17 @@ export default function ProductsPage() {
       .map((x) => x.p)
 
     return withImage
-  }, [products, selectedAttributeTerms])
+  }, [products, categoryId, selectedSubcategoryId, selectedAttributeTerms])
+
+  const handleSubcategoryChange = (subcategoryId: number | null) => {
+    setSelectedSubcategoryId(subcategoryId)
+    if (subcategoryId) {
+      const subcat = subcategories.find(c => c.id === subcategoryId)
+      setSelectedSubcategory(subcat || null)
+    } else {
+      setSelectedSubcategory(null)
+    }
+  }
 
   const handleAttributeTermToggle = (termId: number) => {
     setSelectedAttributeTerms((prev) => 
@@ -344,62 +422,74 @@ export default function ProductsPage() {
     )
   }
 
-  if (slug) {
-    return <ProductDetailClient slug={slug} />
-  }
-
   return (
     <div className="bg-[#0e0e0e] min-h-screen w-full relative">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.06),rgba(0,0,0,0)_55%)]" />
       <div className="relative max-w-[1240px] mx-auto px-6 pt-36 pb-20">
         {/* Breadcrumb */}
-        <div className="flex justify-start mb-6">
+        <div className="flex justify-end mb-6">
           <div className="text-[12px] text-[#9A9A9A]">
             <Link href="/" className="hover:text-[#D7B354]">صفحه اصلی</Link>
             <span className="mx-2">/</span>
-            <span className="text-[#D7B354]">محصولات</span>
-          </div>
-        </div>
-
-        {/* Title */}
-        <h1 className="text-center text-white text-[16px] font-bold tracking-wide mb-8">سبد محصولات ROMELA</h1>
-
-        {/* Category chips row */}
-        <div className="flex items-center gap-4">
-          <button
-            type="button"
-            className="w-11 h-11 rounded-full bg-[#2D2D2D] border border-white/10 flex items-center justify-center text-[#D7B354]"
-            style={{ boxShadow: '0 18px 40px rgba(0,0,0,0.35)' }}
-            onClick={() => {
-              chipRowRef.current?.scrollBy({ left: -240, behavior: 'smooth' })
-            }}
-            aria-label="scroll"
-          >
-            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-              <path d={svgPaths.chevronLeft} />
-            </svg>
-          </button>
-
-          <div
-            ref={chipRowRef}
-            className="flex-1 flex gap-4 overflow-x-auto no-scrollbar py-1"
-            style={{ scrollBehavior: 'smooth' }}
-          >
-            {loadingCategories ? (
-              <div className="text-[#9A9A9A] text-[13px]">در حال بارگذاری...</div>
-            ) : (
-              categories.map((c) => (
-                <CategoryChip
-                  key={c.id}
-                  category={c}
-                  href={`/products/category/${c.id}`}
-                />
-              ))
+            <Link href="/products" className="hover:text-[#D7B354]">محصولات</Link>
+            {category && (
+              <>
+                <span className="mx-2">/</span>
+                <span className="text-[#D7B354]">{category.name}</span>
+              </>
             )}
           </div>
         </div>
 
-        <div className="mt-6 h-px w-full bg-white/10" />
+        {/* Title */}
+        <h1 className="text-center text-white text-[16px] font-bold tracking-wide mb-8">
+          {selectedSubcategory 
+            ? `لیست محصولات ${selectedSubcategory.name}`
+            : category 
+              ? `لیست محصولات ${category.name}` 
+              : 'لیست محصولات'}
+        </h1>
+
+        {/* Subcategory chips row */}
+        {subcategories.length > 0 && (
+          <>
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                className="w-11 h-11 rounded-full bg-[#2D2D2D] border border-white/10 flex items-center justify-center text-[#D7B354]"
+                style={{ boxShadow: '0 18px 40px rgba(0,0,0,0.35)' }}
+                onClick={() => {
+                  chipRowRef.current?.scrollBy({ left: -240, behavior: 'smooth' })
+                }}
+                aria-label="scroll"
+              >
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d={svgPaths.chevronLeft} />
+                </svg>
+              </button>
+
+              <div
+                ref={chipRowRef}
+                className="flex-1 flex gap-4 overflow-x-auto no-scrollbar py-1"
+                style={{ scrollBehavior: 'smooth' }}
+              >
+                {loadingCategories ? (
+                  <div className="text-[#9A9A9A] text-[13px]">در حال بارگذاری...</div>
+                ) : (
+                  subcategories.map((c) => (
+                    <CategoryChip
+                      key={c.id}
+                      category={c}
+                      selected={false}
+                      href={`/products/category/${c.id}`}
+                    />
+                  ))
+                )}
+              </div>
+            </div>
+            <div className="mt-6 h-px w-full bg-white/10" />
+          </>
+        )}
 
         {/* Content */}
         <div dir="ltr" className="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 items-start">
@@ -419,9 +509,12 @@ export default function ProductsPage() {
           {/* Filters */}
           <div dir="rtl">
             <FiltersPanel
+              subcategories={subcategories}
               attributes={attributes}
               attributeTermsMap={attributeTermsMap}
+              selectedSubcategoryId={selectedSubcategoryId}
               selectedAttributeTerms={selectedAttributeTerms}
+              onSubcategoryChange={handleSubcategoryChange}
               onAttributeTermToggle={handleAttributeTermToggle}
             />
           </div>
@@ -430,3 +523,4 @@ export default function ProductsPage() {
     </div>
   )
 }
+

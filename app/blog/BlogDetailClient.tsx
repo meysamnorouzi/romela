@@ -1,76 +1,70 @@
- 'use client'
+'use client'
  
- import { useEffect, useMemo, useState } from 'react'
- import { useRouter } from 'next/navigation'
- import Image from 'next/image'
- import { Breadcrumbs } from '@/components/layout/Breadcrumbs'
- import { Badge } from '@/components/ui/Badge'
- import { BlogCard } from '@/components/blog/BlogCard'
- import { estimateReadingTimeMinutesFromHtml, stripHtml } from '@/lib/utils/text'
- import { formatDate } from '@/lib/utils/format'
- import type { WebsitePost, WebsitePostsListResponse } from '@/lib/api/types'
- import { getModifiedDate, getPublishedDate } from '@/lib/api/website'
- import { generateArticleSchema } from '@/lib/utils/seo'
- 
- export function BlogDetailClient({ slug }: { slug: string }) {
-   const router = useRouter()
-   const [post, setPost] = useState<WebsitePost | null>(null)
-   const [relatedPosts, setRelatedPosts] = useState<WebsitePost[]>([])
-   const [loading, setLoading] = useState(true)
- 
-   const WP_JSON_BASE_URL = (
-     process.env.NEXT_PUBLIC_WP_JSON_BASE_URL ||
-     process.env.NEXT_PUBLIC_WORDPRESS_URL ||
-     'https://padradarasoil.com/wp-json'
-   ).replace(/\/+$/, '')
- 
-   function buildApiUrl(path: string) {
-     return `${WP_JSON_BASE_URL}/${path.replace(/^\/+/, '')}`
-   }
- 
-   async function fetchJson<T>(url: string): Promise<T> {
-     const res = await fetch(url, { headers: { Accept: 'application/json' }, cache: 'no-store' })
-     if (!res.ok) throw new Error(`Request failed (${res.status})`)
-     return res.json() as Promise<T>
-   }
- 
-   useEffect(() => {
-     let cancelled = false
-     setLoading(true)
- 
-     async function load() {
-       try {
-         const encoded = encodeURIComponent(slug)
-         const p = await fetchJson<WebsitePost>(buildApiUrl(`website/v1/post-by-slug/${encoded}`))
-         if (cancelled) return
-         setPost(p)
- 
-         try {
-           const list = await fetchJson<WebsitePostsListResponse>(
-             buildApiUrl(`website/v1/post-list?per_page=6&page=1`)
-           )
-           if (cancelled) return
-           const rel = (list.posts ?? []).filter((x) => x.id !== p.id).slice(0, 3)
-           setRelatedPosts(rel)
-         } catch {
-           if (!cancelled) setRelatedPosts([])
-         }
-       } catch {
-         if (cancelled) return
-         setPost(null)
-         // Client-side: go back to blog list if missing
-         router.replace('/blog')
-       } finally {
-         if (!cancelled) setLoading(false)
-       }
-     }
- 
-     load()
- 
-     return () => {
-       cancelled = true
-     }
-   }, [slug, router])
+import { useEffect, useMemo, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+import { Breadcrumbs } from '@/components/layout/Breadcrumbs'
+import { Badge } from '@/components/ui/Badge'
+import { BlogCard } from '@/components/blog/BlogCard'
+import { estimateReadingTimeMinutesFromHtml, stripHtml } from '@/lib/utils/text'
+import { formatDate } from '@/lib/utils/format'
+import type { WebsitePost, WebsitePostsListResponse } from '@/lib/api/types'
+import { getModifiedDate, getPublishedDate, getBlogPostBySlug, getBlogPosts } from '@/lib/api/website'
+import { generateArticleSchema } from '@/lib/utils/seo'
+
+export function BlogDetailClient({ slug }: { slug: string }) {
+  const router = useRouter()
+  const [post, setPost] = useState<WebsitePost | null>(null)
+  const [relatedPosts, setRelatedPosts] = useState<WebsitePost[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    setLoading(true)
+
+    async function load() {
+      try {
+        // The slug from URL query params might be encoded, decode it first
+        // Then pass it to the API function which will encode it properly
+        const decodedSlug = slug ? decodeURIComponent(slug) : slug
+        const p = await getBlogPostBySlug(decodedSlug)
+        
+        if (cancelled) return
+        
+        if (!p) {
+          // Post not found
+          router.replace('/blog')
+          return
+        }
+        
+        setPost(p)
+
+        try {
+          const list = await getBlogPosts({ per_page: 6, page: 1 })
+          if (cancelled) return
+          const rel = (list.posts ?? []).filter((x) => x.id !== p.id).slice(0, 3)
+          setRelatedPosts(rel)
+        } catch (error) {
+          console.error('Error fetching related posts:', error)
+          if (!cancelled) setRelatedPosts([])
+        }
+      } catch (error) {
+        console.error('Error fetching blog post:', error)
+        if (cancelled) return
+        setPost(null)
+        // Client-side: go back to blog list if missing
+        router.replace('/blog')
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+
+    load()
+
+    return () => {
+      cancelled = true
+    }
+  }, [slug, router])
  
    const publishedAt = post ? getPublishedDate(post) : null
    const readingTimeMinutes = post ? estimateReadingTimeMinutesFromHtml(post.content) : 1

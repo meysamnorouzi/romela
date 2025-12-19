@@ -1,4 +1,4 @@
-import type { WcaCategory, WcaProduct, WcaProductsListResponse, WcaCategoriesListResponse, WcaRelatedProductsResponse } from './types'
+import type { WcaCategory, WcaProduct, WcaProductsListResponse, WcaCategoriesListResponse, WcaRelatedProductsResponse, WcaAttributesListResponse, WcaAttributeTermsResponse } from './types'
 
 const WP_JSON_BASE_URL = (
   process.env.NEXT_PUBLIC_WP_JSON_BASE_URL ||
@@ -30,14 +30,15 @@ async function fetchJson<T>(
   path: string,
   options?: {
     query?: Record<string, string | number | boolean | undefined>
+    cache?: RequestCache
   }
 ): Promise<T> {
   const response = await fetch(buildUrl(path, options?.query), {
     headers: {
       Accept: 'application/json',
     },
-    // Static export (SSG): cacheable at build-time
-    cache: 'force-cache',
+    // Use provided cache option or default to no-store for client-side compatibility
+    cache: options?.cache ?? 'no-store',
   })
 
   if (!response.ok) {
@@ -124,6 +125,7 @@ export async function getWcaCategories(params?: {
   page?: number
   hide_empty?: boolean
   parent?: number
+  cache?: RequestCache
 }): Promise<WcaCategoriesListResponse> {
   const raw = await fetchJson<WcaCategoriesListResponse>('wca/v1/categories', {
     query: {
@@ -132,6 +134,7 @@ export async function getWcaCategories(params?: {
       hide_empty: params?.hide_empty,
       parent: params?.parent,
     },
+    cache: params?.cache ?? 'no-store',
   })
 
   return normalizeCategoriesList(raw)
@@ -164,4 +167,22 @@ export function getWcaPrimaryImageUrl(product: WcaProduct): string | undefined {
 
 export function getWcaCategoryName(product: WcaProduct): string | undefined {
   return product.categories?.[0]?.name
+}
+
+export async function getWcaAttributes(): Promise<WcaAttributesListResponse> {
+  const raw = await fetchJson<WcaAttributesListResponse>('wca/v1/attributes', {})
+  return {
+    ...raw,
+    total: toNumber(raw.total) ?? 0,
+    attributes: raw.attributes ?? [],
+  }
+}
+
+export async function getWcaAttributeTerms(attributeId: number): Promise<WcaAttributeTermsResponse | null> {
+  try {
+    return await fetchJson<WcaAttributeTermsResponse>(`wca/v1/attributes/${attributeId}/terms`, {})
+  } catch (error) {
+    console.error('Error fetching attribute terms:', error)
+    return null
+  }
 }

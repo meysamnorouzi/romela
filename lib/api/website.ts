@@ -163,7 +163,10 @@ export async function searchBlogPosts(params: {
 
 export async function getBlogPostBySlug(slug: string): Promise<WebsitePost | null> {
   try {
-    const encoded = encodeURIComponent(slug)
+    // Ensure slug is decoded first (in case it's already encoded)
+    const decodedSlug = decodeURIComponent(slug)
+    // Then encode it properly for the URL path
+    const encoded = encodeURIComponent(decodedSlug)
     const raw = await fetchJson<WebsitePost>(`website/v1/post-by-slug/${encoded}`, {
     })
 

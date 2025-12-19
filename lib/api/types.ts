@@ -309,6 +309,37 @@ export interface WcaRelatedProductsResponse {
   related_products: WcaProduct[]
 }
 
+export interface WcaAttribute {
+  id: number
+  name: string
+  label: string
+  type: string
+  orderby: string
+  public: number
+}
+
+export interface WcaAttributeTerm {
+  id: number
+  name: string
+  slug: string
+  description?: string
+  count?: number
+}
+
+export interface WcaAttributesListResponse {
+  total: number | string
+  attributes: WcaAttribute[]
+}
+
+export interface WcaAttributeTermsResponse {
+  attribute: {
+    id: number
+    name: string
+    label: string
+  }
+  terms: WcaAttributeTerm[]
+}
+
 export interface CartItem {
   id: number
   name: string
