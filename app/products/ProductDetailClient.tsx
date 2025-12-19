@@ -571,7 +571,7 @@
                <h2 className="text-2xl md:text-3xl  text-white text-right mb-6" dir="auto">
                  محصولا مشابه
                </h2>
-               <p className="font-['IRANYekanX:Regular',sans-serif] text-base md:text-lg text-white text-right leading-relaxed" dir="auto">
+               <p className=" text-base md:text-lg text-white text-right leading-relaxed" dir="auto">
                  {computed.similarText}
                </p>
              </div>
