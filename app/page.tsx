@@ -274,20 +274,20 @@ export default function App() {
             <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px] lg:col-span-2">
               <div className="absolute bg-[rgba(215,105,105,0.5)] blur-[57px] w-96 h-48 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
               <div className="relative flex flex-col md:flex-row-reverse h-full">
-                <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8">
+                <div className="w-full md:w-1/2 flex items-center justify-center">
                   <div className="w-full max-w-xs flex items-center justify-center">
                     <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage8.src} />
                   </div>
                 </div>
                 <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-3">
-                  <h3 className=" text-2xl md:text-3xl text-[#e39c9c] text-right" dir="auto">
+                  <h3 className=" text-2xl md:text-3xl text-[#E39C9C] text-right" dir="auto">
                     روغن های صنعتی
                   </h3>
-                  <p className="font-['IRANYekanX:Regular',sans-serif] text-lg text-[#e39c9c] text-right" dir="auto">
+                  <p className=" text-lg text-[#E39C9C] text-right" dir="auto">
                     توربین، کمپرسور، ترانسفورمر، حرارتی، بافت و ...
                   </p>
                   <div className="flex items-center gap-2 mt-2 md:mt-4 group">
-                    <span className="font-['IRANYekanX:Regular',sans-serif] text-[#e39c9c] text-base text-right" dir="auto">
+                    <span className=" text-[#E39C9C] text-base text-right" dir="auto">
                       مشاهده محصولات
                     </span>
                     <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="#E39C9C" viewBox="0 0 24 24">
@@ -301,26 +301,24 @@ export default function App() {
             <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px]">
               <div className="absolute bg-[rgba(229,160,69,0.5)] blur-[57px] w-64 h-32 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
               <div className="relative flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8 order-2 md:order-1">
-                  <div className="w-full max-w-xs flex items-center justify-center">
-                    <div className="flex-none rotate-[180deg] scale-y-[-100%]">
-                      <div className="w-[213px] h-[265px] flex items-center justify-center">
-                        <img alt="" className="w-full h-full object-contain pointer-events-none" src={img4066180884Cf1Da234Ada498F99878E38474B39B91.src} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-4 order-1 md:order-2">
+                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-4">
                   <h3 className=" text-2xl md:text-3xl text-[#fede59] text-right" dir="auto">
                     روغن موتور
                   </h3>
                   <div className="flex items-center gap-2 mt-2 md:mt-4 group">
-                    <span className="font-['IRANYekanX:Regular',sans-serif] text-[#fede59] text-base text-right" dir="auto">
+                    <span className=" text-[#fede59] text-base text-right" dir="auto">
                       مشاهده محصولات
                     </span>
                     <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="#FEDE59" viewBox="0 0 24 24">
                       <path d={svgPaths.p38ded900} />
                     </svg>
+                  </div>
+                </div>
+                <div className="w-full md:w-1/2 flex items-center justify-center">
+                  <div className="w-full max-w-xs flex items-center justify-center">
+                      <div className="w-[213px] h-[265px] flex items-center justify-center">
+                        <img alt="" className="w-full h-full object-contain pointer-events-none" src={img4066180884Cf1Da234Ada498F99878E38474B39B91.src} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -330,25 +328,25 @@ export default function App() {
             <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px]">
               <div className="absolute bg-[rgba(229,160,69,0.5)] blur-[57px] w-96 h-48 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
               <div className="relative flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8 order-2 md:order-1">
-                  <div className="w-full max-w-xs flex items-center justify-center">
-                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage2.src} />
-                  </div>
-                </div>
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-3 order-1 md:order-2">
+                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-3 ">
                   <h3 className=" text-2xl md:text-3xl text-[#fede59] text-right" dir="auto">
                     روغن گیربکس
                   </h3>
-                  <p className="font-['IRANYekanX:Regular',sans-serif] text-lg text-[#fede59] text-right" dir="auto">
+                  <p className=" text-lg text-[#fede59] text-right" dir="auto">
                     ATF، CVT و ...
                   </p>
                   <div className="flex items-center gap-2 mt-2 md:mt-4 group">
-                    <span className="font-['IRANYekanX:Regular',sans-serif] text-[#fede59] text-base text-right" dir="auto">
+                    <span className=" text-[#fede59] text-base text-right" dir="auto">
                       مشاهده محصولات
                     </span>
                     <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="#FEDE59" viewBox="0 0 24 24">
                       <path d={svgPaths.p38ded900} />
                     </svg>
+                  </div>
+                </div>
+                <div className="w-full md:w-1/2 flex items-center justify-center">
+                  <div className="w-full max-w-xs flex items-center justify-center">
+                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage2.src} />
                   </div>
                 </div>
               </div>
@@ -357,23 +355,23 @@ export default function App() {
             {/* Brake Oil Card */}
             <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px]">
               <div className="absolute bg-[rgba(255,35,39,0.5)] blur-[57px] w-64 h-32 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
-              <div className="relative flex flex-col md:flex-row-reverse h-full">
-                <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8 order-2 md:order-1">
-                  <div className="w-full max-w-xs flex items-center justify-center">
-                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage5.src} />
-                  </div>
-                </div>
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-4 order-1 md:order-2">
+              <div className="relative flex flex-col md:flex-row h-full">
+                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-4">
                   <h3 className=" text-2xl md:text-3xl text-[#ff2023] text-right" dir="auto">
                     روغن ترمز
                   </h3>
                   <div className="flex items-center gap-2 mt-2 md:mt-4 group">
-                    <span className="font-['IRANYekanX:Regular',sans-serif] text-[#ff2023] text-base text-right" dir="auto">
+                    <span className=" text-[#ff2023] text-base text-right" dir="auto">
                       مشاهده محصولات
                     </span>
                     <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="#FF2023" viewBox="0 0 24 24">
                       <path d={svgPaths.p38ded900} />
                     </svg>
+                  </div>
+                </div>
+                <div className="w-full md:w-1/2 flex items-center justify-center">
+                  <div className="w-full max-w-xs flex items-center justify-center">
+                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage5.src} />
                   </div>
                 </div>
               </div>
@@ -383,25 +381,25 @@ export default function App() {
                         <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px]">
               <div className="absolute bg-[rgba(229,160,69,0.5)] blur-[57px] w-96 h-48 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
               <div className="relative flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8 order-2 md:order-1">
-                  <div className="w-full max-w-xs flex items-center justify-center">
-                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage2.src} />
-                  </div>
-                </div>
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-3 order-1 md:order-2">
+                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-3">
                   <h3 className=" text-2xl md:text-3xl text-[#fede59] text-right" dir="auto">
                     روغن گیربکس
                   </h3>
-                  <p className="font-['IRANYekanX:Regular',sans-serif] text-lg text-[#fede59] text-right" dir="auto">
+                  <p className=" text-lg text-[#fede59] text-right" dir="auto">
                     ATF، CVT و ...
                   </p>
                   <div className="flex items-center gap-2 mt-2 md:mt-4 group">
-                    <span className="font-['IRANYekanX:Regular',sans-serif] text-[#fede59] text-base text-right" dir="auto">
+                    <span className=" text-[#fede59] text-base text-right" dir="auto">
                       مشاهده محصولات
                     </span>
                     <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="#FEDE59" viewBox="0 0 24 24">
                       <path d={svgPaths.p38ded900} />
                     </svg>
+                  </div>
+                </div>
+                <div className="w-full md:w-1/2 flex items-center justify-center">
+                  <div className="w-full max-w-xs flex items-center justify-center">
+                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage2.src} />
                   </div>
                 </div>
               </div>
@@ -411,17 +409,17 @@ export default function App() {
             <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px]">
               <div className="absolute bg-[rgba(255,35,39,0.5)] blur-[57px] w-64 h-32 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
               <div className="relative flex flex-col md:flex-row-reverse h-full">
-                <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8 order-2 md:order-1">
+                <div className="w-full md:w-1/2 flex items-center justify-center">
                   <div className="w-full max-w-xs flex items-center justify-center">
                     <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage5.src} />
                   </div>
                 </div>
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-4 order-1 md:order-2">
+                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-4">
                   <h3 className=" text-2xl md:text-3xl text-[#ff2023] text-right" dir="auto">
                     روغن ترمز
                   </h3>
                   <div className="flex items-center gap-2 mt-2 md:mt-4 group">
-                    <span className="font-['IRANYekanX:Regular',sans-serif] text-[#ff2023] text-base text-right" dir="auto">
+                    <span className=" text-[#ff2023] text-base text-right" dir="auto">
                       مشاهده محصولات
                     </span>
                     <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="#FF2023" viewBox="0 0 24 24">
@@ -436,22 +434,22 @@ export default function App() {
             <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px]">
               <div className="absolute bg-[rgba(255,255,255,0.5)] blur-[57px] w-64 h-32 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
               <div className="relative flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8 order-2 md:order-1">
-                  <div className="w-full max-w-xs flex items-center justify-center">
-                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage7.src} />
-                  </div>
-                </div>
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-4 order-1 md:order-2">
+                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-4">
                   <h3 className=" text-2xl md:text-3xl text-white text-right" dir="auto">
                     افزودنی های خاص
                   </h3>
                   <div className="flex items-center gap-2 mt-2 md:mt-4 group">
-                    <span className="font-['IRANYekanX:Regular',sans-serif] text-white text-base text-right" dir="auto">
+                    <span className=" text-white text-base text-right" dir="auto">
                       مشاهده محصولات
                     </span>
                     <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="white" viewBox="0 0 24 24">
                       <path d={svgPaths.p38ded900} />
                     </svg>
+                  </div>
+                </div>
+                <div className="w-full md:w-1/2 flex items-center justify-center">
+                  <div className="w-full max-w-xs flex items-center justify-center">
+                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage7.src} />
                   </div>
                 </div>
               </div>
