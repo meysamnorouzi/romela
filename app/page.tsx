@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useRef, useEffect } from "react";
 import svgPaths from "./imports/svg-vwybhmkqfj";
 import clsx from "clsx";
 import {
@@ -45,9 +48,111 @@ function Divider() {
   );
 }
 
+// Dropdown Component
+function Dropdown({ 
+  label, 
+  options, 
+  value, 
+  onChange,
+  id
+}: { 
+  label: string; 
+  options: string[]; 
+  value: string; 
+  onChange: (value: string) => void;
+  id: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <div
+        className="relative h-[54px] rounded-[70px] border border-white flex items-center px-4 cursor-pointer transition-all hover:opacity-90"
+        style={{
+          background: 'rgba(255, 255, 255, 0.16)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+        }}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span className="text-base text-white text-right flex-1" dir="auto">
+          {value || label}
+        </span>
+        <svg 
+          width="24" 
+          height="24" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+          className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+        >
+          <g clipPath={`url(#clip0_${id})`}>
+            <path d="M7 10L12 15L17 10H7Z" fill="white" />
+          </g>
+          <defs>
+            <clipPath id={`clip0_${id}`}>
+              <rect width="24" height="24" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+      
+      {isOpen && (
+        <div
+          className="absolute top-full mt-2 w-full rounded-2xl border border-white overflow-hidden z-50"
+          style={{
+            background: 'rgb(98 93 93 / 78%)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+          }}
+        >
+          {options.map((option, index) => (
+            <div
+              key={index}
+              className="px-4 py-3 cursor-pointer hover:bg-white/10 transition-colors text-right"
+              onClick={() => {
+                onChange(option);
+                setIsOpen(false);
+              }}
+            >
+              <span className="text-base text-white" dir="auto">
+                {option}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function App() {
   const organizationSchema = generateOrganizationSchema();
   const websiteSchema = generateWebSiteSchema();
+  
+  // Dropdown states
+  const [oilType, setOilType] = useState("");
+  const [oilUsage, setOilUsage] = useState("");
+  const [viscosity, setViscosity] = useState("");
+
+  // Dropdown options
+  const oilTypeOptions = ["همه", "روغن موتور", "روغن گیربکس", "روغن ترمز", "روغن صنعتی", "افزودنی"];
+  const oilUsageOptions = ["همه", "خودروی سواری", "خودروی سنگین", "موتورسیکلت", "صنعتی"];
+  const viscosityOptions = ["همه", "0W-20", "5W-30", "10W-40", "15W-50", "20W-50"];
 
   return (
     <div className="bg-[#0e0e0e] min-h-screen w-full relative -mt-24 md:-mt-28">
@@ -65,7 +170,7 @@ export default function App() {
         }}
       />
       {/* Hero Section with Masked Background */}
-      <div className="relative w-full pt-64 pb-[5.75rem] overflow-hidden flex items-center justify-center rounded-[2rem]" style={{ backgroundImage: `url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+      <div className="relative w-full pt-64 pb-[5.75rem] flex items-center justify-center rounded-[2rem]" style={{ backgroundImage: `url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
 
         <div className="absolute inset-0 bg-[rgba(0,0,0,0.3)] rounded-[2rem]" />
         <div className="flex flex-col items-center justify-center z-10">
@@ -112,75 +217,29 @@ export default function App() {
               </button>
             </div>
             {/* Filters and Search Button */}
-            <div className="grid grid-cols-4 gap-4 md:gap-6 items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 items-center">
               {/* Dropdown Filters */}
-              <div
-                className="relative h-[54px] rounded-[70px] border border-white flex items-center px-4 cursor-pointer transition-all hover:opacity-90"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.16)',
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
-                }}
-              >
-                <span className=" text-base text-white text-right flex-1" dir="auto">
-                  نوع روغن
-                </span>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g clip-path="url(#clip0_258_375)">
-                    <path d="M7 10L12 15L17 10H7Z" fill="white" />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_258_375">
-                      <rect width="24" height="24" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </div>
-
-              <div
-                className="relative h-[54px] rounded-[70px] border border-white flex items-center px-4 cursor-pointer transition-all hover:opacity-90"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.16)',
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
-                }}
-              >
-                <span className=" text-base text-white text-right flex-1" dir="auto">
-                  کاربرد روغن
-                </span>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g clip-path="url(#clip0_258_375)">
-                    <path d="M7 10L12 15L17 10H7Z" fill="white" />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_258_375">
-                      <rect width="24" height="24" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </div>
-              <div
-                className="relative h-[54px] rounded-[70px] border border-white flex items-center px-4 cursor-pointer transition-all hover:opacity-90"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.16)',
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
-                }}
-              >
-                <span className=" text-base text-white text-right flex-1" dir="auto">
-                  ویسکوزیته
-                </span>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g clip-path="url(#clip0_258_375)">
-                    <path d="M7 10L12 15L17 10H7Z" fill="white" />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_258_375">
-                      <rect width="24" height="24" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </div>
+              <Dropdown
+                id="oilType"
+                label="نوع روغن"
+                options={oilTypeOptions}
+                value={oilType}
+                onChange={setOilType}
+              />
+              <Dropdown
+                id="oilUsage"
+                label="کاربرد روغن"
+                options={oilUsageOptions}
+                value={oilUsage}
+                onChange={setOilUsage}
+              />
+              <Dropdown
+                id="viscosity"
+                label="ویسکوزیته"
+                options={viscosityOptions}
+                value={viscosity}
+                onChange={setViscosity}
+              />
               {/* Search Button */}
               <button
                 className="w-full md:w-auto flex items-center bg-[#E6A81699] justify-center h-[54px] px-8 md:px-12 rounded-[120px] order-1 md:order-0 transition-all hover:opacity-90"
