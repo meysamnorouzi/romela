@@ -213,7 +213,7 @@
        <div className="px-4 sm:px-6 lg:px-8 xl:px-12 pb-8 pt-56">
          {/* Breadcrumb */}
          <div className="max-w-7xl mx-auto mb-6 md:mb-8">
-           <div className="flex items-center gap-2 text-right justify-end">
+           <div className="flex items-center gap-2 text-right justify-start">
              <span className=" text-[#717171] text-lg" dir="auto">
                {computed.categoryName}
              </span>
@@ -360,122 +360,17 @@
  
          {/* Introduction Section */}
          <section className="w-full mb-12 md:mb-16">
-           <h2 className="text-2xl md:text-3xl lg:text-4xl  text-white text-center mb-8 md:mb-12" dir="auto">
+           <h2 className="text-2xl md:text-[34px]lg:text-[34px]  text-white  mb-8 md:mb-12" dir="auto">
              معرفی {product.name}
            </h2>
  
            <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
-             <div className="w-full lg:w-1/2">
-               <div className="relative bg-[#343434] rounded-3xl p-8 md:p-12">
-                 <div className="relative w-full h-[256px] md:h-[300px] flex items-center justify-center">
-                   <img
-                     alt=""
-                     className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                     src={computed.introImageTop}
-                   />
-                 </div>
-                 <div className="relative w-full h-[200px] md:h-[250px] flex items-center justify-center mt-4">
-                   <div className="relative w-[201px] h-[359px]">
-                     <img
-                       alt=""
-                       className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                       src={computed.introImageBottom}
-                     />
-                   </div>
-                 </div>
-               </div>
-             </div>
+        
              <div className="w-full lg:w-1/2">
                <p className=" text-lg md:text-xl text-white text-right leading-relaxed" dir="auto">
                  {computed.introText}
                </p>
-             </div>
-           </div>
-         </section>
- 
-         <Divider />
- 
-         {/* Product Variants Section */}
-         <section className="w-full mb-12 md:mb-16">
-           <h2 className="text-2xl md:text-3xl lg:text-4xl  text-white text-center mb-8 md:mb-12" dir="auto">
-             مدل های مختلف  این محصول
-           </h2>
- 
-           <div className="overflow-x-auto">
-             <div className="min-w-full">
-               <div className="bg-[#242424] rounded-t-3xl p-4">
-                 <div className="grid grid-cols-4 gap-4 text-right">
-                   <div className=" text-[#f9bd65] text-lg" dir="auto">
-                     تصویر محصول
-                   </div>
-                   <div className=" text-[#f9bd65] text-lg" dir="auto">
-                     نام محصول
-                   </div>
-                   <div className=" text-[#f9bd65] text-lg" dir="auto">
-                     حجم
-                   </div>
-                   <div className=" text-[#f9bd65] text-lg" dir="auto">
-                     قیمت
-                   </div>
-                 </div>
-               </div>
- 
-               {[0, 1, 2].map((idx) => (
-                 <div
-                   key={idx}
-                   className={clsx(
-                     idx === 0 ? 'bg-[rgba(249,189,101,0.4)]' : 'bg-[#161616]',
-                     'border border-[#3b3b3b]',
-                     idx === 2 ? 'rounded-b-3xl' : '',
-                     'p-4'
-                   )}
-                 >
-                   <div className="grid grid-cols-4 gap-4 items-center text-right">
-                     <div className="flex justify-center">
-                       <div className="relative w-[99px] h-[175px]">
-                         <img
-                           alt=""
-                           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                           src={computed.variants[idx]?.imageUrl || computed.primaryImage}
-                         />
-                       </div>
-                     </div>
-                     <div>
-                       <p className="font-['IRANSansX:Black',sans-serif] text-[#f9bd65] text-lg" dir="auto">
-                         {computed.variants[idx]?.name || product.name}
-                       </p>
-                       {idx === 0 ? (
-                         <p className="font-['IRANSansX:Black',sans-serif] text-[#f9bd65] text-base mt-1" dir="auto">
-                           (انتخاب شده)
-                         </p>
-                       ) : null}
-                     </div>
-                     <div className=" text-[#f9bd65] text-lg" dir="auto">
-                       {computed.variants[idx]?.volume || '—'}
-                     </div>
-                     <div className=" text-[#f9bd65] text-lg" dir="auto">
-                       {computed.variants[idx]?.priceText || '—'}
-                     </div>
-                   </div>
-                 </div>
-               ))}
-             </div>
-           </div>
-         </section>
- 
-         <Divider />
- 
-         {/* Data Sheet Section */}
-         <section className="w-full mb-12 md:mb-16">
-           <h2 className="text-2xl md:text-3xl lg:text-4xl  text-white text-center mb-8 md:mb-12" dir="auto">
-             دیتاشیت محصول
-           </h2>
- 
-           <div className="mb-8">
-             <p className=" text-lg md:text-xl text-white text-right leading-relaxed mb-6" dir="auto">
-               {computed.datasheetText}
-             </p>
-             <div className="flex flex-wrap gap-4">
+               <div className="flex flex-wrap gap-4 mt-6">
                <button className="bg-[#fdba74] flex items-center gap-2 h-[56px] px-6 rounded-[70px]">
                  <span className=" text-black text-base" dir="auto">
                    دانلود دیتا شیت
@@ -497,19 +392,133 @@
                  </div>
                </button>
              </div>
+             </div>
+
+             <div className="w-full lg:w-1/2">
+               <div className="relative bg-[#343434] rounded-3xl p-8 md:p-12">
+                
+           
+                 <div className="relative w-full h-[256px] md:h-[300px] flex items-center justify-center">
+                   <img
+                     alt=""
+                     className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                     src={computed.introImageTop}
+                   />
+                 </div>
+               </div>
+             </div>
+           </div>
+         </section>
+ 
+         <Divider />
+ 
+         {/* Product Variants Section */}
+         <section className="w-full mb-12 md:mb-16">
+           <h2 className="text-2xl md:text-[34px] lg:text-[34px]  text-white  mb-8 md:mb-12" dir="auto">
+             مدل های مختلف  این محصول
+           </h2>
+ 
+           <div className="overflow-x-auto">
+             <div className="min-w-full">
+               <div className="bg-[#242424] rounded-t-3xl p-4">
+                 <div className="grid grid-cols-4 gap-4 text-right">
+                  
+                   <div className=" text-[#f9bd65] text-lg text-center" dir="auto">
+                     نام محصول
+                   </div>
+                   <div className=" text-[#f9bd65] text-lg text-center" dir="auto">
+                     حجم
+                   </div>
+                   <div className=" text-[#f9bd65] text-lg text-center" dir="auto">
+                     قیمت
+                   </div>
+                   <div className=" text-[#f9bd65] text-lg text-center" dir="auto">
+                     تصویر محصول
+                   </div>
+                 </div>
+               </div>
+ 
+               {[0, 1, 2].map((idx) => (
+                 <div
+                   key={idx}
+                   className={clsx(
+                     idx === 0 ? 'bg-[rgba(249,189,101,0.4)]' : 'bg-[#161616]',
+                     'border border-[#3b3b3b]',
+                     idx === 2 ? 'rounded-b-3xl' : '',
+                     'p-4'
+                   )}
+                 >
+                   <div className="grid grid-cols-4 gap-4 items-center text-right">
+                   
+                     <div className='text-center'>
+                       <p className="font-['IRANSansX:Black',sans-serif] text-[#f9bd65] text-lg" dir="auto">
+                         {computed.variants[idx]?.name || product.name}
+                       </p>
+                       {idx === 0 ? (
+                         <p className="font-['IRANSansX:Black',sans-serif] text-[#f9bd65] text-base mt-1" dir="auto">
+                           (انتخاب شده)
+                         </p>
+                       ) : null}
+                     </div>
+                     <div className=" text-[#f9bd65] text-lg text-center" dir="auto">
+                       {computed.variants[idx]?.volume || '—'}
+                     </div>
+                     <div className=" text-[#f9bd65] text-lg text-center" dir="auto">
+                       {computed.variants[idx]?.priceText || '—'}
+                     </div>
+                     <div className="flex justify-center">
+                       <div className="relative w-[99px] h-[175px]">
+                         <img
+                           alt=""
+                           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                           src={computed.variants[idx]?.imageUrl || computed.primaryImage}
+                         />
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               ))}
+             </div>
+           </div>
+         </section>
+ 
+         <Divider />
+ 
+         {/* Data Sheet Section */}
+         <section className="w-full mb-12 md:mb-16">
+          <div className="flex  gap-4 items-center justify-between">
+           <h2 className="text-2xl md:text-[34px] lg:text-[34px]  text-white  mb-8 md:mb-12" dir="auto">
+             دیتاشیت محصول
+           </h2>
+           <button className="bg-[#fdba74] flex items-center gap-2 h-[56px] px-6 rounded-[70px]">
+                 <span className=" text-black text-base" dir="auto">
+                   دانلود دیتا شیت
+                 </span>
+                 <div className="size-6">
+                   <svg className="block size-full" fill="none" viewBox="0 0 24 24">
+                     <path d={(svgPaths as any).p173bbf80} fill="black" />
+                   </svg>
+                 </div>
+               </button>
+           </div>
+           <div className="mb-8">
+             <p className=" text-lg md:text-[18px] text-white text-right leading-relaxed mb-6" dir="auto">
+               {computed.datasheetText}
+             </p>
+     
            </div>
  
            <div className="overflow-x-auto">
              <div className="min-w-full">
                <div className="bg-[#202020] rounded-t-3xl p-4">
                  <div className="grid grid-cols-3 gap-4 text-right">
-                   <div className=" text-[#f9bd65] text-lg" dir="auto">
+                   <div className=" text-[#f9bd65] text-lg text-center" dir="auto">
                      ویژگی (Property)
                    </div>
-                   <div className=" text-[#f9bd65] text-lg" dir="auto">
+                   <div className=" text-[#f9bd65] text-lg text-center" dir="auto">
                      مقدار (Typical Value)
                    </div>
-                   <div className=" text-[#f9bd65] text-lg" dir="auto">
+                   <div className=" text-[#f9bd65] text-lg text-center" dir="auto">
                      استاندارد/روش آزمون
                    </div>
                  </div>
@@ -521,13 +530,13 @@
                    className={`bg-[#161616] border border-[#3b3b3b] p-4 ${i === computed.techRows.length - 1 ? 'rounded-b-3xl' : ''}`}
                  >
                    <div className="grid grid-cols-3 gap-4 text-right">
-                     <div className="font-['IRANSansX:Black',sans-serif] text-[#f9bd65] text-lg" dir="auto">
+                     <div className="font-['IRANSansX:Black',sans-serif] text-[#f9bd65] text-lg text-center" dir="auto">
                        {row.property}
                      </div>
-                     <div className=" text-[#f9bd65] text-lg" dir="auto">
+                     <div className=" text-[#f9bd65] text-lg text-center" dir="auto">
                        {row.value}
                      </div>
-                     <div className="font-['IRANSansX:Black',sans-serif] text-[#f9bd65] text-lg" dir="auto">
+                     <div className="font-['IRANSansX:Black',sans-serif] text-[#f9bd65] text-lg text-center" dir="auto">
                        {row.method}
                      </div>
                    </div>
@@ -541,17 +550,18 @@
  
          {/* Photo Gallery Section */}
          <section className="w-full mb-12 md:mb-16">
-           <h2 className="text-2xl md:text-3xl lg:text-4xl  text-white text-center mb-8 md:mb-12" dir="auto">
-             تصویر محصول
-           </h2>
+       
  
-           <div className="relative bg-[#222] rounded-3xl shadow-lg overflow-hidden">
-             <div className="bg-[#2c2c2c] rounded-3xl p-8 md:p-12">
+           <div className="relative bg-[#222] rounded-3xl shadow-lg overflow-hidden flex items-center justify-between pr-12 gap-12">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl  text-white text-center mb-8 md:mb-12 flex-shrink-0" dir="auto">
+              تصویر محصول
+            </h2>
+             <div className="bg-[#2c2c2c] rounded-3xl p-8 md:p-12 flex-grow">
                <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px]">
                  <img
                    alt=""
                    className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                   src={computed.primaryImage}
+                   src={'/images/detail.png'}
                  />
                </div>
              </div>

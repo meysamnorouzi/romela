@@ -211,7 +211,8 @@ function matchesFilters(
   product: WcaProduct,
   categoryId: number,
   subcategoryId: number | null,
-  attributeTermIds: number[]
+  attributeTermIds: number[],
+  attributeTermsMap: Record<number, WcaAttributeTerm[]>
 ) {
   // Filter by category/subcategory
   if (subcategoryId !== null) {
@@ -224,9 +225,74 @@ function matchesFilters(
 
   // Filter by attribute terms
   if (attributeTermIds.length > 0) {
-    // For now, we'll do a simple text-based match
-    // This should be improved based on actual API structure
-    return true // For now, allow all if we can't properly match
+    // Get selected term names
+    const selectedTermNames = new Set<string>()
+    const selectedTermSlugs = new Set<string>()
+    
+    // Build sets of selected term names and slugs from all attributes
+    Object.values(attributeTermsMap).forEach(terms => {
+      terms.forEach(term => {
+        if (attributeTermIds.includes(term.id)) {
+          selectedTermNames.add(term.name.toLowerCase().trim())
+          selectedTermSlugs.add(term.slug.toLowerCase().trim())
+        }
+      })
+    })
+
+    // Check if product has attributes that match selected terms
+    const productAttributes = product.attributes || []
+    
+    // Try to match against product attributes
+    let hasMatchingAttribute = false
+    
+    for (const attr of productAttributes) {
+      if (!attr || typeof attr !== 'object') continue
+      
+      // Try different possible structures
+      const attrObj = attr as any
+      
+      // Check if attributes have options array (WooCommerce style)
+      if (Array.isArray(attrObj.options)) {
+        for (const option of attrObj.options) {
+          if (typeof option === 'string') {
+            const optionLower = option.toLowerCase().trim()
+            if (selectedTermNames.has(optionLower) || selectedTermSlugs.has(optionLower)) {
+              hasMatchingAttribute = true
+              break
+            }
+          } else if (typeof option === 'object' && option !== null) {
+            const optionName = String(option.name || option.slug || option).toLowerCase().trim()
+            if (selectedTermNames.has(optionName) || selectedTermSlugs.has(optionName)) {
+              hasMatchingAttribute = true
+              break
+            }
+          }
+        }
+      }
+      
+      // Check if attribute has a name/slug that matches
+      if (attrObj.name && typeof attrObj.name === 'string') {
+        const attrName = attrObj.name.toLowerCase().trim()
+        if (selectedTermNames.has(attrName) || selectedTermSlugs.has(attrName)) {
+          hasMatchingAttribute = true
+        }
+      }
+      
+      if (hasMatchingAttribute) break
+    }
+    
+    // Also check product name and description for term matches as fallback
+    if (!hasMatchingAttribute) {
+      const productText = `${product.name || ''} ${product.description || ''} ${product.short_description || ''}`.toLowerCase()
+      for (const termName of selectedTermNames) {
+        if (productText.includes(termName)) {
+          hasMatchingAttribute = true
+          break
+        }
+      }
+    }
+    
+    return hasMatchingAttribute
   }
 
   return true
@@ -393,7 +459,7 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
 
   const visibleProducts = useMemo(() => {
     let filtered = products.filter((p) => 
-      matchesFilters(p, categoryId, selectedSubcategoryId, selectedAttributeTerms)
+      matchesFilters(p, categoryId, selectedSubcategoryId, selectedAttributeTerms, attributeTermsMap)
     )
     
     const withImage = filtered
@@ -402,7 +468,7 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
       .map((x) => x.p)
 
     return withImage
-  }, [products, categoryId, selectedSubcategoryId, selectedAttributeTerms])
+  }, [products, categoryId, selectedSubcategoryId, selectedAttributeTerms, attributeTermsMap])
 
   const handleSubcategoryChange = (subcategoryId: number | null) => {
     setSelectedSubcategoryId(subcategoryId)
