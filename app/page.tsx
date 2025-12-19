@@ -49,16 +49,16 @@ function Divider() {
 }
 
 // Dropdown Component
-function Dropdown({ 
-  label, 
-  options, 
-  value, 
+function Dropdown({
+  label,
+  options,
+  value,
   onChange,
   id
-}: { 
-  label: string; 
-  options: string[]; 
-  value: string; 
+}: {
+  label: string;
+  options: string[];
+  value: string;
   onChange: (value: string) => void;
   id: string;
 }) {
@@ -92,11 +92,11 @@ function Dropdown({
         <span className="text-base text-white text-right flex-1" dir="auto">
           {value || label}
         </span>
-        <svg 
-          width="24" 
-          height="24" 
-          viewBox="0 0 24 24" 
-          fill="none" 
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
         >
@@ -110,7 +110,7 @@ function Dropdown({
           </defs>
         </svg>
       </div>
-      
+
       {isOpen && (
         <div
           className="absolute top-full mt-2 w-full rounded-2xl border border-white overflow-hidden z-50"
@@ -143,11 +143,15 @@ function Dropdown({
 export default function App() {
   const organizationSchema = generateOrganizationSchema();
   const websiteSchema = generateWebSiteSchema();
-  
+
   // Dropdown states
   const [oilType, setOilType] = useState("");
   const [oilUsage, setOilUsage] = useState("");
   const [viscosity, setViscosity] = useState("");
+
+  // Active tab state
+  const [activeTab, setActiveTab] = useState("gearbox-oil");
+  const [activeBestsellerTab, setActiveBestsellerTab] = useState("engine-oil-bestseller");
 
   // Dropdown options
   const oilTypeOptions = ["همه", "روغن موتور", "روغن گیربکس", "روغن ترمز", "روغن صنعتی", "افزودنی"];
@@ -155,7 +159,7 @@ export default function App() {
   const viscosityOptions = ["همه", "0W-20", "5W-30", "10W-40", "15W-50", "20W-50"];
 
   return (
-    <div className="bg-[#0e0e0e] min-h-screen w-full relative -mt-24 md:-mt-28">
+    <div className="bg-[#0e0e0e] min-h-screen w-full relative">
       {/* Structured Data (JSON-LD) */}
       <script
         type="application/ld+json"
@@ -170,7 +174,7 @@ export default function App() {
         }}
       />
       {/* Hero Section with Masked Background */}
-      <div className="relative w-full pt-64 pb-[5.75rem] flex items-center justify-center rounded-[2rem]" style={{ backgroundImage: `url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+      <div className="relative w-full pt-64 pb-[5.75rem] flex items-center justify-center rounded-[1.5rem]" style={{ backgroundImage: `url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
 
         <div className="absolute inset-0 bg-[rgba(0,0,0,0.3)] rounded-[2rem]" />
         <div className="flex flex-col items-center justify-center z-10">
@@ -274,24 +278,26 @@ export default function App() {
             <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px] lg:col-span-2">
               <div className="absolute bg-[rgba(215,105,105,0.5)] blur-[57px] w-96 h-48 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
               <div className="relative flex flex-col md:flex-row-reverse h-full">
-                <div className="w-full md:w-1/2 flex items-center justify-center">
+                <div className="w-full md:w-[40%] flex items-center justify-center">
                   <div className="w-full max-w-xs flex items-center justify-center">
                     <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage8.src} />
                   </div>
                 </div>
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-3">
-                  <h3 className=" text-2xl md:text-3xl text-[#E39C9C] text-right" dir="auto">
-                    روغن های صنعتی
-                  </h3>
-                  <p className=" text-lg text-[#E39C9C] text-right" dir="auto">
-                    توربین، کمپرسور، ترانسفورمر، حرارتی، بافت و ...
-                  </p>
-                  <div className="flex items-center gap-2 mt-2 md:mt-4 group">
+                <div className="w-full md:w-[60%] flex flex-col justify-between p-6 md:p-8 gap-3">
+                  <div className="pt-10">
+                    <h3 className=" text-2xl md:text-3xl text-[#E39C9C] text-right" dir="auto">
+                      روغن های صنعتی
+                    </h3>
+                    <p className=" text-lg text-[#E39C9C] text-right mt-3" dir="auto">
+                      توربین، کمپرسور، ترانسفورمر، حرارتی، بافت و ...
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3 mt-2 md:mt-4 group">
                     <span className=" text-[#E39C9C] text-base text-right" dir="auto">
                       مشاهده محصولات
                     </span>
-                    <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="#E39C9C" viewBox="0 0 24 24">
-                      <path d={svgPaths.p38ded900} />
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3.825 9L9.425 14.6L8 16L0 8L8 0L9.425 1.4L3.825 7H16V9H3.825Z" fill="#E39C9C" />
                     </svg>
                   </div>
                 </div>
@@ -301,23 +307,23 @@ export default function App() {
             <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px]">
               <div className="absolute bg-[rgba(229,160,69,0.5)] blur-[57px] w-64 h-32 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
               <div className="relative flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-4">
-                  <h3 className=" text-2xl md:text-3xl text-[#fede59] text-right" dir="auto">
+                <div className="w-full md:w-[60%] flex flex-col justify-between p-6 md:p-8 gap-4">
+                  <h3 className=" text-2xl md:text-3xl text-[#FEDE59] text-right pt-10" dir="auto">
                     روغن موتور
                   </h3>
                   <div className="flex items-center gap-2 mt-2 md:mt-4 group">
-                    <span className=" text-[#fede59] text-base text-right" dir="auto">
+                    <span className=" text-[#FEDE59] text-base text-right" dir="auto">
                       مشاهده محصولات
                     </span>
-                    <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="#FEDE59" viewBox="0 0 24 24">
-                      <path d={svgPaths.p38ded900} />
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3.825 9L9.425 14.6L8 16L0 8L8 0L9.425 1.4L3.825 7H16V9H3.825Z" fill="#FEDE59" />
                     </svg>
                   </div>
                 </div>
-                <div className="w-full md:w-1/2 flex items-center justify-center">
+                <div className="w-full md:w-[40%] flex items-center justify-center">
                   <div className="w-full max-w-xs flex items-center justify-center">
-                      <div className="w-[213px] h-[265px] flex items-center justify-center">
-                        <img alt="" className="w-full h-full object-contain pointer-events-none" src={img4066180884Cf1Da234Ada498F99878E38474B39B91.src} />
+                    <div className="w-[213px] h-[265px] flex items-center justify-center">
+                      <img alt="" className="w-full h-full object-contain pointer-events-none" src={img4066180884Cf1Da234Ada498F99878E38474B39B91.src} />
                     </div>
                   </div>
                 </div>
@@ -326,25 +332,22 @@ export default function App() {
 
             {/* Gear Oil Card (Wide) */}
             <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px]">
-              <div className="absolute bg-[rgba(229,160,69,0.5)] blur-[57px] w-96 h-48 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
+              <div className="absolute bg-[#C9C9C980] blur-[57px] w-96 h-48 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
               <div className="relative flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-3 ">
-                  <h3 className=" text-2xl md:text-3xl text-[#fede59] text-right" dir="auto">
+                <div className="w-full md:w-[60%] flex flex-col justify-between p-6 md:p-8 gap-3 ">
+                  <h3 className=" text-2xl md:text-3xl text-[#E7E7E7] text-right pt-10" dir="auto">
                     روغن گیربکس
                   </h3>
-                  <p className=" text-lg text-[#fede59] text-right" dir="auto">
-                    ATF، CVT و ...
-                  </p>
                   <div className="flex items-center gap-2 mt-2 md:mt-4 group">
-                    <span className=" text-[#fede59] text-base text-right" dir="auto">
+                    <span className=" text-[#E7E7E7] text-base text-right" dir="auto">
                       مشاهده محصولات
                     </span>
-                    <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="#FEDE59" viewBox="0 0 24 24">
-                      <path d={svgPaths.p38ded900} />
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3.825 9L9.425 14.6L8 16L0 8L8 0L9.425 1.4L3.825 7H16V9H3.825Z" fill="#E7E7E7" />
                     </svg>
                   </div>
                 </div>
-                <div className="w-full md:w-1/2 flex items-center justify-center">
+                <div className="w-full md:w-[40%] flex items-center justify-center">
                   <div className="w-full max-w-xs flex items-center justify-center">
                     <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage2.src} />
                   </div>
@@ -356,20 +359,20 @@ export default function App() {
             <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px]">
               <div className="absolute bg-[rgba(255,35,39,0.5)] blur-[57px] w-64 h-32 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
               <div className="relative flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-4">
-                  <h3 className=" text-2xl md:text-3xl text-[#ff2023] text-right" dir="auto">
+                <div className="w-full md:w-[60%] flex flex-col justify-between p-6 md:p-8 gap-4">
+                  <h3 className=" text-2xl md:text-3xl text-[#FF2023] text-right mt-10" dir="auto">
                     روغن ترمز
                   </h3>
                   <div className="flex items-center gap-2 mt-2 md:mt-4 group">
-                    <span className=" text-[#ff2023] text-base text-right" dir="auto">
+                    <span className=" text-[#FF2023] text-base text-right" dir="auto">
                       مشاهده محصولات
                     </span>
-                    <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="#FF2023" viewBox="0 0 24 24">
-                      <path d={svgPaths.p38ded900} />
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3.825 9L9.425 14.6L8 16L0 8L8 0L9.425 1.4L3.825 7H16V9H3.825Z" fill="#FF2023" />
                     </svg>
                   </div>
                 </div>
-                <div className="w-full md:w-1/2 flex items-center justify-center">
+                <div className="w-full md:w-[40%] flex items-center justify-center">
                   <div className="w-full max-w-xs flex items-center justify-center">
                     <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage5.src} />
                   </div>
@@ -377,29 +380,26 @@ export default function App() {
               </div>
             </div>
 
-                        {/* Gear Oil Card (Wide) */}
-                        <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px]">
-              <div className="absolute bg-[rgba(229,160,69,0.5)] blur-[57px] w-96 h-48 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
+            {/* Gear Oil Card (Wide) */}
+            <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px]">
+              <div className="absolute bg-[#1D36F14D] blur-[57px] w-96 h-48 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
               <div className="relative flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-3">
-                  <h3 className=" text-2xl md:text-3xl text-[#fede59] text-right" dir="auto">
+                <div className="w-full md:w-[60%] flex flex-col justify-between p-6 md:p-8 gap-3">
+                  <h3 className=" text-2xl md:text-3xl text-[#738CD2] text-right mt-10" dir="auto">
                     روغن گیربکس
                   </h3>
-                  <p className=" text-lg text-[#fede59] text-right" dir="auto">
-                    ATF، CVT و ...
-                  </p>
                   <div className="flex items-center gap-2 mt-2 md:mt-4 group">
-                    <span className=" text-[#fede59] text-base text-right" dir="auto">
+                    <span className=" text-[#738CD2] text-base text-right" dir="auto">
                       مشاهده محصولات
                     </span>
-                    <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="#FEDE59" viewBox="0 0 24 24">
-                      <path d={svgPaths.p38ded900} />
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3.825 9L9.425 14.6L8 16L0 8L8 0L9.425 1.4L3.825 7H16V9H3.825Z" fill="#738CD2" />
                     </svg>
                   </div>
                 </div>
-                <div className="w-full md:w-1/2 flex items-center justify-center">
+                <div className="w-full md:w-[40%] flex items-center justify-center">
                   <div className="w-full max-w-xs flex items-center justify-center">
-                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage2.src} />
+                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage6.src} />
                   </div>
                 </div>
               </div>
@@ -407,23 +407,23 @@ export default function App() {
 
             {/* Brake Oil Card */}
             <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px]">
-              <div className="absolute bg-[rgba(255,35,39,0.5)] blur-[57px] w-64 h-32 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
+              <div className="absolute bg-[#EA770C] blur-[57px] w-64 h-32 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
               <div className="relative flex flex-col md:flex-row-reverse h-full">
-                <div className="w-full md:w-1/2 flex items-center justify-center">
+                <div className="w-full md:w-[40%] flex items-center justify-center">
                   <div className="w-full max-w-xs flex items-center justify-center">
-                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage5.src} />
+                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage3.src} />
                   </div>
                 </div>
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-4">
-                  <h3 className=" text-2xl md:text-3xl text-[#ff2023] text-right" dir="auto">
+                <div className="w-full md:w-[60%] flex flex-col justify-between p-6 md:p-8 gap-4">
+                  <h3 className=" text-2xl md:text-3xl text-[#EA770C] text-right mt-10" dir="auto">
                     روغن ترمز
                   </h3>
                   <div className="flex items-center gap-2 mt-2 md:mt-4 group">
-                    <span className=" text-[#ff2023] text-base text-right" dir="auto">
+                    <span className=" text-[#EA770C] text-base text-right" dir="auto">
                       مشاهده محصولات
                     </span>
-                    <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="#FF2023" viewBox="0 0 24 24">
-                      <path d={svgPaths.p38ded900} />
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3.825 9L9.425 14.6L8 16L0 8L8 0L9.425 1.4L3.825 7H16V9H3.825Z" fill="#EA770C" />
                     </svg>
                   </div>
                 </div>
@@ -433,31 +433,32 @@ export default function App() {
             {/* Special Additives Card */}
             <div className="relative bg-[#343434] rounded-3xl overflow-hidden min-h-[260px] md:min-h-[300px]">
               <div className="absolute bg-[rgba(255,255,255,0.5)] blur-[57px] w-64 h-32 rounded-full top-1/2 left-1/4 -translate-y-1/2" />
-              <div className="relative flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-8 gap-4">
-                  <h3 className=" text-2xl md:text-3xl text-white text-right" dir="auto">
+              <div
+                className="relative flex flex-col md:flex-row h-full"
+                style={{
+                  backgroundImage: `url('${imgImage7.src}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'left',
+                  backgroundRepeat: 'no-repeat',
+                }}
+              >
+                <div className="relative z-10 w-full md:w-[60%] flex flex-col justify-between p-6 md:p-8 gap-4 order-1 md:order-2">
+                  <h3 className=" text-2xl md:text-3xl text-white text-right mt-10" dir="auto">
                     افزودنی های خاص
                   </h3>
                   <div className="flex items-center gap-2 mt-2 md:mt-4 group">
                     <span className=" text-white text-base text-right" dir="auto">
                       مشاهده محصولات
                     </span>
-                    <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="white" viewBox="0 0 24 24">
-                      <path d={svgPaths.p38ded900} />
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3.825 9L9.425 14.6L8 16L0 8L8 0L9.425 1.4L3.825 7H16V9H3.825Z" fill="#FFFFFF" />
                     </svg>
-                  </div>
-                </div>
-                <div className="w-full md:w-1/2 flex items-center justify-center">
-                  <div className="w-full max-w-xs flex items-center justify-center">
-                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage7.src} />
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
-
-        <Divider />
 
         {/* Introduction Section */}
         <section className=" mb-16 md:mb-20 px-4 sm:px-6 lg:px-16">
@@ -467,7 +468,7 @@ export default function App() {
 
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
             <div className="w-full lg:w-1/2">
-              <p className="font-['IRANSansX:Medium',sans-serif] text-lg md:text-xl text-white text-right leading-relaxed" dir="auto">
+              <p className="text-lg md:text-xl text-white text-right leading-relaxed" dir="auto">
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد.
               </p>
             </div>
@@ -489,18 +490,65 @@ export default function App() {
             محصولات Romela Oil
           </h2>
 
+          {/* Category Tabs */}
+          <div className="mb-8 md:mb-12 flex justify-center">
+            <div
+              className="rounded-full p-1 flex flex-wrap gap-2 md:gap-3 justify-center items-center w-fit"
+              style={{
+                background: '#2a2a2a',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+              }}
+            >
+              {[
+                { id: 'engine-oil', label: 'روغن موتور' },
+                { id: 'gearbox-oil', label: 'روغن گیربکس' },
+                { id: 'brake-oil', label: 'روغن ترمز' },
+                { id: 'hydraulic-oil', label: 'روغن هیدرولیک' },
+                { id: 'grease', label: 'گریس' },
+                { id: 'special-additives', label: 'افزودنی های خاص' },
+              ].map((tab) => {
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`
+                      px-5 md:px-6 py-2.5 md:py-3 rounded-full transition-all duration-200
+                      whitespace-nowrap
+                      ${isActive
+                        ? 'bg-[#FFFFFF1F] text-[#F9BD65] hover:bg-[#FFFFFF1F]'
+                        : ' text-[#F9BD65] hover:bg-[#3a3a3a]'
+                      }
+                    `}
+                    style={{
+                      ...(isActive && {
+                        boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.5)',
+                      }),
+                    }}
+                  >
+                    <span className="text-sm md:text-base" dir="auto">
+                      {tab.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 md:mt-28">
             {/* Product Card 1 */}
             <div className='relative'>
               <div className="relative bg-[#343434] h-[355px] rounded-[24px] w-full" />
-              <div className="absolute h-[414px] w-full z-10 -top-20" data-name="Mockup ATF-XL Background Removed">
-                <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfXlBackgroundRemoved.src} />
+              <div className="absolute h-[414px] w-full z-10 -top-20" data-name="Mockup ATF-ZF Background Removed">
+                <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
               </div>
               <div className='w-[full] flex items-center justify-center z-10 -mt-5'>
-                <div className="absolute bg-[#ededed] rounded-[120px] w-[90%] py-5 px-6" />
-                  <div className=" justify-center leading-[0] not-italic relative shrink-0 text-[16px] text-black text-center text-nowrap">
-                    <p className="leading-[16px]" dir="auto">روغن گیربکس فول سینتتیک Romela ATF-XL</p>
+                <div className="bg-[#e6a816ca] z-10 flex items-center justify-center p-4 rounded-[120px] w-[90%]">
+                  <div className=" justify-center relative text-base text-[#FCFBEE] text-center">
+                    <p dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
                   </div>
+                </div>
               </div>
             </div>
 
@@ -511,10 +559,9 @@ export default function App() {
                 <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
               </div>
               <div className='w-[full] flex items-center justify-center z-10 -mt-5'>
-                <div className="absolute bg-[#ededed] rounded-[120px] w-[90%] py-5 px-6" />
-                <div className="bg-[rgba(177,177,177,0.1)] content-stretch flex h-[54px] items-center justify-center overflow-clip p-[10px] rounded-[120px] w-[90%]">
-                  <div className=" justify-center leading-[0] not-italic relative shrink-0 text-[16px] text-black text-center text-nowrap">
-                    <p className="leading-[16px]" dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
+                <div className="bg-[#e6a816ca] z-10 flex items-center justify-center p-4 rounded-[120px] w-[90%]">
+                  <div className=" justify-center relative text-base text-[#FCFBEE] text-center">
+                    <p dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
                   </div>
                 </div>
               </div>
@@ -523,14 +570,13 @@ export default function App() {
             {/* Product Card 3 */}
             <div className='relative'>
               <div className="relative bg-[#343434] h-[355px] rounded-[24px] w-full" />
-              <div className="absolute h-[414px] w-full z-10 -top-20" data-name="Mockup ATF-VM Background Removed">
-                <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfVmBackgroundRemoved.src} />
+              <div className="absolute h-[414px] w-full z-10 -top-20" data-name="Mockup ATF-ZF Background Removed">
+                <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
               </div>
               <div className='w-[full] flex items-center justify-center z-10 -mt-5'>
-                <div className="absolute bg-[#ededed] rounded-[120px] w-[90%] py-5 px-6" />
-                <div className="bg-[rgba(177,177,177,0.1)] content-stretch flex h-[54px] items-center justify-center overflow-clip p-[10px] rounded-[120px] w-[90%]">
-                  <div className=" justify-center leading-[0] not-italic relative shrink-0 text-[16px] text-black text-center text-nowrap">
-                    <p className="leading-[16px]" dir="auto">روغن گیربکس فول سینتتیک Romela ATF-VM</p>
+                <div className="bg-[#e6a816ca] z-10 flex items-center justify-center p-4 rounded-[120px] w-[90%]">
+                  <div className=" justify-center relative text-base text-[#FCFBEE] text-center">
+                    <p dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
                   </div>
                 </div>
               </div>
@@ -539,14 +585,206 @@ export default function App() {
             {/* Product Card 4 */}
             <div className='relative'>
               <div className="relative bg-[#343434] h-[355px] rounded-[24px] w-full" />
-              <div className="absolute h-[414px] w-full z-10 -top-20" data-name="Mockup ATF-XL Background Removed">
-                <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfXlBackgroundRemoved.src} />
+              <div className="absolute h-[414px] w-full z-10 -top-20" data-name="Mockup ATF-ZF Background Removed">
+                <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
               </div>
               <div className='w-[full] flex items-center justify-center z-10 -mt-5'>
-                <div className="absolute bg-[#ededed] rounded-[120px] w-[90%] py-5 px-6" />
-                <div className="bg-[rgba(177,177,177,0.1)] content-stretch flex h-[54px] items-center justify-center overflow-clip p-[10px] rounded-[120px] w-[90%]">
-                  <div className=" justify-center leading-[0] not-italic relative shrink-0 text-[16px] text-black text-center text-nowrap">
-                    <p className="leading-[16px]" dir="auto">روغن گیربکس فول سینتتیک Romela ATF-XL</p>
+                <div className="bg-[#e6a816ca] z-10 flex items-center justify-center p-4 rounded-[120px] w-[90%]">
+                  <div className=" justify-center relative text-base text-[#FCFBEE] text-center">
+                    <p dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <Divider />
+
+        {/* Statistics Section */}
+        <section className="mb-16 md:mb-20 px-4 sm:px-6 lg:px-16">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl text-white text-center mb-8 md:mb-12" dir="auto">
+            Romela Oil آمار
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            <div
+              className="rounded-2xl p-6 md:p-8 text-center flex flex-col gap-10 relative overflow-hidden"
+              style={{
+                background: '#FFFFFF1F',
+                border: '1px solid #FCD85633',
+              }}
+            >
+              <div className="absolute bg-[#FCD85699] blur-[57px] w-64 h-16 bottom-0 left-1/4 -translate-y-1/2" />
+              <div className="text-sm md:text-base text-[#FCD856]" dir="auto">
+              تعداد فروش
+              </div>
+              <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#FCD856]" dir="auto">
+              + ۱۲۰,۰۰۰
+              </div>
+            </div>
+            <div
+              className="rounded-2xl p-6 md:p-8 text-center flex flex-col gap-10 relative overflow-hidden"
+              style={{
+                background: '#FFFFFF1F',
+                border: '1px solid #FCD85633',
+              }}
+            >
+              <div className="absolute bg-[#FCD85699] blur-[57px] w-64 h-16 bottom-0 left-1/4 -translate-y-1/2" />
+              <div className="text-sm md:text-base text-[#FCD856]" dir="auto">
+              محصولات صادر شده
+              </div>
+              <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#FCD856]" dir="auto">
+              + ۷۱,۰۰۰
+              </div>
+            </div>
+            <div
+              className="rounded-2xl p-6 md:p-8 text-center flex flex-col gap-10 relative overflow-hidden"
+              style={{
+                background: '#FFFFFF1F',
+                border: '1px solid #FCD85633',
+              }}
+            >
+              <div className="absolute bg-[#FCD85699] blur-[57px] w-64 h-16 bottom-0 left-1/4 -translate-y-1/2" />
+              <div className="text-sm md:text-base text-[#FCD856]" dir="auto">
+              تنوع محصولات
+              </div>
+              <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#FCD856]" dir="auto">
+              + ۱۰۰
+              </div>
+            </div>
+            <div
+              className="rounded-2xl p-6 md:p-8 text-center flex flex-col gap-10 relative overflow-hidden"
+              style={{
+                background: '#FFFFFF1F',
+                border: '1px solid #FCD85633',
+              }}
+            >
+              <div className="absolute bg-[#FCD85699] blur-[57px] w-64 h-16 bottom-0 left-1/4 -translate-y-1/2" />
+              <div className="text-sm md:text-base text-[#FCD856]" dir="auto">
+                مشتریان
+              </div>
+              <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#FCD856]" dir="auto">
+                + ۱۰۰۰
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <Divider />
+
+        {/* Best Selling Products Section */}
+        <section className="mb-16 md:mb-20 px-4 sm:px-6 lg:px-16">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl text-white text-center mb-8 md:mb-12" dir="auto">
+            محصولات پرفروش
+          </h2>
+
+          {/* Main Content Container */}
+          <div
+            className="rounded-3xl p-6 md:p-8 lg:p-10"
+            style={{
+              background: '#2a2a2a',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
+            }}
+          >
+            {/* Tab Navigation */}
+            <div className="mb-8 md:mb-12 flex justify-center">
+              <div
+                className="rounded-full p-1 flex flex-wrap gap-2 md:gap-3 justify-center items-center w-fit"
+                style={{
+                  background: '#2a2a2a',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+                }}
+              >
+                {[
+                  { id: 'engine-oil-bestseller', label: 'روغن موتور' },
+                  { id: 'gearbox-oil-bestseller', label: 'روغن گیربکس' },
+                  { id: 'hydraulic-oil-bestseller', label: 'روغن هیدرولیک' },
+                  { id: 'grease-bestseller', label: 'گریس' },
+                ].map((tab) => {
+                  const isActive = activeBestsellerTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveBestsellerTab(tab.id)}
+                      className={`
+                        px-5 md:px-6 py-2.5 md:py-3 rounded-full transition-all duration-200
+                        whitespace-nowrap
+                        ${isActive
+                          ? 'bg-[#FFFFFF1F] text-[#F9BD65] hover:bg-[#FFFFFF1F]'
+                          : ' text-[#F9BD65] hover:bg-[#3a3a3a]'
+                        }
+                      `}
+                    >
+                      <span className="text-sm md:text-base" dir="auto">
+                        {tab.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Content Area: Text + Product Cards */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+              {/* Right Side: Text Description */}
+              <div className="flex flex-col">
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 md:mb-6" dir="auto">
+                  روغن موتور روملا
+                </h3>
+                <p className="text-base md:text-lg text-white/90 leading-relaxed text-right" dir="auto">
+                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد.
+                </p>
+              </div>
+
+              {/* Left Side: Product Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
+                {/* Product Card 1: Romela Drive 0w-20 */}
+                <div
+                  className="rounded-2xl p-4 md:p-6 flex flex-col"
+                  style={{
+                    background: '#FFFFFF29',
+                    border: '1px solid #FFFFFF33',
+                  }}
+                >
+                  <h4 className="text-lg md:text-xl font-bold text-[#F9BD65] mb-4 text-center" dir="auto">
+                    Romela Drive 0w-20
+                  </h4>
+                  <div className="flex-1 flex items-center justify-center mb-4">
+                    <img src="/images/image 1.png" alt="" className="w-32" />
+                  </div>
+                </div>
+
+                {/* Product Card 2: Romela Drive 5w-30 */}
+                <div
+                  className="rounded-2xl p-4 md:p-6 flex flex-col"
+                  style={{
+                    background: '#FFFFFF29',
+                    border: '1px solid #FFFFFF33',
+                  }}
+                >
+                  <h4 className="text-lg md:text-xl font-bold text-[#F9BD65] mb-4 text-center" dir="auto">
+                    Romela Drive 5w-30
+                  </h4>
+                  <div className="flex-1 flex items-center justify-center mb-4">
+                    <img src="/images/image 1.png" alt="" className="w-32" />
+                  </div>
+                </div>
+
+                {/* Product Card 3: Romela Drive 10w-40 */}
+                <div
+                  className="rounded-2xl p-4 md:p-6 flex flex-col"
+                  style={{
+                    background: '#FFFFFF29',
+                    border: '1px solid #FFFFFF33',
+                  }}
+                >
+                  <h4 className="text-lg md:text-xl font-bold text-[#F9BD65] mb-4 text-center" dir="auto">
+                    Romela Drive 10w-40
+                  </h4>
+                  <div className="flex-1 flex items-center justify-center mb-4">
+                    <div className="w-32 bg-[#FFFFFF4D] rounded-[10px] h-full"></div>
                   </div>
                 </div>
               </div>

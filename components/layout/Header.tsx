@@ -10,16 +10,10 @@ export function Header() {
 
   return (
     <header
-      className={[
-        'fixed left-0 top-0 w-full z-50 px-4 md:px-6 lg:px-32',
-        // Home overlays the hero. Inner pages get a background so content doesn't show through.
-        isHome
-          ? 'bg-transparent pt-14'
-          : 'bg-[#0e0e0e]/80 backdrop-blur-md border-b border-white/10',
-      ].join(' ')}
+      className='fixed left-0 top-0 w-full z-50 px-4 md:px-6 bg-transparent pt-10'
     >
       {/* Content Container */} 
-        <div className="w-full flex items-center justify-between py-4">
+        <div className="w-full flex items-center justify-between py-4 px-24">
           {/* Logo - Far Right (RTL) */}
           <Link href="/" className="flex-shrink-0 ml-6">
             <div className="bg-white rounded-3xl px-8 py-1 flex flex-col items-center justify-center shadow-lg ">

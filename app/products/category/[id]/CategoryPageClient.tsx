@@ -425,7 +425,7 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
   return (
     <div className="bg-[#0e0e0e] min-h-screen w-full relative">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.06),rgba(0,0,0,0)_55%)]" />
-      <div className="relative max-w-[1240px] mx-auto px-6 pt-36 pb-20">
+      <div className="relative px-24 pt-36 pb-20">
         {/* Breadcrumb */}
         <div className="flex justify-end mb-6">
           <div className="text-[12px] text-[#9A9A9A]">

@@ -386,7 +386,7 @@
                </div>
              </div>
              <div className="w-full lg:w-1/2">
-               <p className="font-['IRANSansX:Medium',sans-serif] text-lg md:text-xl text-white text-right leading-relaxed" dir="auto">
+               <p className=" text-lg md:text-xl text-white text-right leading-relaxed" dir="auto">
                  {computed.introText}
                </p>
              </div>
@@ -472,7 +472,7 @@
            </h2>
  
            <div className="mb-8">
-             <p className="font-['IRANSansX:Medium',sans-serif] text-lg md:text-xl text-white text-right leading-relaxed mb-6" dir="auto">
+             <p className=" text-lg md:text-xl text-white text-right leading-relaxed mb-6" dir="auto">
                {computed.datasheetText}
              </p>
              <div className="flex flex-wrap gap-4">
@@ -557,7 +557,7 @@
              </div>
            </div>
  
-           <p className="font-['IRANSansX:Medium',sans-serif] text-lg md:text-xl text-white text-right leading-relaxed mt-8" dir="auto">
+           <p className=" text-lg md:text-xl text-white text-right leading-relaxed mt-8" dir="auto">
              {computed.galleryText}
            </p>
          </section>
