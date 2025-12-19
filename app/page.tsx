@@ -544,9 +544,9 @@ export default function App() {
                 <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
               </div>
               <div className='w-[full] flex items-center justify-center z-10 -mt-5'>
-                <div className="bg-[#e6a816ca] z-10 content-stretch flex h-[54px] items-center justify-center overflow-clip p-[10px] rounded-[120px] w-[90%]">
-                  <div className=" justify-center leading-[0] not-italic relative shrink-0 text-base text-[#FCFBEE] text-center text-nowrap">
-                    <p className="leading-[16px]" dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
+                <div className="bg-[#e6a816ca] z-10 flex items-center justify-center p-4 rounded-[120px] w-[90%]">
+                  <div className=" justify-center relative text-base text-[#FCFBEE] text-center">
+                    <p dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
                   </div>
                 </div>
               </div>
@@ -559,9 +559,9 @@ export default function App() {
                 <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
               </div>
               <div className='w-[full] flex items-center justify-center z-10 -mt-5'>
-                <div className="bg-[#e6a816ca] z-10 content-stretch flex h-[54px] items-center justify-center overflow-clip p-[10px] rounded-[120px] w-[90%]">
-                  <div className=" justify-center leading-[0] not-italic relative shrink-0 text-base text-[#FCFBEE] text-center text-nowrap">
-                    <p className="leading-[16px]" dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
+                <div className="bg-[#e6a816ca] z-10 flex items-center justify-center p-4 rounded-[120px] w-[90%]">
+                  <div className=" justify-center relative text-base text-[#FCFBEE] text-center">
+                    <p dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
                   </div>
                 </div>
               </div>
@@ -574,9 +574,9 @@ export default function App() {
                 <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
               </div>
               <div className='w-[full] flex items-center justify-center z-10 -mt-5'>
-                <div className="bg-[#e6a816ca] z-10 content-stretch flex h-[54px] items-center justify-center overflow-clip p-[10px] rounded-[120px] w-[90%]">
-                  <div className=" justify-center leading-[0] not-italic relative shrink-0 text-base text-[#FCFBEE] text-center text-nowrap">
-                    <p className="leading-[16px]" dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
+                <div className="bg-[#e6a816ca] z-10 flex items-center justify-center p-4 rounded-[120px] w-[90%]">
+                  <div className=" justify-center relative text-base text-[#FCFBEE] text-center">
+                    <p dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
                   </div>
                 </div>
               </div>
@@ -589,9 +589,9 @@ export default function App() {
                 <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
               </div>
               <div className='w-[full] flex items-center justify-center z-10 -mt-5'>
-                <div className="bg-[#e6a816ca] z-10 content-stretch flex h-[54px] items-center justify-center overflow-clip p-[10px] rounded-[120px] w-[90%]">
-                  <div className=" justify-center leading-[0] not-italic relative shrink-0 text-base text-[#FCFBEE] text-center text-nowrap">
-                    <p className="leading-[16px]" dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
+                <div className="bg-[#e6a816ca] z-10 flex items-center justify-center p-4 rounded-[120px] w-[90%]">
+                  <div className=" justify-center relative text-base text-[#FCFBEE] text-center">
+                    <p dir="auto">روغن گیربکس فول سینتتیک Romela ATF-ZF</p>
                   </div>
                 </div>
               </div>

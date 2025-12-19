@@ -90,9 +90,9 @@ function ProductTile({ product }: { product: WcaProduct }) {
       )}
     </div>
     <div className='w-[full] flex flex-col items-center justify-center z-10 -mt-5'>
-      <div className="bg-[#e6a816ca] z-10 content-stretch flex h-[54px] items-center justify-center overflow-clip p-[10px] rounded-[120px] w-[90%]">
-        <div className=" justify-center leading-[0] not-italic relative shrink-0 text-base text-[#FCFBEE] text-center text-nowrap">
-          <p className="leading-[16px]" dir="auto">{product.name}</p>
+      <div className="bg-[#e6a816ca] z-10  flex h-fit items-center justify-center p-4 rounded-[120px] w-[90%]">
+        <div className=" justify-center relative text-base text-[#FCFBEE] text-center">
+          <p dir="auto">{product.name}</p>
         </div>
       </div>
       <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold text-base'>
