@@ -73,55 +73,34 @@ function ProductTile({ product }: { product: WcaProduct }) {
   const volumeText = volume || '—'
 
   return (
-    <Link href={`/products?slug=${encodeURIComponent(product.slug)}`} className="block">
-      <div className="flex flex-col items-center">
-        <div className="relative w-full pt-20">
-          <div className="relative w-full h-[230px] rounded-[22px] bg-[#343434] shadow-[0_30px_70px_rgba(0,0,0,0.45)]" />
-
-          <div className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 w-[185px] h-[270px]">
-            {image ? (
-              <Image
-                src={image}
-                alt={product.name}
-                fill
-                className="object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <LoadingSpinner size="lg" />
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="mt-4 w-[92%]">
-          <div
-            className="h-[34px] rounded-[999px] bg-[#D7B354] text-black flex items-center justify-center px-4 text-[11px] leading-none text-center"
-            style={{ boxShadow: '0 18px 40px rgba(0,0,0,0.35)' }}
-          >
-            <span className="line-clamp-1">{product.name}</span>
-          </div>
-
-          <div className="mt-2 flex gap-2">
-            <div
-              className="h-[30px] rounded-[999px] bg-[#EDEDED] text-black flex items-center justify-center px-3 text-[11px] leading-none flex-1"
-              style={{ boxShadow: '0 18px 40px rgba(0,0,0,0.25)' }}
-              title={standardText}
-            >
-              <span className="line-clamp-1">{standardText}</span>
-            </div>
-            <div
-              className="h-[30px] rounded-[999px] bg-[#EDEDED] text-black flex items-center justify-center px-3 text-[11px] leading-none w-[92px]"
-              style={{ boxShadow: '0 18px 40px rgba(0,0,0,0.25)' }}
-              title={volumeText}
-            >
-              <span className="line-clamp-1">{volumeText}</span>
-            </div>
-          </div>
+    <Link href={`/products?slug=${encodeURIComponent(product.slug)}`} className='relative mt-16'>
+    <div className="relative bg-[#343434] h-[355px] rounded-[24px] w-full" />
+    <div className="absolute h-[414px] w-full z-10 -top-20" data-name="Mockup ATF-ZF Background Removed">
+      {image ? (
+        <Image
+          src={image}
+          alt={product.name}
+          fill
+          className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full"
+        />
+      ) : (
+        <div className="w-full h-full flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+      )}
+    </div>
+    <div className='w-[full] flex flex-col items-center justify-center z-10 -mt-5'>
+      <div className="bg-[#e6a816ca] z-10 content-stretch flex h-[54px] items-center justify-center overflow-clip p-[10px] rounded-[120px] w-[90%]">
+        <div className=" justify-center leading-[0] not-italic relative shrink-0 text-base text-[#FCFBEE] text-center text-nowrap">
+          <p className="leading-[16px]" dir="auto">{product.name}</p>
         </div>
       </div>
-    </Link>
+      <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold text-base'>
+      <p className='px-4 py-2'>{volumeText}</p>
+         <p className='px-4 py-2 bg-[#C3C3C3] rounded-full'>{standardText}</p>
+      </div>
+    </div>
+  </Link>
   )
 }
 
@@ -351,7 +330,7 @@ export default function ProductsPage() {
   return (
     <div className="bg-[#0e0e0e] min-h-screen w-full relative">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.06),rgba(0,0,0,0)_55%)]" />
-      <div className="relative max-w-[1240px] mx-auto px-6 pt-36 pb-20">
+      <div className="relative px-24 pt-36 pb-20">
         {/* Breadcrumb */}
         <div className="flex justify-start mb-6">
           <div className="text-[12px] text-[#9A9A9A]">

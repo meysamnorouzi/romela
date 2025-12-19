@@ -159,7 +159,7 @@ export default function App() {
   const viscosityOptions = ["همه", "0W-20", "5W-30", "10W-40", "15W-50", "20W-50"];
 
   return (
-    <div className="bg-[#0e0e0e] min-h-screen w-full relative -mt-24 md:-mt-28">
+    <div className="bg-[#0e0e0e] min-h-screen w-full relative">
       {/* Structured Data (JSON-LD) */}
       <script
         type="application/ld+json"
@@ -174,7 +174,7 @@ export default function App() {
         }}
       />
       {/* Hero Section with Masked Background */}
-      <div className="relative w-full pt-64 pb-[5.75rem] flex items-center justify-center rounded-[2rem]" style={{ backgroundImage: `url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+      <div className="relative w-full pt-64 pb-[5.75rem] flex items-center justify-center rounded-[1.5rem]" style={{ backgroundImage: `url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
 
         <div className="absolute inset-0 bg-[rgba(0,0,0,0.3)] rounded-[2rem]" />
         <div className="flex flex-col items-center justify-center z-10">
