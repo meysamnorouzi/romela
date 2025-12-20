@@ -178,7 +178,7 @@ export default function App() {
 
         <div className="absolute inset-0 bg-[rgba(0,0,0,0.3)] rounded-[2rem]" />
         <div className="flex flex-col items-center justify-center z-10">
-          <p className="text-2xl md:text-3xl lg:text-[2.75rem] font-bold leading-normal text-shadow-[0px_2px_12px_rgba(0,0,0,0.75)] mb-8 md:mb-[5.375rem]" dir="auto">
+          <p className="text-2xl md:text-3xl lg:text-[2.75rem] font-bold font-iranyekan leading-normal text-shadow-[0px_2px_12px_rgba(0,0,0,0.75)] mb-8 md:mb-[5.375rem]" dir="auto">
             پادراد ارس نمایندگی رسمی محصولات ROMELA OIL GERMANY 🇩🇪
           </p>
           <div
@@ -268,7 +268,7 @@ export default function App() {
 
         {/* Category Section */}
         <section className="mb-16 md:mb-20">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl  text-white text-center mb-6" dir="auto">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-iranyekan text-white text-center mb-6" dir="auto">
             دسته‌بندی محصولات Romela Oil
           </h2>
 
@@ -462,7 +462,7 @@ export default function App() {
 
         {/* Introduction Section */}
         <section className=" mb-16 md:mb-20 px-4 sm:px-6 lg:px-16">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl  text-white text-center mb-8 md:mb-16" dir="auto">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-iranyekan text-white text-center mb-8 md:mb-11" dir="auto">
             معرفی Romela آلمان
           </h2>
 
@@ -486,7 +486,7 @@ export default function App() {
 
         {/* Products Section */}
         <section className="mb-16 md:mb-20 px-4 sm:px-6 lg:px-16">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl  text-white text-center mb-8 md:mb-16" dir="auto">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-iranyekan text-white text-center mb-8 md:mb-11" dir="auto">
             محصولات Romela Oil
           </h2>
 
@@ -602,7 +602,7 @@ export default function App() {
 
         {/* Statistics Section */}
         <section className="mb-16 md:mb-20 px-4 sm:px-6 lg:px-16">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl text-white text-center mb-8 md:mb-12" dir="auto">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-iranyekan text-white text-center mb-8 md:mb-12" dir="auto">
             Romela Oil آمار
           </h2>
 
@@ -674,7 +674,7 @@ export default function App() {
 
         {/* Best Selling Products Section */}
         <section className="mb-16 md:mb-20 px-4 sm:px-6 lg:px-16">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl text-white text-center mb-8 md:mb-12" dir="auto">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-iranyekan text-white text-center mb-8 md:mb-12" dir="auto">
             محصولات پرفروش
           </h2>
 

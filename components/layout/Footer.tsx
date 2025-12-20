@@ -11,7 +11,7 @@ export function Footer() {
   ]
 
   return (
-    <footer className="relative w-full bg-[#0e0e0e] mt-16 md:mt-24 lg:mt-32">
+    <footer className="relative w-full bg-[#0e0e0e] px-4 sm:px-6 lg:px-16">
       {/* Main Footer Container */}
       <div className="px-4 sm:px-6 lg:px-8 xl:px-12 py-8 md:py-12 lg:py-16">
         {/* Background Box with Border */}

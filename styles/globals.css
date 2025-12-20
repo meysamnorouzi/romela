@@ -232,11 +232,6 @@ a {
   text-decoration: none;
 }
 
-@layer base {
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'IranYekan', 'IranSans', 'Tahoma', 'Arial', sans-serif;
-  }
-}
 
 @layer utilities {
   .text-balance {
@@ -249,6 +244,11 @@ a {
   
   .font-text {
     font-family: 'IranSans', 'Tahoma', 'Arial', sans-serif;
+  }
+
+
+  .font-iranyekan {
+    font-family: 'IranYekan', 'IranSans', 'Tahoma', 'Arial', sans-serif;
   }
 
   .no-scrollbar {
