@@ -504,7 +504,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             </button>
           </div>
           <div className="mb-8">
-            <p className=" text-lg md:text-[18px] text-white text-right leading-relaxed mb-6" dir="auto">
+            <p className=" text-lg md:text-[18px] text-white text-right leading-relaxed mb-14" dir="auto">
               {computed.datasheetText}
             </p>
           </div>
@@ -545,19 +545,15 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               ))}
             </div>
           </div>
-          <div className="my-8">
-            <p className=" text-lg md:text-[18px] text-white text-right leading-relaxed mb-6" dir="auto">
+          <div className="my-14">
+            <p className=" text-lg md:text-[18px] text-white text-right leading-relaxed" dir="auto">
               {computed.datasheetText}
             </p>
           </div>
         </section>
 
-        <Divider />
-
         {/* Photo Gallery Section */}
         <section className="w-full mb-12 md:mb-16">
-
-
           <div className="relative bg-[#222] rounded-3xl shadow-lg overflow-hidden flex items-center justify-between pr-12 gap-12">
             <h2 className="text-2xl md:text-3xl lg:text-4xl  text-white text-center mb-8 md:mb-12 flex-shrink-0" dir="auto">
               تصویر محصول
@@ -573,13 +569,11 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             </div>
           </div>
 
-          <p className=" text-lg md:text-xl text-white text-right mt-8 leading-10" dir="auto">
+          <p className=" text-lg md:text-xl text-white text-right mt-14 leading-10" dir="auto">
             {computed.galleryText}
           </p>
         </section>
-
         <Divider />
-
         {/* Similar Products Section */}
         <section className="w-full mb-12 md:mb-16">
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
@@ -594,48 +588,48 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             <div className="w-full lg:w-1/2">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
                 <div className="bg-[rgba(255,255,255,0.16)] border border-white rounded-3xl p-4 text-center">
-                  <div className="relative w-full h-[202px] mb-4 flex items-center justify-center">
+                  <div className="relative w-full mb-4">
+                    <h3 className=" text-[#f9bd65] text-base" dir="auto">
+                      {related1?.name || ' '}
+                    </h3>
                     <div className="relative w-full h-full">
                       <img
                         alt=""
-                        className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                        className="w-full h-full object-contain pointer-events-none"
                         src={(related1 && getWcaPrimaryImageUrl(related1)) || computed.primaryImage}
                       />
                     </div>
                   </div>
-                  <h3 className="font-['IRANYekan:Bold',sans-serif] text-[#f9bd65] text-base" dir="auto">
-                    {related1?.name || ' '}
-                  </h3>
                 </div>
 
                 <div className="bg-[rgba(255,255,255,0.16)] border border-white rounded-3xl p-4 text-center">
-                  <div className="relative w-full h-[202px] mb-4 flex items-center justify-center">
+                  <div className="relative w-full mb-4">
+                    <h3 className=" text-[#f9bd65] text-base" dir="auto">
+                      {related2?.name || ' '}
+                    </h3>
                     <div className="relative w-full h-full">
                       <img
                         alt=""
-                        className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                        className="w-full h-full object-contain pointer-events-none"
                         src={(related2 && getWcaPrimaryImageUrl(related2)) || imgImage1.src}
                       />
                     </div>
                   </div>
-                  <h3 className="font-['IRANYekan:Bold',sans-serif] text-[#f9bd65] text-base" dir="auto">
-                    {related2?.name || ' '}
-                  </h3>
                 </div>
 
                 <div className="bg-[rgba(255,255,255,0.16)] border border-white rounded-3xl p-4 text-center">
-                  <div className="relative w-full h-[202px] mb-4 flex items-center justify-center">
+                  <div className="relative w-full mb-4">
+                  <h3 className="text-[#f9bd65] text-base" dir="auto">
+                        {related3?.name || ' '}
+                      </h3>
                     <div className="relative w-full h-full">
                       <img
                         alt=""
-                        className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                        className="w-full h-full object-contain pointer-events-none"
                         src={(related3 && getWcaPrimaryImageUrl(related3)) || imgImage2.src}
                       />
                     </div>
                   </div>
-                  <h3 className="font-['IRANYekan:Bold',sans-serif] text-[#f9bd65] text-base" dir="auto">
-                    {related3?.name || ' '}
-                  </h3>
                 </div>
               </div>
             </div>
