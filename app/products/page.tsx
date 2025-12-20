@@ -13,6 +13,7 @@ import { extractStandard, extractVariantsFromFirstHtmlTable } from '@/lib/utils/
 
 import { ProductDetailClient } from './ProductDetailClient'
 
+
 const svgPaths = {
   chevronLeft: 'M15 19l-7-7 7-7',
 }
@@ -37,6 +38,31 @@ function CategoryChip({
       </div>
     </Link>
   )
+}
+
+// Divider Component
+function Divider() {
+  return (
+    <div className="w-full h-px my-8">
+      <svg className="w-full h-full" fill="none" viewBox="0 0 1824 1" preserveAspectRatio="none">
+        <line
+          x1="0.5"
+          y1="0.5"
+          x2="1823.5"
+          y2="0.5"
+          stroke="url(#gradient)"
+          strokeLinecap="round"
+        />
+        <defs>
+          <linearGradient id="gradient" x1="0" x2="1824" y1="1.5" y2="1.5" gradientUnits="userSpaceOnUse">
+            <stop stopColor="white" stopOpacity="0" />
+            <stop offset="0.5" stopColor="white" stopOpacity="0.4" />
+            <stop offset="1" stopColor="white" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  );
 }
 
 function ProductCardLoading() {
@@ -74,33 +100,33 @@ function ProductTile({ product }: { product: WcaProduct }) {
 
   return (
     <Link href={`/products?slug=${encodeURIComponent(product.slug)}`} className='relative mt-16'>
-    <div className="relative bg-[#343434] h-[355px] rounded-[24px] w-full" />
-    <div className="absolute h-[414px] w-full z-10 -top-20" data-name="Mockup ATF-ZF Background Removed">
-      {image ? (
-        <Image
-          src={image}
-          alt={product.name}
-          fill
-          className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full"
-        />
-      ) : (
-        <div className="w-full h-full flex items-center justify-center">
-        <LoadingSpinner size="lg" />
+      <div className="relative bg-[#343434] h-[355px] rounded-[24px] w-full" />
+      <div className="absolute h-[414px] w-full z-10 -top-20" data-name="Mockup ATF-ZF Background Removed">
+        {image ? (
+          <Image
+            src={image}
+            alt={product.name}
+            fill
+            className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <LoadingSpinner size="lg" />
+          </div>
+        )}
       </div>
-      )}
-    </div>
-    <div className='w-[full] flex flex-col items-center justify-center z-10 -mt-5'>
-      <div className="bg-[#e6a816ca] z-10  flex h-fit items-center justify-center p-4 rounded-[120px] w-[90%]">
-        <div className=" justify-center relative text-base text-[#FCFBEE] text-center">
-          <p dir="auto">{product.name}</p>
+      <div className='w-[full] flex flex-col items-center justify-center z-10 -mt-5'>
+        <div className="bg-[#e6a816ca] z-10  flex h-fit items-center justify-center p-4 rounded-[120px] w-[90%]">
+          <div className=" justify-center relative text-base text-[#FCFBEE] text-center">
+            <p dir="auto">{product.name}</p>
+          </div>
+        </div>
+        <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold text-base'>
+          <p className='px-4 py-2'>{volumeText}</p>
+          <p className='px-4 py-2 bg-[#C3C3C3] rounded-full'>{standardText}</p>
         </div>
       </div>
-      <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold text-base'>
-      <p className='px-4 py-2'>{volumeText}</p>
-         <p className='px-4 py-2 bg-[#C3C3C3] rounded-full'>{standardText}</p>
-      </div>
-    </div>
-  </Link>
+    </Link>
   )
 }
 
@@ -120,9 +146,9 @@ function FiltersPanel({
   const pillOn = 'bg-[#D7B354] text-black'
 
   return (
-    <aside className="bg-[#343434] rounded-[22px] p-6 border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)]">
-      <h3 className="text-white text-right text-[14px] mb-6">فیلترها</h3>
-
+    <aside className="bg-[#343434] rounded-[22px] px-6 py-8 border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)]">
+      <h3 className="text-white text-lg font-bold text-center">فیلترها</h3>
+      <Divider />
       <div className="space-y-8">
         {attributes.map((attr) => {
           const terms = attributeTermsMap[attr.id] || []
@@ -164,7 +190,7 @@ function matchesFilters(
     // Get selected term names
     const selectedTermNames = new Set<string>()
     const selectedTermSlugs = new Set<string>()
-    
+
     // Build sets of selected term names and slugs from all attributes
     Object.values(attributeTermsMap).forEach(terms => {
       terms.forEach(term => {
@@ -177,16 +203,16 @@ function matchesFilters(
 
     // Check if product has attributes that match selected terms
     const productAttributes = product.attributes || []
-    
+
     // Try to match against product attributes
     let hasMatchingAttribute = false
-    
+
     for (const attr of productAttributes) {
       if (!attr || typeof attr !== 'object') continue
-      
+
       // Try different possible structures
       const attrObj = attr as any
-      
+
       // Check if attributes have options array (WooCommerce style)
       if (Array.isArray(attrObj.options)) {
         for (const option of attrObj.options) {
@@ -205,7 +231,7 @@ function matchesFilters(
           }
         }
       }
-      
+
       // Check if attribute has a name/slug that matches
       if (attrObj.name && typeof attrObj.name === 'string') {
         const attrName = attrObj.name.toLowerCase().trim()
@@ -213,10 +239,10 @@ function matchesFilters(
           hasMatchingAttribute = true
         }
       }
-      
+
       if (hasMatchingAttribute) break
     }
-    
+
     // Also check product name and description for term matches as fallback
     if (!hasMatchingAttribute) {
       const productText = `${product.name || ''} ${product.description || ''} ${product.short_description || ''}`.toLowerCase()
@@ -227,7 +253,7 @@ function matchesFilters(
         }
       }
     }
-    
+
     return hasMatchingAttribute
   }
 
@@ -269,9 +295,9 @@ export default function ProductsPage() {
     async function loadCategories() {
       try {
         // Load root categories only
-        const result = await getWcaCategories({ 
-          per_page: 100, 
-          page: 1, 
+        const result = await getWcaCategories({
+          per_page: 100,
+          page: 1,
           hide_empty: true,
           parent: 0
         })
@@ -369,10 +395,10 @@ export default function ProductsPage() {
   }, [])
 
   const visibleProducts = useMemo(() => {
-    let filtered = products.filter((p) => 
+    let filtered = products.filter((p) =>
       matchesFilters(p, selectedAttributeTerms, attributeTermsMap)
     )
-    
+
     const withImage = filtered
       .map((p) => ({ p, image: getWcaPrimaryImageUrl(p) }))
       .filter((x) => Boolean(x.image))
@@ -382,8 +408,8 @@ export default function ProductsPage() {
   }, [products, selectedAttributeTerms, attributeTermsMap])
 
   const handleAttributeTermToggle = (termId: number) => {
-    setSelectedAttributeTerms((prev) => 
-      prev.includes(termId) 
+    setSelectedAttributeTerms((prev) =>
+      prev.includes(termId)
         ? prev.filter((id) => id !== termId)
         : [...prev, termId]
     )
@@ -397,18 +423,16 @@ export default function ProductsPage() {
     <div className="bg-[#0e0e0e] min-h-screen w-full relative">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.06),rgba(0,0,0,0)_55%)]" />
       <div className="relative px-24 pt-36 pb-20">
+        {/* Title */}
+        <h1 className="text-center text-white text-[2.125rem] font-bold tracking-wide mb-10">لیست محصولات روغن موتور</h1>
         {/* Breadcrumb */}
         <div className="flex justify-start mb-6">
-          <div className="text-[12px] text-[#9A9A9A]">
+          <div className="text-lg font-bold text-[#9A9A9A]">
             <Link href="/" className="hover:text-[#D7B354]">صفحه اصلی</Link>
             <span className="mx-2">/</span>
-            <span className="text-[#D7B354]">محصولات</span>
+            <span className="text-[#F58F4A]">محصولات</span>
           </div>
         </div>
-
-        {/* Title */}
-        <h1 className="text-center text-white text-[16px] font-bold tracking-wide mb-8">سبد محصولات ROMELA</h1>
-
         {/* Category chips row */}
         <div className="flex items-center gap-4">
           <button
@@ -444,7 +468,7 @@ export default function ProductsPage() {
           </div>
         </div>
 
-        <div className="mt-6 h-px w-full bg-white/10" />
+        <Divider />
 
         {/* Content */}
         <div dir="ltr" className="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 items-start">

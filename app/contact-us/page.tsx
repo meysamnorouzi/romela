@@ -146,7 +146,7 @@ export default function ContactUsPage() {
               </form>
             </div>
 
-            <div className='col-span-2 grid grid-cols-2 gap-6'>
+            <div className='col-span-2 grid grid-cols-2 gap-6 h-full'>
               {/* Factory Contact Card */}
               <div className="bg-[#FFFFFF33] backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-white/10">
                 <div className="flex flex-col items-center mb-6">
@@ -205,7 +205,7 @@ export default function ContactUsPage() {
               </div>
 
               {/* Headquarters Contact Card */}
-              <div className="bg-[#FFFFFF33] backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-white/10">
+              <div className="bg-[#FFFFFF33] backdrop-blur-sm rounded-xl p-5 border border-white/10">
                 <div className="flex flex-col items-center mb-6">
                   <div className="bg-[#614D1F99] rounded-full p-3 mb-4">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -261,7 +261,7 @@ export default function ContactUsPage() {
                 </div>
               </div>
               {/* Social Media Bar */}
-              <div className="bg-[#FFFFFF33] backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-white/10 col-span-2 h-fit">
+              <div className="bg-[#FFFFFF33] backdrop-blur-sm rounded-xl p-5 border border-white/10 col-span-2 h-fit">
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
 
                   {/* Email */}

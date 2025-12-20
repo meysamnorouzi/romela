@@ -264,7 +264,7 @@ export default function App() {
       </div>
 
       {/* Container */}
-      <div className="px-4 sm:px-6 lg:px-8 xl:px-12 py-8 md:py-12 lg:py-16">
+      <div className="md:px-6 py-8 md:py-12 lg:py-16">
 
         {/* Category Section */}
         <section className="mb-16 md:mb-20">
@@ -466,9 +466,9 @@ export default function App() {
             معرفی Romela آلمان
           </h2>
 
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
             <div className="w-full lg:w-1/2">
-              <p className="text-lg md:text-xl text-white text-right leading-relaxed" dir="auto">
+              <p className="text-lg md:text-xl text-white text-right leading-10" dir="auto">
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد.
               </p>
             </div>
