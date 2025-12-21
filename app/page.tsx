@@ -350,7 +350,7 @@ export default function App() {
                 </div>
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
                   <div style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
-                    <h3 className="text-[#E39C9C] text-right" dir="auto" style={{ fontSize: 'clamp(1.5rem, 1.88vw, 1.875rem)' }}>
+                    <h3 className="text-[#E39C9C] text-right 3xl:text-3xl text-xl font-bold" dir="auto" style={{}}>
                       روغن های صنعتی
                     </h3>
                     <p className="text-[#E39C9C] text-right" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)', marginTop: 'clamp(0.75rem, 1.04vw, 1rem)' }}>
@@ -373,7 +373,7 @@ export default function App() {
               <div className="absolute bg-[rgba(229,160,69,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
-                  <h3 className="text-[#FEDE59] text-right" dir="auto" style={{ fontSize: 'clamp(1.5rem, 1.88vw, 1.875rem)', paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
+                  <h3 className="text-[#FEDE59] text-right 3xl:text-3xl text-xl font-bold" dir="auto" style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن موتور
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
@@ -400,7 +400,7 @@ export default function App() {
               <div className="absolute bg-[#C9C9C980] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
-                  <h3 className="text-[#E7E7E7] text-right" dir="auto" style={{ fontSize: 'clamp(1.5rem, 1.88vw, 1.875rem)', paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
+                  <h3 className="text-[#E7E7E7] text-right 3xl:text-3xl text-xl font-bold" dir="auto" style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن گیربکس
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
@@ -425,7 +425,7 @@ export default function App() {
               <div className="absolute bg-[rgba(255,35,39,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
-                  <h3 className="text-[#FF2023] text-right" dir="auto" style={{ fontSize: 'clamp(1.5rem, 1.88vw, 1.875rem)', marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
+                  <h3 className="text-[#FF2023] text-right 3xl:text-3xl text-xl font-bold" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن ترمز
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
@@ -450,7 +450,7 @@ export default function App() {
               <div className="absolute bg-[#1D36F14D] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
-                  <h3 className="text-[#738CD2] text-right" dir="auto" style={{ fontSize: 'clamp(1.5rem, 1.88vw, 1.875rem)', marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
+                  <h3 className="text-[#738CD2] text-right 3xl:text-3xl text-xl font-bold" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن گیربکس
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
@@ -480,7 +480,7 @@ export default function App() {
                   </div>
                 </div>
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
-                  <h3 className="text-[#EA770C] text-right" dir="auto" style={{ fontSize: 'clamp(1.5rem, 1.88vw, 1.875rem)', marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
+                  <h3 className="text-[#EA770C] text-right 3xl:text-3xl text-xl font-bold" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن ترمز
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
@@ -508,7 +508,7 @@ export default function App() {
                 }}
               >
                 <div className="relative z-10 w-full md:w-[60%] flex flex-col justify-between gap-4 order-1 md:order-2" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
-                  <h3 className="text-white text-right" dir="auto" style={{ fontSize: 'clamp(1.5rem, 1.88vw, 1.875rem)', marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
+                  <h3 className="text-white text-right 3xl:text-3xl text-xl font-bold" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     افزودنی های خاص
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
