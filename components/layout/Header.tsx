@@ -58,7 +58,7 @@ export function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="font-medium transition-all whitespace-nowrap"
+                    className="font-bold transition-all whitespace-nowrap"
                     style={{
                       fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
                       ...(active
@@ -162,7 +162,7 @@ export function Header() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="font-medium transition-all whitespace-nowrap w-full text-center"
+                    className="font-bold transition-all whitespace-nowrap w-full text-center"
                     style={{
                       fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
                       ...(active

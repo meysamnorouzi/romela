@@ -31,7 +31,7 @@ function ProductNameWithTooltip({ text, className }: { text: string, className?:
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap'
         }}
-        className={`text-center cursor-pointer ${className}`}
+        className={`text-center cursor-pointer font-bold ${className}`}
       >
         {text}
       </p>
@@ -132,7 +132,7 @@ function Dropdown({
         }}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="text-white text-right flex-1" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+        <span className="text-white text-right flex-1 text-base font-semibold" dir="auto">
           {value || label}
         </span>
         <svg
@@ -397,10 +397,10 @@ export default function App() {
             <div className="flex flex-col lg:flex-row items-start justify-between gap-4 lg:gap-6 mb-6 lg:mb-8">
               {/* Title and Description */}
               <div className="text-right flex-1">
-                <h2 className="text-white mb-4" dir="auto" style={{ fontSize: 'clamp(1.25rem, 1.56vw, 1.875rem)' }}>
+                <h2 className="text-white mb-4 text-2xl font-semibold" dir="auto">
                   جستجو روغن مناسب کاربری شما
                 </h2>
-                <p className="text-[rgba(255,255,255,0.9)] leading-relaxed" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+                <p className="text-[#FFFFFFCC] leading-relaxed text-base" dir="auto">
                   برای تجربه عملکرد بهتر موتور، روغن سازگار با نیازهای فنی خودروی خود را همینجا جستجو کنید.
                 </p>
               </div>
@@ -420,7 +420,7 @@ export default function App() {
                 <svg width="11" height="18" viewBox="0 0 11 18" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(0.6875rem, 0.73vw, 0.6875rem)', height: 'clamp(1.125rem, 1.25vw, 1.125rem)' }}>
                   <path d="M3.70046 12.3415C3.71736 11.2683 3.84409 10.4228 4.08064 9.80488C4.3341 9.17073 4.76498 8.57724 5.37327 8.02439C6.09985 7.35772 6.55607 6.9187 6.74194 6.70732C7.29954 6.08943 7.57834 5.44715 7.57834 4.78049C7.57834 4.0813 7.40937 3.55285 7.07143 3.19512C6.73349 2.82114 6.22657 2.63415 5.55069 2.63415C4.9086 2.63415 4.39324 2.82927 4.00461 3.21951C3.63287 3.5935 3.43856 4.10569 3.42166 4.7561H0C0.0168971 3.27642 0.515361 2.11382 1.49539 1.26829C2.47542 0.422764 3.82719 0 5.55069 0C7.27419 0 8.60906 0.406504 9.5553 1.21951C10.5184 2.03252 11 3.17886 11 4.65854C11 5.3252 10.8479 5.95935 10.5438 6.56098C10.2565 7.1626 9.80031 7.76423 9.17511 8.36585C8.85407 8.64228 8.3894 9.07317 7.78111 9.65854C7.42627 10 7.17281 10.3821 7.02074 10.8049C6.86866 11.2114 6.78418 11.7236 6.76728 12.3415H3.70046ZM3.21889 15.9756C3.21889 15.4228 3.41321 14.9593 3.80184 14.5854C4.20737 14.2114 4.70584 14.0244 5.29723 14.0244C5.88863 14.0244 6.37865 14.2114 6.76728 14.5854C7.17281 14.9593 7.37558 15.4228 7.37558 15.9756C7.37558 16.5447 7.17281 17.0244 6.76728 17.4146C6.37865 17.8049 5.88863 18 5.29723 18C4.70584 18 4.20737 17.8049 3.80184 17.4146C3.41321 17.0244 3.21889 16.5447 3.21889 15.9756Z" fill="#FCFBEE" />
                 </svg>
-                <span className="text-[#fcfbee]" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                <span className="text-[#fcfbee] font-bold text-base" dir="auto">
                   راهنمای انتخاب روغن
                 </span>
               </button>
@@ -461,7 +461,7 @@ export default function App() {
                   paddingRight: 'clamp(2rem, 3.13vw, 3rem)',
                 }}
               >
-                <span className="text-[#fcfbee]" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                <span className="text-[#fcfbee] font-bold text-base" dir="auto">
                   جستجو محصول
                 </span>
               </button>
@@ -475,8 +475,7 @@ export default function App() {
 
         {/* Category Section */}
         <section style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold" dir="auto" style={{ 
-            fontSize: 'clamp(1.5rem, 2.08vw, 2.25rem)',
+          <h2 className="font-iranyekan text-white text-center font-bold text-[2.125rem]" dir="auto" style={{ 
             marginBottom: 'clamp(1.5rem, 2.08vw, 2rem)'
           }}>
             دسته‌بندی محصولات Romela Oil
@@ -700,17 +699,15 @@ export default function App() {
 
         {/* Introduction Section */}
         <section className="2xl:px-16 xl:px-4" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold" dir="auto" style={{ 
-            fontSize: 'clamp(1.5rem, 2.08vw, 2.25rem)',
+          <h2 className="font-iranyekan text-white text-center font-bold  text-[2.125rem]" dir="auto" style={{ 
             marginBottom: 'clamp(2rem, 2.86vw, 2.75rem)'
           }}>
             معرفی Romela آلمان
           </h2>
 
-          <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(2rem, 3.13vw, 3rem)' }}>
+          <div className="flex flex-col lgflex-row" style={{ gap: 'clamp(2rem, 3.13vw, 3rem)' }}>
             <div className="w-full lg:w-1/2">
-              <p className="text-white text-right" dir="auto" style={{ 
-                fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)',
+              <p className="text-white text-right text-lg font-medium" dir="auto" style={{ 
                 lineHeight: 'clamp(2.5rem, 5.21vw, 2.5rem)'
               }}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد.
@@ -730,8 +727,7 @@ export default function App() {
 
         {/* Products Section */}
         <section className="2xl:px-16 xl:px-4" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold" dir="auto" style={{ 
-            fontSize: 'clamp(1.5rem, 2.08vw, 2.25rem)',
+          <h2 className="font-iranyekan text-white text-center font-bold  text-[2.125rem]" dir="auto" style={{ 
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
             محصولات Romela Oil
@@ -790,7 +786,7 @@ export default function App() {
                       }
                     }}
                   >
-                    <span dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                    <span dir="auto" className="font-medium" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       {tab.label}
                     </span>
                   </button>
@@ -847,8 +843,7 @@ export default function App() {
 
         {/* Statistics Section */}
         <section className="2xl:px-16 xl:px-4" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold" dir="auto" style={{ 
-            fontSize: 'clamp(1.5rem, 2.08vw, 2.25rem)',
+          <h2 className="font-iranyekan text-white text-center font-bold  text-[2.125rem]" dir="auto" style={{ 
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
             Romela Oil آمار
@@ -865,7 +860,7 @@ export default function App() {
               }}
             >
               <div className="absolute bg-[#FCD85699] blur-[57px] bottom-0 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 33.33vw, 16rem)', height: 'clamp(2rem, 5.21vw, 4rem)' }} />
-              <div className="text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+              <div className="text-[#FCD856] font-iranyekan font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                 تعداد فروش
               </div>
               <div className="font-bold text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(1.875rem, 2.6vw, 3rem)' }}>
@@ -882,7 +877,7 @@ export default function App() {
               }}
             >
               <div className="absolute bg-[#FCD85699] blur-[57px] bottom-0 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 33.33vw, 16rem)', height: 'clamp(2rem, 5.21vw, 4rem)' }} />
-              <div className="text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+              <div className="text-[#FCD856] font-iranyekan font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                 محصولات صادر شده
               </div>
               <div className="font-bold text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(1.875rem, 2.6vw, 3rem)' }}>
@@ -899,7 +894,7 @@ export default function App() {
               }}
             >
               <div className="absolute bg-[#FCD85699] blur-[57px] bottom-0 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 33.33vw, 16rem)', height: 'clamp(2rem, 5.21vw, 4rem)' }} />
-              <div className="text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+              <div className="text-[#FCD856] font-iranyekan font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                 تنوع محصولات
               </div>
               <div className="font-bold text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(1.875rem, 2.6vw, 3rem)' }}>
@@ -916,7 +911,7 @@ export default function App() {
               }}
             >
               <div className="absolute bg-[#FCD85699] blur-[57px] bottom-0 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 33.33vw, 16rem)', height: 'clamp(2rem, 5.21vw, 4rem)' }} />
-              <div className="text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+              <div className="text-[#FCD856] font-iranyekan font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                 مشتریان
               </div>
               <div className="font-bold text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(1.875rem, 2.6vw, 3rem)' }}>
@@ -930,8 +925,7 @@ export default function App() {
 
         {/* Best Selling Products Section */}
         <section className="2xl:px-16 xl:px-4" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold" dir="auto" style={{ 
-            fontSize: 'clamp(1.5rem, 2.08vw, 2.25rem)',
+          <h2 className="font-iranyekan text-white text-center font-bold  text-[2.125rem]" dir="auto" style={{ 
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
             محصولات پرفروش
@@ -997,7 +991,7 @@ export default function App() {
                         }
                       }}
                     >
-                      <span dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                      <span dir="auto" className="font-medium" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                         {tab.label}
                       </span>
                     </button>
@@ -1010,13 +1004,12 @@ export default function App() {
             <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: 'clamp(2rem, 3.13vw, 3rem)' }}>
               {/* Right Side: Text Description */}
               <div className="flex flex-col">
-                <h3 className="font-bold text-white font-iranyekan" dir="auto" style={{ 
-                  fontSize: 'clamp(1.5rem, 2.08vw, 2.25rem)',
+                <h3 className="font-bold text-white font-iranyekan text-[1.375rem]" dir="auto" style={{ 
                   marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
                 }}>
                   روغن موتور روملا
                 </h3>
-                <p className="text-white/90 leading-relaxed text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+                <p className="text-white/90 leading-relaxed text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1rem)' }}>
                   لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد.
                 </p>
               </div>

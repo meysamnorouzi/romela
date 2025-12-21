@@ -30,8 +30,7 @@ export function Footer() {
 
             {/* دسترسی ها */}
             <div>
-              <h3 className="text-white font-bold text-right font-iranyekan" style={{ 
-                fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)',
+              <h3 className="text-white font-bold text-right font-iranyekan text-xl" style={{ 
                 marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
               }}>
                 دسترسی ها
@@ -54,8 +53,7 @@ export function Footer() {
 
             {/* شبکه های اجتماعی */}
             <div>
-              <h3 className="text-white font-bold text-right font-iranyekan" style={{ 
-                fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)',
+              <h3 className="text-white font-bold text-right font-iranyekan  text-xl" style={{ 
                 marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
               }}>
                 شبکه های اجتماعی
@@ -87,8 +85,7 @@ export function Footer() {
 
             {/* دفتر مرکزی */}
             <div>
-              <h3 className="text-white font-bold text-right font-iranyekan" style={{ 
-                fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)',
+              <h3 className="text-white font-bold text-right font-iranyekan  text-xl" style={{ 
                 marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
               }}>
                 دفتر مرکزی
@@ -109,8 +106,7 @@ export function Footer() {
 
             {/* کارخانه */}
             <div>
-              <h3 className="text-white font-bold text-right font-iranyekan" style={{ 
-                fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)',
+              <h3 className="text-white font-bold text-right font-iranyekan  text-xl" style={{ 
                 marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
               }}>
                 کارخانه
