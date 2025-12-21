@@ -592,9 +592,9 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
           marginBottom: 'clamp(2.5rem, 5.21vw, 2.5rem)'
         }}>
           {selectedSubcategory 
-            ? `لیست محصولات ${selectedSubcategory.name}`
+            ? `${selectedSubcategory.name} لیست محصولات`
             : category 
-              ? `لیست محصولات ${category.name}` 
+              ? `${category.name} لیست محصولات` 
               : 'لیست محصولات'}
         </h1>
         {/* Breadcrumb */}

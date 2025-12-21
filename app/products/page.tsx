@@ -514,7 +514,7 @@ export default function ProductsPage() {
         <h1 className="text-center text-white font-bold tracking-wide" style={{ 
           fontSize: 'clamp(1.75rem, 2.21vw, 2.125rem)',
           marginBottom: 'clamp(2.5rem, 5.21vw, 2.5rem)'
-        }}>لیست محصولات روغن موتور</h1>
+        }}>لیست محصولات</h1>
         {/* Breadcrumb */}
         <div className="flex justify-start" style={{ marginBottom: 'clamp(1.5rem, 1.56vw, 1.5rem)' }}>
           <div className="font-bold text-[#9A9A9A]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
