@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import clsx from 'clsx'
 
@@ -31,6 +31,78 @@ function Divider() {
           </linearGradient>
         </defs>
       </svg>
+    </div>
+  )
+}
+
+// Related Product Card Component
+function RelatedProductCard({ 
+  product, 
+  imageUrl, 
+  fallbackImage 
+}: { 
+  product: WcaProduct | undefined
+  imageUrl: string
+  fallbackImage: string
+}) {
+  const nameRef = useRef<HTMLHeadingElement>(null)
+  const [showTooltip, setShowTooltip] = useState(false)
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (nameRef.current && product?.name) {
+        const isOverflowing = nameRef.current.scrollWidth > nameRef.current.clientWidth
+        setShowTooltip(isOverflowing)
+      }
+    }
+
+    // Check immediately
+    checkOverflow()
+
+    // Check after a short delay to ensure layout is complete
+    const timeoutId = setTimeout(checkOverflow, 100)
+
+    // Check on window resize
+    window.addEventListener('resize', checkOverflow)
+
+    return () => {
+      clearTimeout(timeoutId)
+      window.removeEventListener('resize', checkOverflow)
+    }
+  }, [product?.name])
+
+  return (
+    <div className="bg-[rgba(255,255,255,0.16)] border border-white rounded-3xl text-center" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)' }}>
+      <div className="relative w-full" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
+        <div className="relative group w-full">
+          <h3 
+            ref={nameRef}
+            className="text-[#f9bd65] cursor-pointer" 
+            dir="auto" 
+            style={{ 
+              fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              width: '100%'
+            }}
+          >
+            {product?.name || ' '}
+          </h3>
+          {showTooltip && product?.name && (
+            <div className="absolute min-w-52 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#2a2a2a] text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 border border-white/20 shadow-lg">
+              {product.name}
+            </div>
+          )}
+        </div>
+        <div className="relative w-full h-full">
+          <img
+            alt=""
+            className="w-full h-full object-contain pointer-events-none"
+            src={imageUrl || fallbackImage}
+          />
+        </div>
+      </div>
     </div>
   )
 }
@@ -677,50 +749,21 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             </div>
             <div className="w-full lg:w-1/2">
               <div className="grid grid-cols-1 sm:grid-cols-3" style={{ gap: 'clamp(1rem, 1.56vw, 1.5rem)' }}>
-                <div className="bg-[rgba(255,255,255,0.16)] border border-white rounded-3xl text-center" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                  <div className="relative w-full" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                    <h3 className="text-[#f9bd65]" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-                      {related1?.name || ' '}
-                    </h3>
-                    <div className="relative w-full h-full">
-                      <img
-                        alt=""
-                        className="w-full h-full object-contain pointer-events-none"
-                        src={(related1 && getWcaPrimaryImageUrl(related1)) || computed.primaryImage}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-[rgba(255,255,255,0.16)] border border-white rounded-3xl text-center" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                  <div className="relative w-full" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                    <h3 className="text-[#f9bd65]" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-                      {related2?.name || ' '}
-                    </h3>
-                    <div className="relative w-full h-full">
-                      <img
-                        alt=""
-                        className="w-full h-full object-contain pointer-events-none"
-                        src={(related2 && getWcaPrimaryImageUrl(related2)) || imgImage1.src}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-[rgba(255,255,255,0.16)] border border-white rounded-3xl text-center" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                  <div className="relative w-full" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                    <h3 className="text-[#f9bd65]" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-                      {related3?.name || ' '}
-                    </h3>
-                    <div className="relative w-full h-full">
-                      <img
-                        alt=""
-                        className="w-full h-full object-contain pointer-events-none"
-                        src={(related3 && getWcaPrimaryImageUrl(related3)) || imgImage2.src}
-                      />
-                    </div>
-                  </div>
-                </div>
+                <RelatedProductCard 
+                  product={related1}
+                  imageUrl={(related1 && getWcaPrimaryImageUrl(related1)) || ''}
+                  fallbackImage={computed.primaryImage}
+                />
+                <RelatedProductCard 
+                  product={related2}
+                  imageUrl={(related2 && getWcaPrimaryImageUrl(related2)) || ''}
+                  fallbackImage={imgImage1.src}
+                />
+                <RelatedProductCard 
+                  product={related3}
+                  imageUrl={(related3 && getWcaPrimaryImageUrl(related3)) || ''}
+                  fallbackImage={imgImage2.src}
+                />
               </div>
             </div>
           </div>

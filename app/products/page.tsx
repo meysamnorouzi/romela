@@ -10,9 +10,43 @@ import { getWcaPrimaryImageUrl, getWcaCategories, getWcaAttributes, getWcaAttrib
 import { LoadingSpinner } from '@/components/ui/Loading'
 import { stripHtml } from '@/lib/utils/text'
 import { extractStandard, extractVariantsFromFirstHtmlTable } from '@/lib/utils/wca'
-
 import { ProductDetailClient } from './ProductDetailClient'
 
+// Product Name with Tooltip Component
+function ProductNameWithTooltip({ text, className }: { text: string, className?: string }) {
+  const nameRef = useRef<HTMLParagraphElement>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  useEffect(() => {
+    if (nameRef.current) {
+      const isOverflowing = nameRef.current.scrollWidth > nameRef.current.clientWidth;
+      setShowTooltip(isOverflowing);
+    }
+  }, [text]);
+
+  return (
+    <div className="relative group w-full">
+      <p 
+        ref={nameRef}
+        dir="auto" 
+        style={{ 
+          fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap'
+        }}
+        className={`text-center cursor-pointer ${className}`}
+      >
+        {text}
+      </p>
+      {showTooltip && (
+        <div className="absolute min-w-52 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#2a2a2a] text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 border border-white/20 shadow-lg">
+        {text}
+      </div>
+      )}
+    </div>
+  );
+}
 
 const svgPaths = {
   chevronLeft: 'M15 19l-7-7 7-7',
@@ -132,8 +166,8 @@ function ProductTile({ product }: { product: WcaProduct }) {
           padding: 'clamp(1rem, 1.25vw, 1rem)',
           width: '90%'
         }}>
-          <div className="justify-center relative text-[#FCFBEE] text-center">
-            <p dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>{product.name}</p>
+          <div className="justify-center relative w-full">
+            <ProductNameWithTooltip text={product.name} className="text-[#FCFBEE]" />
           </div>
         </div>
         <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold' style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
