@@ -30,7 +30,7 @@ export function Footer() {
 
             {/* دسترسی ها */}
             <div>
-              <h3 className="text-white font-bold text-right" style={{ 
+              <h3 className="text-white font-bold text-right font-iranyekan" style={{ 
                 fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)',
                 marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
               }}>
@@ -42,7 +42,7 @@ export function Footer() {
                   <li key={item.href}>
                     <Link
                       href={item.href}
-                      className="text-white hover:text-[#fcd856] transition-colors text-right block"
+                      className="text-white hover:text-[#fcd856] transition-colors text-right block font-iranyekan"
                       style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
                     >
                       {item.label}
@@ -54,7 +54,7 @@ export function Footer() {
 
             {/* شبکه های اجتماعی */}
             <div>
-              <h3 className="text-white font-bold text-right" style={{ 
+              <h3 className="text-white font-bold text-right font-iranyekan" style={{ 
                 fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)',
                 marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
               }}>
@@ -66,7 +66,7 @@ export function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-white hover:text-[#fcd856] transition-colors text-right block"
+                      className="text-white hover:text-[#fcd856] transition-colors text-right block font-iranyekan"
                       style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
                     >
                       {link.label}
@@ -76,7 +76,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="#"
-                    className="text-white hover:text-[#fcd856] transition-colors text-right block"
+                    className="text-white hover:text-[#fcd856] transition-colors text-right block font-iranyekan"
                     style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
                   >
                     سوالات متداول
@@ -87,7 +87,7 @@ export function Footer() {
 
             {/* دفتر مرکزی */}
             <div>
-              <h3 className="text-white font-bold text-right" style={{ 
+              <h3 className="text-white font-bold text-right font-iranyekan" style={{ 
                 fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)',
                 marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
               }}>
@@ -95,13 +95,13 @@ export function Footer() {
               </h3>
               <div className="h-px w-full bg-white/40" style={{ marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)' }} />
               <div className="text-right flex flex-col" style={{ gap: 'clamp(0.75rem, 1.04vw, 1rem)' }}>
-                <p className="text-white leading-relaxed" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
+                <p className="text-white leading-relaxed font-iranyekan" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
                   جاده مخصوص کرج، گرمدره، خیابان تاج بخش، خیابان زرشکی، پلاک 14، عمارت سام
                 </p>
-                <p className="text-white font-medium" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
+                <p className="text-white font-medium font-iranyekan" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
                   تماس شنبه تا پنج شنبه / ۸ الی ۱۶:۳۰
                 </p>
-                <p className="text-white" dir="rtl" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
+                <p className="text-white font-iranyekan" dir="rtl" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
                   تلفن: ۳۶۱۰۸۵۰۰-۰۲۶
                 </p>
               </div>
@@ -109,7 +109,7 @@ export function Footer() {
 
             {/* کارخانه */}
             <div>
-              <h3 className="text-white font-bold text-right" style={{ 
+              <h3 className="text-white font-bold text-right font-iranyekan" style={{ 
                 fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)',
                 marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
               }}>
@@ -117,13 +117,13 @@ export function Footer() {
               </h3>
               <div className="h-px w-full bg-white/40" style={{ marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)' }} />
               <div className="text-right flex flex-col" style={{ gap: 'clamp(0.75rem, 1.04vw, 1rem)' }}>
-                <p className="text-white leading-relaxed" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
+                <p className="text-white leading-relaxed font-iranyekan" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
                   منطقه آزاد تجاری صنعتی ارس، فاز یک صنعتی، خیابان 8/3
                 </p>
-                <p className="text-white font-medium" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
+                <p className="text-white font-medium font-iranyekan" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
                   پاسخگویی با هماهنگی قبلی
                 </p>
-                <p className="text-white" dir="rtl" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
+                <p className="text-white font-iranyekan" dir="rtl" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
                   تلفن: ۴۲۰۳۱۴۱۰-۰۴۱
                 </p>
               </div>

@@ -212,6 +212,7 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  font-family: 'IranSans', 'Tahoma', 'Arial', sans-serif;
 }
 
 html,
@@ -219,7 +220,6 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   direction: rtl;
-  font-family: 'IranSans', 'Tahoma', 'Arial', sans-serif;
 }
 
 body {
@@ -239,7 +239,7 @@ a {
   }
   
   .font-title {
-    font-family: 'IranYekan', 'IranSans', 'Tahoma', 'Arial', sans-serif;
+    font-family: 'IranYekan', 'Tahoma', 'Arial', sans-serif;
   }
   
   .font-text {
@@ -248,7 +248,7 @@ a {
 
 
   .font-iranyekan {
-    font-family: 'IranYekan', 'IranSans', 'Tahoma', 'Arial', sans-serif;
+    font-family: 'IranYekan', 'Tahoma', 'Arial', sans-serif;
   }
 
   .no-scrollbar {

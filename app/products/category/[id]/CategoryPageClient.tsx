@@ -63,24 +63,19 @@ function CategoryChip({
   const icon = category.image || '/images/image 8.svg'
   return (
     <Link
-      href={href}
-      className="rounded-[999px] flex items-center shrink-0 border border-white/10 bg-gradient-to-b from-[#3A3A3A] to-[#242424] text-white hover:bg-[#D7B354] hover:text-black transition-colors"
-      style={{ 
-        boxShadow: '0 18px 40px rgba(0,0,0,0.35)',
-        height: 'clamp(3rem, 3.75vw, 3.25rem)',
-        paddingLeft: 'clamp(1.25rem, 1.56vw, 1.25rem)',
-        paddingRight: 'clamp(1.25rem, 1.56vw, 1.25rem)',
-        gap: 'clamp(0.75rem, 0.94vw, 0.75rem)'
-      }}
-    >
-      <span className="leading-none whitespace-nowrap" style={{ fontSize: 'clamp(0.8125rem, 0.94vw, 0.8125rem)' }}>{category.name}</span>
-      <div className="relative rounded-full bg-[#2B2B2B] flex items-center justify-center overflow-hidden" style={{ 
-        width: 'clamp(2.5rem, 3.13vw, 2.5rem)',
-        height: 'clamp(2.5rem, 3.13vw, 2.5rem)'
-      }}>
-        {icon && <Image src={icon} alt={category.name} width={30} height={30} className="object-contain" />}
-      </div>
-    </Link>
+    href={href}
+    className="rounded-[999px] flex items-center shrink-0  bg-gradient-to-b from-[#3A3A3A] to-[#242424] text-white hover:bg-[#D7B354] hover:text-black transition-colors py-1"
+    style={{
+      paddingLeft: 'clamp(1.25rem, 1.56vw, 1.25rem)',
+      paddingRight: 'clamp(1.25rem, 1.56vw, 1.25rem)',
+      gap: 'clamp(0.75rem, 0.94vw, 0.75rem)'
+    }}
+  >
+    <span className="leading-none whitespace-nowrap" style={{ fontSize: 'clamp(0.8125rem, 0.94vw, 0.8125rem)' }}>{category.name}</span>
+    <div className="relative flex items-center justify-center overflow-hidden h-16 w-16">
+      {icon && <Image src={icon} alt={category.name} fill className="object-contain w-full h-full" />}
+    </div>
+  </Link>
   )
 }
 
@@ -615,23 +610,18 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
         {subcategories.length > 0 && (
           <>
             <div className="flex items-center" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
-              <button
-                type="button"
-                className="rounded-full bg-[#2D2D2D] border border-white/10 flex items-center justify-center text-[#D7B354]"
-                style={{ 
-                  boxShadow: '0 18px 40px rgba(0,0,0,0.35)',
-                  width: 'clamp(2.75rem, 3.44vw, 2.75rem)',
-                  height: 'clamp(2.75rem, 3.44vw, 2.75rem)'
-                }}
-                onClick={() => {
-                  chipRowRef.current?.scrollBy({ left: -240, behavior: 'smooth' })
-                }}
-                aria-label="scroll"
-              >
-                <svg fill="currentColor" viewBox="0 0 24 24" style={{ width: 'clamp(1.5rem, 1.56vw, 1.5rem)', height: 'clamp(1.5rem, 1.56vw, 1.5rem)' }}>
-                  <path d={svgPaths.chevronLeft} />
-                </svg>
-              </button>
+            <button
+            type="button"
+            className="rounded-full bg-[#FDBA7433] flex items-center justify-center text-[#E2951A] py-7 px-4"
+            onClick={() => {
+              chipRowRef.current?.scrollBy({ left: -240, behavior: 'smooth' })
+            }}
+            aria-label="scroll"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7.5 2L17.5 12L7.5 22L5.725 20.225L13.95 12L5.725 3.775L7.5 2Z" fill="#E2951A" />
+            </svg>
+          </button>
 
               <div
                 ref={chipRowRef}

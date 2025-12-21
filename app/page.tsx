@@ -475,7 +475,7 @@ export default function App() {
 
         {/* Category Section */}
         <section style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center" dir="auto" style={{ 
+          <h2 className="font-iranyekan text-white text-center font-bold" dir="auto" style={{ 
             fontSize: 'clamp(1.5rem, 2.08vw, 2.25rem)',
             marginBottom: 'clamp(1.5rem, 2.08vw, 2rem)'
           }}>
@@ -499,15 +499,15 @@ export default function App() {
                 </div>
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
                   <div style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
-                    <h3 className="text-[#E39C9C] text-right 3xl:text-3xl text-xl font-bold" dir="auto" style={{}}>
+                    <h3 className="text-[#E39C9C] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{}}>
                       روغن های صنعتی
                     </h3>
-                    <p className="text-[#E39C9C] text-right" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)', marginTop: 'clamp(0.75rem, 1.04vw, 1rem)' }}>
+                    <p className="text-[#E39C9C] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)', marginTop: 'clamp(0.75rem, 1.04vw, 1rem)' }}>
                       توربین، کمپرسور، ترانسفورمر، حرارتی، بافت و ...
                     </p>
                   </div>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.75rem, 1.04vw, 1rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
-                    <span className="text-[#E39C9C] text-right" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                    <span className="text-[#E39C9C] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       مشاهده محصولات
                     </span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(1rem, 1.04vw, 1rem)', height: 'clamp(1rem, 1.04vw, 1rem)' }}>
@@ -526,11 +526,11 @@ export default function App() {
               <div className="absolute bg-[rgba(229,160,69,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
-                  <h3 className="text-[#FEDE59] text-right 3xl:text-3xl text-xl font-bold" dir="auto" style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
+                  <h3 className="text-[#FEDE59] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن موتور
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
-                    <span className="text-[#FEDE59] text-right" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                    <span className="text-[#FEDE59] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       مشاهده محصولات
                     </span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(1rem, 1.04vw, 1rem)', height: 'clamp(1rem, 1.04vw, 1rem)' }}>
@@ -557,11 +557,11 @@ export default function App() {
               <div className="absolute bg-[#C9C9C980] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
-                  <h3 className="text-[#E7E7E7] text-right 3xl:text-3xl text-xl font-bold" dir="auto" style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
+                  <h3 className="text-[#E7E7E7] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن گیربکس
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
-                    <span className="text-[#E7E7E7] text-right" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                    <span className="text-[#E7E7E7] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       مشاهده محصولات
                     </span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(1rem, 1.04vw, 1rem)', height: 'clamp(1rem, 1.04vw, 1rem)' }}>
@@ -586,11 +586,11 @@ export default function App() {
               <div className="absolute bg-[rgba(255,35,39,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
-                  <h3 className="text-[#FF2023] text-right 3xl:text-3xl text-xl font-bold" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
+                  <h3 className="text-[#FF2023] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن ترمز
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
-                    <span className="text-[#FF2023] text-right" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                    <span className="text-[#FF2023] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       مشاهده محصولات
                     </span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(1rem, 1.04vw, 1rem)', height: 'clamp(1rem, 1.04vw, 1rem)' }}>
@@ -615,11 +615,11 @@ export default function App() {
               <div className="absolute bg-[#1D36F14D] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
-                  <h3 className="text-[#738CD2] text-right 3xl:text-3xl text-xl font-bold" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
+                  <h3 className="text-[#738CD2] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن گیربکس
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
-                    <span className="text-[#738CD2] text-right" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                    <span className="text-[#738CD2] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       مشاهده محصولات
                     </span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(1rem, 1.04vw, 1rem)', height: 'clamp(1rem, 1.04vw, 1rem)' }}>
@@ -649,11 +649,11 @@ export default function App() {
                   </div>
                 </div>
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
-                  <h3 className="text-[#EA770C] text-right 3xl:text-3xl text-xl font-bold" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
+                  <h3 className="text-[#EA770C] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن ترمز
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
-                    <span className="text-[#EA770C] text-right" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                    <span className="text-[#EA770C] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       مشاهده محصولات
                     </span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(1rem, 1.04vw, 1rem)', height: 'clamp(1rem, 1.04vw, 1rem)' }}>
@@ -681,11 +681,11 @@ export default function App() {
                 }}
               >
                 <div className="relative z-10 w-full md:w-[60%] flex flex-col justify-between gap-4 order-1 md:order-2" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
-                  <h3 className="text-white text-right 3xl:text-3xl text-xl font-bold" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
+                  <h3 className="text-white text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     افزودنی های خاص
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
-                    <span className="text-white text-right" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                    <span className="text-white text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       مشاهده محصولات
                     </span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(1rem, 1.04vw, 1rem)', height: 'clamp(1rem, 1.04vw, 1rem)' }}>
@@ -700,7 +700,7 @@ export default function App() {
 
         {/* Introduction Section */}
         <section className="2xl:px-16 xl:px-4" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center" dir="auto" style={{ 
+          <h2 className="font-iranyekan text-white text-center font-bold" dir="auto" style={{ 
             fontSize: 'clamp(1.5rem, 2.08vw, 2.25rem)',
             marginBottom: 'clamp(2rem, 2.86vw, 2.75rem)'
           }}>
@@ -730,7 +730,7 @@ export default function App() {
 
         {/* Products Section */}
         <section className="2xl:px-16 xl:px-4" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center" dir="auto" style={{ 
+          <h2 className="font-iranyekan text-white text-center font-bold" dir="auto" style={{ 
             fontSize: 'clamp(1.5rem, 2.08vw, 2.25rem)',
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
@@ -847,7 +847,7 @@ export default function App() {
 
         {/* Statistics Section */}
         <section className="2xl:px-16 xl:px-4" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center" dir="auto" style={{ 
+          <h2 className="font-iranyekan text-white text-center font-bold" dir="auto" style={{ 
             fontSize: 'clamp(1.5rem, 2.08vw, 2.25rem)',
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
@@ -865,10 +865,10 @@ export default function App() {
               }}
             >
               <div className="absolute bg-[#FCD85699] blur-[57px] bottom-0 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 33.33vw, 16rem)', height: 'clamp(2rem, 5.21vw, 4rem)' }} />
-              <div className="text-[#FCD856]" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+              <div className="text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                 تعداد فروش
               </div>
-              <div className="font-bold text-[#FCD856]" dir="auto" style={{ fontSize: 'clamp(1.875rem, 2.6vw, 3rem)' }}>
+              <div className="font-bold text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(1.875rem, 2.6vw, 3rem)' }}>
                 + ۱۲۰,۰۰۰
               </div>
             </div>
@@ -882,10 +882,10 @@ export default function App() {
               }}
             >
               <div className="absolute bg-[#FCD85699] blur-[57px] bottom-0 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 33.33vw, 16rem)', height: 'clamp(2rem, 5.21vw, 4rem)' }} />
-              <div className="text-[#FCD856]" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+              <div className="text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                 محصولات صادر شده
               </div>
-              <div className="font-bold text-[#FCD856]" dir="auto" style={{ fontSize: 'clamp(1.875rem, 2.6vw, 3rem)' }}>
+              <div className="font-bold text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(1.875rem, 2.6vw, 3rem)' }}>
                 + ۷۱,۰۰۰
               </div>
             </div>
@@ -899,10 +899,10 @@ export default function App() {
               }}
             >
               <div className="absolute bg-[#FCD85699] blur-[57px] bottom-0 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 33.33vw, 16rem)', height: 'clamp(2rem, 5.21vw, 4rem)' }} />
-              <div className="text-[#FCD856]" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+              <div className="text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                 تنوع محصولات
               </div>
-              <div className="font-bold text-[#FCD856]" dir="auto" style={{ fontSize: 'clamp(1.875rem, 2.6vw, 3rem)' }}>
+              <div className="font-bold text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(1.875rem, 2.6vw, 3rem)' }}>
                 + ۱۰۰
               </div>
             </div>
@@ -916,10 +916,10 @@ export default function App() {
               }}
             >
               <div className="absolute bg-[#FCD85699] blur-[57px] bottom-0 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 33.33vw, 16rem)', height: 'clamp(2rem, 5.21vw, 4rem)' }} />
-              <div className="text-[#FCD856]" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+              <div className="text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                 مشتریان
               </div>
-              <div className="font-bold text-[#FCD856]" dir="auto" style={{ fontSize: 'clamp(1.875rem, 2.6vw, 3rem)' }}>
+              <div className="font-bold text-[#FCD856] font-iranyekan" dir="auto" style={{ fontSize: 'clamp(1.875rem, 2.6vw, 3rem)' }}>
                 + ۱۰۰۰
               </div>
             </div>
@@ -930,7 +930,7 @@ export default function App() {
 
         {/* Best Selling Products Section */}
         <section className="2xl:px-16 xl:px-4" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center" dir="auto" style={{ 
+          <h2 className="font-iranyekan text-white text-center font-bold" dir="auto" style={{ 
             fontSize: 'clamp(1.5rem, 2.08vw, 2.25rem)',
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
@@ -1010,20 +1010,20 @@ export default function App() {
             <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: 'clamp(2rem, 3.13vw, 3rem)' }}>
               {/* Right Side: Text Description */}
               <div className="flex flex-col">
-                <h3 className="font-bold text-white" dir="auto" style={{ 
+                <h3 className="font-bold text-white font-iranyekan" dir="auto" style={{ 
                   fontSize: 'clamp(1.5rem, 2.08vw, 2.25rem)',
                   marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
                 }}>
                   روغن موتور روملا
                 </h3>
-                <p className="text-white/90 leading-relaxed text-right" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+                <p className="text-white/90 leading-relaxed text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                   لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد.
                 </p>
               </div>
 
               {/* Left Side: Product Cards */}
               {loadingBestsellers ? (
-                <div className="text-center text-white py-8">در حال بارگذاری...</div>
+                <div className="text-center text-white py-8 font-iranyekan">در حال بارگذاری...</div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-3" style={{ gap: 'clamp(1rem, 1.56vw, 1.5rem)' }}>
                   {currentBestsellerProducts.length > 0 ? (
@@ -1041,9 +1041,9 @@ export default function App() {
                           }}
                         >
                           <h4 className="font-bold text-[#F9BD65] mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
-                            <ProductNameWithTooltip text={product.name} className="font-bold text-[#F9BD65] " />
+                            <ProductNameWithTooltip text={product.name} className="font-bold text-[#F9BD65] font-iranyekan" />
                           </h4>
-                          <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
+                          <div className="flex-1 flex items-center justify-center font-iranyekan text-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
                             <img src={productImage} alt={product.name} style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
                           </div>
                         </Link>

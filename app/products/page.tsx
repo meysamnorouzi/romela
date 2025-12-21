@@ -26,10 +26,10 @@ function ProductNameWithTooltip({ text, className }: { text: string, className?:
 
   return (
     <div className="relative group w-full">
-      <p 
+      <p
         ref={nameRef}
-        dir="auto" 
-        style={{ 
+        dir="auto"
+        style={{
           fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
@@ -41,8 +41,8 @@ function ProductNameWithTooltip({ text, className }: { text: string, className?:
       </p>
       {showTooltip && (
         <div className="absolute min-w-52 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#2a2a2a] text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 border border-white/20 shadow-lg">
-        {text}
-      </div>
+          {text}
+        </div>
       )}
     </div>
   );
@@ -63,21 +63,16 @@ function CategoryChip({
   return (
     <Link
       href={href}
-      className="rounded-[999px] flex items-center shrink-0 border border-white/10 bg-gradient-to-b from-[#3A3A3A] to-[#242424] text-white hover:bg-[#D7B354] hover:text-black transition-colors"
-      style={{ 
-        boxShadow: '0 18px 40px rgba(0,0,0,0.35)',
-        height: 'clamp(3rem, 3.75vw, 3.25rem)',
+      className="rounded-[999px] flex items-center shrink-0  bg-gradient-to-b from-[#3A3A3A] to-[#242424] text-white hover:bg-[#D7B354] hover:text-black transition-colors py-1"
+      style={{
         paddingLeft: 'clamp(1.25rem, 1.56vw, 1.25rem)',
         paddingRight: 'clamp(1.25rem, 1.56vw, 1.25rem)',
         gap: 'clamp(0.75rem, 0.94vw, 0.75rem)'
       }}
     >
       <span className="leading-none whitespace-nowrap" style={{ fontSize: 'clamp(0.8125rem, 0.94vw, 0.8125rem)' }}>{category.name}</span>
-      <div className="relative rounded-full bg-[#2B2B2B] flex items-center justify-center overflow-hidden" style={{ 
-        width: 'clamp(2.5rem, 3.13vw, 2.5rem)',
-        height: 'clamp(2.5rem, 3.13vw, 2.5rem)'
-      }}>
-        {icon && <Image src={icon} alt={category.name} width={30} height={30} className="object-contain" />}
+      <div className="relative flex items-center justify-center overflow-hidden h-16 w-16">
+        {icon && <Image src={icon} alt={category.name} fill className="object-contain w-full h-full" />}
       </div>
     </Link>
   )
@@ -144,9 +139,9 @@ function ProductTile({ product }: { product: WcaProduct }) {
   return (
     <Link href={`/products?slug=${encodeURIComponent(product.slug)}`} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
       <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
-      <div className="absolute w-full z-10" style={{ 
-        height: 'clamp(259px, 21.56vw, 414px)', 
-        top: 'clamp(-5rem, -10.42vw, -5rem)' 
+      <div className="absolute w-full z-10" style={{
+        height: 'clamp(259px, 21.56vw, 414px)',
+        top: 'clamp(-5rem, -10.42vw, -5rem)'
       }} data-name="Mockup ATF-ZF Background Removed">
         {image ? (
           <Image
@@ -162,7 +157,7 @@ function ProductTile({ product }: { product: WcaProduct }) {
         )}
       </div>
       <div className='w-full flex flex-col items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
-        <div className="bg-[#e6a816ca] z-10 flex h-fit items-center justify-center rounded-[120px]" style={{ 
+        <div className="bg-[#e6a816ca] z-10 flex h-fit items-center justify-center rounded-[120px]" style={{
           padding: 'clamp(1rem, 1.25vw, 1rem)',
           width: '90%'
         }}>
@@ -201,7 +196,7 @@ function FiltersPanel({
   })
 
   return (
-    <aside className="bg-[#343434] rounded-[22px] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)]" style={{ 
+    <aside className="bg-[#343434] rounded-[22px] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)]" style={{
       paddingLeft: 'clamp(1.5rem, 1.56vw, 1.5rem)',
       paddingRight: 'clamp(1.5rem, 1.56vw, 1.5rem)',
       paddingTop: 'clamp(2rem, 2.08vw, 2rem)',
@@ -406,7 +401,7 @@ export default function ProductsPage() {
         console.log('Loading attributes from API...')
         const attrsResult = await getWcaAttributes()
         if (cancelled) return
-        
+
         const fetchedAttributes = attrsResult.attributes || []
         console.log(`Fetched ${fetchedAttributes.length} attributes:`, fetchedAttributes.map(a => ({ id: a.id, name: a.name, label: a.label })))
         setAttributes(fetchedAttributes)
@@ -506,12 +501,12 @@ export default function ProductsPage() {
 
   return (
     <div className="bg-[#0e0e0e] min-h-screen w-full relative xl:px-0 2xl:px-6">
-      <div className="relative w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4" style={{ 
+      <div className="relative w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4" style={{
         paddingTop: 'clamp(9rem, 18.75vw, 9rem)',
         paddingBottom: 'clamp(5rem, 10.42vw, 5rem)'
       }}>
         {/* Title */}
-        <h1 className="text-center text-white font-bold tracking-wide" style={{ 
+        <h1 className="text-center text-white font-bold tracking-wide" style={{
           fontSize: 'clamp(1.75rem, 2.21vw, 2.125rem)',
           marginBottom: 'clamp(2.5rem, 5.21vw, 2.5rem)'
         }}>لیست محصولات</h1>
@@ -527,26 +522,21 @@ export default function ProductsPage() {
         <div className="flex items-center" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
           <button
             type="button"
-            className="rounded-full bg-[#2D2D2D] border border-white/10 flex items-center justify-center text-[#D7B354]"
-            style={{ 
-              boxShadow: '0 18px 40px rgba(0,0,0,0.35)',
-              width: 'clamp(2.75rem, 3.44vw, 2.75rem)',
-              height: 'clamp(2.75rem, 3.44vw, 2.75rem)'
-            }}
+            className="rounded-full bg-[#FDBA7433] flex items-center justify-center text-[#E2951A] py-7 px-4"
             onClick={() => {
               chipRowRef.current?.scrollBy({ left: -240, behavior: 'smooth' })
             }}
             aria-label="scroll"
           >
-            <svg fill="currentColor" viewBox="0 0 24 24" style={{ width: 'clamp(1.5rem, 1.56vw, 1.5rem)', height: 'clamp(1.5rem, 1.56vw, 1.5rem)' }}>
-              <path d={svgPaths.chevronLeft} />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7.5 2L17.5 12L7.5 22L5.725 20.225L13.95 12L5.725 3.775L7.5 2Z" fill="#E2951A" />
             </svg>
           </button>
 
           <div
             ref={chipRowRef}
             className="flex-1 flex overflow-x-auto no-scrollbar"
-            style={{ 
+            style={{
               scrollBehavior: 'smooth',
               gap: 'clamp(1rem, 1.25vw, 1rem)',
               paddingTop: 'clamp(0.25rem, 0.31vw, 0.25rem)',
@@ -570,13 +560,13 @@ export default function ProductsPage() {
         <Divider />
 
         {/* Content */}
-        <div dir="ltr" className="grid grid-cols-1 lg:grid-cols-[1fr_360px] items-start" style={{ 
+        <div dir="ltr" className="grid grid-cols-1 lg:grid-cols-[1fr_360px] items-start" style={{
           marginTop: 'clamp(3rem, 3.13vw, 3rem)',
           gap: 'clamp(2.5rem, 2.6vw, 2.5rem)'
         }}>
           {/* Products grid */}
           <div dir="rtl">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ 
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{
               columnGap: 'clamp(2.5rem, 2.6vw, 2.5rem)',
               rowGap: 'clamp(4rem, 5.21vw, 4rem)'
             }}>
@@ -586,7 +576,7 @@ export default function ProductsPage() {
             </div>
 
             {!loadingProducts && visibleProducts.length === 0 && (
-              <div className="text-center text-[#9A9A9A]" style={{ 
+              <div className="text-center text-[#9A9A9A]" style={{
                 marginTop: 'clamp(3rem, 3.13vw, 3rem)',
                 fontSize: 'clamp(1rem, 1.25vw, 1rem)'
               }}>محصولی برای نمایش وجود ندارد</div>
