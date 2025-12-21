@@ -366,23 +366,23 @@ export default function App() {
         }}
       />
       {/* Hero Section with Masked Background */}
-      <div className="relative w-full flex items-center justify-center rounded-[1.5rem] pb-16 pt-52" style={{ 
+      <div className="relative w-full flex items-center justify-center rounded-[1rem] sm:rounded-[1.5rem] pb-8 sm:pb-12 md:pb-16 pt-32 sm:pt-40 md:pt-52" style={{ 
         backgroundImage: `url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')`, 
         backgroundSize: 'cover', 
         backgroundPosition: 'center', 
         backgroundRepeat: 'no-repeat',
       }}>
-        <div className="absolute inset-0 bg-[rgba(0,0,0,0.3)] rounded-[2rem]" />
+        <div className="absolute inset-0 bg-[rgba(0,0,0,0.3)] rounded-[1rem] sm:rounded-[2rem]" />
         <div className="flex flex-col items-center justify-center z-10 w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="font-bold font-iranyekan leading-normal text-white text-center mb-8 sm:mb-12 lg:mb-20" dir="auto" style={{
-            fontSize: 'clamp(1.5rem, 2.86vw, 2.75rem)',
+          <p className="font-bold font-iranyekan leading-normal text-white text-center mb-6 sm:mb-8 md:mb-12 lg:mb-20 px-2" dir="auto" style={{
+            fontSize: 'clamp(1.125rem, 2.86vw, 2.75rem)',
             textShadow: '0px 2px 12px rgba(0,0,0,0.75)',
-            maxWidth: '90%'
+            maxWidth: '95%'
           }}>
             پادراد ارس نمایندگی رسمی محصولات ROMELA OIL GERMANY 🇩🇪
           </p>
           <div
-            className="w-full rounded-3xl"
+            className="w-full rounded-2xl sm:rounded-3xl"
             style={{
               background: 'rgba(255, 255, 255, 0.05)',
               backdropFilter: 'blur(39px) saturate(180%)',
@@ -390,11 +390,11 @@ export default function App() {
               border: '1px solid rgba(255, 255, 255, 0.18)',
               boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 0 1px rgba(255, 255, 255, 0.1) inset',
               backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.02) 100%)',
-              padding: 'clamp(1.5rem, 2.08vw, 2rem)',
+              padding: 'clamp(1rem, 2.08vw, 2rem)',
               maxWidth: '1400px'
             }}
           >
-            <div className="flex flex-col lg:flex-row items-start justify-between gap-4 lg:gap-6 mb-6 lg:mb-8">
+            <div className="flex flex-col lg:flex-row items-start justify-between gap-4 lg:gap-6 mb-4 sm:mb-6 lg:mb-8">
               {/* Title and Description */}
               <div className="text-right flex-1">
                 <h2 className="text-white mb-4 text-2xl font-semibold" dir="auto">
@@ -426,7 +426,7 @@ export default function App() {
               </button>
             </div>
             {/* Filters and Search Button */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 items-center">
               {/* Dropdown Filters */}
               <Dropdown
                 id="oilType"
@@ -471,17 +471,17 @@ export default function App() {
       </div>
 
       {/* Container */}
-      <div className="w-full max-w-[1920px] mx-auto xl:px-0 2xl:px-6" style={{ paddingTop: 'clamp(2rem, 3.13vw, 4rem)', paddingBottom: 'clamp(2rem, 3.13vw, 4rem)' }}>
+      <div className="w-full max-w-[1920px] mx-auto xl:px-0 2xl:px-6 px-4 sm:px-6" style={{ paddingTop: 'clamp(2rem, 3.13vw, 4rem)', paddingBottom: 'clamp(2rem, 3.13vw, 4rem)' }}>
 
         {/* Category Section */}
         <section style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold text-[2.125rem]" dir="auto" style={{ 
+          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{ 
             marginBottom: 'clamp(1.5rem, 2.08vw, 2rem)'
           }}>
             دسته‌بندی محصولات Romela Oil
           </h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4" style={{ gap: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(1rem, 2.08vw, 2rem)' }}>
 
             {/* Industrial Oils Card (Wide) */}
             <Link 
@@ -698,17 +698,17 @@ export default function App() {
         </section>
 
         {/* Introduction Section */}
-        <section className="2xl:px-16 xl:px-4" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold  text-[2.125rem]" dir="auto" style={{ 
+        <section className="2xl:px-16 xl:px-4 px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
+          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{ 
             marginBottom: 'clamp(2rem, 2.86vw, 2.75rem)'
           }}>
             معرفی Romela آلمان
           </h2>
 
-          <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(2rem, 3.13vw, 3rem)' }}>
+          <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1.5rem, 3.13vw, 3rem)' }}>
             <div className="w-full lg:w-1/2">
-              <p className="text-white text-right text-lg font-medium" dir="auto" style={{ 
-                lineHeight: 'clamp(2.5rem, 5.21vw, 2.5rem)'
+              <p className="text-white text-right text-base sm:text-lg font-medium" dir="auto" style={{ 
+                lineHeight: 'clamp(1.75rem, 5.21vw, 2.5rem)'
               }}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد.
               </p>
@@ -726,8 +726,8 @@ export default function App() {
         <Divider />
 
         {/* Products Section */}
-        <section className="2xl:px-16 xl:px-4" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold  text-[2.125rem]" dir="auto" style={{ 
+        <section className="2xl:px-16 xl:px-4 px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
+          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{ 
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
             محصولات Romela Oil
@@ -798,7 +798,7 @@ export default function App() {
           {loadingProducts ? (
             <div className="text-center text-white py-8">در حال بارگذاری محصولات...</div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(1.5rem, 2.08vw, 2rem)', marginTop: 'clamp(4rem, 7.29vw, 7rem)' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(1rem, 2.08vw, 2rem)', marginTop: 'clamp(2rem, 7.29vw, 7rem)' }}>
               {currentTabProducts.length > 0 ? (
                 currentTabProducts.slice(0, 4).map((product) => {
                   const productImage = getWcaPrimaryImageUrl(product) || imgMockupAtfZfBackgroundRemoved.src;
@@ -842,8 +842,8 @@ export default function App() {
         <Divider />
 
         {/* Statistics Section */}
-        <section className="2xl:px-16 xl:px-4" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold  text-[2.125rem]" dir="auto" style={{ 
+        <section className="2xl:px-16 xl:px-4 px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
+          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{ 
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
             Romela Oil آمار
@@ -924,8 +924,8 @@ export default function App() {
         <Divider />
 
         {/* Best Selling Products Section */}
-        <section className="2xl:px-16 xl:px-4" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold  text-[2.125rem]" dir="auto" style={{ 
+        <section className="2xl:px-16 xl:px-4 px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
+          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{ 
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
             محصولات پرفروش
@@ -1001,15 +1001,15 @@ export default function App() {
             </div>
 
             {/* Content Area: Text + Product Cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: 'clamp(2rem, 3.13vw, 3rem)' }}>
+            <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: 'clamp(1.5rem, 3.13vw, 3rem)' }}>
               {/* Right Side: Text Description */}
               <div className="flex flex-col">
-                <h3 className="font-bold text-white font-iranyekan text-[1.375rem]" dir="auto" style={{ 
+                <h3 className="font-bold text-white font-iranyekan text-lg sm:text-xl md:text-[1.375rem]" dir="auto" style={{ 
                   marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
                 }}>
                   روغن موتور روملا
                 </h3>
-                <p className="text-white/90 leading-relaxed text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1rem)' }}>
+                <p className="text-white/90 leading-relaxed text-right font-iranyekan text-sm sm:text-base" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.25vw, 1rem)' }}>
                   لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد.
                 </p>
               </div>
@@ -1018,7 +1018,7 @@ export default function App() {
               {loadingBestsellers ? (
                 <div className="text-center text-white py-8 font-iranyekan">در حال بارگذاری...</div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-3" style={{ gap: 'clamp(1rem, 1.56vw, 1.5rem)' }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(1rem, 1.56vw, 1.5rem)' }}>
                   {currentBestsellerProducts.length > 0 ? (
                     currentBestsellerProducts.map((product) => {
                       const productImage = getWcaPrimaryImageUrl(product) || '/images/image 1.png';

@@ -576,15 +576,15 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
   }
 
   return (
-    <div className="bg-[#0e0e0e] min-h-screen w-full relative xl:px-0 2xl:px-6">
+    <div className="bg-[#0e0e0e] min-h-screen w-full relative xl:px-0 2xl:px-6 px-4 sm:px-6">
       <div className="relative w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4" style={{ 
-        paddingTop: 'clamp(9rem, 18.75vw, 9rem)',
-        paddingBottom: 'clamp(5rem, 10.42vw, 5rem)'
+        paddingTop: 'clamp(6rem, 18.75vw, 9rem)',
+        paddingBottom: 'clamp(3rem, 10.42vw, 5rem)'
       }}>
         {/* Title */}
-        <h1 className="text-center text-white font-bold tracking-wide font-iranyekan" style={{ 
-          fontSize: 'clamp(1.75rem, 2.21vw, 2.125rem)',
-          marginBottom: 'clamp(2.5rem, 5.21vw, 2.5rem)'
+        <h1 className="text-center text-white font-bold tracking-wide font-iranyekan text-xl sm:text-2xl" style={{ 
+          fontSize: 'clamp(1.5rem, 2.21vw, 2.125rem)',
+          marginBottom: 'clamp(1.5rem, 5.21vw, 2.5rem)'
         }}>
           {selectedSubcategory 
             ? `${selectedSubcategory.name} لیست محصولات`
@@ -653,14 +653,14 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
 
         {/* Content */}
         <div dir="ltr" className="grid grid-cols-1 lg:grid-cols-[1fr_360px] items-start" style={{ 
-          marginTop: 'clamp(3rem, 3.13vw, 3rem)',
-          gap: 'clamp(2.5rem, 2.6vw, 2.5rem)'
+          marginTop: 'clamp(2rem, 3.13vw, 3rem)',
+          gap: 'clamp(1.5rem, 2.6vw, 2.5rem)'
         }}>
           {/* Products grid */}
           <div dir="rtl">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ 
-              columnGap: 'clamp(2.5rem, 2.6vw, 2.5rem)',
-              rowGap: 'clamp(4rem, 5.21vw, 4rem)'
+              columnGap: 'clamp(1rem, 2.6vw, 2.5rem)',
+              rowGap: 'clamp(2rem, 5.21vw, 4rem)'
             }}>
               {loadingProducts
                 ? Array.from({ length: 9 }).map((_, i) => <ProductCardLoading key={`pl-${i}`} />)

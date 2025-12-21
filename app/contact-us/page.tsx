@@ -49,7 +49,7 @@ export default function ContactUsPage() {
 
   return (
  <div className='w-full 2xl:mb-96 mb-16'>
-     <div className="min-h-screen w-full overflow-hidden rounded-[1.5rem]" style={{
+     <div className="min-h-screen w-full overflow-hidden rounded-[1rem] sm:rounded-[1.5rem]" style={{
       backgroundImage: "url('/images/image 24.png')",
       backgroundSize: 'cover',
       backgroundPosition: 'center',
@@ -57,11 +57,11 @@ export default function ContactUsPage() {
     }}>
    <div className="w-full h-full absolute top-0 left-0 bg-[#0000004D] z-10"/>
       {/* Content Container */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-80">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-20 lg:py-80">
 
-        <div className='w-full bg-white/20 backdrop-blur-sm rounded-xl py-16 px-24 border border-white/10'>
+        <div className='w-full bg-white/20 backdrop-blur-sm rounded-xl py-8 sm:py-12 md:py-16 px-4 sm:px-8 md:px-16 lg:px-24 border border-white/10'>
           {/* Contact Cards and Form Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-7 mb-8 lg:mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-7 mb-6 sm:mb-8 lg:mb-12">
 
             {/* Contact Form */}
             <div className="bg-[#FFFFFF33] backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-white/10 lg:col-span-1">
@@ -147,9 +147,9 @@ export default function ContactUsPage() {
               </form>
             </div>
 
-            <div className='col-span-2 grid grid-cols-2 gap-6 h-full'>
+            <div className='lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 h-full'>
               {/* Factory Contact Card */}
-              <div className="bg-[#FFFFFF33] backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-white/10">
+              <div className="bg-[#FFFFFF33] backdrop-blur-sm rounded-xl p-4 sm:p-6 md:p-8 border border-white/10">
                 <div className="flex flex-col items-center mb-6">
                   <div className="bg-[#614D1F99] rounded-full p-3 mb-4">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -206,7 +206,7 @@ export default function ContactUsPage() {
               </div>
 
               {/* Headquarters Contact Card */}
-              <div className="bg-[#FFFFFF33] backdrop-blur-sm rounded-xl p-5 border border-white/10">
+              <div className="bg-[#FFFFFF33] backdrop-blur-sm rounded-xl p-4 sm:p-5 md:p-6 border border-white/10">
                 <div className="flex flex-col items-center mb-6">
                   <div className="bg-[#614D1F99] rounded-full p-3 mb-4">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -262,8 +262,8 @@ export default function ContactUsPage() {
                 </div>
               </div>
               {/* Social Media Bar */}
-              <div className="bg-[#FFFFFF33] backdrop-blur-sm rounded-xl p-5 border border-white/10 col-span-2 h-fit">
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
+              <div className="bg-[#FFFFFF33] backdrop-blur-sm rounded-xl p-4 sm:p-5 md:p-6 border border-white/10 sm:col-span-2 h-fit">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8">
 
                   {/* Email */}
                   <a
@@ -296,8 +296,8 @@ export default function ContactUsPage() {
           </div>
 
           {/* Map Section */}
-          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/10 mb-8 lg:mb-12">
-            <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden">
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 sm:p-4 md:p-6 border border-white/10 mb-6 sm:mb-8 lg:mb-12">
+            <div className="relative w-full h-48 sm:h-64 md:h-80 lg:h-96 rounded-xl sm:rounded-2xl overflow-hidden">
               <img
                 alt="نقشه"
                 className="w-full h-full object-cover"

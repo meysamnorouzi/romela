@@ -1,8 +1,8 @@
 export default function DealershipPage() {
   return (
-    <div className="py-8 md:py-12">
-      <div className="container mx-auto px-4 md:px-6 lg:px-8">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8 md:mb-12">
+    <div className="py-6 sm:py-8 md:py-12">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 sm:mb-8 md:mb-12">
           نمایندگی
         </h1>
 

@@ -21,9 +21,9 @@ export function Header() {
     <header
       className='fixed left-0 top-0 w-full z-50 bg-transparent'
       style={{ 
-        paddingLeft: 'clamp(1rem, 1.56vw, 1.5rem)',
-        paddingRight: 'clamp(1rem, 1.56vw, 1.5rem)',
-        paddingTop: 'clamp(1rem, 1.25vw, 1rem)'
+        paddingLeft: 'clamp(0.5rem, 1.56vw, 1.5rem)',
+        paddingRight: 'clamp(0.5rem, 1.56vw, 1.5rem)',
+        paddingTop: 'clamp(0.75rem, 1.25vw, 1rem)'
       }}
     >
       {/* Content Container */} 

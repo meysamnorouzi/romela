@@ -13,11 +13,11 @@ export function Footer() {
   return (
     <footer className="relative w-full bg-[#0e0e0e] xl:px-4 2xl:px-6">
       {/* Main Footer Container */}
-      <div className="w-full max-w-[1920px] mx-auto xl:px-0 2xl:px-6" style={{ 
-        paddingTop: 'clamp(2rem, 3.13vw, 4rem)', 
-        paddingBottom: 'clamp(2rem, 3.13vw, 4rem)',
-        paddingLeft: 'clamp(1rem, 1.56vw, 3rem)',
-        paddingRight: 'clamp(1rem, 1.56vw, 3rem)'
+      <div className="w-full max-w-[1920px] mx-auto xl:px-0 2xl:px-6 px-4 sm:px-6" style={{ 
+        paddingTop: 'clamp(1.5rem, 3.13vw, 4rem)', 
+        paddingBottom: 'clamp(1.5rem, 3.13vw, 4rem)',
+        paddingLeft: 'clamp(0.5rem, 1.56vw, 3rem)',
+        paddingRight: 'clamp(0.5rem, 1.56vw, 3rem)'
       }}>
      <div className="2xl:px-16 xl:px-4">
          {/* Background Box with Border */}
@@ -26,7 +26,7 @@ export function Footer() {
         }}>
           
           {/* Grid Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5" style={{ gap: 'clamp(2rem, 3.13vw, 3rem)' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5" style={{ gap: 'clamp(1.5rem, 3.13vw, 3rem)' }}>
 
             {/* دسترسی ها */}
             <div>

@@ -115,11 +115,11 @@ export function BlogDetailClient({ slug }: { slug: string }) {
          ]}
        />
  
-       <article className="py-8 md:py-12">
-         <div className="container mx-auto px-4 md:px-6 lg:px-8">
+       <article className="py-6 sm:py-8 md:py-12">
+         <div className="container mx-auto px-4 sm:px-6 md:px-8">
            <div className="max-w-4xl mx-auto">
-             <div className="mb-8">
-               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">{post.title}</h1>
+             <div className="mb-6 sm:mb-8">
+               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4">{post.title}</h1>
                <div className="flex items-center gap-4 text-gray-400 text-sm">
                  <span>{publishedAt ? formatDate(publishedAt.toISOString()) : ''}</span>
                  <span>•</span>
