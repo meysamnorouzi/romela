@@ -184,14 +184,21 @@ function FiltersPanel({
   attributeTermsMap,
   selectedAttributeTerms,
   onAttributeTermToggle,
+  loadingAttributes,
 }: {
   attributes: WcaAttribute[]
   attributeTermsMap: Record<number, WcaAttributeTerm[]>
   selectedAttributeTerms: number[]
   onAttributeTermToggle: (termId: number) => void
+  loadingAttributes: boolean
 }) {
   const pillOff = 'bg-[#2D2D2D] text-[#D2D2D2]'
   const pillOn = 'bg-[#D7B354] text-black'
+
+  const hasFilters = attributes.some(attr => {
+    const terms = attributeTermsMap[attr.id] || []
+    return terms.length > 0
+  })
 
   return (
     <aside className="bg-[#343434] rounded-[22px] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)]" style={{ 
@@ -202,39 +209,49 @@ function FiltersPanel({
     }}>
       <h3 className="text-white font-bold text-center" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.125rem)' }}>فیلترها</h3>
       <Divider />
-      <div className="flex flex-col" style={{ gap: 'clamp(2rem, 2.08vw, 2rem)' }}>
-        {attributes.map((attr) => {
-          const terms = attributeTermsMap[attr.id] || []
-          if (terms.length === 0) return null
+      {loadingAttributes ? (
+        <div className="text-center text-[#9A9A9A]" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+          در حال بارگذاری فیلترها...
+        </div>
+      ) : !hasFilters ? (
+        <div className="text-center text-[#9A9A9A]" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+          فیلتری در دسترس نیست
+        </div>
+      ) : (
+        <div className="flex flex-col" style={{ gap: 'clamp(2rem, 2.08vw, 2rem)' }}>
+          {attributes.map((attr) => {
+            const terms = attributeTermsMap[attr.id] || []
+            if (terms.length === 0) return null
 
-          return (
-            <div key={attr.id}>
-              <div className="text-[#D2D2D2] text-right" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)', marginBottom: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>{attr.label || attr.name}</div>
-              <div className="flex flex-col" style={{ gap: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>
-                {terms.map((term) => {
-                  const isSelected = selectedAttributeTerms.includes(term.id)
-                  return (
-                    <button
-                      key={term.id}
-                      type="button"
-                      className={`rounded-[999px] flex items-center justify-center ${isSelected ? pillOn : pillOff}`}
-                      onClick={() => onAttributeTermToggle(term.id)}
-                      style={{
-                        height: 'clamp(2rem, 2.5vw, 2.25rem)',
-                        paddingLeft: 'clamp(1rem, 1.25vw, 1rem)',
-                        paddingRight: 'clamp(1rem, 1.25vw, 1rem)',
-                        fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)'
-                      }}
-                    >
-                      {term.name}
-                    </button>
-                  )
-                })}
+            return (
+              <div key={attr.id}>
+                <div className="text-[#D2D2D2] text-right" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)', marginBottom: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>{attr.label || attr.name}</div>
+                <div className="flex flex-col" style={{ gap: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>
+                  {terms.map((term) => {
+                    const isSelected = selectedAttributeTerms.includes(term.id)
+                    return (
+                      <button
+                        key={term.id}
+                        type="button"
+                        className={`rounded-[999px] flex items-center justify-center ${isSelected ? pillOn : pillOff}`}
+                        onClick={() => onAttributeTermToggle(term.id)}
+                        style={{
+                          height: 'clamp(2rem, 2.5vw, 2.25rem)',
+                          paddingLeft: 'clamp(1rem, 1.25vw, 1rem)',
+                          paddingRight: 'clamp(1rem, 1.25vw, 1rem)',
+                          fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)'
+                        }}
+                      >
+                        {term.name}
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
-            </div>
-          )
-        })}
-      </div>
+            )
+          })}
+        </div>
+      )}
     </aside>
   )
 }
@@ -386,23 +403,32 @@ export default function ProductsPage() {
 
     async function loadAttributes() {
       try {
+        console.log('Loading attributes from API...')
         const attrsResult = await getWcaAttributes()
         if (cancelled) return
-        setAttributes(attrsResult.attributes || [])
+        
+        const fetchedAttributes = attrsResult.attributes || []
+        console.log(`Fetched ${fetchedAttributes.length} attributes:`, fetchedAttributes.map(a => ({ id: a.id, name: a.name, label: a.label })))
+        setAttributes(fetchedAttributes)
 
         // Load terms for each attribute
         const termsMap: Record<number, WcaAttributeTerm[]> = {}
-        for (const attr of attrsResult.attributes || []) {
+        for (const attr of fetchedAttributes) {
           try {
             const termsResult = await getWcaAttributeTerms(attr.id)
             if (termsResult && !cancelled) {
-              termsMap[attr.id] = termsResult.terms || []
+              const terms = termsResult.terms || []
+              if (terms.length > 0) {
+                termsMap[attr.id] = terms
+                console.log(`Loaded ${terms.length} terms for attribute ${attr.name} (${attr.id}):`, terms.map(t => t.name))
+              }
             }
           } catch (error) {
-            console.error(`Error fetching terms for attribute ${attr.id}:`, error)
+            console.error(`Error fetching terms for attribute ${attr.id} (${attr.name}):`, error)
           }
         }
         if (!cancelled) {
+          console.log('Final terms map:', Object.keys(termsMap).length, 'attributes with terms')
           setAttributeTermsMap(termsMap)
         }
       } catch (error) {
@@ -574,6 +600,7 @@ export default function ProductsPage() {
               attributeTermsMap={attributeTermsMap}
               selectedAttributeTerms={selectedAttributeTerms}
               onAttributeTermToggle={handleAttributeTermToggle}
+              loadingAttributes={loadingAttributes}
             />
           </div>
         </div>

@@ -1,8 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import svgPaths from "./imports/svg-vwybhmkqfj";
 import clsx from "clsx";
+import { getWcaCategories, getWcaProducts, getWcaPrimaryImageUrl } from "@/lib/api/wca";
+import type { WcaCategory, WcaProduct } from "@/lib/api/types";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 // Product Name with Tooltip Component
 function ProductNameWithTooltip({ text, className }: { text: string, className?: string }) {
@@ -188,6 +192,7 @@ function Dropdown({
 export default function App() {
   const organizationSchema = generateOrganizationSchema();
   const websiteSchema = generateWebSiteSchema();
+  const router = useRouter();
 
   // Dropdown states
   const [oilType, setOilType] = useState("");
@@ -198,10 +203,152 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("gearbox-oil");
   const [activeBestsellerTab, setActiveBestsellerTab] = useState("engine-oil-bestseller");
 
+  // API data states
+  const [categories, setCategories] = useState<WcaCategory[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [products, setProducts] = useState<WcaProduct[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+  const [bestsellerProducts, setBestsellerProducts] = useState<WcaProduct[]>([]);
+  const [loadingBestsellers, setLoadingBestsellers] = useState(true);
+  const [categoryProductsMap, setCategoryProductsMap] = useState<Record<string, WcaProduct[]>>({});
+
   // Dropdown options
   const oilTypeOptions = ["همه", "روغن موتور", "روغن گیربکس", "روغن ترمز", "روغن صنعتی", "افزودنی"];
   const oilUsageOptions = ["همه", "خودروی سواری", "خودروی سنگین", "موتورسیکلت", "صنعتی"];
   const viscosityOptions = ["همه", "0W-20", "5W-30", "10W-40", "15W-50", "20W-50"];
+
+  // Category mapping for tabs
+  const categorySlugMap: Record<string, string> = {
+    'engine-oil': 'روغن-موتور',
+    'gearbox-oil': 'روغن-گیربکس',
+    'brake-oil': 'روغن-ترمز',
+    'hydraulic-oil': 'روغن-هیدرولیک',
+    'grease': 'گریس',
+    'special-additives': 'افزودنی-های-خاص',
+  };
+
+  // Fetch categories
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        setLoadingCategories(true);
+        const result = await getWcaCategories({
+          per_page: 100,
+          page: 1,
+          hide_empty: true,
+          parent: 0,
+        });
+        setCategories(result.categories || []);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setCategories([]);
+      } finally {
+        setLoadingCategories(false);
+      }
+    }
+    loadCategories();
+  }, []);
+
+  // Fetch products by category for tabs
+  useEffect(() => {
+    async function loadProductsByCategory() {
+      try {
+        setLoadingProducts(true);
+        const allProducts: WcaProduct[] = [];
+        const categoryMap: Record<string, WcaProduct[]> = {};
+
+        // Fetch products for each category tab
+        for (const [tabId, categorySlug] of Object.entries(categorySlugMap)) {
+          try {
+            // Find category by slug
+            const category = categories.find(cat => 
+              cat.slug === categorySlug || 
+              cat.name.toLowerCase().includes(categorySlug.replace('-', ' '))
+            );
+            
+            if (category) {
+              const result = await getWcaProducts({
+                per_page: 4,
+                page: 1,
+                category: category.id,
+              });
+              const categoryProducts = result.products || [];
+              categoryMap[tabId] = categoryProducts;
+              allProducts.push(...categoryProducts);
+            }
+          } catch (error) {
+            console.error(`Error fetching products for ${tabId}:`, error);
+            categoryMap[tabId] = [];
+          }
+        }
+
+        setCategoryProductsMap(categoryMap);
+        setProducts(allProducts);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setProducts([]);
+      } finally {
+        setLoadingProducts(false);
+      }
+    }
+
+    if (categories.length > 0) {
+      loadProductsByCategory();
+    }
+  }, [categories]);
+
+  // Fetch bestseller products (featured)
+  useEffect(() => {
+    async function loadBestsellers() {
+      try {
+        setLoadingBestsellers(true);
+        const result = await getWcaProducts({
+          per_page: 12,
+          page: 1,
+          featured: true,
+          orderby: 'popularity',
+          order: 'DESC',
+        });
+        setBestsellerProducts(result.products || []);
+      } catch (error) {
+        console.error('Error fetching bestsellers:', error);
+        setBestsellerProducts([]);
+      } finally {
+        setLoadingBestsellers(false);
+      }
+    }
+    loadBestsellers();
+  }, []);
+
+  // Handle search
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (oilType && oilType !== "همه") params.set('oilType', oilType);
+    if (oilUsage && oilUsage !== "همه") params.set('oilUsage', oilUsage);
+    if (viscosity && viscosity !== "همه") params.set('viscosity', viscosity);
+    router.push(`/products?${params.toString()}`);
+  };
+
+  // Get products for current active tab
+  const currentTabProducts = useMemo(() => {
+    return categoryProductsMap[activeTab] || [];
+  }, [activeTab, categoryProductsMap]);
+
+  // Get bestseller products for current bestseller tab
+  const currentBestsellerProducts = useMemo(() => {
+    if (!bestsellerProducts.length) return [];
+    // Filter by category if needed
+    const categorySlug = categorySlugMap[activeBestsellerTab.replace('-bestseller', '')];
+    if (categorySlug) {
+      return bestsellerProducts.filter(product => 
+        product.categories?.some(cat => 
+          cat.slug === categorySlug || 
+          cat.name.toLowerCase().includes(categorySlug.replace('-', ' '))
+        )
+      ).slice(0, 3);
+    }
+    return bestsellerProducts.slice(0, 3);
+  }, [activeBestsellerTab, bestsellerProducts]);
 
   return (
     <div className="bg-[#0e0e0e] min-h-screen w-full relative">
@@ -304,6 +451,7 @@ export default function App() {
               />
               {/* Search Button */}
               <button
+                onClick={handleSearch}
                 className="w-full lg:w-auto flex items-center bg-[#E6A81699] justify-center rounded-[120px] transition-all hover:opacity-90 order-1 sm:order-0"
                 style={{
                   backdropFilter: 'blur(10px)',
@@ -337,7 +485,11 @@ export default function App() {
           <div className="grid grid-cols-1 lg:grid-cols-4" style={{ gap: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
 
             {/* Industrial Oils Card (Wide) */}
-            <div className="relative bg-[#343434] rounded-3xl overflow-hidden lg:col-span-2" style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}>
+            <Link 
+              href={categories.find(c => c.name.toLowerCase().includes('صنعتی')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('صنعتی'))?.id}` : '/products'}
+              className="relative bg-[#343434] rounded-3xl overflow-hidden lg:col-span-2" 
+              style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}
+            >
               <div className="absolute bg-[rgba(215,105,105,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row-reverse h-full">
                 <div className="w-full md:w-[40%] flex items-center justify-center">
@@ -364,9 +516,13 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
             {/* Engine Oil Card */}
-            <div className="relative bg-[#343434] rounded-3xl overflow-hidden" style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}>
+            <Link 
+              href={categories.find(c => c.name.toLowerCase().includes('موتور')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('موتور'))?.id}` : '/products'}
+              className="relative bg-[#343434] rounded-3xl overflow-hidden" 
+              style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}
+            >
               <div className="absolute bg-[rgba(229,160,69,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
@@ -390,10 +546,14 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
 
             {/* Gear Oil Card (Wide) */}
-            <div className="relative bg-[#343434] rounded-3xl overflow-hidden" style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}>
+            <Link 
+              href={categories.find(c => c.name.toLowerCase().includes('گیربکس')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('گیربکس'))?.id}` : '/products'}
+              className="relative bg-[#343434] rounded-3xl overflow-hidden" 
+              style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}
+            >
               <div className="absolute bg-[#C9C9C980] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
@@ -415,10 +575,14 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
 
             {/* Brake Oil Card */}
-            <div className="relative bg-[#343434] rounded-3xl overflow-hidden" style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}>
+            <Link 
+              href={categories.find(c => c.name.toLowerCase().includes('ترمز')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('ترمز'))?.id}` : '/products'}
+              className="relative bg-[#343434] rounded-3xl overflow-hidden" 
+              style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}
+            >
               <div className="absolute bg-[rgba(255,35,39,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
@@ -440,10 +604,14 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
 
             {/* Gear Oil Card (Wide) */}
-            <div className="relative bg-[#343434] rounded-3xl overflow-hidden" style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}>
+            <Link 
+              href={categories.find(c => c.name.toLowerCase().includes('گیربکس')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('گیربکس'))?.id}` : '/products'}
+              className="relative bg-[#343434] rounded-3xl overflow-hidden" 
+              style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}
+            >
               <div className="absolute bg-[#1D36F14D] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
@@ -465,10 +633,14 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
 
             {/* Brake Oil Card */}
-            <div className="relative bg-[#343434] rounded-3xl overflow-hidden" style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}>
+            <Link 
+              href={categories.find(c => c.name.toLowerCase().includes('ترمز')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('ترمز'))?.id}` : '/products'}
+              className="relative bg-[#343434] rounded-3xl overflow-hidden" 
+              style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}
+            >
               <div className="absolute bg-[#EA770C] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row-reverse h-full">
                 <div className="w-full md:w-[40%] flex items-center justify-center">
@@ -490,10 +662,14 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
 
             {/* Special Additives Card */}
-            <div className="relative bg-[#343434] rounded-3xl overflow-hidden" style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}>
+            <Link 
+              href={categories.find(c => c.name.toLowerCase().includes('افزودنی') || c.name.toLowerCase().includes('خاص')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('افزودنی') || c.name.toLowerCase().includes('خاص'))?.id}` : '/products'}
+              className="relative bg-[#343434] rounded-3xl overflow-hidden" 
+              style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}
+            >
               <div className="absolute bg-[rgba(255,255,255,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div
                 className="relative flex flex-col md:flex-row h-full"
@@ -518,7 +694,7 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
         </section>
 
@@ -623,67 +799,49 @@ export default function App() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(1.5rem, 2.08vw, 2rem)', marginTop: 'clamp(4rem, 7.29vw, 7rem)' }}>
-            {/* Product Card 1 */}
-            <div className='relative'>
-              <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
-              <div className="absolute w-full z-10" style={{ height: 'clamp(259px, 21.56vw, 414px)', top: 'clamp(-5rem, -10.42vw, -5rem)' }} data-name="Mockup ATF-ZF Background Removed">
-                <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
-              </div>
-              <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
-                <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
-                  <div className="justify-center relative w-full">
-                    <ProductNameWithTooltip text="روغن گیربکس فول سینتتیک Romela ATF-ZF" className="text-[#FCFBEE]" />
+          {loadingProducts ? (
+            <div className="text-center text-white py-8">در حال بارگذاری محصولات...</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(1.5rem, 2.08vw, 2rem)', marginTop: 'clamp(4rem, 7.29vw, 7rem)' }}>
+              {currentTabProducts.length > 0 ? (
+                currentTabProducts.slice(0, 4).map((product) => {
+                  const productImage = getWcaPrimaryImageUrl(product) || imgMockupAtfZfBackgroundRemoved.src;
+                  return (
+                    <Link key={product.id} href={`/products/${product.slug}`} className='relative'>
+                      <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
+                      <div className="absolute w-full z-10" style={{ height: 'clamp(259px, 21.56vw, 414px)', top: 'clamp(-5rem, -10.42vw, -5rem)' }}>
+                        <img alt={product.name} className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={productImage} />
+                      </div>
+                      <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
+                        <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
+                          <div className="justify-center relative w-full">
+                            <ProductNameWithTooltip text={product.name} className="text-[#FCFBEE]" />
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })
+              ) : (
+                // Fallback to mock data if no products found
+                Array.from({ length: 4 }).map((_, index) => (
+                  <div key={index} className='relative'>
+                    <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
+                    <div className="absolute w-full z-10" style={{ height: 'clamp(259px, 21.56vw, 414px)', top: 'clamp(-5rem, -10.42vw, -5rem)' }}>
+                      <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
+                    </div>
+                    <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
+                      <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
+                        <div className="justify-center relative w-full">
+                          <ProductNameWithTooltip text="روغن گیربکس فول سینتتیک Romela ATF-ZF" className="text-[#FCFBEE]" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                ))
+              )}
             </div>
-
-            {/* Product Card 2 */}
-            <div className='relative'>
-              <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
-              <div className="absolute w-full z-10" style={{ height: 'clamp(259px, 21.56vw, 414px)', top: 'clamp(-5rem, -10.42vw, -5rem)' }} data-name="Mockup ATF-ZF Background Removed">
-                <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
-              </div>
-              <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
-                <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
-                  <div className="justify-center relative w-full">
-                    <ProductNameWithTooltip text="روغن گیربکس فول سینتتیک Romela ATF-ZF" className="text-[#FCFBEE]" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Product Card 3 */}
-            <div className='relative'>
-              <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
-              <div className="absolute w-full z-10" style={{ height: 'clamp(259px, 21.56vw, 414px)', top: 'clamp(-5rem, -10.42vw, -5rem)' }} data-name="Mockup ATF-ZF Background Removed">
-                <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
-              </div>
-              <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
-                <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
-                  <div className="justify-center relative w-full">
-                    <ProductNameWithTooltip text="روغن گیربکس فول سینتتیک Romela ATF-ZF" className="text-[#FCFBEE]" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Product Card 4 */}
-            <div className='relative'>
-              <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
-              <div className="absolute w-full z-10" style={{ height: 'clamp(259px, 21.56vw, 414px)', top: 'clamp(-5rem, -10.42vw, -5rem)' }} data-name="Mockup ATF-ZF Background Removed">
-                <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
-              </div>
-              <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
-                <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
-                  <div className="justify-center relative w-full">
-                    <ProductNameWithTooltip text="روغن گیربکس فول سینتتیک Romela ATF-ZF" className="text-[#FCFBEE]" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
         </section>
         <Divider />
 
@@ -864,58 +1022,85 @@ export default function App() {
               </div>
 
               {/* Left Side: Product Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-3" style={{ gap: 'clamp(1rem, 1.56vw, 1.5rem)' }}>
-                {/* Product Card 1: Romela Drive 0w-20 */}
-                <div
-                  className="rounded-2xl flex flex-col"
-                  style={{
-                    background: '#FFFFFF29',
-                    border: '1px solid #FFFFFF33',
-                    padding: 'clamp(1rem, 1.56vw, 1.5rem)'
-                  }}
-                >
-                  <h4 className="font-bold text-[#F9BD65] mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
-                    <ProductNameWithTooltip text="Romela Drive 0w-20" className="font-bold text-[#F9BD65] " />
-                  </h4>
-                  <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                    <img src="/images/image 1.png" alt="" style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
-                  </div>
+              {loadingBestsellers ? (
+                <div className="text-center text-white py-8">در حال بارگذاری...</div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-3" style={{ gap: 'clamp(1rem, 1.56vw, 1.5rem)' }}>
+                  {currentBestsellerProducts.length > 0 ? (
+                    currentBestsellerProducts.map((product) => {
+                      const productImage = getWcaPrimaryImageUrl(product) || '/images/image 1.png';
+                      return (
+                        <Link
+                          key={product.id}
+                          href={`/products/${product.slug}`}
+                          className="rounded-2xl flex flex-col"
+                          style={{
+                            background: '#FFFFFF29',
+                            border: '1px solid #FFFFFF33',
+                            padding: 'clamp(1rem, 1.56vw, 1.5rem)'
+                          }}
+                        >
+                          <h4 className="font-bold text-[#F9BD65] mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
+                            <ProductNameWithTooltip text={product.name} className="font-bold text-[#F9BD65] " />
+                          </h4>
+                          <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
+                            <img src={productImage} alt={product.name} style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
+                          </div>
+                        </Link>
+                      );
+                    })
+                  ) : (
+                    // Fallback to mock data if no products found
+                    <>
+                      <div
+                        className="rounded-2xl flex flex-col"
+                        style={{
+                          background: '#FFFFFF29',
+                          border: '1px solid #FFFFFF33',
+                          padding: 'clamp(1rem, 1.56vw, 1.5rem)'
+                        }}
+                      >
+                        <h4 className="font-bold text-[#F9BD65] mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
+                          <ProductNameWithTooltip text="Romela Drive 0w-20" className="font-bold text-[#F9BD65] " />
+                        </h4>
+                        <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
+                          <img src="/images/image 1.png" alt="" style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
+                        </div>
+                      </div>
+                      <div
+                        className="rounded-2xl flex flex-col"
+                        style={{
+                          background: '#FFFFFF29',
+                          border: '1px solid #FFFFFF33',
+                          padding: 'clamp(1rem, 1.56vw, 1.5rem)'
+                        }}
+                      >
+                        <h4 className="mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
+                          <ProductNameWithTooltip text="Romela Drive 5w-30" className="font-bold text-[#F9BD65] " />
+                        </h4>
+                        <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
+                          <img src="/images/image 1.png" alt="" style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
+                        </div>
+                      </div>
+                      <div
+                        className="rounded-2xl flex flex-col"
+                        style={{
+                          background: '#FFFFFF29',
+                          border: '1px solid #FFFFFF33',
+                          padding: 'clamp(1rem, 1.56vw, 1.5rem)'
+                        }}
+                      >
+                        <h4 className="font-bold text-[#F9BD65] mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
+                          <ProductNameWithTooltip text="Romela Drive 10w-40" className="font-bold text-[#F9BD65] " />
+                        </h4>
+                        <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
+                          <img src="/images/image 1.png" alt="" style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
-
-                {/* Product Card 2: Romela Drive 5w-30 */}
-                <div
-                  className="rounded-2xl flex flex-col"
-                  style={{
-                    background: '#FFFFFF29',
-                    border: '1px solid #FFFFFF33',
-                    padding: 'clamp(1rem, 1.56vw, 1.5rem)'
-                  }}
-                >
-                  <h4 className="mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
-                    <ProductNameWithTooltip text="Romela Drive 5w-30" className="font-bold text-[#F9BD65] " />
-                  </h4>
-                  <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                    <img src="/images/image 1.png" alt="" style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
-                  </div>
-                </div>
-
-                {/* Product Card 3: Romela Drive 10w-40 */}
-                <div
-                  className="rounded-2xl flex flex-col"
-                  style={{
-                    background: '#FFFFFF29',
-                    border: '1px solid #FFFFFF33',
-                    padding: 'clamp(1rem, 1.56vw, 1.5rem)'
-                  }}
-                >
-                  <h4 className="font-bold text-[#F9BD65] mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
-                    <ProductNameWithTooltip text="Romela Drive 10w-40" className="font-bold text-[#F9BD65] " />
-                  </h4>
-                  <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                    <img src="/images/image 1.png" alt="" style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </section>
