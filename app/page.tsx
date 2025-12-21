@@ -219,14 +219,11 @@ export default function App() {
         }}
       />
       {/* Hero Section with Masked Background */}
-      <div className="relative w-full flex items-center justify-center rounded-[1.5rem]" style={{ 
+      <div className="relative w-full flex items-center justify-center rounded-[1.5rem] pb-16 pt-52" style={{ 
         backgroundImage: `url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')`, 
         backgroundSize: 'cover', 
         backgroundPosition: 'center', 
         backgroundRepeat: 'no-repeat',
-        paddingTop: 'clamp(8rem, 16.67vw, 16rem)',
-        paddingBottom: 'clamp(3rem, 6.25vw, 5.75rem)',
-        minHeight: 'clamp(500px, 52.08vw, 1000px)'
       }}>
         <div className="absolute inset-0 bg-[rgba(0,0,0,0.3)] rounded-[2rem]" />
         <div className="flex flex-col items-center justify-center z-10 w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
