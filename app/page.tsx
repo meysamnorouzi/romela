@@ -915,7 +915,7 @@ export default function App() {
                     <ProductNameWithTooltip text="Romela Drive 10w-40" className="font-bold text-[#F9BD65] " />
                   </h4>
                   <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                    <div className="bg-[#FFFFFF4D] rounded-[10px]" style={{ width: 'clamp(6rem, 8.33vw, 8rem)', height: '100%' }}></div>
+                    <img src="/images/image 1.png" alt="" style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
                   </div>
                 </div>
               </div>
