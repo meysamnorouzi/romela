@@ -29,11 +29,20 @@ function CategoryChip({
   return (
     <Link
       href={href}
-      className="h-[52px] rounded-[999px] px-5 flex items-center gap-3 shrink-0 border border-white/10 bg-gradient-to-b from-[#3A3A3A] to-[#242424] text-white hover:bg-[#D7B354] hover:text-black transition-colors"
-      style={{ boxShadow: '0 18px 40px rgba(0,0,0,0.35)' }}
+      className="rounded-[999px] flex items-center shrink-0 border border-white/10 bg-gradient-to-b from-[#3A3A3A] to-[#242424] text-white hover:bg-[#D7B354] hover:text-black transition-colors"
+      style={{ 
+        boxShadow: '0 18px 40px rgba(0,0,0,0.35)',
+        height: 'clamp(3rem, 3.75vw, 3.25rem)',
+        paddingLeft: 'clamp(1.25rem, 1.56vw, 1.25rem)',
+        paddingRight: 'clamp(1.25rem, 1.56vw, 1.25rem)',
+        gap: 'clamp(0.75rem, 0.94vw, 0.75rem)'
+      }}
     >
-      <span className="text-[13px] leading-none whitespace-nowrap">{category.name}</span>
-      <div className="relative w-10 h-10 rounded-full bg-[#2B2B2B] flex items-center justify-center overflow-hidden">
+      <span className="leading-none whitespace-nowrap" style={{ fontSize: 'clamp(0.8125rem, 0.94vw, 0.8125rem)' }}>{category.name}</span>
+      <div className="relative rounded-full bg-[#2B2B2B] flex items-center justify-center overflow-hidden" style={{ 
+        width: 'clamp(2.5rem, 3.13vw, 2.5rem)',
+        height: 'clamp(2.5rem, 3.13vw, 2.5rem)'
+      }}>
         {icon && <Image src={icon} alt={category.name} width={30} height={30} className="object-contain" />}
       </div>
     </Link>
@@ -43,7 +52,7 @@ function CategoryChip({
 // Divider Component
 function Divider() {
   return (
-    <div className="w-full h-px my-8">
+    <div className="w-full h-px" style={{ marginTop: 'clamp(2rem, 3.13vw, 2rem)', marginBottom: 'clamp(2rem, 3.13vw, 2rem)' }}>
       <svg className="w-full h-full" fill="none" viewBox="0 0 1824 1" preserveAspectRatio="none">
         <line
           x1="0.5"
@@ -99,9 +108,12 @@ function ProductTile({ product }: { product: WcaProduct }) {
   const volumeText = volume || '—'
 
   return (
-    <Link href={`/products?slug=${encodeURIComponent(product.slug)}`} className='relative mt-16'>
-      <div className="relative bg-[#343434] h-[355px] rounded-[24px] w-full" />
-      <div className="absolute h-[414px] w-full z-10 -top-20" data-name="Mockup ATF-ZF Background Removed">
+    <Link href={`/products?slug=${encodeURIComponent(product.slug)}`} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
+      <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
+      <div className="absolute w-full z-10" style={{ 
+        height: 'clamp(259px, 21.56vw, 414px)', 
+        top: 'clamp(-5rem, -10.42vw, -5rem)' 
+      }} data-name="Mockup ATF-ZF Background Removed">
         {image ? (
           <Image
             src={image}
@@ -115,15 +127,18 @@ function ProductTile({ product }: { product: WcaProduct }) {
           </div>
         )}
       </div>
-      <div className='w-[full] flex flex-col items-center justify-center z-10 -mt-5'>
-        <div className="bg-[#e6a816ca] z-10  flex h-fit items-center justify-center p-4 rounded-[120px] w-[90%]">
-          <div className=" justify-center relative text-base text-[#FCFBEE] text-center">
-            <p dir="auto">{product.name}</p>
+      <div className='w-full flex flex-col items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
+        <div className="bg-[#e6a816ca] z-10 flex h-fit items-center justify-center rounded-[120px]" style={{ 
+          padding: 'clamp(1rem, 1.25vw, 1rem)',
+          width: '90%'
+        }}>
+          <div className="justify-center relative text-[#FCFBEE] text-center">
+            <p dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>{product.name}</p>
           </div>
         </div>
-        <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold text-base'>
-          <p className='px-4 py-2'>{volumeText}</p>
-          <p className='px-4 py-2 bg-[#C3C3C3] rounded-full'>{standardText}</p>
+        <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold' style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+          <p style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>{volumeText}</p>
+          <p className='bg-[#C3C3C3] rounded-full' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>{standardText}</p>
         </div>
       </div>
     </Link>
@@ -141,31 +156,41 @@ function FiltersPanel({
   selectedAttributeTerms: number[]
   onAttributeTermToggle: (termId: number) => void
 }) {
-  const pillBase = 'h-[36px] rounded-[999px] px-4 flex items-center justify-center text-[12px]'
   const pillOff = 'bg-[#2D2D2D] text-[#D2D2D2]'
   const pillOn = 'bg-[#D7B354] text-black'
 
   return (
-    <aside className="bg-[#343434] rounded-[22px] px-6 py-8 border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)]">
-      <h3 className="text-white text-lg font-bold text-center">فیلترها</h3>
+    <aside className="bg-[#343434] rounded-[22px] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)]" style={{ 
+      paddingLeft: 'clamp(1.5rem, 1.56vw, 1.5rem)',
+      paddingRight: 'clamp(1.5rem, 1.56vw, 1.5rem)',
+      paddingTop: 'clamp(2rem, 2.08vw, 2rem)',
+      paddingBottom: 'clamp(2rem, 2.08vw, 2rem)'
+    }}>
+      <h3 className="text-white font-bold text-center" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.125rem)' }}>فیلترها</h3>
       <Divider />
-      <div className="space-y-8">
+      <div className="flex flex-col" style={{ gap: 'clamp(2rem, 2.08vw, 2rem)' }}>
         {attributes.map((attr) => {
           const terms = attributeTermsMap[attr.id] || []
           if (terms.length === 0) return null
 
           return (
             <div key={attr.id}>
-              <div className="text-[#D2D2D2] text-right text-[12px] mb-3">{attr.label || attr.name}</div>
-              <div className="flex flex-col gap-3">
+              <div className="text-[#D2D2D2] text-right" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)', marginBottom: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>{attr.label || attr.name}</div>
+              <div className="flex flex-col" style={{ gap: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>
                 {terms.map((term) => {
                   const isSelected = selectedAttributeTerms.includes(term.id)
                   return (
                     <button
                       key={term.id}
                       type="button"
-                      className={`${pillBase} ${isSelected ? pillOn : pillOff}`}
+                      className={`rounded-[999px] flex items-center justify-center ${isSelected ? pillOn : pillOff}`}
                       onClick={() => onAttributeTermToggle(term.id)}
+                      style={{
+                        height: 'clamp(2rem, 2.5vw, 2.25rem)',
+                        paddingLeft: 'clamp(1rem, 1.25vw, 1rem)',
+                        paddingRight: 'clamp(1rem, 1.25vw, 1rem)',
+                        fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)'
+                      }}
                     >
                       {term.name}
                     </button>
@@ -420,42 +445,56 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="bg-[#0e0e0e] min-h-screen w-full relative">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.06),rgba(0,0,0,0)_55%)]" />
-      <div className="relative px-24 pt-36 pb-20">
+    <div className="bg-[#0e0e0e] min-h-screen w-full relative xl:px-0 2xl:px-6">
+      <div className="relative w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4" style={{ 
+        paddingTop: 'clamp(9rem, 18.75vw, 9rem)',
+        paddingBottom: 'clamp(5rem, 10.42vw, 5rem)'
+      }}>
         {/* Title */}
-        <h1 className="text-center text-white text-[2.125rem] font-bold tracking-wide mb-10">لیست محصولات روغن موتور</h1>
+        <h1 className="text-center text-white font-bold tracking-wide" style={{ 
+          fontSize: 'clamp(1.75rem, 2.21vw, 2.125rem)',
+          marginBottom: 'clamp(2.5rem, 5.21vw, 2.5rem)'
+        }}>لیست محصولات روغن موتور</h1>
         {/* Breadcrumb */}
-        <div className="flex justify-start mb-6">
-          <div className="text-lg font-bold text-[#9A9A9A]">
+        <div className="flex justify-start" style={{ marginBottom: 'clamp(1.5rem, 1.56vw, 1.5rem)' }}>
+          <div className="font-bold text-[#9A9A9A]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
             <Link href="/" className="hover:text-[#D7B354]">صفحه اصلی</Link>
-            <span className="mx-2">/</span>
+            <span style={{ marginLeft: 'clamp(0.5rem, 0.63vw, 0.5rem)', marginRight: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>/</span>
             <span className="text-[#F58F4A]">محصولات</span>
           </div>
         </div>
         {/* Category chips row */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
           <button
             type="button"
-            className="w-11 h-11 rounded-full bg-[#2D2D2D] border border-white/10 flex items-center justify-center text-[#D7B354]"
-            style={{ boxShadow: '0 18px 40px rgba(0,0,0,0.35)' }}
+            className="rounded-full bg-[#2D2D2D] border border-white/10 flex items-center justify-center text-[#D7B354]"
+            style={{ 
+              boxShadow: '0 18px 40px rgba(0,0,0,0.35)',
+              width: 'clamp(2.75rem, 3.44vw, 2.75rem)',
+              height: 'clamp(2.75rem, 3.44vw, 2.75rem)'
+            }}
             onClick={() => {
               chipRowRef.current?.scrollBy({ left: -240, behavior: 'smooth' })
             }}
             aria-label="scroll"
           >
-            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <svg fill="currentColor" viewBox="0 0 24 24" style={{ width: 'clamp(1.5rem, 1.56vw, 1.5rem)', height: 'clamp(1.5rem, 1.56vw, 1.5rem)' }}>
               <path d={svgPaths.chevronLeft} />
             </svg>
           </button>
 
           <div
             ref={chipRowRef}
-            className="flex-1 flex gap-4 overflow-x-auto no-scrollbar py-1"
-            style={{ scrollBehavior: 'smooth' }}
+            className="flex-1 flex overflow-x-auto no-scrollbar"
+            style={{ 
+              scrollBehavior: 'smooth',
+              gap: 'clamp(1rem, 1.25vw, 1rem)',
+              paddingTop: 'clamp(0.25rem, 0.31vw, 0.25rem)',
+              paddingBottom: 'clamp(0.25rem, 0.31vw, 0.25rem)'
+            }}
           >
             {loadingCategories ? (
-              <div className="text-[#9A9A9A] text-[13px]">در حال بارگذاری...</div>
+              <div className="text-[#9A9A9A]" style={{ fontSize: 'clamp(0.8125rem, 0.94vw, 0.8125rem)' }}>در حال بارگذاری...</div>
             ) : (
               categories.map((c) => (
                 <CategoryChip
@@ -471,17 +510,26 @@ export default function ProductsPage() {
         <Divider />
 
         {/* Content */}
-        <div dir="ltr" className="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 items-start">
+        <div dir="ltr" className="grid grid-cols-1 lg:grid-cols-[1fr_360px] items-start" style={{ 
+          marginTop: 'clamp(3rem, 3.13vw, 3rem)',
+          gap: 'clamp(2.5rem, 2.6vw, 2.5rem)'
+        }}>
           {/* Products grid */}
           <div dir="rtl">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ 
+              columnGap: 'clamp(2.5rem, 2.6vw, 2.5rem)',
+              rowGap: 'clamp(4rem, 5.21vw, 4rem)'
+            }}>
               {loadingProducts
                 ? Array.from({ length: 9 }).map((_, i) => <ProductCardLoading key={`pl-${i}`} />)
                 : visibleProducts.map((p) => <ProductTile key={p.id} product={p} />)}
             </div>
 
             {!loadingProducts && visibleProducts.length === 0 && (
-              <div className="mt-12 text-center text-[#9A9A9A]">محصولی برای نمایش وجود ندارد</div>
+              <div className="text-center text-[#9A9A9A]" style={{ 
+                marginTop: 'clamp(3rem, 3.13vw, 3rem)',
+                fontSize: 'clamp(1rem, 1.25vw, 1rem)'
+              }}>محصولی برای نمایش وجود ندارد</div>
             )}
           </div>
 

@@ -48,7 +48,8 @@ export default function ContactUsPage() {
   }
 
   return (
-    <div className="min-h-screen w-full overflow-hidden rounded-[1.5rem]" style={{
+ <div className='w-full 2xl:mb-96 mb-16'>
+     <div className="min-h-screen w-full overflow-hidden rounded-[1.5rem]" style={{
       backgroundImage: "url('/images/image 24.png')",
       backgroundSize: 'cover',
       backgroundPosition: 'center',
@@ -308,5 +309,6 @@ export default function ContactUsPage() {
         </div>
       </div>
     </div>
+ </div>
   )
 }
