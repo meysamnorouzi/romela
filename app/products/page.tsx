@@ -70,7 +70,7 @@ function CategoryChip({
         gap: 'clamp(0.75rem, 0.94vw, 0.75rem)'
       }}
     >
-      <span className="leading-none whitespace-nowrap" style={{ fontSize: 'clamp(0.8125rem, 0.94vw, 0.8125rem)' }}>{category.name}</span>
+      <span className="leading-none whitespace-nowrap font-iranyekan" style={{ fontSize: 'clamp(0.8125rem, 0.94vw, 0.8125rem)' }}>{category.name}</span>
       <div className="relative flex items-center justify-center overflow-hidden h-16 w-16">
         {icon && <Image src={icon} alt={category.name} fill className="object-contain w-full h-full" />}
       </div>
@@ -506,7 +506,7 @@ export default function ProductsPage() {
         paddingBottom: 'clamp(5rem, 10.42vw, 5rem)'
       }}>
         {/* Title */}
-        <h1 className="text-center text-white font-bold tracking-wide" style={{
+        <h1 className="text-center text-white font-bold tracking-wide font-iranyekan" style={{
           fontSize: 'clamp(1.75rem, 2.21vw, 2.125rem)',
           marginBottom: 'clamp(2.5rem, 5.21vw, 2.5rem)'
         }}>لیست محصولات</h1>
