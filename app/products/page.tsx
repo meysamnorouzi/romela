@@ -63,7 +63,7 @@ function CategoryChip({
   return (
     <Link
       href={href}
-      className="rounded-[999px] flex items-center shrink-0  bg-gradient-to-b from-[#3A3A3A] to-[#242424] text-white hover:bg-[#D7B354] hover:text-black transition-colors py-1"
+      className="rounded-[999px] flex items-center shrink-0  bg-gradient-to-b from-[#3A3A3A] to-[#242424] text-white transition-colors py-1"
       style={{
         paddingLeft: 'clamp(1.25rem, 1.56vw, 1.25rem)',
         paddingRight: 'clamp(1.25rem, 1.56vw, 1.25rem)',
