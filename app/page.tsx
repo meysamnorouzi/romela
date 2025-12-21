@@ -705,7 +705,7 @@ export default function App() {
             معرفی Romela آلمان
           </h2>
 
-          <div className="flex flex-col lgflex-row" style={{ gap: 'clamp(2rem, 3.13vw, 3rem)' }}>
+          <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(2rem, 3.13vw, 3rem)' }}>
             <div className="w-full lg:w-1/2">
               <p className="text-white text-right text-lg font-medium" dir="auto" style={{ 
                 lineHeight: 'clamp(2.5rem, 5.21vw, 2.5rem)'
