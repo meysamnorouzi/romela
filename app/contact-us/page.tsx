@@ -147,8 +147,9 @@ export default function ContactUsPage() {
               </form>
             </div>
 
-            <div className='lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 h-full'>
-              {/* Factory Contact Card */}
+            <div className='lg:col-span-2 flex flex-col gap-4 sm:gap-6 h-full'>
+              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 h-full'>
+                  {/* Factory Contact Card */}
               <div className="bg-[#FFFFFF33] backdrop-blur-sm rounded-xl p-4 sm:p-6 md:p-8 border border-white/10">
                 <div className="flex flex-col items-center mb-6">
                   <div className="bg-[#614D1F99] rounded-full p-3 mb-4">
@@ -260,6 +261,7 @@ export default function ContactUsPage() {
                     </p>
                   </div>
                 </div>
+              </div>
               </div>
               {/* Social Media Bar */}
               <div className="bg-[#FFFFFF33] backdrop-blur-sm rounded-xl p-4 sm:p-5 md:p-6 border border-white/10 sm:col-span-2 h-fit">
