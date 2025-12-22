@@ -29,7 +29,6 @@ function ProductNameWithTooltip({ text, className }: { text: string, className?:
         ref={nameRef}
         dir="auto" 
         style={{ 
-          fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap'
@@ -64,14 +63,12 @@ function CategoryChip({
   return (
     <Link
     href={href}
-    className="rounded-[999px] flex items-center shrink-0  bg-gradient-to-b from-[#3A3A3A] to-[#242424] text-white transition-colors py-1"
+    className="rounded-[999px] px-12 flex items-center shrink-0  bg-gradient-to-b from-[#3A3A3A] to-[#242424] text-white transition-colors py-1"
     style={{
-      paddingLeft: 'clamp(1.25rem, 1.56vw, 1.25rem)',
-      paddingRight: 'clamp(1.25rem, 1.56vw, 1.25rem)',
       gap: 'clamp(0.75rem, 0.94vw, 0.75rem)'
     }}
   >
-    <span className="leading-none whitespace-nowrap font-iranyekan" style={{ fontSize: 'clamp(0.8125rem, 0.94vw, 0.8125rem)' }}>{category.name}</span>
+    <span className="leading-none whitespace-nowrap font-iranyekan text-base font-bold">{category.name}</span>
     <div className="relative flex items-center justify-center overflow-hidden h-16 w-16">
       {icon && <Image src={icon} alt={category.name} fill className="object-contain w-full h-full" />}
     </div>
@@ -163,7 +160,7 @@ function ProductTile({ product }: { product: WcaProduct }) {
           width: '90%'
         }}>
           <div className="justify-center relative w-full">
-            <ProductNameWithTooltip text={product.name} className="text-[#FCFBEE]" />
+            <ProductNameWithTooltip text={product.name} className="text-[#FCFBEE] text-sm" />
           </div>
         </div>
         <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold' style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
@@ -582,8 +579,7 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
         paddingBottom: 'clamp(3rem, 10.42vw, 5rem)'
       }}>
         {/* Title */}
-        <h1 className="text-center text-white font-bold tracking-wide font-iranyekan text-xl sm:text-2xl" style={{ 
-          fontSize: 'clamp(1.5rem, 2.21vw, 2.125rem)',
+        <h1 className="text-center text-white font-bold tracking-wide font-iranyekan text-xl sm:text-[2.125rem]" style={{ 
           marginBottom: 'clamp(1.5rem, 5.21vw, 2.5rem)'
         }}>
           {selectedSubcategory 
@@ -593,11 +589,11 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
               : 'لیست محصولات'}
         </h1>
         {/* Breadcrumb */}
-        <div className="flex justify-start" style={{ marginBottom: 'clamp(1.5rem, 1.56vw, 1.5rem)' }}>
+        <div className="flex justify-start mb-14">
           <div className="font-bold text-[#9A9A9A]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
-            <Link href="/" className="hover:text-[#D7B354]">صفحه اصلی</Link>
+            <Link href="/" className="hover:text-[#F58F4A]">صفحه اصلی</Link>
             <span style={{ marginLeft: 'clamp(0.5rem, 0.63vw, 0.5rem)', marginRight: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>/</span>
-            <Link href="/products" className="hover:text-[#D7B354]">محصولات</Link>
+            <Link href="/products" className="hover:text-[#F58F4A]">محصولات</Link>
             {category && (
               <>
                 <span style={{ marginLeft: 'clamp(0.5rem, 0.63vw, 0.5rem)', marginRight: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>/</span>

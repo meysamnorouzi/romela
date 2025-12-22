@@ -26,7 +26,6 @@ function ProductNameWithTooltip({ text, className }: { text: string, className?:
         ref={nameRef}
         dir="auto" 
         style={{ 
-          fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap'
@@ -811,7 +810,7 @@ export default function App() {
                       <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
                         <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
                           <div className="justify-center relative w-full">
-                            <ProductNameWithTooltip text={product.name} className="text-[#FCFBEE]" />
+                            <ProductNameWithTooltip text={product.name} className="text-[#FCFBEE] text-sm" />
                           </div>
                         </div>
                       </div>
@@ -829,7 +828,7 @@ export default function App() {
                     <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
                       <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
                         <div className="justify-center relative w-full">
-                          <ProductNameWithTooltip text="روغن گیربکس فول سینتتیک Romela ATF-ZF" className="text-[#FCFBEE]" />
+                          <ProductNameWithTooltip text="روغن گیربکس فول سینتتیک Romela ATF-ZF" className="text-[#FCFBEE] text-base" />
                         </div>
                       </div>
                     </div>
@@ -1034,7 +1033,7 @@ export default function App() {
                           }}
                         >
                           <h4 className="font-bold text-[#F9BD65] mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
-                            <ProductNameWithTooltip text={product.name} className="font-bold text-[#F9BD65] font-iranyekan" />
+                            <ProductNameWithTooltip text={product.name} className="font-bold text-[#F9BD65] font-iranyekan text-base" />
                           </h4>
                           <div className="flex-1 flex items-center justify-center font-iranyekan text-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
                             <img src={productImage} alt={product.name} style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
@@ -1054,7 +1053,7 @@ export default function App() {
                         }}
                       >
                         <h4 className="font-bold text-[#F9BD65] mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
-                          <ProductNameWithTooltip text="Romela Drive 0w-20" className="font-bold text-[#F9BD65] " />
+                          <ProductNameWithTooltip text="Romela Drive 0w-20" className="font-bold text-[#F9BD65] text-base" />
                         </h4>
                         <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
                           <img src="/images/image 1.png" alt="" style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
@@ -1069,7 +1068,7 @@ export default function App() {
                         }}
                       >
                         <h4 className="mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
-                          <ProductNameWithTooltip text="Romela Drive 5w-30" className="font-bold text-[#F9BD65] " />
+                          <ProductNameWithTooltip text="Romela Drive 5w-30" className="font-bold text-[#F9BD65] text-base" />
                         </h4>
                         <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
                           <img src="/images/image 1.png" alt="" style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
@@ -1084,7 +1083,7 @@ export default function App() {
                         }}
                       >
                         <h4 className="font-bold text-[#F9BD65] mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
-                          <ProductNameWithTooltip text="Romela Drive 10w-40" className="font-bold text-[#F9BD65] " />
+                          <ProductNameWithTooltip text="Romela Drive 10w-40" className="font-bold text-[#F9BD65] text-base" />
                         </h4>
                         <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
                           <img src="/images/image 1.png" alt="" style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
