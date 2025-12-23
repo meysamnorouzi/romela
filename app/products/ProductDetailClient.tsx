@@ -184,6 +184,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
 
     const primaryImage = getWcaPrimaryImageUrl(product) || imgMockupAtfXlBackgroundRemoved.src
     const categoryName = product.categories?.[0]?.name || 'محصولات'
+    const categoryId = product.categories?.[0]?.id || '1'
     const descriptionText = stripHtml(product.short_description || product.description || '').slice(0, 160)
 
     const fullText = stripHtml(product.description || '')
@@ -246,6 +247,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
     return {
       primaryImage,
       categoryName,
+      categoryId,
       descriptionText,
       introImageTop,
       introImageBottom,
@@ -295,13 +297,15 @@ export function ProductDetailClient({ slug }: { slug: string }) {
           <div className="flex items-center text-right justify-start font-bold" style={{ gap: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>
           <Link href="/" className="hover:text-[#717171]">صفحه اصلی</Link>
           <span className="text-[#717171]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}> / </span>
-            <Link href={`/${computed.categoryName}`} className="text-[#717171]" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+          <Link href="/products" className="hover:text-[#717171]">محصولات</Link>
+          <span className="text-[#717171]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}> / </span>
+            <Link href={`/products/category/${computed.categoryId}`} className="text-[#717171]" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
               {computed.categoryName}
             </Link>
             <span className="text-[#717171]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}> / </span>
-            <Link href={`/${product.name}`}  className="text-[#F58F4A]" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+            <span className="text-[#F58F4A]" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
               {product.name}
-            </Link>
+            </span>
           </div>
         </div>
 
