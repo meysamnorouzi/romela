@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import clsx from 'clsx'
-
+import Link from "next/link";
 import svgPaths from './imports/svg-efqwtho29q'
 import {
   imgMockupAtfXlBackgroundRemoved,
@@ -291,18 +291,17 @@ export function ProductDetailClient({ slug }: { slug: string }) {
       }}>
         {/* Breadcrumb */}
         <div style={{ marginBottom: 'clamp(1.5rem, 4.17vw, 4rem)' }}>
+
           <div className="flex items-center text-right justify-start font-bold" style={{ gap: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>
-            <span className="text-[#717171]" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+          <Link href="/" className="hover:text-[#717171]">صفحه اصلی</Link>
+          <span className="text-[#717171]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}> / </span>
+            <Link href={`/${computed.categoryName}`} className="text-[#717171]" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
               {computed.categoryName}
-            </span>
+            </Link>
             <span className="text-[#717171]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}> / </span>
-            <span className="text-[#717171]" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
-              محصولات
-            </span>
-            <span className="text-[#717171]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}> / </span>
-            <span className="text-[#F58F4A]" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+            <Link href={`/${product.name}`}  className="text-[#F58F4A]" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
               {product.name}
-            </span>
+            </Link>
           </div>
         </div>
 
@@ -494,7 +493,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                     </svg>
                   </div>
                   <span className="text-black font-iranyekan font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-                    دانلود دیتا شیت
+                    دانلود دیتاشیت
                   </span>
                 </button>
                 <button className="bg-[#FDBA74] flex items-center rounded-[70px] py-4" style={{ 
@@ -632,7 +631,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                 </svg>
               </div>
               <span className="text-black font-iranyekan font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-                دانلود دیتا شیت
+                دانلود دیتاشیت
               </span>
             </button>
           </div>
