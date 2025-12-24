@@ -3,8 +3,8 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import svgPaths from "./imports/svg-vwybhmkqfj";
 import clsx from "clsx";
-import { getWcaCategories, getWcaProducts, getWcaPrimaryImageUrl } from "@/lib/api/wca";
-import type { WcaCategory, WcaProduct } from "@/lib/api/types";
+import { getWcaCategories, getWcaProducts, getWcaPrimaryImageUrl, getWcaAttributes, getWcaAttributeTerms } from "@/lib/api/wca";
+import type { WcaCategory, WcaProduct, WcaAttribute, WcaAttributeTerm } from "@/lib/api/types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -196,7 +196,7 @@ export default function App() {
   // Dropdown states
   const [oilType, setOilType] = useState("");
   const [oilUsage, setOilUsage] = useState("");
-  const [viscosity, setViscosity] = useState("");
+  const [brand, setBrand] = useState("");
 
   // Active tab state
   const [activeTab, setActiveTab] = useState("gearbox-oil");
@@ -205,16 +205,16 @@ export default function App() {
   // API data states
   const [categories, setCategories] = useState<WcaCategory[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
+  const [subcategories, setSubcategories] = useState<WcaCategory[]>([]);
+  const [loadingSubcategories, setLoadingSubcategories] = useState(false);
+  const [brandAttribute, setBrandAttribute] = useState<WcaAttribute | null>(null);
+  const [brandTerms, setBrandTerms] = useState<WcaAttributeTerm[]>([]);
+  const [loadingBrands, setLoadingBrands] = useState(true);
   const [products, setProducts] = useState<WcaProduct[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [bestsellerProducts, setBestsellerProducts] = useState<WcaProduct[]>([]);
   const [loadingBestsellers, setLoadingBestsellers] = useState(true);
   const [categoryProductsMap, setCategoryProductsMap] = useState<Record<string, WcaProduct[]>>({});
-
-  // Dropdown options
-  const oilTypeOptions = ["همه", "روغن موتور", "روغن گیربکس", "روغن ترمز", "روغن صنعتی", "افزودنی"];
-  const oilUsageOptions = ["همه", "خودروی سواری", "خودروی سنگین", "موتورسیکلت", "صنعتی"];
-  const viscosityOptions = ["همه", "0W-20", "5W-30", "10W-40", "15W-50", "20W-50"];
 
   // Category mapping for tabs
   const categorySlugMap: Record<string, string> = {
@@ -246,6 +246,82 @@ export default function App() {
       }
     }
     loadCategories();
+  }, []);
+
+  // Fetch subcategories when oilType (category) is selected
+  useEffect(() => {
+    async function loadSubcategories() {
+      if (!oilType || oilType === "همه") {
+        setSubcategories([]);
+        return;
+      }
+
+      // Find the selected category
+      const selectedCategory = categories.find(cat => cat.name === oilType || cat.id.toString() === oilType);
+      if (!selectedCategory) {
+        setSubcategories([]);
+        return;
+      }
+
+      try {
+        setLoadingSubcategories(true);
+        const result = await getWcaCategories({
+          per_page: 100,
+          page: 1,
+          hide_empty: true,
+          parent: selectedCategory.id,
+        });
+        setSubcategories(result.categories || []);
+        // Reset oilUsage when category changes
+        setOilUsage("");
+      } catch (error) {
+        console.error('Error fetching subcategories:', error);
+        setSubcategories([]);
+      } finally {
+        setLoadingSubcategories(false);
+      }
+    }
+
+    if (categories.length > 0) {
+      loadSubcategories();
+    }
+  }, [oilType, categories]);
+
+  // Fetch brand attribute and terms
+  useEffect(() => {
+    async function loadBrands() {
+      try {
+        setLoadingBrands(true);
+        const attrsResult = await getWcaAttributes();
+        const attributes = attrsResult.attributes || [];
+        
+        // Find brand attribute (check common names: brand, برند, pa_brand, etc.)
+        const brandAttr = attributes.find(attr => 
+          attr.name.toLowerCase().includes('brand') ||
+          attr.name.toLowerCase().includes('برند') ||
+          attr.label.toLowerCase().includes('brand') ||
+          attr.label.toLowerCase().includes('برند')
+        );
+
+        if (brandAttr) {
+          setBrandAttribute(brandAttr);
+          const termsResult = await getWcaAttributeTerms(brandAttr.id);
+          if (termsResult) {
+            setBrandTerms(termsResult.terms || []);
+          }
+        } else {
+          // If no brand attribute found, try to find it by checking all attributes
+          // This is a fallback - you might need to adjust based on your API structure
+          console.warn('Brand attribute not found. Available attributes:', attributes.map(a => ({ name: a.name, label: a.label })));
+        }
+      } catch (error) {
+        console.error('Error fetching brands:', error);
+        setBrandTerms([]);
+      } finally {
+        setLoadingBrands(false);
+      }
+    }
+    loadBrands();
   }, []);
 
   // Fetch products by category for tabs
@@ -322,11 +398,46 @@ export default function App() {
   // Handle search
   const handleSearch = () => {
     const params = new URLSearchParams();
-    if (oilType && oilType !== "همه") params.set('oilType', oilType);
-    if (oilUsage && oilUsage !== "همه") params.set('oilUsage', oilUsage);
-    if (viscosity && viscosity !== "همه") params.set('viscosity', viscosity);
+    
+    // Add category filter
+    if (oilType && oilType !== "همه") {
+      const selectedCategory = categories.find(cat => cat.name === oilType || cat.id.toString() === oilType);
+      if (selectedCategory) {
+        params.set('category', selectedCategory.id.toString());
+      }
+    }
+    
+    // Add subcategory filter
+    if (oilUsage && oilUsage !== "همه") {
+      const selectedSubcategory = subcategories.find(sub => sub.name === oilUsage || sub.id.toString() === oilUsage);
+      if (selectedSubcategory) {
+        params.set('subcategory', selectedSubcategory.id.toString());
+      }
+    }
+    
+    // Add brand filter (attribute term)
+    if (brand && brand !== "همه") {
+      const selectedBrandTerm = brandTerms.find(term => term.name === brand || term.id.toString() === brand);
+      if (selectedBrandTerm && brandAttribute) {
+        params.set('attribute_term', selectedBrandTerm.id.toString());
+      }
+    }
+    
     router.push(`/products?${params.toString()}`);
   };
+
+  // Prepare dropdown options
+  const oilTypeOptions = useMemo(() => {
+    return ["همه", ...categories.map(cat => cat.name)];
+  }, [categories]);
+
+  const oilUsageOptions = useMemo(() => {
+    return ["همه", ...subcategories.map(sub => sub.name)];
+  }, [subcategories]);
+
+  const brandOptions = useMemo(() => {
+    return ["همه", ...brandTerms.map(term => term.name)];
+  }, [brandTerms]);
 
   // Get products for current active tab
   const currentTabProducts = useMemo(() => {
@@ -442,11 +553,11 @@ export default function App() {
                 onChange={setOilUsage}
               />
               <Dropdown
-                id="viscosity"
-                label="ویسکوزیته"
-                options={viscosityOptions}
-                value={viscosity}
-                onChange={setViscosity}
+                id="brand"
+                label="برند"
+                options={brandOptions}
+                value={brand}
+                onChange={setBrand}
               />
               {/* Search Button */}
               <button

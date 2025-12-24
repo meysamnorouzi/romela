@@ -250,9 +250,20 @@ function FiltersPanel({
 
 function matchesFilters(
   product: WcaProduct,
+  categoryId: number | null,
+  subcategoryId: number | null,
   attributeTermIds: number[],
   attributeTermsMap: Record<number, WcaAttributeTerm[]>
 ) {
+  // Filter by category/subcategory
+  if (subcategoryId !== null) {
+    const hasSubcategory = product.categories?.some((c) => c.id === subcategoryId)
+    if (!hasSubcategory) return false
+  } else if (categoryId !== null) {
+    const hasCategory = product.categories?.some((c) => c.id === categoryId)
+    if (!hasCategory) return false
+  }
+
   // Filter by attribute terms
   if (attributeTermIds.length > 0) {
     // Get selected term names
@@ -331,11 +342,16 @@ function matchesFilters(
 export default function ProductsPage() {
   const sp = useSearchParams()
   const slug = (sp.get('slug') ?? '').trim()
+  const categoryParam = sp.get('category')
+  const subcategoryParam = sp.get('subcategory')
+  const attributeTermParam = sp.get('attribute_term')
 
   const [products, setProducts] = useState<WcaProduct[]>([])
   const [loadingProducts, setLoadingProducts] = useState(true)
   const [categories, setCategories] = useState<WcaCategory[]>([])
   const [loadingCategories, setLoadingCategories] = useState(true)
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null)
+  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<number | null>(null)
   const [attributes, setAttributes] = useState<WcaAttribute[]>([])
   const [attributeTermsMap, setAttributeTermsMap] = useState<Record<number, WcaAttributeTerm[]>>({})
   const [loadingAttributes, setLoadingAttributes] = useState(true)
@@ -441,6 +457,28 @@ export default function ProductsPage() {
     }
   }, [])
 
+  // Initialize filters from URL parameters
+  useEffect(() => {
+    if (categoryParam) {
+      const categoryId = parseInt(categoryParam, 10)
+      if (!isNaN(categoryId)) {
+        setSelectedCategoryId(categoryId)
+      }
+    }
+    if (subcategoryParam) {
+      const subcategoryId = parseInt(subcategoryParam, 10)
+      if (!isNaN(subcategoryId)) {
+        setSelectedSubcategoryId(subcategoryId)
+      }
+    }
+    if (attributeTermParam) {
+      const termId = parseInt(attributeTermParam, 10)
+      if (!isNaN(termId)) {
+        setSelectedAttributeTerms([termId])
+      }
+    }
+  }, [categoryParam, subcategoryParam, attributeTermParam])
+
   // Load products
   useEffect(() => {
     let cancelled = false
@@ -451,6 +489,13 @@ export default function ProductsPage() {
         const params: Parameters<typeof getWcaProducts>[0] = {
           per_page: 100,
           page: 1,
+        }
+
+        // Filter by category or subcategory
+        if (selectedSubcategoryId) {
+          params.category = selectedSubcategoryId
+        } else if (selectedCategoryId) {
+          params.category = selectedCategoryId
         }
 
         const result = await getWcaProducts(params)
@@ -469,11 +514,11 @@ export default function ProductsPage() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [selectedCategoryId, selectedSubcategoryId])
 
   const visibleProducts = useMemo(() => {
     let filtered = products.filter((p) =>
-      matchesFilters(p, selectedAttributeTerms, attributeTermsMap)
+      matchesFilters(p, selectedCategoryId, selectedSubcategoryId, selectedAttributeTerms, attributeTermsMap)
     )
 
     const withImage = filtered
@@ -482,7 +527,7 @@ export default function ProductsPage() {
       .map((x) => x.p)
 
     return withImage
-  }, [products, selectedAttributeTerms, attributeTermsMap])
+  }, [products, selectedCategoryId, selectedSubcategoryId, selectedAttributeTerms, attributeTermsMap])
 
   const handleAttributeTermToggle = (termId: number) => {
     setSelectedAttributeTerms((prev) =>
