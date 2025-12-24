@@ -492,7 +492,7 @@ export default function App() {
             پادراد ارس نمایندگی رسمی محصولات ROMELA OIL GERMANY 🇩🇪
           </p>
           <div
-            className="w-full rounded-2xl sm:rounded-3xl"
+            className="w-full rounded-2xl sm:rounded-3xl max-w-6xl"
             style={{
               background: 'rgba(255, 255, 255, 0.05)',
               backdropFilter: 'blur(39px) saturate(180%)',
@@ -501,7 +501,6 @@ export default function App() {
               boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 0 1px rgba(255, 255, 255, 0.1) inset',
               backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.02) 100%)',
               padding: 'clamp(1rem, 2.08vw, 2rem)',
-              maxWidth: '1400px'
             }}
           >
             <div className="flex flex-col lg:flex-row items-start justify-between gap-4 lg:gap-6 mb-4 sm:mb-6 lg:mb-8">
@@ -597,12 +596,12 @@ export default function App() {
             <Link 
               href={categories.find(c => c.name.toLowerCase().includes('صنعتی')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('صنعتی'))?.id}` : '/products'}
               className="relative bg-[#343434] rounded-3xl overflow-hidden lg:col-span-2" 
-              style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}
+              
             >
               <div className="absolute bg-[rgba(215,105,105,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row-reverse h-full">
                 <div className="w-full md:w-[40%] flex items-center justify-center">
-                  <div className="w-full flex items-center justify-center" style={{ maxWidth: 'clamp(12rem, 20vw, 20rem)' }}>
+                  <div className="w-full flex items-center justify-center h-64">
                     <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage8.src} />
                   </div>
                 </div>
@@ -630,7 +629,7 @@ export default function App() {
             <Link 
               href={categories.find(c => c.name.toLowerCase().includes('موتور')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('موتور'))?.id}` : '/products'}
               className="relative bg-[#343434] rounded-3xl overflow-hidden" 
-              style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}
+              
             >
               <div className="absolute bg-[rgba(229,160,69,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
@@ -648,8 +647,8 @@ export default function App() {
                   </div>
                 </div>
                 <div className="w-full md:w-[40%] flex items-center justify-center">
-                  <div className="w-full flex items-center justify-center" style={{ maxWidth: 'clamp(12rem, 20vw, 20rem)' }}>
-                    <div className="flex items-center justify-center" style={{ width: 'clamp(133px, 11.1vw, 213px)', height: 'clamp(166px, 13.8vw, 265px)' }}>
+                  <div className="w-full flex items-center justify-center h-64">
+                    <div className="flex items-center justify-center" style={{ width: 'clamp(133px, 11.1vw, 213px)' }}>
                       <img alt="" className="w-full h-full object-contain pointer-events-none" src={img4066180884Cf1Da234Ada498F99878E38474B39B91.src} />
                     </div>
                   </div>
@@ -661,7 +660,7 @@ export default function App() {
             <Link 
               href={categories.find(c => c.name.toLowerCase().includes('گیربکس')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('گیربکس'))?.id}` : '/products'}
               className="relative bg-[#343434] rounded-3xl overflow-hidden" 
-              style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}
+              
             >
               <div className="absolute bg-[#C9C9C980] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
@@ -679,7 +678,7 @@ export default function App() {
                   </div>
                 </div>
                 <div className="w-full md:w-[40%] flex items-center justify-center">
-                  <div className="w-full flex items-center justify-center" style={{ maxWidth: 'clamp(12rem, 20vw, 20rem)' }}>
+                  <div className="w-full flex items-center justify-center h-64">
                     <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage2.src} />
                   </div>
                 </div>
@@ -690,7 +689,7 @@ export default function App() {
             <Link 
               href={categories.find(c => c.name.toLowerCase().includes('ترمز')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('ترمز'))?.id}` : '/products'}
               className="relative bg-[#343434] rounded-3xl overflow-hidden" 
-              style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}
+              
             >
               <div className="absolute bg-[rgba(255,35,39,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
@@ -708,7 +707,7 @@ export default function App() {
                   </div>
                 </div>
                 <div className="w-full md:w-[40%] flex items-center justify-center">
-                  <div className="w-full flex items-center justify-center" style={{ maxWidth: 'clamp(12rem, 20vw, 20rem)' }}>
+                  <div className="w-full flex items-center justify-center h-64">
                     <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage5.src} />
                   </div>
                 </div>
@@ -717,15 +716,15 @@ export default function App() {
 
             {/* Gear Oil Card (Wide) */}
             <Link 
-              href={categories.find(c => c.name.toLowerCase().includes('گیربکس')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('گیربکس'))?.id}` : '/products'}
+              href={categories.find(c => c.name.toLowerCase().includes('هیدرولیک')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('گیربکس'))?.id}` : '/products'}
               className="relative bg-[#343434] rounded-3xl overflow-hidden" 
-              style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}
+              
             >
               <div className="absolute bg-[#1D36F14D] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
                   <h3 className="text-[#738CD2] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
-                    روغن گیربکس
+                  روغن هیدرولیک                  
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
                     <span className="text-[#738CD2] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
@@ -737,7 +736,7 @@ export default function App() {
                   </div>
                 </div>
                 <div className="w-full md:w-[40%] flex items-center justify-center">
-                  <div className="w-full flex items-center justify-center" style={{ maxWidth: 'clamp(12rem, 20vw, 20rem)' }}>
+                  <div className="w-full flex items-center justify-center h-64">
                     <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage6.src} />
                   </div>
                 </div>
@@ -748,12 +747,12 @@ export default function App() {
             <Link 
               href={categories.find(c => c.name.toLowerCase().includes('ترمز')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('ترمز'))?.id}` : '/products'}
               className="relative bg-[#343434] rounded-3xl overflow-hidden" 
-              style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}
+              
             >
               <div className="absolute bg-[#EA770C] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row-reverse h-full">
                 <div className="w-full md:w-[40%] flex items-center justify-center">
-                  <div className="w-full flex items-center justify-center" style={{ maxWidth: 'clamp(12rem, 20vw, 20rem)' }}>
+                  <div className="w-full flex items-center justify-center h-64">
                     <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage3.src} />
                   </div>
                 </div>
@@ -777,7 +776,7 @@ export default function App() {
             <Link 
               href={categories.find(c => c.name.toLowerCase().includes('افزودنی') || c.name.toLowerCase().includes('خاص')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('افزودنی') || c.name.toLowerCase().includes('خاص'))?.id}` : '/products'}
               className="relative bg-[#343434] rounded-3xl overflow-hidden" 
-              style={{ minHeight: 'clamp(260px, 15.63vw, 300px)' }}
+              
             >
               <div className="absolute bg-[rgba(255,255,255,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div
