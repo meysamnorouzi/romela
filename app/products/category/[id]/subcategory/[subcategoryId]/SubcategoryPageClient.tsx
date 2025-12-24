@@ -3,14 +3,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
-import type { WcaProduct, WcaProductsListResponse, WcaCategory, WcaAttribute, WcaAttributeTerm } from '@/lib/api/types'
+import type { WcaProduct, WcaCategory, WcaAttribute, WcaAttributeTerm } from '@/lib/api/types'
 import { getWcaPrimaryImageUrl, getWcaCategories, getWcaAttributes, getWcaAttributeTerms, getWcaProducts } from '@/lib/api/wca'
 import { LoadingSpinner } from '@/components/ui/Loading'
 import { stripHtml } from '@/lib/utils/text'
 import { extractStandard, extractVariantsFromFirstHtmlTable } from '@/lib/utils/wca'
-import { ProductDetailClient } from './ProductDetailClient'
 
 // Product Name with Tooltip Component
 function ProductNameWithTooltip({ text, className }: { text: string, className?: string }) {
@@ -26,10 +25,10 @@ function ProductNameWithTooltip({ text, className }: { text: string, className?:
 
   return (
     <div className="relative group w-full">
-      <p
+      <p 
         ref={nameRef}
-        dir="auto"
-        style={{
+        dir="auto" 
+        style={{ 
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap'
@@ -40,15 +39,11 @@ function ProductNameWithTooltip({ text, className }: { text: string, className?:
       </p>
       {showTooltip && (
         <div className="absolute min-w-52 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#2a2a2a] text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 border border-white/20 shadow-lg">
-          {text}
-        </div>
+        {text}
+      </div>
       )}
     </div>
   );
-}
-
-const svgPaths = {
-  chevronLeft: 'M15 19l-7-7 7-7',
 }
 
 function CategoryChip({
@@ -61,18 +56,18 @@ function CategoryChip({
   const icon = category.image || '/images/image 8.svg'
   return (
     <Link
-      href={href}
-      className="rounded-[999px] px-12 flex items-center shrink-0 text-white transition-colors py-1"
-      style={{
-        gap: 'clamp(0.75rem, 0.94vw, 0.75rem)',
-        background: 'radial-gradient(circle at left, #595959 0%, #353535 62%)'
-      }}
-    >
-      <span className="leading-none whitespace-nowrap font-iranyekan text-base font-bold">{category.name}</span>
-      <div className="relative flex items-center justify-center overflow-hidden h-16 w-16">
-        {icon && <Image src={icon} alt={category.name} fill className="object-contain w-full h-full" />}
-      </div>
-    </Link>
+    href={href}
+    className="rounded-[999px] px-12 flex items-center shrink-0 text-white transition-colors py-1"
+    style={{
+      gap: 'clamp(0.75rem, 0.94vw, 0.75rem)',
+      background: 'radial-gradient(circle at left, #595959 0%, #353535 62%)'
+    }}
+  >
+    <span className="leading-none whitespace-nowrap font-iranyekan text-base font-bold">{category.name}</span>
+    <div className="relative flex items-center justify-center overflow-hidden h-16 w-16">
+      {icon && <Image src={icon} alt={category.name} fill className="object-contain w-full h-full" />}
+    </div>
+  </Link>
   )
 }
 
@@ -137,9 +132,9 @@ function ProductTile({ product }: { product: WcaProduct }) {
   return (
     <Link href={`/products?slug=${encodeURIComponent(product.slug)}`} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
       <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
-      <div className="absolute w-full z-10" style={{
-        height: 'clamp(259px, 21.56vw, 414px)',
-        top: 'clamp(-5rem, -10.42vw, -5rem)'
+      <div className="absolute w-full z-10" style={{ 
+        height: 'clamp(259px, 21.56vw, 414px)', 
+        top: 'clamp(-5rem, -10.42vw, -5rem)' 
       }} data-name="Mockup ATF-ZF Background Removed">
         {image ? (
           <Image
@@ -155,7 +150,7 @@ function ProductTile({ product }: { product: WcaProduct }) {
         )}
       </div>
       <div className='w-full flex flex-col items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
-        <div className="bg-[#e6a816ca] z-10 flex h-fit items-center justify-center rounded-[120px]" style={{
+        <div className="bg-[#e6a816ca] z-10 flex h-fit items-center justify-center rounded-[120px]" style={{ 
           padding: 'clamp(1rem, 1.25vw, 1rem)',
           width: '90%'
         }}>
@@ -165,9 +160,9 @@ function ProductTile({ product }: { product: WcaProduct }) {
         </div>
         <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold' style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
           <p style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>{volumeText}</p>
-          <p className='bg-[#C3C3C3] rounded-full' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>
-          <ProductNameWithTooltip text={standardText} />
-          </p>
+          <div className='bg-[#C3C3C3] rounded-full' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>
+            <ProductNameWithTooltip text={standardText} />
+          </div>
         </div>
       </div>
     </Link>
@@ -190,13 +185,13 @@ function FiltersPanel({
   const pillOff = 'bg-[#2D2D2D] text-[#D2D2D2]'
   const pillOn = 'bg-[#D7B354] text-black'
 
-  const hasFilters = attributes.some(attr => {
+  const hasAttributeFilters = attributes.some(attr => {
     const terms = attributeTermsMap[attr.id] || []
     return terms.length > 0
   })
 
   return (
-    <aside className="bg-[#343434] rounded-[22px] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)]" style={{
+    <aside className="bg-[#343434] rounded-[22px] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)]" style={{ 
       paddingLeft: 'clamp(1.5rem, 1.56vw, 1.5rem)',
       paddingRight: 'clamp(1.5rem, 1.56vw, 1.5rem)',
       paddingTop: 'clamp(2rem, 2.08vw, 2rem)',
@@ -205,75 +200,67 @@ function FiltersPanel({
       <h3 className="text-white font-bold text-center" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.125rem)' }}>فیلترها</h3>
       <Divider />
       {loadingAttributes ? (
-        <div className="text-center text-[#9A9A9A]" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-          در حال بارگذاری فیلترها...
-        </div>
-      ) : !hasFilters ? (
-        <div className="text-center text-[#9A9A9A]" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-          فیلتری در دسترس نیست
-        </div>
-      ) : (
-        <div className="flex flex-col" style={{ gap: 'clamp(2rem, 2.08vw, 2rem)' }}>
-          {attributes.map((attr) => {
-            const terms = attributeTermsMap[attr.id] || []
-            if (terms.length === 0) return null
+          <div className="text-center text-[#9A9A9A]" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+            در حال بارگذاری فیلترها...
+          </div>
+        ) : !hasAttributeFilters ? (
+          <div className="text-center text-[#9A9A9A]" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+            فیلتری در دسترس نیست
+          </div>
+        ) : (
+          <div className="flex flex-col" style={{ gap: 'clamp(2rem, 2.08vw, 2rem)' }}>
+            {attributes.map((attr) => {
+              const terms = attributeTermsMap[attr.id] || []
+              if (terms.length === 0) return null
 
-            return (
-              <div key={attr.id}>
-                <div className="text-[#D2D2D2] text-right" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)', marginBottom: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>{attr.label || attr.name}</div>
-                <div className="grid grid-cols-2" style={{ gap: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>
-                  {terms.map((term) => {
-                    const isSelected = selectedAttributeTerms.includes(term.id)
-                    return (
-                      <button
-                        key={term.id}
-                        type="button"
-                        className={`rounded-[999px] flex items-center justify-center ${isSelected ? pillOn : pillOff}`}
-                        onClick={() => onAttributeTermToggle(term.id)}
-                        style={{
-                          height: 'clamp(2rem, 2.5vw, 2.25rem)',
-                          paddingLeft: 'clamp(1rem, 1.25vw, 1rem)',
-                          paddingRight: 'clamp(1rem, 1.25vw, 1rem)',
-                          fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)'
-                        }}
-                      >
-                        {term.name}
-                      </button>
-                    )
-                  })}
+              return (
+                <div key={attr.id}>
+                  <div className="text-[#D2D2D2] text-right" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)', marginBottom: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>{attr.label || attr.name}</div>
+                  <div className="grid grid-cols-2" style={{ gap: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>
+                    {terms.map((term) => {
+                      const isSelected = selectedAttributeTerms.includes(term.id)
+                      return (
+                        <button
+                          key={term.id}
+                          type="button"
+                          className={`rounded-[999px] flex items-center justify-center ${isSelected ? pillOn : pillOff}`}
+                          onClick={() => onAttributeTermToggle(term.id)}
+                          style={{
+                            height: 'clamp(2rem, 2.5vw, 2.25rem)',
+                            paddingLeft: 'clamp(1rem, 1.25vw, 1rem)',
+                            paddingRight: 'clamp(1rem, 1.25vw, 1rem)',
+                            fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)'
+                          }}
+                        >
+                          {term.name}
+                        </button>
+                      )
+                    })}
+                  </div>
                 </div>
-              </div>
-            )
-          })}
-        </div>
-      )}
+              )
+            })}
+          </div>
+        )}
     </aside>
   )
 }
 
 function matchesFilters(
   product: WcaProduct,
-  categoryId: number | null,
-  subcategoryId: number | null,
+  subcategoryId: number,
   attributeTermIds: number[],
   attributeTermsMap: Record<number, WcaAttributeTerm[]>
 ) {
-  // Filter by category/subcategory
-  if (subcategoryId !== null) {
-    const hasSubcategory = product.categories?.some((c) => c.id === subcategoryId)
-    if (!hasSubcategory) return false
-  } else if (categoryId !== null) {
-    const hasCategory = product.categories?.some((c) => c.id === categoryId)
-    if (!hasCategory) return false
-  }
+  // Filter by subcategory
+  const hasSubcategory = product.categories?.some((c) => c.id === subcategoryId)
+  if (!hasSubcategory) return false
 
   // Filter by attribute terms
   if (attributeTermIds.length > 0) {
-    // Get selected term names
     const selectedTermNames = new Set<string>()
     const selectedTermSlugs = new Set<string>()
-
-    // Build sets of selected term names and slugs from all attributes
+    
     Object.values(attributeTermsMap).forEach(terms => {
       terms.forEach(term => {
         if (attributeTermIds.includes(term.id)) {
@@ -283,19 +270,14 @@ function matchesFilters(
       })
     })
 
-    // Check if product has attributes that match selected terms
     const productAttributes = product.attributes || []
-
-    // Try to match against product attributes
     let hasMatchingAttribute = false
-
+    
     for (const attr of productAttributes) {
       if (!attr || typeof attr !== 'object') continue
-
-      // Try different possible structures
+      
       const attrObj = attr as any
-
-      // Check if attributes have options array (WooCommerce style)
+      
       if (Array.isArray(attrObj.options)) {
         for (const option of attrObj.options) {
           if (typeof option === 'string') {
@@ -313,19 +295,17 @@ function matchesFilters(
           }
         }
       }
-
-      // Check if attribute has a name/slug that matches
+      
       if (attrObj.name && typeof attrObj.name === 'string') {
         const attrName = attrObj.name.toLowerCase().trim()
         if (selectedTermNames.has(attrName) || selectedTermSlugs.has(attrName)) {
           hasMatchingAttribute = true
         }
       }
-
+      
       if (hasMatchingAttribute) break
     }
-
-    // Also check product name and description for term matches as fallback
+    
     if (!hasMatchingAttribute) {
       const productText = `${product.name || ''} ${product.description || ''} ${product.short_description || ''}`.toLowerCase()
       for (const termName of selectedTermNames) {
@@ -335,29 +315,31 @@ function matchesFilters(
         }
       }
     }
-
+    
     return hasMatchingAttribute
   }
 
   return true
 }
 
-export default function ProductsPage() {
+export function SubcategoryPageClient({ 
+  categoryId, 
+  subcategoryId 
+}: { 
+  categoryId: number
+  subcategoryId: number
+}) {
   const router = useRouter()
-  const pathname = usePathname()
   const sp = useSearchParams()
-  const slug = (sp.get('slug') ?? '').trim()
-  const categoryParam = sp.get('category')
-  const subcategoryParam = sp.get('subcategory')
-  const attributeTermParam = sp.get('attribute_term')
-  const attributeTermsParam = sp.get('attribute_terms') // Support multiple terms
+  const attributeTermsParam = sp.get('attribute_terms')
 
   const [products, setProducts] = useState<WcaProduct[]>([])
   const [loadingProducts, setLoadingProducts] = useState(true)
-  const [categories, setCategories] = useState<WcaCategory[]>([])
+  const [category, setCategory] = useState<WcaCategory | null>(null)
+  const [subcategory, setSubcategory] = useState<WcaCategory | null>(null)
+  const [subcategories, setSubcategories] = useState<WcaCategory[]>([])
+  const [hasSubcategoryChildren, setHasSubcategoryChildren] = useState(false)
   const [loadingCategories, setLoadingCategories] = useState(true)
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null)
-  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<number | null>(null)
   const [attributes, setAttributes] = useState<WcaAttribute[]>([])
   const [attributeTermsMap, setAttributeTermsMap] = useState<Record<number, WcaAttributeTerm[]>>({})
   const [loadingAttributes, setLoadingAttributes] = useState(true)
@@ -367,38 +349,96 @@ export default function ProductsPage() {
   const [showRightButton, setShowRightButton] = useState(false)
   const [showLeftButton, setShowLeftButton] = useState(true)
 
-  const WP_JSON_BASE_URL = (
-    process.env.NEXT_PUBLIC_WP_JSON_BASE_URL ||
-    process.env.NEXT_PUBLIC_WORDPRESS_URL ||
-    'https://padradarasoil.com/wp-json'
-  ).replace(/\/+$/, '')
-
-  async function fetchJson<T>(url: string): Promise<T> {
-    const res = await fetch(url, { headers: { Accept: 'application/json' }, cache: 'no-store' })
-    if (!res.ok) throw new Error(`Request failed (${res.status})`)
-    return res.json() as Promise<T>
+  // Helper function to find category by ID, always starting from page 1
+  async function findCategoryById(id: number): Promise<WcaCategory | undefined> {
+    let page = 1
+    const maxPages = 20
+    
+    while (page <= maxPages) {
+      try {
+        const result = await getWcaCategories({ 
+          per_page: 100, 
+          page: page, 
+          hide_empty: false 
+        })
+        
+        const category = result.categories?.find(c => c.id === id)
+        if (category) {
+          return category
+        }
+        
+        if (!result.categories || result.categories.length === 0) {
+          break
+        }
+        
+        page++
+      } catch (error) {
+        console.error(`Error fetching categories page ${page}:`, error)
+        break
+      }
+    }
+    
+    return undefined
   }
 
-  // Load root categories
+  // Load category and subcategory
   useEffect(() => {
     let cancelled = false
     setLoadingCategories(true)
 
     async function loadCategories() {
       try {
-        // Load root categories only
-        const result = await getWcaCategories({
-          per_page: 100,
-          page: 1,
-          hide_empty: true,
-          parent: 0
+        // Load category (parent) - fetch from API with parent=categoryId to get the subcategory by ID
+        // This ensures we get the subcategory name from the API response
+        const parentResult = await getWcaCategories({ 
+          per_page: 100, 
+          page: 1, 
+          hide_empty: false,
+          parent: categoryId
         })
-        if (cancelled) return
-        setCategories(result.categories || [])
+        
+        // Find the subcategory from the parent's children list
+        const subCat = parentResult.categories?.find(c => c.id === subcategoryId)
+        
+        if (!cancelled) {
+          setSubcategory(subCat || null)
+        }
+
+        // Load parent category
+        const parentCat = await findCategoryById(categoryId)
+        if (!cancelled) {
+          setCategory(parentCat || null)
+        }
+
+        // Check if the current subcategory has children (to determine if we should show subcategory chips)
+        const subcategoryChildrenResult = await getWcaCategories({ 
+          per_page: 100, 
+          page: 1, 
+          hide_empty: false,
+          parent: subcategoryId
+        })
+        
+        const hasChildren = subcategoryChildrenResult.categories && subcategoryChildrenResult.categories.length > 0
+        
+        if (!cancelled) {
+          setHasSubcategoryChildren(hasChildren)
+          
+          // Only show subcategories if the current subcategory has children
+          // If it has no children (end layer), don't show any subcategory chips
+          if (hasChildren) {
+            // Current subcategory has children, show them
+            setSubcategories(subcategoryChildrenResult.categories || [])
+          } else {
+            // Current subcategory has no children, it's the end layer - don't show any chips
+            setSubcategories([])
+          }
+        }
       } catch (error) {
         console.error('Error fetching categories:', error)
         if (!cancelled) {
-          setCategories([])
+          setCategory(null)
+          setSubcategory(null)
+          setSubcategories([])
         }
       } finally {
         if (!cancelled) setLoadingCategories(false)
@@ -410,7 +450,15 @@ export default function ProductsPage() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [categoryId, subcategoryId])
+
+  // Update document title
+  useEffect(() => {
+    const title = subcategory 
+      ? `لیست محصولات ${subcategory.name}`
+      : 'لیست محصولات'
+    document.title = `${title} | Romela Oil Germany`
+  }, [subcategory])
 
   // Load attributes
   useEffect(() => {
@@ -419,15 +467,12 @@ export default function ProductsPage() {
 
     async function loadAttributes() {
       try {
-        console.log('Loading attributes from API...')
         const attrsResult = await getWcaAttributes()
         if (cancelled) return
-
+        
         const fetchedAttributes = attrsResult.attributes || []
-        console.log(`Fetched ${fetchedAttributes.length} attributes:`, fetchedAttributes.map(a => ({ id: a.id, name: a.name, label: a.label })))
         setAttributes(fetchedAttributes)
 
-        // Load terms for each attribute
         const termsMap: Record<number, WcaAttributeTerm[]> = {}
         for (const attr of fetchedAttributes) {
           try {
@@ -436,15 +481,13 @@ export default function ProductsPage() {
               const terms = termsResult.terms || []
               if (terms.length > 0) {
                 termsMap[attr.id] = terms
-                console.log(`Loaded ${terms.length} terms for attribute ${attr.name} (${attr.id}):`, terms.map(t => t.name))
               }
             }
           } catch (error) {
-            console.error(`Error fetching terms for attribute ${attr.id} (${attr.name}):`, error)
+            console.error(`Error fetching terms for attribute ${attr.id}:`, error)
           }
         }
         if (!cancelled) {
-          console.log('Final terms map:', Object.keys(termsMap).length, 'attributes with terms')
           setAttributeTermsMap(termsMap)
         }
       } catch (error) {
@@ -467,37 +510,13 @@ export default function ProductsPage() {
 
   // Initialize filters from URL parameters
   useEffect(() => {
-    if (categoryParam) {
-      const categoryId = parseInt(categoryParam, 10)
-      if (!isNaN(categoryId)) {
-        setSelectedCategoryId(categoryId)
-      }
-    } else {
-      setSelectedCategoryId(null)
-    }
-    if (subcategoryParam) {
-      const subcategoryId = parseInt(subcategoryParam, 10)
-      if (!isNaN(subcategoryId)) {
-        setSelectedSubcategoryId(subcategoryId)
-      }
-    } else {
-      setSelectedSubcategoryId(null)
-    }
-    
-    // Support both single attribute_term and multiple attribute_terms
-    const terms: number[] = []
-    if (attributeTermParam) {
-      const termId = parseInt(attributeTermParam, 10)
-      if (!isNaN(termId)) {
-        terms.push(termId)
-      }
-    }
     if (attributeTermsParam) {
       const termIds = attributeTermsParam.split(',').map(id => parseInt(id.trim(), 10)).filter(id => !isNaN(id))
-      terms.push(...termIds)
+      setSelectedAttributeTerms([...new Set(termIds)])
+    } else {
+      setSelectedAttributeTerms([])
     }
-    setSelectedAttributeTerms([...new Set(terms)]) // Remove duplicates
-  }, [categoryParam, subcategoryParam, attributeTermParam, attributeTermsParam])
+  }, [attributeTermsParam])
 
   // Load products
   useEffect(() => {
@@ -509,13 +528,7 @@ export default function ProductsPage() {
         const params: Parameters<typeof getWcaProducts>[0] = {
           per_page: 100,
           page: 1,
-        }
-
-        // Filter by category or subcategory
-        if (selectedSubcategoryId) {
-          params.category = selectedSubcategoryId
-        } else if (selectedCategoryId) {
-          params.category = selectedCategoryId
+          category: subcategoryId,
         }
 
         const result = await getWcaProducts(params)
@@ -534,22 +547,22 @@ export default function ProductsPage() {
     return () => {
       cancelled = true
     }
-  }, [selectedCategoryId, selectedSubcategoryId])
+  }, [subcategoryId])
 
   const visibleProducts = useMemo(() => {
-    let filtered = products.filter((p) =>
-      matchesFilters(p, selectedCategoryId, selectedSubcategoryId, selectedAttributeTerms, attributeTermsMap)
+    let filtered = products.filter((p) => 
+      matchesFilters(p, subcategoryId, selectedAttributeTerms, attributeTermsMap)
     )
-
+    
     const withImage = filtered
       .map((p) => ({ p, image: getWcaPrimaryImageUrl(p) }))
       .filter((x) => Boolean(x.image))
       .map((x) => x.p)
 
     return withImage
-  }, [products, selectedCategoryId, selectedSubcategoryId, selectedAttributeTerms, attributeTermsMap])
+  }, [products, subcategoryId, selectedAttributeTerms, attributeTermsMap])
 
-  // Update URL when filters change (but skip initial load to avoid loop)
+  // Update URL when filters change
   const isInitialLoad = useRef(true)
   useEffect(() => {
     if (isInitialLoad.current) {
@@ -559,29 +572,17 @@ export default function ProductsPage() {
 
     const params = new URLSearchParams()
     
-    // Update category param
-    if (selectedCategoryId) {
-      params.set('category', selectedCategoryId.toString())
-    }
-    
-    // Update subcategory param
-    if (selectedSubcategoryId) {
-      params.set('subcategory', selectedSubcategoryId.toString())
-    }
-    
-    // Update attribute terms param
     if (selectedAttributeTerms.length > 0) {
       params.set('attribute_terms', selectedAttributeTerms.join(','))
     }
     
-    // Update URL without causing navigation
-    const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
+    const newUrl = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname
     router.replace(newUrl, { scroll: false })
-  }, [selectedCategoryId, selectedSubcategoryId, selectedAttributeTerms, pathname, router])
+  }, [selectedAttributeTerms, router])
 
   const handleAttributeTermToggle = (termId: number) => {
     setSelectedAttributeTerms((prev) => {
-      const newTerms = prev.includes(termId)
+      const newTerms = prev.includes(termId) 
         ? prev.filter((id) => id !== termId)
         : [...prev, termId]
       return newTerms
@@ -593,27 +594,19 @@ export default function ProductsPage() {
     const checkScroll = () => {
       if (chipRowRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = chipRowRef.current
-        // In RTL, scrollLeft can be negative when scrolled left
-        // scrollLeft starts at 0 (at start/rightmost) and goes negative as we scroll left
-        // At end (leftmost): scrollLeft ≈ -(scrollWidth - clientWidth)
-        
         const maxScroll = scrollWidth - clientWidth
         const isAtStart = Math.abs(scrollLeft) < 1 || (scrollLeft === 0 && maxScroll <= 0)
         const isAtEnd = maxScroll > 0 && Math.abs(scrollLeft + maxScroll) < 1
         
-        // Right button: show when we've scrolled left (can go back right)
         setShowRightButton(!isAtStart && maxScroll > 0)
-        // Left button: show when we're not at the end (can scroll left)
         setShowLeftButton(!isAtEnd && maxScroll > 0)
       }
     }
 
     const scrollContainer = chipRowRef.current
     if (scrollContainer) {
-      // Initial check after a small delay to ensure layout is complete
       setTimeout(checkScroll, 100)
       scrollContainer.addEventListener('scroll', checkScroll)
-      // Also check on resize
       window.addEventListener('resize', checkScroll)
     }
 
@@ -623,97 +616,115 @@ export default function ProductsPage() {
       }
       window.removeEventListener('resize', checkScroll)
     }
-  }, [categories])
-
-  if (slug) {
-    return <ProductDetailClient slug={slug} />
-  }
+  }, [subcategories])
 
   return (
     <div className="bg-[#0e0e0e] min-h-screen w-full relative xl:px-0 2xl:px-6 px-4 sm:px-6">
-      <div className="relative w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4" style={{
+      <div className="relative w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4" style={{ 
         paddingTop: 'clamp(6rem, 18.75vw, 9rem)',
         paddingBottom: 'clamp(3rem, 10.42vw, 5rem)'
       }}>
         {/* Title */}
-        <h1 className="text-center text-white font-bold tracking-wide font-iranyekan text-xl sm:text-[2.125rem]" style={{
+        <h1 className="text-center text-white font-bold tracking-wide font-iranyekan text-xl sm:text-[2.125rem]" style={{ 
           marginBottom: 'clamp(1.5rem, 5.21vw, 2.5rem)'
-        }}>لیست محصولات</h1>
+        }}>
+          {subcategory 
+            ? ` لیست محصولات ${subcategory.name} ` 
+            : 'لیست محصولات'}
+        </h1>
         {/* Breadcrumb */}
         <div className="flex justify-start mb-14">
           <div className="font-bold text-[#9A9A9A]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
-            <Link href="/" className="hover:text-[#717171]">صفحه اصلی</Link>
-            <span style={{ marginLeft: 'clamp(0.7rem, 0.83vw, 0.7rem)', marginRight: 'clamp(0.7rem, 0.83vw, 0.7rem)' }}>/</span>
-            <span className="text-[#F58F4A]">محصولات</span>
-          </div>
-        </div>
-        {/* Category chips row */}
-        <div className="flex items-center" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
-          {showRightButton && (
-            <button
-              type="button"
-              className="rounded-full bg-[#FDBA7433] flex items-center justify-center text-[#E2951A] py-7 px-4"
-              onClick={() => {
-                chipRowRef.current?.scrollBy({ left: 240, behavior: 'smooth' })
-              }}
-              aria-label="scroll right"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7.5 2L17.5 12L7.5 22L5.725 20.225L13.95 12L5.725 3.775L7.5 2Z" fill="#E2951A" />
-              </svg>
-            </button>
-          )}
-
-          <div
-            ref={chipRowRef}
-            dir="rtl"
-            className="flex-1 flex overflow-x-auto no-scrollbar"
-            style={{
-              scrollBehavior: 'smooth',
-              gap: 'clamp(1rem, 1.25vw, 1rem)',
-              paddingTop: 'clamp(0.25rem, 0.31vw, 0.25rem)',
-              paddingBottom: 'clamp(0.25rem, 0.31vw, 0.25rem)'
-            }}
-          >
-            {loadingCategories ? (
-              <div className="text-[#9A9A9A]" style={{ fontSize: 'clamp(0.8125rem, 0.94vw, 0.8125rem)' }}>در حال بارگذاری...</div>
-            ) : (
-              categories.map((c) => (
-                <CategoryChip
-                  key={c.id}
-                  category={c}
-                  href={`/products/category/${c.id}`}
-                />
-              ))
+            <Link href="/" className="hover:text-[#F58F4A]">صفحه اصلی</Link>
+            <span style={{ marginLeft: 'clamp(0.5rem, 0.63vw, 0.5rem)', marginRight: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>/</span>
+            <Link href="/products" className="hover:text-[#F58F4A]">محصولات</Link>
+            {category && subcategory && (
+              <>
+                <span style={{ marginLeft: 'clamp(0.5rem, 0.63vw, 0.5rem)', marginRight: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>/</span>
+                <Link href={`/products/category/${category.id}`} className="hover:text-[#F58F4A]">{category.name}</Link>
+                <span style={{ marginLeft: 'clamp(0.5rem, 0.63vw, 0.5rem)', marginRight: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>/</span>
+                <span className="text-[#F58F4A]">{subcategory.name}</span>
+              </>
             )}
           </div>
-
-          {showLeftButton && (
-            <button
-              type="button"
-              className="rounded-full bg-[#FDBA7433] flex items-center justify-center text-[#E2951A] py-7 px-4"
-              onClick={() => {
-                chipRowRef.current?.scrollBy({ left: -240, behavior: 'smooth' })
-              }}
-              aria-label="scroll left"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.5 2L6.5 12L16.5 22L18.275 20.225L10.05 12L18.275 3.775L16.5 2Z" fill="#E2951A" />
-              </svg>
-            </button>
-          )}
         </div>
+        {/* Subcategory chips row - only show if current subcategory has children (not end layer) */}
+        {hasSubcategoryChildren && subcategories.length > 0 && (
+          <>
+            <div className="flex items-center" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
+              {showRightButton && (
+                <button
+                  type="button"
+                  className="rounded-full bg-[#FDBA7433] flex items-center justify-center text-[#E2951A] py-7 px-4"
+                  onClick={() => {
+                    chipRowRef.current?.scrollBy({ left: 240, behavior: 'smooth' })
+                  }}
+                  aria-label="scroll right"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.5 2L17.5 12L7.5 22L5.725 20.225L13.95 12L5.725 3.775L7.5 2Z" fill="#E2951A" />
+                  </svg>
+                </button>
+              )}
 
-        <Divider />
+              <div
+                ref={chipRowRef}
+                dir="rtl"
+                className="flex-1 flex overflow-x-auto no-scrollbar"
+                style={{ 
+                  scrollBehavior: 'smooth',
+                  gap: 'clamp(1rem, 1.25vw, 1rem)',
+                  paddingTop: 'clamp(0.25rem, 0.31vw, 0.25rem)',
+                  paddingBottom: 'clamp(0.25rem, 0.31vw, 0.25rem)'
+                }}
+              >
+                {loadingCategories ? (
+                  <div className="text-[#9A9A9A]" style={{ fontSize: 'clamp(0.8125rem, 0.94vw, 0.8125rem)' }}>در حال بارگذاری...</div>
+                ) : (
+                  subcategories.map((c) => {
+                    // If showing children of current subcategory, they should navigate to the same parent level
+                    // but as a new subcategory route: /category/[parent]/subcategory/[childId]
+                    const href = hasSubcategoryChildren 
+                      ? `/products/category/${categoryId}/subcategory/${c.id}`
+                      : `/products/category/${categoryId}/subcategory/${c.id}`
+                    return (
+                      <CategoryChip
+                        key={c.id}
+                        category={c}
+                        href={href}
+                      />
+                    )
+                  })
+                )}
+              </div>
+
+              {showLeftButton && (
+                <button
+                  type="button"
+                  className="rounded-full bg-[#FDBA7433] flex items-center justify-center text-[#E2951A] py-7 px-4"
+                  onClick={() => {
+                    chipRowRef.current?.scrollBy({ left: -240, behavior: 'smooth' })
+                  }}
+                  aria-label="scroll left"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16.5 2L6.5 12L16.5 22L18.275 20.225L10.05 12L18.275 3.775L16.5 2Z" fill="#E2951A" />
+                  </svg>
+                </button>
+              )}
+            </div>
+            <Divider />
+          </>
+        )}
 
         {/* Content */}
-        <div dir="ltr" className="grid grid-cols-1 lg:grid-cols-[1fr_360px] items-start" style={{
+        <div dir="ltr" className="grid grid-cols-1 lg:grid-cols-[1fr_360px] items-start" style={{ 
           marginTop: 'clamp(2rem, 3.13vw, 3rem)',
           gap: 'clamp(1.5rem, 2.6vw, 2.5rem)'
         }}>
           {/* Products grid */}
           <div dir="rtl">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ 
               columnGap: 'clamp(1rem, 2.6vw, 2.5rem)',
               rowGap: 'clamp(2rem, 5.21vw, 4rem)'
             }}>
@@ -723,7 +734,7 @@ export default function ProductsPage() {
             </div>
 
             {!loadingProducts && visibleProducts.length === 0 && (
-              <div className="text-center text-[#9A9A9A]" style={{
+              <div className="text-center text-[#9A9A9A]" style={{ 
                 marginTop: 'clamp(3rem, 3.13vw, 3rem)',
                 fontSize: 'clamp(1rem, 1.25vw, 1rem)'
               }}>محصولی برای نمایش وجود ندارد</div>
@@ -745,4 +756,3 @@ export default function ProductsPage() {
     </div>
   )
 }
-

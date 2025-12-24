@@ -8,6 +8,12 @@ import svgPaths from "../products/imports/svg-efqwtho29q"
 import clsx from "clsx";
 import { imgImage24 } from "../products/imports/svg-fckud";
 import { imgScreenshot20251215At1246271 } from "../products/imports/image-placeholders";
+import dynamic from 'next/dynamic'
+
+const DarkMap = dynamic(() => import("@/components/contact/DarkMap"), {
+  ssr: false,
+})
+import { Toast } from "@/components/ui/Toast";
 
 const contactSchema = z.object({
   name: z.string().min(2, 'نام باید حداقل ۲ کاراکتر باشد'),
@@ -19,9 +25,12 @@ const contactSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactSchema>
 
+const WORDPRESS_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || ''
+
 export default function ContactUsPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [showSuccessToast, setShowSuccessToast] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const {
     register,
@@ -34,28 +43,54 @@ export default function ContactUsPage() {
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true)
-    // Here you would send the form to your backend
-    console.log('Contact form data:', data)
+    setSubmitError(null)
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    try {
+      const response = await fetch(`${WORDPRESS_URL}/cf/v1/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          full_name: data.name,
+          contact_number: data.phone,
+          email: data.email,
+          subject: data.subject,
+          message: data.message,
+        }),
+      })
 
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    reset()
+      if (!response.ok) {
+        throw new Error('ارسال فرم با خطا مواجه شد')
+      }
 
-    setTimeout(() => setIsSubmitted(false), 5000)
+      setShowSuccessToast(true)
+      reset()
+    } catch (error) {
+      console.error('Error submitting contact form:', error)
+      setSubmitError(error instanceof Error ? error.message : 'خطا در ارسال فرم. لطفا دوباره تلاش کنید.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
- <div className='w-full 2xl:mb-96 mb-16'>
-     <div className="min-h-screen w-full overflow-hidden rounded-[1rem] sm:rounded-[1.5rem]" style={{
+    <>
+      <Toast
+        message="پیام شما با موفقیت ارسال شد. در اسرع وقت با شما تماس خواهیم گرفت."
+        type="success"
+        isVisible={showSuccessToast}
+        onClose={() => setShowSuccessToast(false)}
+      />
+      <div className='w-full 2xl:mb-96 mb-16'>
+     <div className="relative w-full overflow-hidden rounded-[1rem] sm:rounded-[1.5rem]" style={{
       backgroundImage: "url('/images/image 24.png')",
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
+      minHeight: '100vh'
     }}>
-   <div className="w-full h-full absolute top-0 left-0 bg-[#0000004D] z-10"/>
+   <div className="absolute inset-0 bg-[#0000004D] z-10 rounded-[1rem] sm:rounded-[1.5rem]"/>
       {/* Content Container */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-20 lg:py-80">
 
@@ -146,13 +181,20 @@ export default function ContactUsPage() {
                   )}
                 </div>
 
+                {/* Error Message */}
+                {submitError && (
+                  <div className="p-4 bg-red-500/20 border border-red-500/50 rounded-xl">
+                    <p className="text-sm text-red-400 text-right">{submitError}</p>
+                  </div>
+                )}
+
                 {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={isSubmitting}
                   className="w-full bg-[#E6A81699] hover:bg-[#E6A81699] rounded-full px-6 py-3 sm:py-4 text-[#fcfbee]  text-base sm:text-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-bold"
                 >
-                  {isSubmitting ? 'در حال ارسال...' : isSubmitted ? 'پیام ارسال شد!' : 'ارسال پیام'}
+                  {isSubmitting ? 'در حال ارسال...' : 'ارسال پیام'}
                 </button>
               </form>
             </div>
@@ -315,67 +357,6 @@ export default function ContactUsPage() {
               </div>
             </div>
           </div>
-          /* Frame 1984078866 */
-
-/* Auto layout */
-display: flex;
-flex-direction: row;
-justify-content: flex-end;
-align-items: center;
-padding: 4px 30px;
-gap: 24px;
-isolation: isolate;
-
-position: absolute;
-width: 314px;
-height: 78px;
-left: 113px;
-top: 382px;
-
-background: radial-gradient(58.62% 146.69% at 23.02% 28.85%, #595959 0%, #353535 61.64%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-border-radius: 60px;
-
-
-/* افزودنی های خاص */
-
-width: 124px;
-height: 21px;
-
-font-family: 'IRANYekanX';
-font-style: normal;
-font-weight: 700;
-font-size: 16px;
-line-height: 21px;
-/* identical to box height */
-display: flex;
-align-items: center;
-text-align: center;
-
-color: #DADADA;
-
-
-/* Inside auto layout */
-flex: none;
-order: 0;
-flex-grow: 0;
-z-index: 0;
-
-
-/* image 7 */
-
-position: absolute;
-width: 165px;
-height: 160px;
-left: 0px;
-top: -21px;
-
-background: url(image.png);
-
-/* Inside auto layout */
-flex: none;
-order: 1;
-flex-grow: 0;
-z-index: 1;
 
           {/* Map Section */}
           <div 
@@ -385,15 +366,15 @@ z-index: 1;
               backdropFilter: 'blur(39px) saturate(180%)',
               WebkitBackdropFilter: 'blur(39px) saturate(180%)',
               border: '1px solid rgba(255, 255, 255, 0.18)',
-              // boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 0 1px rgba(255, 255, 255, 0.1) inset',
               backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.02) 100%)',
             }}
           >
             <div className="relative w-full h-48 sm:h-64 md:h-80 lg:h-96 rounded-xl sm:rounded-2xl overflow-hidden">
-              <img
-                alt="نقشه"
-                className="w-full h-full object-cover"
-                src="/images/Screenshot 2025-12-15 at 12.46.27 1.png"
+              <DarkMap
+                latitude={35.8481}
+                longitude={50.9540}
+                address="جاده مخصوص کرج، گرمدره، خیابان تاج‌بخش، خیابان زرشکی، پلاک ۱۴، عمارت سام"
+                className="rounded-xl sm:rounded-2xl"
               />
             </div>
           </div>
@@ -401,6 +382,7 @@ z-index: 1;
         </div>
       </div>
     </div>
- </div>
+      </div>
+    </>
   )
 }

@@ -200,7 +200,7 @@ export default function App() {
 
   // Active tab state
   const [activeTab, setActiveTab] = useState("gearbox-oil");
-  const [activeBestsellerTab, setActiveBestsellerTab] = useState("engine-oil-bestseller");
+  const [activeBestsellerTab, setActiveBestsellerTab] = useState<number | null>(null);
 
   // API data states
   const [categories, setCategories] = useState<WcaCategory[]>([]);
@@ -372,19 +372,41 @@ export default function App() {
     }
   }, [categories]);
 
-  // Fetch bestseller products (featured)
+  // Fetch bestseller products by category
+  const [bestsellerProductsMap, setBestsellerProductsMap] = useState<Record<number, WcaProduct[]>>({});
+  
   useEffect(() => {
     async function loadBestsellers() {
+      if (categories.length === 0) return;
+      
       try {
         setLoadingBestsellers(true);
-        const result = await getWcaProducts({
-          per_page: 12,
-          page: 1,
-          featured: true,
-          orderby: 'popularity',
-          order: 'DESC',
-        });
-        setBestsellerProducts(result.products || []);
+        const productsMap: Record<number, WcaProduct[]> = {};
+        
+        // Fetch bestseller products for each main category
+        for (const category of categories.slice(0, 6)) { // Limit to first 6 categories
+          try {
+            const result = await getWcaProducts({
+              per_page: 3,
+              page: 1,
+              category: category.id,
+              featured: true,
+              orderby: 'popularity',
+              order: 'DESC',
+            });
+            if (result.products && result.products.length > 0) {
+              productsMap[category.id] = result.products;
+            }
+          } catch (error) {
+            console.error(`Error fetching bestsellers for category ${category.id}:`, error);
+          }
+        }
+        
+        setBestsellerProductsMap(productsMap);
+        
+        // Also keep the old state for backward compatibility
+        const allBestsellers = Object.values(productsMap).flat();
+        setBestsellerProducts(allBestsellers);
       } catch (error) {
         console.error('Error fetching bestsellers:', error);
         setBestsellerProducts([]);
@@ -393,7 +415,7 @@ export default function App() {
       }
     }
     loadBestsellers();
-  }, []);
+  }, [categories]);
 
   // Handle search
   const handleSearch = () => {
@@ -419,7 +441,7 @@ export default function App() {
     if (brand && brand !== "همه") {
       const selectedBrandTerm = brandTerms.find(term => term.name === brand || term.id.toString() === brand);
       if (selectedBrandTerm && brandAttribute) {
-        params.set('attribute_term', selectedBrandTerm.id.toString());
+        params.set('attribute_terms', selectedBrandTerm.id.toString());
       }
     }
     
@@ -444,21 +466,32 @@ export default function App() {
     return categoryProductsMap[activeTab] || [];
   }, [activeTab, categoryProductsMap]);
 
+  // Set initial bestseller tab when categories load
+  useEffect(() => {
+    if (categories.length > 0 && activeBestsellerTab === null) {
+      setActiveBestsellerTab(categories[0].id);
+    }
+  }, [categories, activeBestsellerTab]);
+  
   // Get bestseller products for current bestseller tab
   const currentBestsellerProducts = useMemo(() => {
-    if (!bestsellerProducts.length) return [];
-    // Filter by category if needed
-    const categorySlug = categorySlugMap[activeBestsellerTab.replace('-bestseller', '')];
-    if (categorySlug) {
-      return bestsellerProducts.filter(product => 
-        product.categories?.some(cat => 
-          cat.slug === categorySlug || 
-          cat.name.toLowerCase().includes(categorySlug.replace('-', ' '))
-        )
-      ).slice(0, 3);
+    if (activeBestsellerTab === null) return [];
+    
+    if (bestsellerProductsMap[activeBestsellerTab]) {
+      return bestsellerProductsMap[activeBestsellerTab].slice(0, 3);
     }
-    return bestsellerProducts.slice(0, 3);
-  }, [activeBestsellerTab, bestsellerProducts]);
+    
+    // Fallback: filter from all bestsellers
+    return bestsellerProducts.filter(product => 
+      product.categories?.some(cat => cat.id === activeBestsellerTab)
+    ).slice(0, 3);
+  }, [activeBestsellerTab, bestsellerProducts, bestsellerProductsMap]);
+  
+  // Get current category for bestseller section
+  const currentBestsellerCategory = useMemo(() => {
+    if (activeBestsellerTab === null) return null;
+    return categories.find(cat => cat.id === activeBestsellerTab);
+  }, [activeBestsellerTab, categories]);
 
   return (
     <div className="bg-[#0e0e0e] min-h-screen w-full relative">
@@ -484,12 +517,26 @@ export default function App() {
       }}>
         <div className="absolute inset-0 bg-[rgba(0,0,0,0.3)] rounded-[1rem] sm:rounded-[2rem]" />
         <div className="flex flex-col items-center justify-center z-10 w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="font-bold font-iranyekan leading-normal text-white text-center mb-6 sm:mb-8 md:mb-12 lg:mb-20 px-2" dir="auto" style={{
+          <p className="font-bold font-iranyekan leading-normal text-white text-center mb-6 sm:mb-8 md:mb-12 lg:mb-20 px-2" dir="rtl" style={{
             fontSize: 'clamp(1.125rem, 2.86vw, 2.75rem)',
             textShadow: '0px 2px 12px rgba(0,0,0,0.75)',
-            maxWidth: '95%'
+            maxWidth: '95%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            gap: '0.3em',
+            lineHeight: '1.5'
           }}>
-            پادراد ارس نمایندگی رسمی محصولات ROMELA OIL GERMANY 🇩🇪
+            <span>پادراد ارس نمایندگی رسمی محصولات</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2em', direction: 'ltr' }}>
+              <span>ROMELA OIL GERMANY</span>
+              <svg width="1.2em" height="0.9em" viewBox="0 0 5 3" style={{ display: 'inline-block', verticalAlign: 'middle', flexShrink: 0, marginTop: '0.05em' }} aria-label="Germany flag">
+                <rect width="5" height="1" y="0" fill="#000000" />
+                <rect width="5" height="1" y="1" fill="#DD0000" />
+                <rect width="5" height="1" y="2" fill="#FFCE00" />
+              </svg>
+            </span>
           </p>
           <div
             className="w-full rounded-2xl sm:rounded-3xl max-w-6xl"
@@ -1062,17 +1109,13 @@ export default function App() {
                   gap: 'clamp(0.5rem, 0.78vw, 0.75rem)'
                 }}
               >
-                {[
-                  { id: 'engine-oil-bestseller', label: 'روغن موتور' },
-                  { id: 'gearbox-oil-bestseller', label: 'روغن گیربکس' },
-                  { id: 'hydraulic-oil-bestseller', label: 'روغن هیدرولیک' },
-                  { id: 'grease-bestseller', label: 'گریس' },
-                ].map((tab) => {
-                  const isActive = activeBestsellerTab === tab.id;
+                {categories.slice(0, 6).map((category) => {
+                  const isActive = activeBestsellerTab === category.id;
+                  
                   return (
                     <button
-                      key={tab.id}
-                      onClick={() => setActiveBestsellerTab(tab.id)}
+                      key={category.id}
+                      onClick={() => setActiveBestsellerTab(category.id)}
                       className="rounded-full transition-all duration-200 whitespace-nowrap"
                       style={{
                         paddingLeft: 'clamp(1.25rem, 1.56vw, 1.5rem)',
@@ -1101,7 +1144,7 @@ export default function App() {
                       }}
                     >
                       <span dir="auto" className="font-medium" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-                        {tab.label}
+                        {category.name}
                       </span>
                     </button>
                   );
@@ -1116,10 +1159,12 @@ export default function App() {
                 <h3 className="font-bold text-white font-iranyekan text-lg sm:text-xl md:text-[1.375rem]" dir="auto" style={{ 
                   marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
                 }}>
-                  روغن موتور روملا
+                  {currentBestsellerCategory ? `${currentBestsellerCategory.name} روملا` : 'محصولات پرفروش روملا'}
                 </h3>
                 <p className="text-white/90 leading-relaxed text-right font-iranyekan text-sm sm:text-base" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.25vw, 1rem)' }}>
-                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد.
+                  {currentBestsellerCategory?.description 
+                    ? currentBestsellerCategory.description 
+                    : 'محصولات پرفروش و محبوب روملا با کیفیت برتر آلمانی. این محصولات با استقبال بالای مشتریان مواجه شده‌اند و از بهترین‌های بازار محسوب می‌شوند.'}
                 </p>
               </div>
 

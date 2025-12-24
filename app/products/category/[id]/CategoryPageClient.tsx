@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 
 import type { WcaProduct, WcaCategory, WcaAttribute, WcaAttributeTerm } from '@/lib/api/types'
 import { getWcaPrimaryImageUrl, getWcaCategories, getWcaAttributes, getWcaAttributeTerms, getWcaProducts } from '@/lib/api/wca'
@@ -63,9 +63,10 @@ function CategoryChip({
   return (
     <Link
     href={href}
-    className="rounded-[999px] px-12 flex items-center shrink-0  bg-gradient-to-b from-[#3A3A3A] to-[#242424] text-white transition-colors py-1"
+    className="rounded-[999px] px-12 flex items-center shrink-0 text-white transition-colors py-1"
     style={{
-      gap: 'clamp(0.75rem, 0.94vw, 0.75rem)'
+      gap: 'clamp(0.75rem, 0.94vw, 0.75rem)',
+      background: 'radial-gradient(circle at left, #595959 0%, #353535 62%)'
     }}
   >
     <span className="leading-none whitespace-nowrap font-iranyekan text-base font-bold">{category.name}</span>
@@ -175,21 +176,15 @@ function ProductTile({ product }: { product: WcaProduct }) {
 }
 
 function FiltersPanel({
-  subcategories,
   attributes,
   attributeTermsMap,
-  selectedSubcategoryId,
   selectedAttributeTerms,
-  onSubcategoryChange,
   onAttributeTermToggle,
   loadingAttributes,
 }: {
-  subcategories: WcaCategory[]
   attributes: WcaAttribute[]
   attributeTermsMap: Record<number, WcaAttributeTerm[]>
-  selectedSubcategoryId: number | null
   selectedAttributeTerms: number[]
-  onSubcategoryChange: (subcategoryId: number | null) => void
   onAttributeTermToggle: (termId: number) => void
   loadingAttributes: boolean
 }) {
@@ -210,35 +205,7 @@ function FiltersPanel({
     }}>
       <h3 className="text-white font-bold text-center" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.125rem)' }}>فیلترها</h3>
       <Divider />
-      <div className="flex flex-col" style={{ gap: 'clamp(2rem, 2.08vw, 2rem)' }}>
-        {subcategories.length > 0 && (
-          <div>
-            <div className="text-[#D2D2D2] text-right" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)', marginBottom: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>زیر دسته‌بندی‌ها</div>
-            <div className="flex flex-col" style={{ gap: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>
-              {subcategories.map((cat) => {
-                const isSelected = selectedSubcategoryId === cat.id
-                return (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    className={`rounded-[999px] flex items-center justify-center ${isSelected ? pillOn : pillOff}`}
-                    onClick={() => onSubcategoryChange(isSelected ? null : cat.id)}
-                    style={{
-                      height: 'clamp(2rem, 2.5vw, 2.25rem)',
-                      paddingLeft: 'clamp(1rem, 1.25vw, 1rem)',
-                      paddingRight: 'clamp(1rem, 1.25vw, 1rem)',
-                      fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)'
-                    }}
-                  >
-                    {cat.name}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        )}
-
-        {loadingAttributes ? (
+      {loadingAttributes ? (
           <div className="text-center text-[#9A9A9A]" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
             در حال بارگذاری فیلترها...
           </div>
@@ -247,39 +214,40 @@ function FiltersPanel({
             فیلتری در دسترس نیست
           </div>
         ) : (
-          attributes.map((attr) => {
-            const terms = attributeTermsMap[attr.id] || []
-            if (terms.length === 0) return null
+          <div className="flex flex-col" style={{ gap: 'clamp(2rem, 2.08vw, 2rem)' }}>
+            {attributes.map((attr) => {
+              const terms = attributeTermsMap[attr.id] || []
+              if (terms.length === 0) return null
 
-            return (
-              <div key={attr.id}>
-                <div className="text-[#D2D2D2] text-right" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)', marginBottom: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>{attr.label || attr.name}</div>
-                <div className="flex flex-col" style={{ gap: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>
-                  {terms.map((term) => {
-                    const isSelected = selectedAttributeTerms.includes(term.id)
-                    return (
-                      <button
-                        key={term.id}
-                        type="button"
-                        className={`rounded-[999px] flex items-center justify-center ${isSelected ? pillOn : pillOff}`}
-                        onClick={() => onAttributeTermToggle(term.id)}
-                        style={{
-                          height: 'clamp(2rem, 2.5vw, 2.25rem)',
-                          paddingLeft: 'clamp(1rem, 1.25vw, 1rem)',
-                          paddingRight: 'clamp(1rem, 1.25vw, 1rem)',
-                          fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)'
-                        }}
-                      >
-                        {term.name}
-                      </button>
-                    )
-                  })}
+              return (
+                <div key={attr.id}>
+                  <div className="text-[#D2D2D2] text-right" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)', marginBottom: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>{attr.label || attr.name}</div>
+                  <div className="grid grid-cols-2" style={{ gap: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>
+                    {terms.map((term) => {
+                      const isSelected = selectedAttributeTerms.includes(term.id)
+                      return (
+                        <button
+                          key={term.id}
+                          type="button"
+                          className={`rounded-[999px] flex items-center justify-center ${isSelected ? pillOn : pillOff}`}
+                          onClick={() => onAttributeTermToggle(term.id)}
+                          style={{
+                            height: 'clamp(2rem, 2.5vw, 2.25rem)',
+                            paddingLeft: 'clamp(1rem, 1.25vw, 1rem)',
+                            paddingRight: 'clamp(1rem, 1.25vw, 1rem)',
+                            fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)'
+                          }}
+                        >
+                          {term.name}
+                        </button>
+                      )
+                    })}
+                  </div>
                 </div>
-              </div>
-            )
-          })
+              )
+            })}
+          </div>
         )}
-      </div>
     </aside>
   )
 }
@@ -377,10 +345,15 @@ function matchesFilters(
 
 export function CategoryPageClient({ categoryId }: { categoryId: number }) {
   const router = useRouter()
+  const pathname = usePathname()
+  const sp = useSearchParams()
+  const subcategoryParam = sp.get('subcategory')
+  const attributeTermsParam = sp.get('attribute_terms')
 
   const [products, setProducts] = useState<WcaProduct[]>([])
   const [loadingProducts, setLoadingProducts] = useState(true)
   const [category, setCategory] = useState<WcaCategory | null>(null)
+  const [parentCategory, setParentCategory] = useState<WcaCategory | null>(null)
   const [subcategories, setSubcategories] = useState<WcaCategory[]>([])
   const [loadingCategories, setLoadingCategories] = useState(true)
   const [attributes, setAttributes] = useState<WcaAttribute[]>([])
@@ -391,6 +364,53 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
   const [selectedSubcategory, setSelectedSubcategory] = useState<WcaCategory | null>(null)
 
   const chipRowRef = useRef<HTMLDivElement | null>(null)
+  const [showRightButton, setShowRightButton] = useState(false)
+  const [showLeftButton, setShowLeftButton] = useState(true)
+
+  // Update document title based on category/subcategory
+  useEffect(() => {
+    // When viewing a subcategory page directly, category state contains the subcategory data
+    // When filtering by subcategory from chips, selectedSubcategory contains the filtered subcategory
+    const title = selectedSubcategory 
+      ? `لیست محصولات ${selectedSubcategory.name}`
+      : category 
+        ? `لیست محصولات ${category.name}`
+        : 'لیست محصولات'
+    document.title = `${title} | Romela Oil Germany`
+  }, [category, selectedSubcategory, parentCategory])
+
+  // Helper function to find category by ID, always starting from page 1
+  async function findCategoryById(id: number): Promise<WcaCategory | undefined> {
+    let page = 1
+    const maxPages = 20
+    
+    while (page <= maxPages) {
+      try {
+        const result = await getWcaCategories({ 
+          per_page: 100, 
+          page: page, 
+          hide_empty: false 
+        })
+        
+        const category = result.categories?.find(c => c.id === id)
+        if (category) {
+          return category
+        }
+        
+        // If no categories returned, stop searching
+        if (!result.categories || result.categories.length === 0) {
+          break
+        }
+        
+        page++
+      } catch (error) {
+        console.error(`Error fetching categories page ${page}:`, error)
+        break
+      }
+    }
+    
+    return undefined
+  }
 
   // Load category and subcategories
   useEffect(() => {
@@ -399,53 +419,40 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
 
     async function loadCategory() {
       try {
-        // Load all categories to find current one
-        // First try to get it directly, then fallback to fetching all
-        let current: WcaCategory | undefined
-        
-        try {
-          // Try to fetch all categories to find the current one
-          const allCats = await getWcaCategories({ per_page: 100, page: 1, hide_empty: false })
-          current = allCats.categories?.find(c => c.id === categoryId)
-          
-          // If not found in first page, try fetching more pages
-          if (!current) {
-            let page = 2
-            while (page <= 10 && !current) {
-              const moreCats = await getWcaCategories({ per_page: 100, page: page, hide_empty: false })
-              current = moreCats.categories?.find(c => c.id === categoryId)
-              if (moreCats.categories?.length === 0) break
-              page++
-            }
-          }
-        } catch (error) {
-          console.error('Error fetching category details:', error)
-        }
+        // Always start from page 1 to find the current category
+        const current = await findCategoryById(categoryId)
         
         if (!cancelled) {
+          // If current category has a parent, it's a subcategory - redirect to new route format
+          if (current && current.parent && current.parent !== 0) {
+            // Redirect to the new subcategory route format
+            router.replace(`/products/category/${current.parent}/subcategory/${categoryId}`)
+            return
+          }
+          
+          // Set category state - this is a root category
           setCategory(current || null)
-        }
-
-        // Load subcategories (only if this is a parent category, i.e., has no parent or parent is 0)
-        // If current category has a parent, it's a subcategory, so don't load subcategories
-        if (!current || !current.parent || current.parent === 0) {
-          const result = await getWcaCategories({ 
-            per_page: 100, 
-            page: 1, 
-            hide_empty: true,
-            parent: categoryId
-          })
-          if (cancelled) return
-          setSubcategories(result.categories || [])
-        } else {
-          // This is a subcategory, so no subcategories to load
-          setSubcategories([])
+          
+          // Load subcategories (only if this is a parent category)
+          setParentCategory(null)
+          if (current) {
+            const result = await getWcaCategories({ 
+              per_page: 100, 
+              page: 1, 
+              hide_empty: true,
+              parent: categoryId
+            })
+            if (!cancelled) {
+              setSubcategories(result.categories || [])
+            }
+          }
         }
       } catch (error) {
         console.error('Error fetching category:', error)
         if (!cancelled) {
           setCategory(null)
           setSubcategories([])
+          setParentCategory(null)
         }
       } finally {
         if (!cancelled) setLoadingCategories(false)
@@ -512,6 +519,28 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
     }
   }, [])
 
+  // Initialize filters from URL parameters
+  useEffect(() => {
+    if (subcategoryParam) {
+      const subcategoryId = parseInt(subcategoryParam, 10)
+      if (!isNaN(subcategoryId)) {
+        setSelectedSubcategoryId(subcategoryId)
+        const subcat = subcategories.find(c => c.id === subcategoryId)
+        setSelectedSubcategory(subcat || null)
+      }
+    } else {
+      setSelectedSubcategoryId(null)
+      setSelectedSubcategory(null)
+    }
+    
+    if (attributeTermsParam) {
+      const termIds = attributeTermsParam.split(',').map(id => parseInt(id.trim(), 10)).filter(id => !isNaN(id))
+      setSelectedAttributeTerms([...new Set(termIds)])
+    } else {
+      setSelectedAttributeTerms([])
+    }
+  }, [subcategoryParam, attributeTermsParam, subcategories])
+
   // Load products
   useEffect(() => {
     let cancelled = false
@@ -556,6 +585,28 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
     return withImage
   }, [products, categoryId, selectedSubcategoryId, selectedAttributeTerms, attributeTermsMap])
 
+  // Update URL when filters change
+  const isInitialLoad = useRef(true)
+  useEffect(() => {
+    if (isInitialLoad.current) {
+      isInitialLoad.current = false
+      return
+    }
+
+    const params = new URLSearchParams()
+    
+    if (selectedSubcategoryId) {
+      params.set('subcategory', selectedSubcategoryId.toString())
+    }
+    
+    if (selectedAttributeTerms.length > 0) {
+      params.set('attribute_terms', selectedAttributeTerms.join(','))
+    }
+    
+    const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
+    router.replace(newUrl, { scroll: false })
+  }, [selectedSubcategoryId, selectedAttributeTerms, pathname, router])
+
   const handleSubcategoryChange = (subcategoryId: number | null) => {
     setSelectedSubcategoryId(subcategoryId)
     if (subcategoryId) {
@@ -567,12 +618,50 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
   }
 
   const handleAttributeTermToggle = (termId: number) => {
-    setSelectedAttributeTerms((prev) => 
-      prev.includes(termId) 
+    setSelectedAttributeTerms((prev) => {
+      const newTerms = prev.includes(termId) 
         ? prev.filter((id) => id !== termId)
         : [...prev, termId]
-    )
+      return newTerms
+    })
   }
+
+  // Check scroll position to show/hide navigation buttons
+  useEffect(() => {
+    const checkScroll = () => {
+      if (chipRowRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = chipRowRef.current
+        // In RTL, scrollLeft can be negative when scrolled left
+        // scrollLeft starts at 0 (at start/rightmost) and goes negative as we scroll left
+        // At end (leftmost): scrollLeft ≈ -(scrollWidth - clientWidth)
+        
+        const maxScroll = scrollWidth - clientWidth
+        const isAtStart = Math.abs(scrollLeft) < 1 || (scrollLeft === 0 && maxScroll <= 0)
+        const isAtEnd = maxScroll > 0 && Math.abs(scrollLeft + maxScroll) < 1
+        
+        // Right button: show when we've scrolled left (can go back right)
+        setShowRightButton(!isAtStart && maxScroll > 0)
+        // Left button: show when we're not at the end (can scroll left)
+        setShowLeftButton(!isAtEnd && maxScroll > 0)
+      }
+    }
+
+    const scrollContainer = chipRowRef.current
+    if (scrollContainer) {
+      // Initial check after a small delay to ensure layout is complete
+      setTimeout(checkScroll, 100)
+      scrollContainer.addEventListener('scroll', checkScroll)
+      // Also check on resize
+      window.addEventListener('resize', checkScroll)
+    }
+
+    return () => {
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('scroll', checkScroll)
+      }
+      window.removeEventListener('resize', checkScroll)
+    }
+  }, [subcategories])
 
   return (
     <div className="bg-[#0e0e0e] min-h-screen w-full relative xl:px-0 2xl:px-6 px-4 sm:px-6">
@@ -596,7 +685,26 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
             <Link href="/" className="hover:text-[#F58F4A]">صفحه اصلی</Link>
             <span style={{ marginLeft: 'clamp(0.5rem, 0.63vw, 0.5rem)', marginRight: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>/</span>
             <Link href="/products" className="hover:text-[#F58F4A]">محصولات</Link>
-            {category && (
+            {/* When viewing a subcategory page directly (category has a parent) */}
+            {parentCategory && category && !selectedSubcategory && (
+              <>
+                <span style={{ marginLeft: 'clamp(0.5rem, 0.63vw, 0.5rem)', marginRight: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>/</span>
+                <Link href={`/products/category/${parentCategory.id}`} className="hover:text-[#F58F4A]">{parentCategory.name}</Link>
+                <span style={{ marginLeft: 'clamp(0.5rem, 0.63vw, 0.5rem)', marginRight: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>/</span>
+                <span className="text-[#F58F4A]">{category.name}</span>
+              </>
+            )}
+            {/* When selecting a subcategory from chips (selectedSubcategory exists) */}
+            {category && selectedSubcategory && (
+              <>
+                <span style={{ marginLeft: 'clamp(0.5rem, 0.63vw, 0.5rem)', marginRight: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>/</span>
+                <Link href={`/products/category/${category.id}`} className="hover:text-[#F58F4A]">{category.name}</Link>
+                <span style={{ marginLeft: 'clamp(0.5rem, 0.63vw, 0.5rem)', marginRight: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>/</span>
+                <span className="text-[#F58F4A]">{selectedSubcategory.name}</span>
+              </>
+            )}
+            {/* When viewing a root category page (no parent, no selected subcategory) */}
+            {!parentCategory && category && !selectedSubcategory && (
               <>
                 <span style={{ marginLeft: 'clamp(0.5rem, 0.63vw, 0.5rem)', marginRight: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>/</span>
                 <span className="text-[#F58F4A]">{category.name}</span>
@@ -608,21 +716,24 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
         {subcategories.length > 0 && (
           <>
             <div className="flex items-center" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
-            <button
-            type="button"
-            className="rounded-full bg-[#FDBA7433] flex items-center justify-center text-[#E2951A] py-7 px-4"
-            onClick={() => {
-              chipRowRef.current?.scrollBy({ left: -240, behavior: 'smooth' })
-            }}
-            aria-label="scroll"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M7.5 2L17.5 12L7.5 22L5.725 20.225L13.95 12L5.725 3.775L7.5 2Z" fill="#E2951A" />
-            </svg>
-          </button>
+              {showRightButton && (
+                <button
+                  type="button"
+                  className="rounded-full bg-[#FDBA7433] flex items-center justify-center text-[#E2951A] py-7 px-4"
+                  onClick={() => {
+                    chipRowRef.current?.scrollBy({ left: 240, behavior: 'smooth' })
+                  }}
+                  aria-label="scroll right"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.5 2L17.5 12L7.5 22L5.725 20.225L13.95 12L5.725 3.775L7.5 2Z" fill="#E2951A" />
+                  </svg>
+                </button>
+              )}
 
               <div
                 ref={chipRowRef}
+                dir="rtl"
                 className="flex-1 flex overflow-x-auto no-scrollbar"
                 style={{ 
                   scrollBehavior: 'smooth',
@@ -639,11 +750,26 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
                       key={c.id}
                       category={c}
                       selected={false}
-                      href={`/products/category/${c.id}`}
+                      href={`/products/category/${categoryId}/subcategory/${c.id}`}
                     />
                   ))
                 )}
               </div>
+
+              {showLeftButton && (
+                <button
+                  type="button"
+                  className="rounded-full bg-[#FDBA7433] flex items-center justify-center text-[#E2951A] py-7 px-4"
+                  onClick={() => {
+                    chipRowRef.current?.scrollBy({ left: -240, behavior: 'smooth' })
+                  }}
+                  aria-label="scroll left"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16.5 2L6.5 12L16.5 22L18.275 20.225L10.05 12L18.275 3.775L16.5 2Z" fill="#E2951A" />
+                  </svg>
+                </button>
+              )}
             </div>
             <Divider />
           </>
@@ -676,12 +802,9 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
           {/* Filters */}
           <div dir="rtl">
             <FiltersPanel
-              subcategories={subcategories}
               attributes={attributes}
               attributeTermsMap={attributeTermsMap}
-              selectedSubcategoryId={selectedSubcategoryId}
               selectedAttributeTerms={selectedAttributeTerms}
-              onSubcategoryChange={handleSubcategoryChange}
               onAttributeTermToggle={handleAttributeTermToggle}
               loadingAttributes={loadingAttributes}
             />
