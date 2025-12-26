@@ -13,7 +13,7 @@ export function Footer() {
   return (
     <footer className="relative w-full bg-[#0e0e0e] xl:px-4 2xl:px-6">
       {/* Main Footer Container */}
-      <div className="w-full max-w-[1920px] mx-auto xl:px-0 2xl:px-6 px-4 sm:px-6" style={{ 
+      <div className="w-full max-w-[1920px] mx-auto xl:px-0 2xl:px-6 sm:px-6" style={{ 
         paddingTop: 'clamp(1.5rem, 3.13vw, 4rem)', 
         paddingBottom: 'clamp(1.5rem, 3.13vw, 4rem)',
         paddingLeft: 'clamp(0.5rem, 1.56vw, 3rem)',

@@ -186,8 +186,8 @@ function FiltersPanel({
   onAttributeTermToggle: (termId: number) => void
   loadingAttributes: boolean
 }) {
-  const pillOff = 'bg-[#2D2D2D] text-[#D2D2D2]'
-  const pillOn = 'bg-[#D7B354] text-black'
+  const pillOff = 'bg-[#343434] border border-[#343434]'
+  const pillOn = 'bg-[#E6A816] border border-[#E6A816]'
 
   const hasFilters = attributes.some(attr => {
     const terms = attributeTermsMap[attr.id] || []
@@ -195,7 +195,7 @@ function FiltersPanel({
   })
 
   return (
-    <aside className="bg-[#343434] rounded-[22px] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)]" style={{
+    <aside className="bg-[#363636B2] rounded-[22px] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)]" style={{
       paddingLeft: 'clamp(1.5rem, 1.56vw, 1.5rem)',
       paddingRight: 'clamp(1.5rem, 1.56vw, 1.5rem)',
       paddingTop: 'clamp(2rem, 2.08vw, 2rem)',
@@ -219,21 +219,19 @@ function FiltersPanel({
 
             return (
               <div key={attr.id}>
-                <div className="text-[#D2D2D2] text-right" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)', marginBottom: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>{attr.label || attr.name}</div>
-                <div className="flex flex-col" style={{ gap: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>
+                <div className="text-white text-lg font-bold text-right mb-6">{attr.label || attr.name}</div>
+                <div className="grid grid-cols-2" style={{ gap: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>
                   {terms.map((term) => {
                     const isSelected = selectedAttributeTerms.includes(term.id)
                     return (
                       <button
                         key={term.id}
                         type="button"
-                        className={`rounded-[999px] flex items-center justify-center ${isSelected ? pillOn : pillOff}`}
+                        className={`rounded-[999px] text-white text-sm font-bold flex items-center justify-center py-3 ${isSelected ? pillOn : pillOff}`}
                         onClick={() => onAttributeTermToggle(term.id)}
                         style={{
-                          height: 'clamp(2rem, 2.5vw, 2.25rem)',
                           paddingLeft: 'clamp(1rem, 1.25vw, 1rem)',
                           paddingRight: 'clamp(1rem, 1.25vw, 1rem)',
-                          fontSize: 'clamp(0.75rem, 0.94vw, 0.75rem)'
                         }}
                       >
                         {term.name}
@@ -544,7 +542,7 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="bg-[#0e0e0e] min-h-screen w-full relative xl:px-0 2xl:px-6 px-4 sm:px-6">
+    <div className="bg-[#0e0e0e] min-h-screen w-full relative xl:px-0 2xl:px-6 sm:px-6">
       <div className="relative w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4" style={{
         paddingTop: 'clamp(6rem, 18.75vw, 9rem)',
         paddingBottom: 'clamp(3rem, 10.42vw, 5rem)'

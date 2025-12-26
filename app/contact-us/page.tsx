@@ -57,9 +57,9 @@ export default function ContactUsPage() {
     }}>
    <div className="w-full h-full absolute top-0 left-0 bg-[#0000004D] z-10"/>
       {/* Content Container */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-20 lg:py-80">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-12 md:py-20 lg:py-80">
 
-        <div className='w-full bg-white/20 backdrop-blur-md rounded-xl py-8 sm:py-12 md:py-16 px-4 sm:px-8 md:px-16 lg:px-24 border border-white/10'>
+        <div className='w-full bg-white/20 backdrop-blur-md rounded-xl sm:py-12 md:py-16 sm:px-8 md:px-16 lg:px-24 border border-white/10'>
           {/* Contact Cards and Form Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-7 mb-6">
 
@@ -315,68 +315,6 @@ export default function ContactUsPage() {
               </div>
             </div>
           </div>
-          /* Frame 1984078866 */
-
-/* Auto layout */
-display: flex;
-flex-direction: row;
-justify-content: flex-end;
-align-items: center;
-padding: 4px 30px;
-gap: 24px;
-isolation: isolate;
-
-position: absolute;
-width: 314px;
-height: 78px;
-left: 113px;
-top: 382px;
-
-background: radial-gradient(58.62% 146.69% at 23.02% 28.85%, #595959 0%, #353535 61.64%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-border-radius: 60px;
-
-
-/* افزودنی های خاص */
-
-width: 124px;
-height: 21px;
-
-font-family: 'IRANYekanX';
-font-style: normal;
-font-weight: 700;
-font-size: 16px;
-line-height: 21px;
-/* identical to box height */
-display: flex;
-align-items: center;
-text-align: center;
-
-color: #DADADA;
-
-
-/* Inside auto layout */
-flex: none;
-order: 0;
-flex-grow: 0;
-z-index: 0;
-
-
-/* image 7 */
-
-position: absolute;
-width: 165px;
-height: 160px;
-left: 0px;
-top: -21px;
-
-background: url(image.png);
-
-/* Inside auto layout */
-flex: none;
-order: 1;
-flex-grow: 0;
-z-index: 1;
-
           {/* Map Section */}
           <div 
             className="rounded-xl p-3 sm:p-4 md:p-4 mb-6 sm:mb-8 lg:mb-12"
@@ -385,7 +323,6 @@ z-index: 1;
               backdropFilter: 'blur(39px) saturate(180%)',
               WebkitBackdropFilter: 'blur(39px) saturate(180%)',
               border: '1px solid rgba(255, 255, 255, 0.18)',
-              // boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 0 1px rgba(255, 255, 255, 0.1) inset',
               backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.02) 100%)',
             }}
           >

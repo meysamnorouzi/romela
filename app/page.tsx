@@ -580,7 +580,7 @@ export default function App() {
       </div>
 
       {/* Container */}
-      <div className="w-full max-w-[1920px] mx-auto xl:px-0 2xl:px-6 px-4 sm:px-6" style={{ paddingTop: 'clamp(2rem, 3.13vw, 4rem)', paddingBottom: 'clamp(2rem, 3.13vw, 4rem)' }}>
+      <div className="w-full max-w-[1920px] mx-auto xl:px-0 2xl:px-6 sm:px-6" style={{ paddingTop: 'clamp(2rem, 3.13vw, 4rem)', paddingBottom: 'clamp(2rem, 3.13vw, 4rem)' }}>
 
         {/* Category Section */}
         <section style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
@@ -807,7 +807,7 @@ export default function App() {
         </section>
 
         {/* Introduction Section */}
-        <section className="2xl:px-16 xl:px-4 px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
+        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
           <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{ 
             marginBottom: 'clamp(2rem, 2.86vw, 2.75rem)'
           }}>
@@ -835,7 +835,7 @@ export default function App() {
         <Divider />
 
         {/* Products Section */}
-        <section className="2xl:px-16 xl:px-4 px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
+        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
           <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{ 
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
@@ -951,7 +951,7 @@ export default function App() {
         <Divider />
 
         {/* Statistics Section */}
-        <section className="2xl:px-16 xl:px-4 px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
+        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
           <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{ 
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
@@ -1033,7 +1033,7 @@ export default function App() {
         <Divider />
 
         {/* Best Selling Products Section */}
-        <section className="2xl:px-16 xl:px-4 px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
+        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
           <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{ 
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
@@ -1042,12 +1042,11 @@ export default function App() {
 
           {/* Main Content Container */}
           <div
-            className="rounded-3xl"
+            className="rounded-3xl p-4 sm:p-6 md:p-8 lg:p-14 lg:pt-8 md:pt-6 sm:pt-4"
             style={{
               background: '#2a2a2a',
               border: '1px solid rgba(255, 255, 255, 0.1)',
               boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
-              padding: 'clamp(1.5rem, 2.6vw, 2.5rem)'
             }}
           >
             {/* Tab Navigation */}

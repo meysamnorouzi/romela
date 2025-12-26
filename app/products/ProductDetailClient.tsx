@@ -285,7 +285,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
   const related3 = relatedProducts[2]
 
   return (
-    <div className="bg-[#0e0e0e] min-h-screen w-full xl:px-0 2xl:px-6 px-4 sm:px-6">
+    <div className="bg-[#0e0e0e] min-h-screen w-full xl:px-0 2xl:px-6 sm:px-6">
       {/* Container */}
       <div className="w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4" style={{ 
         paddingTop: 'clamp(8rem, 35vw, 14rem)',
