@@ -262,6 +262,21 @@ a {
   .no-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
   }
+
+  .filter-sticky {
+    position: static;
+  }
+}
+
+/* Filter sticky positioning for large screens */
+@media (min-width: 1024px) {
+  .filter-sticky {
+    position: sticky !important;
+    top: 7rem !important;
+    max-height: calc(100vh - 7rem) !important;
+    overflow-y: auto !important;
+    align-self: flex-start !important;
+  }
 }
 
 /* Custom scrollbar */
@@ -330,5 +345,14 @@ a {
 
 .leaflet-container a.leaflet-popup-close-button {
   color: white !important;
+}
+
+/* Product image container responsive fix for tablet and mobile only */
+/* Desktop uses inline styles, so this only affects mobile/tablet */
+@media (max-width: 1023px) {
+  .product-image-container {
+    height: clamp(200px, 25vw, 280px) !important;
+    top: clamp(-2rem, -4vw, -2.5rem) !important;
+  }
 }
 

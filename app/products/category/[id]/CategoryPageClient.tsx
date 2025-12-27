@@ -800,7 +800,7 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
           </div>
 
           {/* Filters */}
-          <div dir="rtl">
+          <div dir="rtl" className="filter-sticky">
             <FiltersPanel
               attributes={attributes}
               attributeTermsMap={attributeTermsMap}

@@ -890,15 +890,16 @@ export default function App() {
           </h2>
 
           {/* Category Tabs */}
-          <div className="flex justify-center" style={{ marginBottom: 'clamp(2rem, 3.13vw, 3rem)' }}>
+          <div className="w-full lg:flex lg:justify-center" style={{ marginBottom: 'clamp(2rem, 3.13vw, 3rem)' }}>
             <div
-              className="rounded-full flex flex-wrap justify-center items-center w-fit"
+              className="rounded-full flex flex-nowrap items-center overflow-x-auto lg:overflow-visible no-scrollbar w-full lg:w-fit lg:justify-center"
               style={{
                 background: '#2a2a2a',
                 border: '1px solid rgba(255, 255, 255, 0.08)',
                 boxShadow: '0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
                 padding: 'clamp(0.25rem, 0.31vw, 0.25rem)',
-                gap: 'clamp(0.5rem, 0.78vw, 0.75rem)'
+                gap: 'clamp(0.5rem, 0.78vw, 0.75rem)',
+                WebkitOverflowScrolling: 'touch'
               }}
             >
               {[
@@ -914,7 +915,7 @@ export default function App() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className="rounded-full transition-all duration-200 whitespace-nowrap"
+                    className="rounded-full transition-all duration-200 whitespace-nowrap flex-shrink-0"
                     style={{
                       paddingLeft: 'clamp(1.25rem, 1.56vw, 1.5rem)',
                       paddingRight: 'clamp(1.25rem, 1.56vw, 1.5rem)',
@@ -959,10 +960,10 @@ export default function App() {
                 currentTabProducts.slice(0, 4).map((product) => {
                   const productImage = getWcaPrimaryImageUrl(product) || imgMockupAtfZfBackgroundRemoved.src;
                   return (
-                    <Link key={product.id} href={`/products/${product.slug}`} className='relative'>
+                    <Link key={product.id} href={`/products/${product.slug}`} className='relative lg:overflow-visible overflow-hidden'>
                       <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
-                      <div className="absolute w-full z-10" style={{ height: 'clamp(259px, 21.56vw, 414px)', top: 'clamp(-5rem, -10.42vw, -5rem)' }}>
-                        <img alt={product.name} className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={productImage} />
+                      <div className="absolute w-full z-10 product-image-container" style={{ height: 'clamp(259px, 21.56vw, 414px)', top: 'clamp(-5rem, -10.42vw, -5rem)' }}>
+                        <img alt={product.name} className="absolute inset-0 max-w-none object-50%-50% object-contain lg:object-cover pointer-events-none size-full" src={productImage} />
                       </div>
                       <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
                         <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
@@ -977,10 +978,10 @@ export default function App() {
               ) : (
                 // Fallback to mock data if no products found
                 Array.from({ length: 4 }).map((_, index) => (
-                  <div key={index} className='relative'>
+                  <div key={index} className='relative lg:overflow-visible overflow-hidden'>
                     <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
-                    <div className="absolute w-full z-10" style={{ height: 'clamp(259px, 21.56vw, 414px)', top: 'clamp(-5rem, -10.42vw, -5rem)' }}>
-                      <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
+                    <div className="absolute w-full z-10 product-image-container" style={{ height: 'clamp(259px, 21.56vw, 414px)', top: 'clamp(-5rem, -10.42vw, -5rem)' }}>
+                      <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-contain lg:object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
                     </div>
                     <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
                       <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
@@ -1098,15 +1099,16 @@ export default function App() {
             }}
           >
             {/* Tab Navigation */}
-            <div className="flex justify-center" style={{ marginBottom: 'clamp(2rem, 3.13vw, 3rem)' }}>
+            <div className="w-full lg:flex lg:justify-center" style={{ marginBottom: 'clamp(2rem, 3.13vw, 3rem)' }}>
               <div
-                className="rounded-full flex flex-wrap justify-center items-center w-fit"
+                className="rounded-full flex flex-nowrap items-center overflow-x-auto lg:overflow-visible no-scrollbar w-full lg:w-fit lg:justify-center"
                 style={{
                   background: '#2a2a2a',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
                   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
                   padding: 'clamp(0.25rem, 0.31vw, 0.25rem)',
-                  gap: 'clamp(0.5rem, 0.78vw, 0.75rem)'
+                  gap: 'clamp(0.5rem, 0.78vw, 0.75rem)',
+                  WebkitOverflowScrolling: 'touch'
                 }}
               >
                 {categories.slice(0, 6).map((category) => {
@@ -1116,7 +1118,7 @@ export default function App() {
                     <button
                       key={category.id}
                       onClick={() => setActiveBestsellerTab(category.id)}
-                      className="rounded-full transition-all duration-200 whitespace-nowrap"
+                      className="rounded-full transition-all duration-200 whitespace-nowrap flex-shrink-0"
                       style={{
                         paddingLeft: 'clamp(1.25rem, 1.56vw, 1.5rem)',
                         paddingRight: 'clamp(1.25rem, 1.56vw, 1.5rem)',

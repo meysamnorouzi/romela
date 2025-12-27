@@ -366,6 +366,8 @@ export default function ProductsPage() {
   const chipRowRef = useRef<HTMLDivElement | null>(null)
   const [showRightButton, setShowRightButton] = useState(false)
   const [showLeftButton, setShowLeftButton] = useState(true)
+  const [isLargeScreen, setIsLargeScreen] = useState(false)
+  const filterRef = useRef<HTMLDivElement | null>(null)
 
   const WP_JSON_BASE_URL = (
     process.env.NEXT_PUBLIC_WP_JSON_BASE_URL ||
@@ -625,6 +627,34 @@ export default function ProductsPage() {
     }
   }, [categories])
 
+  // Apply sticky positioning for large screens
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024)
+    }
+    
+    checkScreenSize()
+    window.addEventListener('resize', checkScreenSize)
+    
+    return () => window.removeEventListener('resize', checkScreenSize)
+  }, [])
+
+  useEffect(() => {
+    if (filterRef.current && isLargeScreen) {
+      filterRef.current.style.position = 'sticky'
+      filterRef.current.style.top = '7rem'
+      filterRef.current.style.maxHeight = 'calc(100vh - 7rem)'
+      filterRef.current.style.overflowY = 'auto'
+      filterRef.current.style.alignSelf = 'flex-start'
+    } else if (filterRef.current) {
+      filterRef.current.style.position = 'static'
+      filterRef.current.style.top = 'auto'
+      filterRef.current.style.maxHeight = 'none'
+      filterRef.current.style.overflowY = 'visible'
+      filterRef.current.style.alignSelf = 'auto'
+    }
+  }, [isLargeScreen])
+
   if (slug) {
     return <ProductDetailClient slug={slug} />
   }
@@ -731,7 +761,7 @@ export default function ProductsPage() {
           </div>
 
           {/* Filters */}
-          <div dir="rtl">
+          <div dir="rtl" ref={filterRef} className="filter-sticky">
             <FiltersPanel
               attributes={attributes}
               attributeTermsMap={attributeTermsMap}
