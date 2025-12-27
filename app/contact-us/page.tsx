@@ -92,9 +92,9 @@ export default function ContactUsPage() {
     }}>
    <div className="absolute inset-0 bg-[#0000004D] z-10 rounded-[1rem] sm:rounded-[1.5rem]"/>
       {/* Content Container */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-20 lg:py-80">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-12 md:py-20 lg:py-80">
 
-        <div className='w-full bg-white/20 backdrop-blur-md rounded-xl py-8 sm:py-12 md:py-16 px-4 sm:px-8 md:px-16 lg:px-24 border border-white/10'>
+        <div className='w-full bg-white/20 backdrop-blur-md rounded-xl sm:py-12 md:py-16 sm:px-8 md:px-16 lg:px-24 border border-white/10'>
           {/* Contact Cards and Form Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-7 mb-6">
 
@@ -357,7 +357,6 @@ export default function ContactUsPage() {
               </div>
             </div>
           </div>
-
           {/* Map Section */}
           <div 
             className="rounded-xl p-3 sm:p-4 md:p-4 mb-6 sm:mb-8 lg:mb-12"
