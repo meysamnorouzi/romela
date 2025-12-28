@@ -131,23 +131,21 @@ function ProductTile({ product }: { product: WcaProduct }) {
 
   return (
     <Link href={`/products?slug=${encodeURIComponent(product.slug)}`} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
-      <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
-      <div className="absolute w-full z-10" style={{ 
-        height: 'clamp(259px, 21.56vw, 414px)', 
-        top: 'clamp(-5rem, -10.42vw, -5rem)' 
-      }} data-name="Mockup ATF-ZF Background Removed">
-        {image ? (
-          <Image
-            src={image}
-            alt={product.name}
-            fill
-            className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <LoadingSpinner size="lg" />
-          </div>
-        )}
+            <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ height: 'clamp(222px, 18.49vw, 355px)' }}>
+        <div className="h-full flex items-center justify-center" style={{
+        }} data-name="Mockup ATF-ZF Background Removed">
+          {image ? (
+            <img
+              src={image}
+              alt={product.name}
+              className="size-full -mt-24"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <LoadingSpinner size="lg" />
+            </div>
+          )}
+        </div>
       </div>
       <div className='w-full flex flex-col items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
         <div className="bg-[#e6a816ca] z-10 flex h-fit items-center justify-center rounded-[120px]" style={{ 

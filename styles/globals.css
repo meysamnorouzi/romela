@@ -268,14 +268,16 @@ a {
   }
 }
 
-/* Filter sticky positioning for large screens */
+/* Filter sticky positioning for large screens - outside of layer for higher specificity */
 @media (min-width: 1024px) {
-  .filter-sticky {
+  .filter-sticky.filter-sticky-lg {
     position: sticky !important;
     top: 7rem !important;
     max-height: calc(100vh - 7rem) !important;
     overflow-y: auto !important;
-    align-self: flex-start !important;
+    align-self: start !important;
+    z-index: 10 !important;
+    height: fit-content !important;
   }
 }
 

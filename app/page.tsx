@@ -22,10 +22,10 @@ function ProductNameWithTooltip({ text, className }: { text: string, className?:
 
   return (
     <div className="relative group w-full">
-      <p 
+      <p
         ref={nameRef}
-        dir="auto" 
-        style={{ 
+        dir="auto"
+        style={{
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap'
@@ -36,8 +36,8 @@ function ProductNameWithTooltip({ text, className }: { text: string, className?:
       </p>
       {showTooltip && (
         <div className="absolute min-w-52 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#2a2a2a] text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 border border-white/20 shadow-lg">
-        {text}
-      </div>
+          {text}
+        </div>
       )}
     </div>
   );
@@ -61,6 +61,7 @@ import {
 } from "./imports/image-placeholders";
 import { imgVibrantColorsWaterCreateAbstractWavePatternGeneratedByAi2, img, imgRectangle45, imgRectangle42, imgRectangle43, imgRectangle44 } from "./imports/svg-65x1p";
 import { generateOrganizationSchema, generateWebSiteSchema } from "@/lib/utils/seo";
+import { LoadingSpinner } from "@/components/ui/Loading";
 
 // Divider Component
 function Divider() {
@@ -294,9 +295,9 @@ export default function App() {
         setLoadingBrands(true);
         const attrsResult = await getWcaAttributes();
         const attributes = attrsResult.attributes || [];
-        
+
         // Find brand attribute (check common names: brand, برند, pa_brand, etc.)
-        const brandAttr = attributes.find(attr => 
+        const brandAttr = attributes.find(attr =>
           attr.name.toLowerCase().includes('brand') ||
           attr.name.toLowerCase().includes('برند') ||
           attr.label.toLowerCase().includes('brand') ||
@@ -336,11 +337,11 @@ export default function App() {
         for (const [tabId, categorySlug] of Object.entries(categorySlugMap)) {
           try {
             // Find category by slug
-            const category = categories.find(cat => 
-              cat.slug === categorySlug || 
+            const category = categories.find(cat =>
+              cat.slug === categorySlug ||
               cat.name.toLowerCase().includes(categorySlug.replace('-', ' '))
             );
-            
+
             if (category) {
               const result = await getWcaProducts({
                 per_page: 4,
@@ -374,15 +375,15 @@ export default function App() {
 
   // Fetch bestseller products by category
   const [bestsellerProductsMap, setBestsellerProductsMap] = useState<Record<number, WcaProduct[]>>({});
-  
+
   useEffect(() => {
     async function loadBestsellers() {
       if (categories.length === 0) return;
-      
+
       try {
         setLoadingBestsellers(true);
         const productsMap: Record<number, WcaProduct[]> = {};
-        
+
         // Fetch bestseller products for each main category
         for (const category of categories.slice(0, 6)) { // Limit to first 6 categories
           try {
@@ -401,9 +402,9 @@ export default function App() {
             console.error(`Error fetching bestsellers for category ${category.id}:`, error);
           }
         }
-        
+
         setBestsellerProductsMap(productsMap);
-        
+
         // Also keep the old state for backward compatibility
         const allBestsellers = Object.values(productsMap).flat();
         setBestsellerProducts(allBestsellers);
@@ -420,7 +421,7 @@ export default function App() {
   // Handle search
   const handleSearch = () => {
     const params = new URLSearchParams();
-    
+
     // Add category filter
     if (oilType && oilType !== "همه") {
       const selectedCategory = categories.find(cat => cat.name === oilType || cat.id.toString() === oilType);
@@ -428,7 +429,7 @@ export default function App() {
         params.set('category', selectedCategory.id.toString());
       }
     }
-    
+
     // Add subcategory filter
     if (oilUsage && oilUsage !== "همه") {
       const selectedSubcategory = subcategories.find(sub => sub.name === oilUsage || sub.id.toString() === oilUsage);
@@ -436,7 +437,7 @@ export default function App() {
         params.set('subcategory', selectedSubcategory.id.toString());
       }
     }
-    
+
     // Add brand filter (attribute term)
     if (brand && brand !== "همه") {
       const selectedBrandTerm = brandTerms.find(term => term.name === brand || term.id.toString() === brand);
@@ -444,7 +445,7 @@ export default function App() {
         params.set('attribute_terms', selectedBrandTerm.id.toString());
       }
     }
-    
+
     router.push(`/products?${params.toString()}`);
   };
 
@@ -472,21 +473,21 @@ export default function App() {
       setActiveBestsellerTab(categories[0].id);
     }
   }, [categories, activeBestsellerTab]);
-  
+
   // Get bestseller products for current bestseller tab
   const currentBestsellerProducts = useMemo(() => {
     if (activeBestsellerTab === null) return [];
-    
+
     if (bestsellerProductsMap[activeBestsellerTab]) {
       return bestsellerProductsMap[activeBestsellerTab].slice(0, 3);
     }
-    
+
     // Fallback: filter from all bestsellers
-    return bestsellerProducts.filter(product => 
+    return bestsellerProducts.filter(product =>
       product.categories?.some(cat => cat.id === activeBestsellerTab)
     ).slice(0, 3);
   }, [activeBestsellerTab, bestsellerProducts, bestsellerProductsMap]);
-  
+
   // Get current category for bestseller section
   const currentBestsellerCategory = useMemo(() => {
     if (activeBestsellerTab === null) return null;
@@ -509,10 +510,10 @@ export default function App() {
         }}
       />
       {/* Hero Section with Masked Background */}
-      <div className="relative w-full flex items-center justify-center rounded-[1rem] sm:rounded-[1.5rem] pb-8 sm:pb-12 md:pb-16 pt-32 sm:pt-40 md:pt-52" style={{ 
-        backgroundImage: `url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')`, 
-        backgroundSize: 'cover', 
-        backgroundPosition: 'center', 
+      <div className="relative w-full flex items-center justify-center rounded-[1rem] sm:rounded-[1.5rem] pb-8 sm:pb-12 md:pb-16 pt-32 sm:pt-40 md:pt-52" style={{
+        backgroundImage: `url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
       }}>
         <div className="absolute inset-0 bg-[rgba(0,0,0,0.3)] rounded-[1rem] sm:rounded-[2rem]" />
@@ -631,7 +632,7 @@ export default function App() {
 
         {/* Category Section */}
         <section style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{ 
+          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{
             marginBottom: 'clamp(1.5rem, 2.08vw, 2rem)'
           }}>
             دسته‌بندی محصولات Romela Oil
@@ -640,10 +641,10 @@ export default function App() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(1rem, 2.08vw, 2rem)' }}>
 
             {/* Industrial Oils Card (Wide) */}
-            <Link 
+            <Link
               href={categories.find(c => c.name.toLowerCase().includes('صنعتی')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('صنعتی'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden lg:col-span-2" 
-              
+              className="relative bg-[#343434] rounded-3xl overflow-hidden lg:col-span-2"
+
             >
               <div className="absolute bg-[rgba(215,105,105,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row-reverse h-full">
@@ -673,10 +674,10 @@ export default function App() {
               </div>
             </Link>
             {/* Engine Oil Card */}
-            <Link 
+            <Link
               href={categories.find(c => c.name.toLowerCase().includes('موتور')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('موتور'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden" 
-              
+              className="relative bg-[#343434] rounded-3xl overflow-hidden"
+
             >
               <div className="absolute bg-[rgba(229,160,69,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
@@ -704,10 +705,10 @@ export default function App() {
             </Link>
 
             {/* Gear Oil Card (Wide) */}
-            <Link 
+            <Link
               href={categories.find(c => c.name.toLowerCase().includes('گیربکس')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('گیربکس'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden" 
-              
+              className="relative bg-[#343434] rounded-3xl overflow-hidden"
+
             >
               <div className="absolute bg-[#C9C9C980] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
@@ -733,10 +734,10 @@ export default function App() {
             </Link>
 
             {/* Brake Oil Card */}
-            <Link 
+            <Link
               href={categories.find(c => c.name.toLowerCase().includes('ترمز')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('ترمز'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden" 
-              
+              className="relative bg-[#343434] rounded-3xl overflow-hidden"
+
             >
               <div className="absolute bg-[rgba(255,35,39,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
@@ -762,16 +763,16 @@ export default function App() {
             </Link>
 
             {/* Gear Oil Card (Wide) */}
-            <Link 
+            <Link
               href={categories.find(c => c.name.toLowerCase().includes('هیدرولیک')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('گیربکس'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden" 
-              
+              className="relative bg-[#343434] rounded-3xl overflow-hidden"
+
             >
               <div className="absolute bg-[#1D36F14D] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full">
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
                   <h3 className="text-[#738CD2] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
-                  روغن هیدرولیک                  
+                    روغن هیدرولیک
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
                     <span className="text-[#738CD2] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
@@ -791,10 +792,10 @@ export default function App() {
             </Link>
 
             {/* Brake Oil Card */}
-            <Link 
+            <Link
               href={categories.find(c => c.name.toLowerCase().includes('ترمز')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('ترمز'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden" 
-              
+              className="relative bg-[#343434] rounded-3xl overflow-hidden"
+
             >
               <div className="absolute bg-[#EA770C] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row-reverse h-full">
@@ -820,10 +821,10 @@ export default function App() {
             </Link>
 
             {/* Special Additives Card */}
-            <Link 
+            <Link
               href={categories.find(c => c.name.toLowerCase().includes('افزودنی') || c.name.toLowerCase().includes('خاص')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('افزودنی') || c.name.toLowerCase().includes('خاص'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden" 
-              
+              className="relative bg-[#343434] rounded-3xl overflow-hidden"
+
             >
               <div className="absolute bg-[rgba(255,255,255,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div
@@ -855,7 +856,7 @@ export default function App() {
 
         {/* Introduction Section */}
         <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{ 
+          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{
             marginBottom: 'clamp(2rem, 2.86vw, 2.75rem)'
           }}>
             معرفی Romela آلمان
@@ -863,7 +864,7 @@ export default function App() {
 
           <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1.5rem, 3.13vw, 3rem)' }}>
             <div className="w-full lg:w-1/2">
-              <p className="text-white text-right text-base sm:text-lg font-medium" dir="auto" style={{ 
+              <p className="text-white text-right text-base sm:text-lg font-medium" dir="auto" style={{
                 lineHeight: 'clamp(1.75rem, 5.21vw, 2.5rem)'
               }}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد.
@@ -883,7 +884,7 @@ export default function App() {
 
         {/* Products Section */}
         <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{ 
+          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
             محصولات Romela Oil
@@ -923,13 +924,13 @@ export default function App() {
                       paddingBottom: 'clamp(0.625rem, 0.78vw, 0.75rem)',
                       ...(isActive
                         ? {
-                            background: '#FFFFFF1F',
-                            color: '#F9BD65',
-                            boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.5)',
-                          }
+                          background: '#FFFFFF1F',
+                          color: '#F9BD65',
+                          boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.5)',
+                        }
                         : {
-                            color: '#F9BD65',
-                          }
+                          color: '#F9BD65',
+                        }
                       ),
                     }}
                     onMouseEnter={(e) => {
@@ -960,11 +961,23 @@ export default function App() {
                 currentTabProducts.slice(0, 4).map((product) => {
                   const productImage = getWcaPrimaryImageUrl(product) || imgMockupAtfZfBackgroundRemoved.src;
                   return (
-                    <Link key={product.id} href={`/products/${product.slug}`} className='relative lg:overflow-visible overflow-hidden'>
-                      <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
-                      <div className="absolute w-full z-10 product-image-container" style={{ height: 'clamp(259px, 21.56vw, 414px)', top: 'clamp(-5rem, -10.42vw, -5rem)' }}>
-                        <img alt={product.name} className="absolute inset-0 max-w-none object-50%-50% object-contain lg:object-cover pointer-events-none size-full" src={productImage} />
-                      </div>
+                    <Link key={product.id} href={`/products/${product.slug}`} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
+                          <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ height: 'clamp(222px, 18.49vw, 355px)' }}>
+        <div className="h-full flex items-center justify-center" style={{
+        }} data-name="Mockup ATF-ZF Background Removed">
+          {productImage ? (
+            <img
+              src={productImage}
+              alt={product.name}
+              className="size-full -mt-24"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <LoadingSpinner size="lg" />
+            </div>
+          )}
+        </div>
+      </div>
                       <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
                         <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
                           <div className="justify-center relative w-full">
@@ -978,11 +991,23 @@ export default function App() {
               ) : (
                 // Fallback to mock data if no products found
                 Array.from({ length: 4 }).map((_, index) => (
-                  <div key={index} className='relative lg:overflow-visible overflow-hidden'>
-                    <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
-                    <div className="absolute w-full z-10 product-image-container" style={{ height: 'clamp(259px, 21.56vw, 414px)', top: 'clamp(-5rem, -10.42vw, -5rem)' }}>
-                      <img alt="" className="absolute inset-0 max-w-none object-50%-50% object-contain lg:object-cover pointer-events-none size-full" src={imgMockupAtfZfBackgroundRemoved.src} />
-                    </div>
+                  <div key={index} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
+                         <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ height: 'clamp(222px, 18.49vw, 355px)' }}>
+        <div className="h-full flex items-center justify-center" style={{
+        }} data-name="Mockup ATF-ZF Background Removed">
+          {imgMockupAtfZfBackgroundRemoved.src ? (
+            <img
+              src={imgMockupAtfZfBackgroundRemoved.src}
+              alt="Mockup ATF-ZF Background Removed"
+              className="size-full -mt-24"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <LoadingSpinner size="lg" />
+            </div>
+          )}
+        </div>
+      </div>
                     <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
                       <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
                         <div className="justify-center relative w-full">
@@ -1000,7 +1025,7 @@ export default function App() {
 
         {/* Statistics Section */}
         <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{ 
+          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
             Romela Oil آمار
@@ -1082,7 +1107,7 @@ export default function App() {
 
         {/* Best Selling Products Section */}
         <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
-          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{ 
+          <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>
             محصولات پرفروش
@@ -1112,7 +1137,7 @@ export default function App() {
               >
                 {categories.slice(0, 6).map((category) => {
                   const isActive = activeBestsellerTab === category.id;
-                  
+
                   return (
                     <button
                       key={category.id}
@@ -1125,12 +1150,12 @@ export default function App() {
                         paddingBottom: 'clamp(0.625rem, 0.78vw, 0.75rem)',
                         ...(isActive
                           ? {
-                              background: '#FFFFFF1F',
-                              color: '#F9BD65',
-                            }
+                            background: '#FFFFFF1F',
+                            color: '#F9BD65',
+                          }
                           : {
-                              color: '#F9BD65',
-                            }
+                            color: '#F9BD65',
+                          }
                         ),
                       }}
                       onMouseEnter={(e) => {
@@ -1157,14 +1182,14 @@ export default function App() {
             <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: 'clamp(1.5rem, 3.13vw, 3rem)' }}>
               {/* Right Side: Text Description */}
               <div className="flex flex-col">
-                <h3 className="font-bold text-white font-iranyekan text-lg sm:text-xl md:text-[1.375rem]" dir="auto" style={{ 
+                <h3 className="font-bold text-white font-iranyekan text-lg sm:text-xl md:text-[1.375rem]" dir="auto" style={{
                   marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
                 }}>
                   {currentBestsellerCategory ? `${currentBestsellerCategory.name} روملا` : 'محصولات پرفروش روملا'}
                 </h3>
                 <p className="text-white/90 leading-relaxed text-right font-iranyekan text-sm sm:text-base" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.25vw, 1rem)' }}>
-                  {currentBestsellerCategory?.description 
-                    ? currentBestsellerCategory.description 
+                  {currentBestsellerCategory?.description
+                    ? currentBestsellerCategory.description
                     : 'محصولات پرفروش و محبوب روملا با کیفیت برتر آلمانی. این محصولات با استقبال بالای مشتریان مواجه شده‌اند و از بهترین‌های بازار محسوب می‌شوند.'}
                 </p>
               </div>

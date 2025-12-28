@@ -136,23 +136,21 @@ function ProductTile({ product }: { product: WcaProduct }) {
 
   return (
     <Link href={`/products?slug=${encodeURIComponent(product.slug)}`} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
-      <div className="relative bg-[#343434] rounded-[24px] w-full" style={{ height: 'clamp(222px, 18.49vw, 355px)' }} />
-      <div className="absolute w-full z-10" style={{
-        height: 'clamp(259px, 21.56vw, 414px)',
-        top: 'clamp(-5rem, -10.42vw, -5rem)'
-      }} data-name="Mockup ATF-ZF Background Removed">
-        {image ? (
-          <Image
-            src={image}
-            alt={product.name}
-            fill
-            className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <LoadingSpinner size="lg" />
-          </div>
-        )}
+      <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ height: 'clamp(222px, 18.49vw, 355px)' }}>
+        <div className="h-full flex items-center justify-center" style={{
+        }} data-name="Mockup ATF-ZF Background Removed">
+          {image ? (
+            <img
+              src={image}
+              alt={product.name}
+              className="size-full -mt-24"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <LoadingSpinner size="lg" />
+            </div>
+          )}
+        </div>
       </div>
       <div className='w-full flex flex-col items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
         <div className="bg-[#e6a816ca] z-10 flex h-fit items-center justify-center rounded-[120px]" style={{
@@ -166,7 +164,7 @@ function ProductTile({ product }: { product: WcaProduct }) {
         <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold' style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
           <p style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>{volumeText}</p>
           <p className='bg-[#C3C3C3] rounded-full' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>
-          <ProductNameWithTooltip text={standardText} />
+            <ProductNameWithTooltip text={standardText} />
           </p>
         </div>
       </div>
@@ -483,7 +481,7 @@ export default function ProductsPage() {
     } else {
       setSelectedSubcategoryId(null)
     }
-    
+
     // Support both single attribute_term and multiple attribute_terms
     const terms: number[] = []
     if (attributeTermParam) {
@@ -558,22 +556,22 @@ export default function ProductsPage() {
     }
 
     const params = new URLSearchParams()
-    
+
     // Update category param
     if (selectedCategoryId) {
       params.set('category', selectedCategoryId.toString())
     }
-    
+
     // Update subcategory param
     if (selectedSubcategoryId) {
       params.set('subcategory', selectedSubcategoryId.toString())
     }
-    
+
     // Update attribute terms param
     if (selectedAttributeTerms.length > 0) {
       params.set('attribute_terms', selectedAttributeTerms.join(','))
     }
-    
+
     // Update URL without causing navigation
     const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
     router.replace(newUrl, { scroll: false })
@@ -596,11 +594,11 @@ export default function ProductsPage() {
         // In RTL, scrollLeft can be negative when scrolled left
         // scrollLeft starts at 0 (at start/rightmost) and goes negative as we scroll left
         // At end (leftmost): scrollLeft ≈ -(scrollWidth - clientWidth)
-        
+
         const maxScroll = scrollWidth - clientWidth
         const isAtStart = Math.abs(scrollLeft) < 1 || (scrollLeft === 0 && maxScroll <= 0)
         const isAtEnd = maxScroll > 0 && Math.abs(scrollLeft + maxScroll) < 1
-        
+
         // Right button: show when we've scrolled left (can go back right)
         setShowRightButton(!isAtStart && maxScroll > 0)
         // Left button: show when we're not at the end (can scroll left)
@@ -630,10 +628,10 @@ export default function ProductsPage() {
     const checkScreenSize = () => {
       setIsLargeScreen(window.innerWidth >= 1024)
     }
-    
+
     checkScreenSize()
     window.addEventListener('resize', checkScreenSize)
-    
+
     return () => window.removeEventListener('resize', checkScreenSize)
   }, [])
 
