@@ -203,45 +203,19 @@ function FiltersPanel({
     }}>
       <h3 className="text-white font-bold text-center" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.125rem)' }}>فیلترها</h3>
       <Divider />
-      <div className="flex flex-col" style={{ gap: 'clamp(2rem, 2.08vw, 2rem)' }}>
-        {subcategories.length > 0 && (
-          <div>
-            <div className="text-white text-lg font-bold text-right mb-6">زیر دسته‌بندی‌ها</div>
-            <div className="grid grid-cols-2" style={{ gap: 'clamp(0.75rem, 0.94vw, 0.75rem)' }}>
-              {subcategories.map((cat) => {
-                const isSelected = selectedSubcategoryId === cat.id
-                return (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    className={`rounded-[999px] text-white text-sm font-bold flex items-center justify-center py-3 ${isSelected ? pillOn : pillOff}`}
-                    onClick={() => onSubcategoryChange(isSelected ? null : cat.id)}
-                    style={{
-                      paddingLeft: 'clamp(1rem, 1.25vw, 1rem)',
-                      paddingRight: 'clamp(1rem, 1.25vw, 1rem)',
-                    }}
-                  >
-                    {cat.name}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        )}
-
-        {loadingAttributes ? (
-          <div className="text-center text-[#9A9A9A]" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-            در حال بارگذاری فیلترها...
-          </div>
-        ) : !hasAttributeFilters ? (
-          <div className="text-center text-[#9A9A9A]" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-            فیلتری در دسترس نیست
-          </div>
-        ) : (
-          <div className="flex flex-col" style={{ gap: 'clamp(2rem, 2.08vw, 2rem)' }}>
-            {attributes.map((attr) => {
-              const terms = attributeTermsMap[attr.id] || []
-              if (terms.length === 0) return null
+      {loadingAttributes ? (
+        <div className="text-center text-[#9A9A9A]" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+          در حال بارگذاری فیلترها...
+        </div>
+      ) : !hasAttributeFilters ? (
+        <div className="text-center text-[#9A9A9A]" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+          فیلتری در دسترس نیست
+        </div>
+      ) : (
+        <div className="flex flex-col" style={{ gap: 'clamp(2rem, 2.08vw, 2rem)' }}>
+          {attributes.map((attr) => {
+            const terms = attributeTermsMap[attr.id] || []
+            if (terms.length === 0) return null
 
             return (
               <div key={attr.id}>
@@ -267,8 +241,9 @@ function FiltersPanel({
                 </div>
               </div>
             )
-          })
-        )}
+          })}
+        </div>
+      )}
     </aside>
   )
 }
