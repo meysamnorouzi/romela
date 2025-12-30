@@ -494,6 +494,38 @@ export default function App() {
     return categories.find(cat => cat.id === activeBestsellerTab);
   }, [activeBestsellerTab, categories]);
 
+  // Category descriptions map
+  const categoryDescriptions: Record<string, string> = {
+    'روغن موتور': 'روغن موتورهای Romela از جمله محصولات پرفروش هستند که با بهره‌گیری از تکنولوژی روز آلمان و فرمولاسیون پیشرفته تولید می‌شوند. محصولاتی مانند Romela Drive 10W-40 با ایجاد محافظت پایدار از اجزای موتور، سبب کاهش استهلاک، بهبود عملکرد و افزایش طول عمر موتور می‌شوند. این روغن‌ها با استانداردهای بین‌المللی خودروسازان سازگار بوده و گزینه‌ای مطمئن برای خودروهای شهری و جاده‌ای محسوب می‌شوند.',
+    'روغن گیربکس': 'روغن های گیربکس‌ Romela با طراحی تخصصی برای سیستم‌های انتقال قدرت دستی و اتوماتیک در کاربرد های سواری و صنعتی عرضه می شود. این روغن عملکردی نرم، روان و بدون ضربه در تعویض دنده‌ها فراهم می‌کنند. محصولات پر فروش مانند Romela ATZ-ZF با مقاومت بالا در برابر فشار و حرارت، از سایش چرخ‌دنده‌ها جلوگیری کرده و عمر مفید گیربکس را افزایش می‌دهند.',
+    'روغن ترمز': 'روغن ترمز Romela با فرمولاسیون پیشرفته، عملکرد دقیق و پایدار سیستم ترمز را حتی در شرایط دمایی و فشاری بالا تضمین می‌کند. این محصولات با جلوگیری از تشکیل حباب و افت فشار، ایمنی رانندگی را به‌طور چشمگیری افزایش می‌دهند. انتخاب روغن ترمز استاندارد Romela، گامی مهم در حفظ کارایی سیستم ترمز و آرامش خاطر راننده است.',
+    'روغن صنعتی': 'روغن‌های صنعتی شرکت Romela ویژه‌ی انواع توربین، کمپرسور، تزانسفورمر و... طراحی شده‌ است. استفاده از روغن های باعث افزایش راندمان کاری و کاهش هزینه‌های نگهداری می‌شوند. این محصولات با پایداری حرارتی و شیمیایی بالا، در شرایط کاری سنگین نیز عملکردی مطمئن ارائه می‌دهند و از بهترین روانکارهای صنعتی موجود در بازار به‌شمار می‌آیند.',
+    'روغن هیدرولیک': 'روغن‌های هیدرولیک Romela از محبوب‌ترین و پرفروش‌ترین محصولات هستند که با کیفیت برتر آلمانی تولید می‌شوند. این روغن‌ها با انتقال بهینه نیرو، روانکاری مؤثر و مقاومت بالا در برابر اکسیداسیون و سایش، عملکردی پایدار و دقیق را در سیستم‌های هیدرولیکی فراهم می‌کنند.',
+    'افزودنی ها': 'افزودنی‌های روانکار Romela با هدف بهبود عملکرد موتور و تجهیزات طراحی شده‌اند. این محصولات با افزایش خاصیت پاک‌کنندگی، کاهش اصطکاک، جلوگیری از اکسیداسیون و کنترل رسوبات، طول عمر روغن و قطعات را افزایش می‌دهند. استفاده از افزودنی‌های تخصصی Romela به بهینه‌سازی مصرف سوخت و عملکرد پایدار سیستم‌ها کمک می‌کند.',
+    'افزودنی‌های خاص': 'افزودنی‌های روانکار Romela با هدف بهبود عملکرد موتور و تجهیزات طراحی شده‌اند. این محصولات با افزایش خاصیت پاک‌کنندگی، کاهش اصطکاک، جلوگیری از اکسیداسیون و کنترل رسوبات، طول عمر روغن و قطعات را افزایش می‌دهند. استفاده از افزودنی‌های تخصصی Romela به بهینه‌سازی مصرف سوخت و عملکرد پایدار سیستم‌ها کمک می‌کند.',
+  };
+
+  // Get description for current category
+  const getCategoryDescription = (category: WcaCategory | null): string => {
+    if (!category) {
+      return 'محصولات پرفروش و محبوب روملا با کیفیت برتر آلمانی. این محصولات با استقبال بالای مشتریان مواجه شده‌اند و از بهترین‌های بازار محسوب می‌شوند.';
+    }
+
+    // Try to find description by category name
+    const description = categoryDescriptions[category.name];
+    if (description) {
+      return description;
+    }
+
+    // Fallback to category description from API
+    if (category.description) {
+      return category.description;
+    }
+
+    // Default description
+    return 'محصولات پرفروش و محبوب روملا با کیفیت برتر آلمانی. این محصولات با استقبال بالای مشتریان مواجه شده‌اند و از بهترین‌های بازار محسوب می‌شوند.';
+  };
+
   return (
     <div className="bg-[#0e0e0e] min-h-screen w-full relative">
       {/* Structured Data (JSON-LD) */}
@@ -643,16 +675,17 @@ export default function App() {
             {/* Industrial Oils Card (Wide) */}
             <Link
               href={categories.find(c => c.name.toLowerCase().includes('صنعتی')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('صنعتی'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden lg:col-span-2"
+              className="relative bg-[#343434] rounded-3xl overflow-hidden h-64 lg:col-span-2"
 
             >
               <div className="absolute bg-[rgba(215,105,105,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
-              <div className="relative flex flex-col md:flex-row-reverse h-full">
-                <div className="w-full md:w-[40%] flex items-center justify-center">
-                  <div className="w-full flex items-center justify-center h-64">
-                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage8.src} />
-                  </div>
-                </div>
+              <div className="relative flex flex-col md:flex-row h-full" 
+                style={{
+                  backgroundImage: `url('${imgImage8.src}')`,
+                  backgroundSize: '34% auto',
+                  backgroundPosition: 'left',
+                  backgroundRepeat: 'no-repeat',
+                }}>
                 <div className="w-full md:w-[60%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
                   <div style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     <h3 className="text-[#E39C9C] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{}}>
@@ -676,12 +709,18 @@ export default function App() {
             {/* Engine Oil Card */}
             <Link
               href={categories.find(c => c.name.toLowerCase().includes('موتور')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('موتور'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden"
+              className="relative bg-[#343434] rounded-3xl overflow-hidden h-64"
 
             >
               <div className="absolute bg-[rgba(229,160,69,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
-              <div className="relative flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-[60%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
+              <div className="relative flex flex-col md:flex-row h-full" 
+                style={{
+                  backgroundImage: `url('${img4066180884Cf1Da234Ada498F99878E38474B39B91.src}')`,
+                  backgroundSize: '50% auto',
+                  backgroundPosition: 'left',
+                  backgroundRepeat: 'no-repeat',
+                }}>
+                <div className="w-full md:w-[70%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
                   <h3 className="text-[#FEDE59] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن موتور
                   </h3>
@@ -694,25 +733,24 @@ export default function App() {
                     </svg>
                   </div>
                 </div>
-                <div className="w-full md:w-[40%] flex items-center justify-center">
-                  <div className="w-full flex items-center justify-center h-64">
-                    <div className="flex items-center justify-center" style={{ width: 'clamp(133px, 11.1vw, 213px)' }}>
-                      <img alt="" className="w-full h-full object-contain pointer-events-none" src={img4066180884Cf1Da234Ada498F99878E38474B39B91.src} />
-                    </div>
-                  </div>
-                </div>
               </div>
             </Link>
 
             {/* Gear Oil Card (Wide) */}
             <Link
               href={categories.find(c => c.name.toLowerCase().includes('گیربکس')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('گیربکس'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden"
+              className="relative bg-[#343434] rounded-3xl overflow-hidden h-64"
 
             >
               <div className="absolute bg-[#C9C9C980] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
-              <div className="relative flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-[60%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
+              <div className="relative flex flex-col md:flex-row h-full" 
+                style={{
+                  backgroundImage: `url('${imgImage2.src}')`,
+                  backgroundSize: '50% auto',
+                  backgroundPosition: 'left',
+                  backgroundRepeat: 'no-repeat',
+                }}>
+                <div className="w-full md:w-[70%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
                   <h3 className="text-[#E7E7E7] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن گیربکس
                   </h3>
@@ -725,23 +763,24 @@ export default function App() {
                     </svg>
                   </div>
                 </div>
-                <div className="w-full md:w-[40%] flex items-center justify-center">
-                  <div className="w-full flex items-center justify-center h-64">
-                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage2.src} />
-                  </div>
-                </div>
               </div>
             </Link>
 
             {/* Brake Oil Card */}
             <Link
               href={categories.find(c => c.name.toLowerCase().includes('ترمز')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('ترمز'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden"
+              className="relative bg-[#343434] rounded-3xl overflow-hidden h-64"
 
             >
               <div className="absolute bg-[rgba(255,35,39,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
-              <div className="relative flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-[60%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
+              <div className="relative flex flex-col md:flex-row h-full" 
+                style={{
+                  backgroundImage: `url('${imgImage5.src}')`,
+                  backgroundSize: '50% auto',
+                  backgroundPosition: 'left',
+                  backgroundRepeat: 'no-repeat',
+                }}>
+                <div className="w-full md:w-[70%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
                   <h3 className="text-[#FF2023] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن ترمز
                   </h3>
@@ -754,23 +793,24 @@ export default function App() {
                     </svg>
                   </div>
                 </div>
-                <div className="w-full md:w-[40%] flex items-center justify-center">
-                  <div className="w-full flex items-center justify-center h-64">
-                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage5.src} />
-                  </div>
-                </div>
               </div>
             </Link>
 
             {/* Gear Oil Card (Wide) */}
             <Link
               href={categories.find(c => c.name.toLowerCase().includes('هیدرولیک')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('گیربکس'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden"
+              className="relative bg-[#343434] rounded-3xl overflow-hidden h-64"
 
             >
               <div className="absolute bg-[#1D36F14D] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
-              <div className="relative flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-[60%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
+              <div className="relative flex flex-col md:flex-row h-full" 
+                style={{
+                  backgroundImage: `url('${imgImage6.src}')`,
+                  backgroundSize: '50% auto',
+                  backgroundPosition: 'left',
+                  backgroundRepeat: 'no-repeat',
+                }}>
+                <div className="w-full md:w-[70%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
                   <h3 className="text-[#738CD2] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن هیدرولیک
                   </h3>
@@ -783,30 +823,27 @@ export default function App() {
                     </svg>
                   </div>
                 </div>
-                <div className="w-full md:w-[40%] flex items-center justify-center">
-                  <div className="w-full flex items-center justify-center h-64">
-                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage6.src} />
-                  </div>
-                </div>
               </div>
             </Link>
 
             {/* Brake Oil Card */}
             <Link
               href={categories.find(c => c.name.toLowerCase().includes('ترمز')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('ترمز'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden"
+              className="relative bg-[#343434] rounded-3xl overflow-hidden h-64"
 
             >
               <div className="absolute bg-[#EA770C] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
-              <div className="relative flex flex-col md:flex-row-reverse h-full">
-                <div className="w-full md:w-[40%] flex items-center justify-center">
-                  <div className="w-full flex items-center justify-center h-64">
-                    <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage3.src} />
-                  </div>
-                </div>
-                <div className="w-full md:w-[60%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
+              <div className="relative flex flex-col md:flex-row h-full" 
+                 style={{
+                  backgroundImage: `url('${imgImage3.src}')`,
+                  backgroundSize: '50% auto',
+                  backgroundPosition: 'left',
+                  backgroundRepeat: 'no-repeat',
+                }}>
+               
+                <div className="w-full md:w-[70%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
                   <h3 className="text-[#EA770C] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
-                    روغن ترمز
+                    گریس
                   </h3>
                   <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
                     <span className="text-[#EA770C] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
@@ -823,7 +860,7 @@ export default function App() {
             {/* Special Additives Card */}
             <Link
               href={categories.find(c => c.name.toLowerCase().includes('افزودنی') || c.name.toLowerCase().includes('خاص')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('افزودنی') || c.name.toLowerCase().includes('خاص'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden"
+              className="relative bg-[#343434] rounded-3xl overflow-hidden h-64"
 
             >
               <div className="absolute bg-[rgba(255,255,255,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
@@ -836,7 +873,7 @@ export default function App() {
                   backgroundRepeat: 'no-repeat',
                 }}
               >
-                <div className="relative z-10 w-full md:w-[60%] flex flex-col justify-between gap-4 order-1 md:order-2" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
+                <div className="relative z-10 w-full md:w-[70%] flex flex-col justify-between gap-4 order-1 md:order-2" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
                   <h3 className="text-white text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     افزودنی های خاص
                   </h3>
@@ -867,11 +904,15 @@ export default function App() {
               <p className="text-white text-right text-base sm:text-lg font-medium" dir="auto" style={{
                 lineHeight: 'clamp(1.75rem, 5.21vw, 2.5rem)'
               }}>
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد.
+                شرکت Romela Oil یک برند آلمانی در حوزه تولید انواع روانکارها و روغن‌های صنعتی و خودرویی است که محصولات خود را بر پایه‌ی فناوری روز اروپا و استانداردهای کیفی بین‌المللی تولید می‌کند. تمرکز اصلی Romela بر طراحی و تولید روانکارهایی است که علاوه بر محافظت مؤثر از موتور و تجهیزات صنعتی، موجب افزایش کارایی، کاهش استهلاک و بهبود بهره‌وری سیستم‌ها شوند.
+                <br />
+                حصولات Romela شامل طیف گسترده‌ای از روغن موتور، روغن گیربکس، روغن‌های صنعتی، روغن هیدرولیک و افزودنی‌های تخصصی است که برای خودروهای سبک و سنگین، ماشین‌آلات صنعتی و تجهیزات پیشرفته طراحی شده‌اند. این محصولات مطابق با استانداردهای جهانی نظیر API و ACEA بوده و بسیاری از آن‌ها دارای تأییدیه خودروسازان (OEM Approvals) هستند.
+                <br />
+                کیفیت پایدار، دقت در فرمولاسیون و استفاده از مواد اولیه مرغوب، Romela را به برندی مطمئن برای حرفه‌ای‌ها، صنایع و مصرف‌کنندگان تبدیل کرده است. هدف این برند ارائه راهکارهای روانکاری قابل‌اعتماد و اقتصادی، همراه با عملکردی مداوم و پایدار در شرایط کاری مختلف است.
               </p>
             </div>
             <div className="w-full lg:w-1/2">
-              <div className="bg-[#343434] rounded-3xl" style={{ padding: 'clamp(2rem, 3.13vw, 3rem)' }}>
+              <div className="bg-[#343434] rounded-3xl h-full flex items-center justify-center" style={{ padding: 'clamp(2rem, 3.13vw, 3rem)' }}>
                 <div className="w-full flex items-center justify-center" style={{ height: 'clamp(256px, 15.63vw, 300px)' }}>
                   <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage9.src} />
                 </div>
@@ -962,22 +1003,22 @@ export default function App() {
                   const productImage = getWcaPrimaryImageUrl(product) || imgMockupAtfZfBackgroundRemoved.src;
                   return (
                     <Link key={product.id} href={`/products/${product.slug}`} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
-                          <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ height: 'clamp(222px, 18.49vw, 355px)' }}>
-        <div className="h-full flex items-center justify-center" style={{
-        }} data-name="Mockup ATF-ZF Background Removed">
-          {productImage ? (
-            <img
-              src={productImage}
-              alt={product.name}
-              className="size-full -mt-24"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <LoadingSpinner size="lg" />
-            </div>
-          )}
-        </div>
-      </div>
+                      <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ height: 'clamp(222px, 18.49vw, 355px)' }}>
+                        <div className="h-full flex items-center justify-center" style={{
+                        }} data-name="Mockup ATF-ZF Background Removed">
+                          {productImage ? (
+                            <img
+                              src={productImage}
+                              alt={product.name}
+                              className="size-full -mt-24"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <LoadingSpinner size="lg" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
                       <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
                         <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
                           <div className="justify-center relative w-full">
@@ -992,22 +1033,22 @@ export default function App() {
                 // Fallback to mock data if no products found
                 Array.from({ length: 4 }).map((_, index) => (
                   <div key={index} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
-                         <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ height: 'clamp(222px, 18.49vw, 355px)' }}>
-        <div className="h-full flex items-center justify-center" style={{
-        }} data-name="Mockup ATF-ZF Background Removed">
-          {imgMockupAtfZfBackgroundRemoved.src ? (
-            <img
-              src={imgMockupAtfZfBackgroundRemoved.src}
-              alt="Mockup ATF-ZF Background Removed"
-              className="size-full -mt-24"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <LoadingSpinner size="lg" />
-            </div>
-          )}
-        </div>
-      </div>
+                    <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ height: 'clamp(222px, 18.49vw, 355px)' }}>
+                      <div className="h-full flex items-center justify-center" style={{
+                      }} data-name="Mockup ATF-ZF Background Removed">
+                        {imgMockupAtfZfBackgroundRemoved.src ? (
+                          <img
+                            src={imgMockupAtfZfBackgroundRemoved.src}
+                            alt="Mockup ATF-ZF Background Removed"
+                            className="size-full -mt-24"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <LoadingSpinner size="lg" />
+                          </div>
+                        )}
+                      </div>
+                    </div>
                     <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
                       <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
                         <div className="justify-center relative w-full">
@@ -1185,12 +1226,10 @@ export default function App() {
                 <h3 className="font-bold text-white font-iranyekan text-lg sm:text-xl md:text-[1.375rem]" dir="auto" style={{
                   marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
                 }}>
-                  {currentBestsellerCategory ? `${currentBestsellerCategory.name} روملا` : 'محصولات پرفروش روملا'}
+                  {currentBestsellerCategory ? `${currentBestsellerCategory.name} Romela ` : 'محصولات پرفروش روملا'}
                 </h3>
                 <p className="text-white/90 leading-relaxed text-right font-iranyekan text-sm sm:text-base" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.25vw, 1rem)' }}>
-                  {currentBestsellerCategory?.description
-                    ? currentBestsellerCategory.description
-                    : 'محصولات پرفروش و محبوب روملا با کیفیت برتر آلمانی. این محصولات با استقبال بالای مشتریان مواجه شده‌اند و از بهترین‌های بازار محسوب می‌شوند.'}
+                  {getCategoryDescription(currentBestsellerCategory || null)}
                 </p>
               </div>
 
