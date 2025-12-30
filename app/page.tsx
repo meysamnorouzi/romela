@@ -900,18 +900,16 @@ export default function App() {
           </h2>
 
           <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1.5rem, 3.13vw, 3rem)' }}>
-            <div className="w-full lg:w-1/2">
+            <div className="w-full lg:w-[60%]">
               <p className="text-white text-right text-base sm:text-lg font-medium" dir="auto" style={{
                 lineHeight: 'clamp(1.75rem, 5.21vw, 2.5rem)'
               }}>
-                شرکت Romela Oil یک برند آلمانی در حوزه تولید انواع روانکارها و روغن‌های صنعتی و خودرویی است که محصولات خود را بر پایه‌ی فناوری روز اروپا و استانداردهای کیفی بین‌المللی تولید می‌کند. تمرکز اصلی Romela بر طراحی و تولید روانکارهایی است که علاوه بر محافظت مؤثر از موتور و تجهیزات صنعتی، موجب افزایش کارایی، کاهش استهلاک و بهبود بهره‌وری سیستم‌ها شوند.
-                <br />
-                حصولات Romela شامل طیف گسترده‌ای از روغن موتور، روغن گیربکس، روغن‌های صنعتی، روغن هیدرولیک و افزودنی‌های تخصصی است که برای خودروهای سبک و سنگین، ماشین‌آلات صنعتی و تجهیزات پیشرفته طراحی شده‌اند. این محصولات مطابق با استانداردهای جهانی نظیر API و ACEA بوده و بسیاری از آن‌ها دارای تأییدیه خودروسازان (OEM Approvals) هستند.
-                <br />
-                کیفیت پایدار، دقت در فرمولاسیون و استفاده از مواد اولیه مرغوب، Romela را به برندی مطمئن برای حرفه‌ای‌ها، صنایع و مصرف‌کنندگان تبدیل کرده است. هدف این برند ارائه راهکارهای روانکاری قابل‌اعتماد و اقتصادی، همراه با عملکردی مداوم و پایدار در شرایط کاری مختلف است.
-              </p>
+شرکت پاد راد صنعت موتور ارس با تمرکز بر واردات مستقیم و بدون واسطه‌ی انواع روانکارها، به‌عنوان نماینده‌ی رسمی محصولات برند Romela آلمان در ایران فعالیت می‌کند.
+               <br />
+               محصولات Romela شامل طیف متنوعی از روغن‌های صنعتی، روانکارهای تخصصی و روغن‌ موتور بوده و مطابق با استانداردهای بین‌المللی و تأییدیه‌های معتبر سازندگان تجهیزات و خودروسازان (OEM Approvals) تولید می‌شوند.
+                         </p>
             </div>
-            <div className="w-full lg:w-1/2">
+            <div className="w-full lg:w-[40%]">
               <div className="bg-[#343434] rounded-3xl h-full flex items-center justify-center" style={{ padding: 'clamp(2rem, 3.13vw, 3rem)' }}>
                 <div className="w-full flex items-center justify-center" style={{ height: 'clamp(256px, 15.63vw, 300px)' }}>
                   <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage9.src} />
