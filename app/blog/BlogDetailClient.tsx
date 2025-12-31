@@ -253,8 +253,8 @@ export function BlogDetailClient({ slug }: { slug: string }) {
             <Divider />
             {/* Related Posts Section */}
             <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
-              <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1rem, 2.08vw, 3rem)' }}>
-                <div className="w-full lg:w-1/2">
+              <div className="flex flex-col" style={{ gap: 'clamp(1rem, 2.08vw, 3rem)' }}>
+                <div className="w-full">
                   <h2 className="text-white text-right font-iranyekan font-bold" dir="auto" style={{ 
                     marginBottom: 'clamp(0.75rem, 1.17vw, 1.5rem)',
                     fontSize: 'clamp(1.25rem, 1.88vw, 2.125rem)'
@@ -262,7 +262,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
                     مقالات مرتبط
                   </h2>
                 </div>
-                <div className="w-full lg:w-1/2">
+                <div className="w-full">
                   <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: 'clamp(0.5rem, 1.17vw, 1.5rem)' }}>
                     {relatedPosts.map((relatedPost) => (
                       <BlogCard key={relatedPost.id} post={relatedPost} />
