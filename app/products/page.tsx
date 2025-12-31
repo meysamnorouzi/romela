@@ -369,7 +369,7 @@ export default function ProductsPage() {
   const WP_JSON_BASE_URL = (
     process.env.NEXT_PUBLIC_WP_JSON_BASE_URL ||
     process.env.NEXT_PUBLIC_WORDPRESS_URL ||
-    'https://padradarasoil.com/wp-json'
+    'https://admin.padradarasoil.com/wp-json'
   ).replace(/\/+$/, '')
 
   async function fetchJson<T>(url: string): Promise<T> {

@@ -56,7 +56,7 @@ import type {
   const WP_JSON_BASE_URL = (
     process.env.NEXT_PUBLIC_WP_JSON_BASE_URL ||
     process.env.NEXT_PUBLIC_WORDPRESS_URL ||
-    'https://padradarasoil.com/wp-json'
+    'https://admin.padradarasoil.com/wp-json'
   ).replace(/\/+$/, '')
 
   function buildApiUrl(path: string, query?: Record<string, string | number | boolean | undefined>) {

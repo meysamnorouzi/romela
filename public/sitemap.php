@@ -55,7 +55,7 @@ function esc_xml(string $s): string {
 }
 
 $SITE = base_url();
-$WP_JSON = 'https://padradarasoil.com/wp-json';
+$WP_JSON = 'https://admin.padradarasoil.com/wp-json';
 
 $staticUrls = [
   $SITE . '/',

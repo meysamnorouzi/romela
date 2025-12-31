@@ -2,8 +2,8 @@ export const NAVIGATION_ITEMS = [
   { label: 'صفحه اصلی', href: '/' },
   { label: 'محصولات', href: '/products' },
   { label: 'مقالات', href: '/blog' },
-  { label: 'شرایط فروش', href: '/شرایط-فروش' },
-  { label: 'نمایندگی', href: '/نمایندگی' },
+  { label: 'شرایط فروش', href: '/' },
+  { label: 'نمایندگی', href: '/' },
   { label: 'درباره ما', href: '/about-us' },
   { label: 'تماس با ما', href: '/contact-us' },
 
