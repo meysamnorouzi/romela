@@ -1,21 +1,34 @@
-import Image from 'next/image'
+import Link from 'next/link'
 
 export default function AboutUsPage() {
   return (
-    <div className="py-32 md:py-40">
-      <div className="container mx-auto px-4 sm:px-6 md:px-8">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 sm:mb-8 md:mb-12">
-          درباره ما
-        </h1>
+    <div className="bg-[#0e0e0e] min-h-screen w-full relative xl:px-0 2xl:px-6 sm:px-6">
+      <div className="relative w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-24 md:pt-32" style={{
+        paddingBottom: 'clamp(3rem, 10.42vw, 5rem)'
+      }}>
+        {/* Title */}
+        <h1 className="text-center text-white font-bold tracking-wide font-iranyekan text-xl sm:text-[2.125rem]  mb-6 md:mb-10">درباره ما</h1>
 
-        {/* Hero Section */}
-        <section className="mb-12 md:mb-16">
+        {/* Breadcrumb */}
+        <div className="flex justify-start mb-14">
+          <div className="font-bold text-[#9A9A9A]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+            <Link href="/" className="hover:text-[#717171]">صفحه اصلی</Link>
+            <span style={{ marginLeft: 'clamp(0.7rem, 0.83vw, 0.7rem)', marginRight: 'clamp(0.7rem, 0.83vw, 0.7rem)' }}>/</span>
+            <span className="text-[#F58F4A]">درباره ما</span>
+          </div>
+        </div>
+
+        {/* Hero Section - معرفی Romela آلمان */}
+        <section className="mb-12 md:mb-16" style={{ marginBottom: 'clamp(3rem, 6.25vw, 6rem)' }}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl overflow-hidden relative">
+            <div className="bg-[#343434] rounded-[24px] overflow-hidden relative" style={{
+              aspectRatio: '16/9',
+              minHeight: 'clamp(200px, 25vw, 400px)'
+            }}>
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-32 h-32 bg-gold/20 rounded-full flex items-center justify-center">
+                <div className="w-32 h-32 bg-[#E6A816]/20 rounded-full flex items-center justify-center">
                   <svg
-                    className="w-16 h-16 text-gold"
+                    className="w-16 h-16 text-[#E6A816]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -30,11 +43,17 @@ export default function AboutUsPage() {
                 </div>
               </div>
             </div>
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
+            <div dir="rtl">
+              <h2 className="text-white font-bold font-iranyekan mb-6" style={{
+                fontSize: 'clamp(1.5rem, 2.08vw, 2rem)',
+                marginBottom: 'clamp(1.5rem, 2.08vw, 2rem)'
+              }}>
                 معرفی Romela آلمان
               </h2>
-              <div className="text-gray-300 space-y-4 text-justify">
+              <div className="text-white/90 space-y-4 text-justify" style={{
+                fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
+                lineHeight: '1.8'
+              }}>
                 <p>
                   شرکت Romela Oil یک برند آلمانی در حوزه تولید انواع روانکارها و روغن‌های صنعتی و خودرویی است که محصولات خود را بر پایه‌ی فناوری روز اروپا و استانداردهای کیفی بین‌المللی تولید می‌کند. تمرکز اصلی Romela بر طراحی و تولید روانکارهایی است که علاوه بر محافظت مؤثر از موتور و تجهیزات صنعتی، موجب افزایش کارایی، کاهش استهلاک و بهبود بهره‌وری سیستم‌ها شوند.
                 </p>
@@ -50,9 +69,18 @@ export default function AboutUsPage() {
         </section>
 
         {/* Mission Section */}
-        <section className="bg-dark-lighter rounded-xl p-8 md:p-12 mb-12 md:mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">ماموریت پاد راد صنعت موتور ارس</h2>
-          <div className="text-gray-300 space-y-4 text-justify">
+        <section className="bg-[#363636B2] rounded-[22px] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)] mb-12 md:mb-16" style={{
+          padding: 'clamp(2rem, 3.13vw, 3rem)',
+          marginBottom: 'clamp(3rem, 6.25vw, 6rem)'
+        }}>
+          <h2 className="text-white font-bold font-iranyekan mb-6" style={{
+            fontSize: 'clamp(1.5rem, 2.08vw, 2rem)',
+            marginBottom: 'clamp(1.5rem, 2.08vw, 2rem)'
+          }}>ماموریت پاد راد صنعت موتور ارس</h2>
+          <div className="text-white/90 space-y-4 text-justify" dir="rtl" style={{
+            fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
+            lineHeight: '1.8'
+          }}>
             <p>
               شرکت پاد راد صنعت موتور ارس به عنوان یک مجموعه تخصصی در زمینه تأمین و واردات انواع روانکارهای صنعتی و موتوری، فعالیت خود را از سال ۱۴۰۴ با هدف ایجاد یک زنجیره تأمین پایدار، مطمئن و مطابق با استانداردهای بین‌المللی آغاز کرده است. این شرکت با همکاری مستقیم با Romela Oil آلمان به‌عنوان یکی از تولیدکنندگان معتبر اروپایی، متعهد است محصولات باکیفیت و استاندارد را در اختیار مشتریان و صنایع داخلی قرار دهد.
             </p>
@@ -64,8 +92,13 @@ export default function AboutUsPage() {
 
         {/* Values Section */}
         <section>
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">ارزش‌های ما</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          <h2 className="text-white font-bold font-iranyekan mb-8 text-center" style={{
+            fontSize: 'clamp(1.5rem, 2.08vw, 2rem)',
+            marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
+          }}>ارزش‌های ما</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8" style={{
+            gap: 'clamp(1.5rem, 2.08vw, 2rem)'
+          }}>
             {[
               {
                 title: 'کیفیت',
@@ -97,11 +130,19 @@ export default function AboutUsPage() {
             ].map((value, index) => (
               <div
                 key={index}
-                className="bg-dark-lighter rounded-xl p-6 text-center hover:shadow-2xl hover:shadow-gold/20 transition-all duration-300"
+                className="bg-[#363636B2] rounded-[22px] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)] p-6 text-center hover:shadow-[0_30px_70px_rgba(230,168,22,0.2)] transition-all duration-300"
+                style={{
+                  padding: 'clamp(1.5rem, 2.08vw, 2rem)'
+                }}
               >
-                <div className="text-gold mb-4 flex justify-center">{value.icon}</div>
-                <h3 className="text-xl font-bold text-white mb-3">{value.title}</h3>
-                <p className="text-gray-400">{value.description}</p>
+                <div className="text-[#E6A816] mb-4 flex justify-center">{value.icon}</div>
+                <h3 className="text-white font-bold font-iranyekan mb-3" style={{
+                  fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)',
+                  marginBottom: 'clamp(0.75rem, 1.04vw, 1rem)'
+                }}>{value.title}</h3>
+                <p className="text-white/70" style={{
+                  fontSize: 'clamp(0.875rem, 1.04vw, 1rem)'
+                }}>{value.description}</p>
               </div>
             ))}
           </div>

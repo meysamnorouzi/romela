@@ -190,10 +190,10 @@ function FiltersPanel({
 
   return (
     <aside className="bg-[#343434] rounded-[22px] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)]" style={{ 
-      paddingLeft: 'clamp(1.5rem, 1.56vw, 1.5rem)',
-      paddingRight: 'clamp(1.5rem, 1.56vw, 1.5rem)',
-      paddingTop: 'clamp(2rem, 2.08vw, 2rem)',
-      paddingBottom: 'clamp(2rem, 2.08vw, 2rem)'
+      paddingLeft: 'clamp(1rem, 1.17vw, 1.5rem)',
+      paddingRight: 'clamp(1rem, 1.17vw, 1.5rem)',
+      paddingTop: 'clamp(1.5rem, 1.56vw, 2rem)',
+      paddingBottom: 'clamp(1.5rem, 1.56vw, 2rem)'
     }}>
       <h3 className="text-white font-bold text-center" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.125rem)' }}>فیلترها</h3>
       <Divider />
@@ -206,7 +206,7 @@ function FiltersPanel({
             فیلتری در دسترس نیست
           </div>
         ) : (
-          <div className="flex flex-col" style={{ gap: 'clamp(2rem, 2.08vw, 2rem)' }}>
+          <div className="flex flex-col" style={{ gap: 'clamp(1.5rem, 1.56vw, 2rem)' }}>
             {attributes.map((attr) => {
               const terms = attributeTermsMap[attr.id] || []
               if (terms.length === 0) return null
@@ -346,6 +346,7 @@ export function SubcategoryPageClient({
   const chipRowRef = useRef<HTMLDivElement | null>(null)
   const [showRightButton, setShowRightButton] = useState(false)
   const [showLeftButton, setShowLeftButton] = useState(true)
+  const [showFilterModal, setShowFilterModal] = useState(false)
 
   // Helper function to find category by ID, always starting from page 1
   async function findCategoryById(id: number): Promise<WcaCategory | undefined> {
@@ -617,21 +618,19 @@ export function SubcategoryPageClient({
   }, [subcategories])
 
   return (
-    <div className="bg-[#0e0e0e] min-h-screen w-full relative xl:px-0 2xl:px-6 px-4 sm:px-6">
-      <div className="relative w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4" style={{ 
-        paddingTop: 'clamp(6rem, 18.75vw, 9rem)',
-        paddingBottom: 'clamp(3rem, 10.42vw, 5rem)'
+    <div className="bg-[#0e0e0e] min-h-screen w-full relative xl:px-0 2xl:px-6 sm:px-6">
+      <div className="relative w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-24 md:pt-32" style={{ 
+        paddingBottom: 'clamp(2rem, 6.25vw, 5rem)'
       }}>
         {/* Title */}
-        <h1 className="text-center text-white font-bold tracking-wide font-iranyekan text-xl sm:text-[2.125rem]" style={{ 
-          marginBottom: 'clamp(1.5rem, 5.21vw, 2.5rem)'
+        <h1 className="text-center text-white font-bold tracking-wide font-iranyekan text-xl sm:text-[2.125rem]  mb-6 md:mb-10" style={{ 
         }}>
           {subcategory 
             ? ` لیست محصولات ${subcategory.name} ` 
             : 'لیست محصولات'}
         </h1>
         {/* Breadcrumb */}
-        <div className="flex justify-start mb-14">
+        <div className="flex justify-start mb-8 sm:mb-10 md:mb-14">
           <div className="font-bold text-[#9A9A9A]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
             <Link href="/" className="hover:text-[#F58F4A]">صفحه اصلی</Link>
             <span style={{ marginLeft: 'clamp(0.5rem, 0.63vw, 0.5rem)', marginRight: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>/</span>
@@ -715,16 +714,30 @@ export function SubcategoryPageClient({
           </>
         )}
 
+        {/* Filter Button for Mobile */}
+        <div className="lg:hidden mb-4">
+          <button
+            type="button"
+            onClick={() => setShowFilterModal(true)}
+            className="bg-[#E6A816] text-white px-6 py-3 rounded-full font-bold flex items-center justify-center  gap-2 w-full"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 4h16M2 10h16M2 16h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+            فیلترها
+          </button>
+        </div>
+
         {/* Content */}
-        <div dir="ltr" className="grid grid-cols-1 lg:grid-cols-[1fr_360px] items-start" style={{ 
-          marginTop: 'clamp(2rem, 3.13vw, 3rem)',
-          gap: 'clamp(1.5rem, 2.6vw, 2.5rem)'
+        <div dir="ltr" className="grid grid-cols-1 lg:grid-cols-[1fr_360px] items-start md:gap-6 lg:gap-20" style={{ 
+          marginTop: 'clamp(1rem, 1.56vw, 1.5rem) sm:clamp(1.5rem, 2.34vw, 3rem)',
+          gap: 'clamp(0.75rem, 1.3vw, 1.5rem) sm:clamp(1rem, 1.95vw, 2.5rem)'
         }}>
           {/* Products grid */}
           <div dir="rtl">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ 
-              columnGap: 'clamp(1rem, 2.6vw, 2.5rem)',
-              rowGap: 'clamp(2rem, 5.21vw, 4rem)'
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-6" style={{ 
+              columnGap: 'clamp(0.5rem, 1.3vw, 1.5rem) sm:clamp(0.75rem, 1.95vw, 2.5rem)',
+              rowGap: 'clamp(1rem, 2.6vw, 2.5rem) sm:clamp(1.5rem, 3.91vw, 4rem)'
             }}>
               {loadingProducts
                 ? Array.from({ length: 9 }).map((_, i) => <ProductCardLoading key={`pl-${i}`} />)
@@ -733,14 +746,14 @@ export function SubcategoryPageClient({
 
             {!loadingProducts && visibleProducts.length === 0 && (
               <div className="text-center text-[#9A9A9A]" style={{ 
-                marginTop: 'clamp(3rem, 3.13vw, 3rem)',
-                fontSize: 'clamp(1rem, 1.25vw, 1rem)'
+                marginTop: 'clamp(2rem, 2.34vw, 3rem)',
+                fontSize: 'clamp(0.875rem, 1.04vw, 1rem)'
               }}>محصولی برای نمایش وجود ندارد</div>
             )}
           </div>
 
-          {/* Filters */}
-          <div dir="rtl" className="filter-sticky">
+          {/* Filters - Desktop */}
+          <div dir="rtl" className="hidden lg:block filter-sticky">
             <FiltersPanel
               attributes={attributes}
               attributeTermsMap={attributeTermsMap}
@@ -750,6 +763,43 @@ export function SubcategoryPageClient({
             />
           </div>
         </div>
+
+        {/* Filter Modal - Mobile */}
+        {showFilterModal && (
+          <div className="fixed inset-0 z-50 lg:hidden" dir="rtl">
+            {/* Backdrop */}
+            <div 
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+              onClick={() => setShowFilterModal(false)}
+            />
+            {/* Modal */}
+            <div className="absolute inset-y-0 right-0 w-full max-w-sm bg-[#0e0e0e] shadow-2xl overflow-y-auto">
+              <div className="sticky top-0 bg-[#0e0e0e] border-b border-white/10 p-4 flex items-center justify-between z-10">
+                <h2 className="text-white font-bold text-lg">فیلترها</h2>
+                <button
+                  type="button"
+                  onClick={() => setShowFilterModal(false)}
+                  className="text-white hover:text-gray-300 transition-colors"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                </button>
+              </div>
+              <div className="p-4">
+                <FiltersPanel
+                  attributes={attributes}
+                  attributeTermsMap={attributeTermsMap}
+                  selectedAttributeTerms={selectedAttributeTerms}
+                  onAttributeTermToggle={(termId) => {
+                    handleAttributeTermToggle(termId)
+                  }}
+                  loadingAttributes={loadingAttributes}
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

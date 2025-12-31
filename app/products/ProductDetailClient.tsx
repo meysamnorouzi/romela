@@ -72,7 +72,7 @@ function RelatedProductCard({
   }, [product?.name])
 
   return (
-    <div className="bg-[rgba(255,255,255,0.16)] border border-white rounded-3xl text-center" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)' }}>
+    <div className="bg-[rgba(255,255,255,0.16)] border border-white rounded-3xl text-center flex items-center justify-center h-64" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)' }}>
       <div className="relative w-full" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
         <div className="relative group w-full">
           <h3 
@@ -270,8 +270,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
   if (loading && !product) {
     return (
       <div className="bg-[#0e0e0e] min-h-screen w-full xl:px-0 2xl:px-6">
-        <div className="w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4" style={{ 
-          paddingTop: 'clamp(14rem, 35vw, 14rem)',
+        <div className="w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-32 lg:pt-80" style={{ 
           paddingBottom: 'clamp(2rem, 3.13vw, 4rem)'
         }} />
       </div>
@@ -287,34 +286,33 @@ export function ProductDetailClient({ slug }: { slug: string }) {
   return (
     <div className="bg-[#0e0e0e] min-h-screen w-full xl:px-0 2xl:px-6 sm:px-6">
       {/* Container */}
-      <div className="w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4" style={{ 
-        paddingTop: 'clamp(8rem, 35vw, 14rem)',
-        paddingBottom: 'clamp(2rem, 3.13vw, 4rem)'
+      <div className="w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-32 lg:pt-80" style={{ 
+        paddingBottom: 'clamp(1.5rem, 2.34vw, 4rem)'
       }}>
         {/* Breadcrumb */}
-        <div style={{ marginBottom: 'clamp(1.5rem, 4.17vw, 4rem)' }}>
+        <div style={{ marginBottom: 'clamp(1rem, 2.6vw, 4rem)' }}>
 
-          <div className="flex items-center text-right justify-start font-bold" style={{ gap: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>
-          <Link href="/" className="hover:text-[#717171]">صفحه اصلی</Link>
-          <span className="text-[#717171]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}> / </span>
-          <Link href="/products" className="hover:text-[#717171]">محصولات</Link>
-          <span className="text-[#717171]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}> / </span>
-            <Link href={`/products/category/${computed.categoryId}`} className="text-[#717171]" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+          <div className="flex items-center text-right justify-start font-bold flex-wrap" style={{ gap: 'clamp(0.25rem, 0.47vw, 0.5rem)' }}>
+          <Link href="/" className="hover:text-[#717171]" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1.125rem)' }}>صفحه اصلی</Link>
+          <span className="text-[#717171]" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1.125rem)' }}> / </span>
+          <Link href="/products" className="hover:text-[#717171]" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1.125rem)' }}>محصولات</Link>
+          <span className="text-[#717171]" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1.125rem)' }}> / </span>
+            <Link href={`/products/category/${computed.categoryId}`} className="text-[#717171]" dir="auto" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1.125rem)' }}>
               {computed.categoryName}
             </Link>
-            <span className="text-[#717171]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}> / </span>
-            <span className="text-[#F58F4A]" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+            <span className="text-[#717171]" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1.125rem)' }}> / </span>
+            <span className="text-[#F58F4A] truncate max-w-[150px] sm:max-w-none" dir="auto" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1.125rem)' }}>
               {product.name}
             </span>
           </div>
         </div>
 
         {/* Product Header Section */}
-        <div className="w-full" style={{ marginBottom: 'clamp(2rem, 4.17vw, 4rem)' }}>
-          <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1.5rem, 3.13vw, 3rem)' }}>
+        <div className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
+          <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1rem, 2.08vw, 3rem)' }}>
             {/* Product Image */}
-            <div className="w-full lg:w-1/2 bg-[#343434] rounded-2xl sm:rounded-3xl flex items-center justify-center" style={{ padding: 'clamp(1rem, 2.08vw, 2rem)' }}>
-              <div className="relative w-full" style={{ maxWidth: 'clamp(12rem, 18.75vw, 18rem)' }}>
+            <div className="w-full lg:w-1/2 bg-[#343434] rounded-2xl sm:rounded-3xl flex items-center justify-center" style={{ padding: 'clamp(0.75rem, 1.56vw, 2rem)' }}>
+              <div className="relative w-full" style={{ maxWidth: 'clamp(10rem, 15.63vw, 18rem)' }}>
                 <img
                   alt=""
                   className="w-full object-contain pointer-events-none"
@@ -324,15 +322,15 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             </div>
 
             {/* Product Info */}
-            <div className="w-full lg:w-1/2 flex flex-col" style={{ gap: 'clamp(1.5rem, 1.56vw, 1.5rem)' }}>
-              <div className='flex flex-wrap items-center' style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
+            <div className="w-full lg:w-1/2 flex flex-col" style={{ gap: 'clamp(1rem, 1.3vw, 1.5rem)' }}>
+              <div className='flex flex-wrap items-center' style={{ gap: 'clamp(0.75rem, 0.94vw, 1rem)' }}>
 
                 {/* Product Title */}
-                <h1 className="text-[#FCFBEE] text-right text-2xl font-bold" dir="auto">
+                <h1 className="text-[#FCFBEE] text-right font-bold" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.56vw, 2rem)' }}>
                   {product.name}
                 </h1>
                 {/* Badges */}
-                <div className="flex" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
+                <div className="flex flex-wrap" style={{ gap: 'clamp(0.5rem, 0.78vw, 1rem)' }}>
                 {computed.badgeVolume ? (
                     <div className="bg-[#65cdf9] rounded-[120px]" style={{ 
                       paddingLeft: 'clamp(1.5rem, 1.56vw, 1.5rem)',
@@ -362,7 +360,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               <p
                 className="text-[#FCFBEE] text-right font-light leading-relaxed"
                 dir="auto"
-                style={{ fontSize: 'clamp(1rem, 1.25vw, 1rem)' }}
+                style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
               >
                 {computed.descriptionText || ' '}
               </p>
@@ -371,9 +369,9 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               <div
                 className="text-[#f58f4a] text-right"
                 dir="auto"
-                style={{ fontSize: 'clamp(1rem, 1.25vw, 1rem)' }}
+                style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
               >
-                <ul className="list-disc list-inside flex flex-col font-light" style={{ gap: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>
+                <ul className="list-disc list-inside flex flex-col font-light" style={{ gap: 'clamp(0.375rem, 0.47vw, 0.5rem)' }}>
                   <li>
                     <span>استاندارد: </span>
                     <span className="font-black">{computed.standard || '—'}</span>
@@ -392,31 +390,32 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               </div>
 
               {/* Price */}
-              <div className="flex items-center" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
+              <div className="flex items-center flex-wrap" style={{ gap: 'clamp(0.75rem, 0.94vw, 1rem)' }}>
                 <span
                   className="text-[#fcfbee] text-right font-light"
                   dir="auto"
-                  style={{ fontSize: 'clamp(1.5rem, 1.88vw, 1.5rem)' }}
+                  style={{ fontSize: 'clamp(1.125rem, 1.41vw, 1.5rem)' }}
                 >
                   قیمت
                 </span>
                 <span
-                  className="text-[#fcfbee] text-right text-[2rem]"
+                  className="text-[#fcfbee] text-right"
                   dir="auto"
+                  style={{ fontSize: 'clamp(1.5rem, 1.88vw, 2rem)' }}
                 >
                   <span className='font-black'>{computed.priceText}{' '}</span>
-                  <span className="font-light">تومان</span>
+                  <span className="font-light" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>تومان</span>
                 </span>
               </div>
 
               {/* Stock Counter */}
-              <div className="flex items-center" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
+              <div className="flex items-center flex-wrap" style={{ gap: 'clamp(0.75rem, 0.94vw, 1rem)' }}>
                 <div className="bg-[rgba(255,255,255,0.12)] flex items-center justify-center rounded-[120px]" style={{ 
-                  gap: 'clamp(1.5rem, 1.56vw, 1.5rem)',
-                  height: 'clamp(3.5rem, 3.75vw, 3.6875rem)',
-                  paddingLeft: 'clamp(1rem, 1.25vw, 1rem)',
-                  paddingRight: 'clamp(1rem, 1.25vw, 1rem)',
-                  maxWidth: 'clamp(14rem, 14.94vw, 14.9375rem)'
+                  gap: 'clamp(1rem, 1.17vw, 1.5rem)',
+                  height: 'clamp(2.75rem, 2.93vw, 3.6875rem)',
+                  paddingLeft: 'clamp(0.75rem, 0.94vw, 1rem)',
+                  paddingRight: 'clamp(0.75rem, 0.94vw, 1rem)',
+                  maxWidth: 'clamp(12rem, 12.5vw, 14.9375rem)'
                 }}>
                   <button style={{ width: 'clamp(1.5rem, 1.56vw, 1.5rem)', height: 'clamp(1.5rem, 1.56vw, 1.5rem)' }}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
@@ -437,7 +436,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                     </svg>
                   </button>
                 </div>
-                <p className="text-[#fcfbee] text-right font-light" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                <p className="text-[#fcfbee] text-right font-light" dir="auto" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1rem)' }}>
                   <span>تنها </span>
                   <span className="text-[#f58f4a]">{computed.stockCountText} عدد</span>
                   <span> در انبار باقی مانده!</span>
@@ -445,20 +444,20 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row" style={{ gap: 'clamp(0.75rem, 1.25vw, 1rem)' }}>
-                <button className="bg-white flex items-center justify-center py-4 rounded-[50px] sm:rounded-[70px] flex-1 sm:flex-none" style={{ 
-                  paddingLeft: 'clamp(1.5rem, 2.08vw, 2rem)',
-                  paddingRight: 'clamp(1.5rem, 2.08vw, 2rem)'
+              <div className="flex flex-col sm:flex-row" style={{ gap: 'clamp(0.5rem, 0.94vw, 1rem)' }}>
+                <button className="bg-white flex items-center justify-center py-3 sm:py-4 rounded-[50px] sm:rounded-[70px] flex-1 sm:flex-none" style={{ 
+                  paddingLeft: 'clamp(1rem, 1.56vw, 2rem)',
+                  paddingRight: 'clamp(1rem, 1.56vw, 2rem)'
                 }}>
-                  <span className="text-black font-iranyekan text-sm sm:text-base font-bold" dir="auto" style={{ fontSize: 'clamp(0.75rem, 1.04vw, 1rem)' }}>
+                  <span className="text-black font-iranyekan font-bold" dir="auto" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1rem)' }}>
                     افزودن به سبد
                   </span>
                 </button>
-                <button className="border border-white flex items-center py-4 justify-center rounded-[50px] sm:rounded-[70px] flex-1 sm:flex-none" style={{ 
-                  paddingLeft: 'clamp(1.5rem, 2.08vw, 2rem)',
-                  paddingRight: 'clamp(1.5rem, 2.08vw, 2rem)'
+                <button className="border border-white flex items-center py-3 sm:py-4 justify-center rounded-[50px] sm:rounded-[70px] flex-1 sm:flex-none" style={{ 
+                  paddingLeft: 'clamp(1rem, 1.56vw, 2rem)',
+                  paddingRight: 'clamp(1rem, 1.56vw, 2rem)'
                 }}>
-                  <span className="text-white font-iranyekan text-sm sm:text-base font-bold" dir="auto" style={{ fontSize: 'clamp(0.75rem, 1.04vw, 1rem)' }}>
+                  <span className="text-white font-iranyekan font-bold" dir="auto" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1rem)' }}>
                     ثبت سفارش
                   </span>
                 </button>
@@ -470,23 +469,25 @@ export function ProductDetailClient({ slug }: { slug: string }) {
         <Divider />
 
         {/* Introduction Section */}
-        <section className="w-full" style={{ marginBottom: 'clamp(2rem, 4.17vw, 4rem)' }}>
-          <h2 className="text-white font-iranyekan font-bold text-[2.125rem]" dir="auto" style={{ 
-            marginBottom: 'clamp(1.5rem, 3.13vw, 3rem)'
+        <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
+          <h2 className="text-white font-iranyekan font-bold" dir="auto" style={{ 
+            marginBottom: 'clamp(1rem, 2.08vw, 3rem)',
+            fontSize: 'clamp(1.25rem, 1.88vw, 2.125rem)'
           }}>
             معرفی {product.name}
           </h2>
 
-          <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1.5rem, 3.13vw, 3rem)' }}>
+          <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1rem, 2.08vw, 3rem)' }}>
 
             <div className="w-full lg:w-1/2">
-              <p className="text-white text-right text-sm sm:text-lg font-medium" dir="auto" style={{ 
-                lineHeight: 'clamp(1.75rem, 5.21vw, 2.5rem)'
+              <p className="text-white text-right font-medium" dir="auto" style={{ 
+                lineHeight: 'clamp(1.5rem, 3.91vw, 2.5rem)',
+                fontSize: 'clamp(0.875rem, 1.17vw, 1.5rem)'
               }}>
                 {computed.introText}
               </p>
-              <div className="flex flex-wrap" style={{ gap: 'clamp(0.75rem, 1.25vw, 1rem)', marginTop: 'clamp(1rem, 1.56vw, 1.5rem)' }}>
-                <button className="bg-[#FDBA74] flex items-center rounded-[50px] sm:rounded-[70px] py-4" style={{ 
+              <div className="flex flex-col md:flex-wrap w-full" style={{ gap: 'clamp(0.5rem, 0.94vw, 1rem)', marginTop: 'clamp(0.75rem, 1.17vw, 1.5rem)' }}>
+                <button className="bg-[#FDBA74] flex items-center justify-center rounded-[50px] sm:rounded-[70px] py-4 w-fll md:w-fit" style={{ 
                   gap: 'clamp(0.5rem, 0.63vw, 0.5rem)',
                   paddingLeft: 'clamp(1rem, 1.56vw, 1.5rem)',
                   paddingRight: 'clamp(1rem, 1.56vw, 1.5rem)'
@@ -500,7 +501,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                     دانلود دیتاشیت
                   </span>
                 </button>
-                <button className="bg-[#FDBA74] flex items-center rounded-[70px] py-4" style={{ 
+                <button className="bg-[#FDBA74] flex items-center justify-center rounded-[70px] py-4 w-fll md:w-fit" style={{ 
                   gap: 'clamp(0.5rem, 0.63vw, 0.5rem)',
                   paddingLeft: 'clamp(1.5rem, 1.56vw, 1.5rem)',
                   paddingRight: 'clamp(1.5rem, 1.56vw, 1.5rem)'
@@ -519,10 +520,10 @@ export function ProductDetailClient({ slug }: { slug: string }) {
 
             <div className="w-full lg:w-1/2">
               <div className="relative bg-[#343434] rounded-2xl sm:rounded-3xl" style={{ 
-                padding: 'clamp(1.5rem, 3.13vw, 3rem)'
+                padding: 'clamp(1rem, 2.08vw, 3rem)'
               }}>
                 <div className="relative w-full flex items-center justify-center" style={{ 
-                  height: 'clamp(200px, 15.63vw, 300px)'
+                  height: 'clamp(150px, 11.72vw, 300px)'
                 }}>
                   <img
                     alt=""
@@ -538,9 +539,10 @@ export function ProductDetailClient({ slug }: { slug: string }) {
         <Divider />
 
         {/* Product Variants Section */}
-        <section className="w-full" style={{ marginBottom: 'clamp(2rem, 4.17vw, 4rem)' }}>
-          <h2 className="text-white font-iranyekan font-bold text-[2.125rem]" dir="auto" style={{ 
-            marginBottom: 'clamp(1.5rem, 3.13vw, 3rem)'
+        <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
+          <h2 className="text-white font-iranyekan font-bold" dir="auto" style={{ 
+            marginBottom: 'clamp(1rem, 2.08vw, 3rem)',
+            fontSize: 'clamp(1.25rem, 1.88vw, 2.125rem)'
           }}>
             مدل های مختلف  این محصول
           </h2>
@@ -615,12 +617,14 @@ export function ProductDetailClient({ slug }: { slug: string }) {
         <Divider />
 
         {/* Data Sheet Section */}
-        <section className="w-full" style={{ marginBottom: 'clamp(2rem, 4.17vw, 4rem)' }}>
+        <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between" style={{ 
-            gap: 'clamp(1rem, 1.25vw, 1rem)',
-            marginBottom: 'clamp(1.5rem, 3.13vw, 3rem)'
+            gap: 'clamp(0.75rem, 0.94vw, 1rem)',
+            marginBottom: 'clamp(1rem, 2.08vw, 3rem)'
           }}>
-            <h2 className="text-white font-iranyekan font-bold text-[2.125rem]" dir="auto">
+            <h2 className="text-white font-iranyekan font-bold" dir="auto" style={{ 
+              fontSize: 'clamp(1.25rem, 1.88vw, 2.125rem)'
+            }}>
               دیتاشیت محصول
             </h2>
             <button className="bg-[#FDBA74] flex items-center rounded-[50px] sm:rounded-[70px]" style={{ 
@@ -640,7 +644,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             </button>
           </div>
           <div style={{ marginBottom: 'clamp(2rem, 2.08vw, 2rem)' }}>
-            <p className="text-white text-right leading-relaxed text-lg font-medium" dir="auto" style={{ 
+            <p className="text-white text-right leading-relaxed text-base md:text-lg font-medium" dir="auto" style={{ 
               marginBottom: 'clamp(3.5rem, 7.29vw, 3.5rem)'
             }}>
               {computed.datasheetText}
@@ -651,13 +655,13 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             <div className="min-w-full">
               <div className="bg-[#202020] rounded-t-2xl sm:rounded-t-3xl" style={{ padding: 'clamp(0.75rem, 1.25vw, 1rem)' }}>
                 <div className="grid grid-cols-3 text-right text-xs sm:text-sm" style={{ gap: 'clamp(0.5rem, 1.25vw, 1rem)' }}>
-                  <div className="text-[#f9bd65] text-center text-lg font-bold" dir="auto">
+                  <div className="text-[#f9bd65] text-center text-sm md:text-lg font-bold" dir="auto">
                     ویژگی (Property)
                   </div>
-                  <div className="text-[#f9bd65] text-center text-lg font-bold" dir="auto">
+                  <div className="text-[#f9bd65] text-center text-sm md:text-lg font-bold" dir="auto">
                     مقدار (Typical Value)
                   </div>
-                  <div className="text-[#f9bd65] text-center text-lg font-bold" dir="auto">
+                  <div className="text-[#f9bd65] text-center text-sm md:text-lg font-bold" dir="auto">
                     استاندارد/روش آزمون
                   </div>
                 </div>
@@ -670,13 +674,13 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                   style={{ padding: 'clamp(1rem, 1.25vw, 1rem)' }}
                 >
                   <div className="grid grid-cols-3 text-right" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                    <div className=" text-[#f9bd65] text-center  text-lg font-bold" dir="auto">
+                    <div className=" text-[#f9bd65] text-center  text-sm md:text-lg font-bold" dir="auto">
                       {row.property}
                     </div>
-                    <div className="text-[#f9bd65] text-center  text-lg font-bold" dir="auto">
+                    <div className="text-[#f9bd65] text-center  text-sm md:text-lg font-bold" dir="auto">
                       {row.value}
                     </div>
-                    <div className=" text-[#f9bd65] text-center  text-lg font-bold" dir="auto">
+                    <div className=" text-[#f9bd65] text-center  text-sm md:text-lg font-bold" dir="auto">
                       {row.method}
                     </div>
                   </div>
@@ -685,28 +689,29 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             </div>
           </div>
           <div style={{ marginTop: 'clamp(3.5rem, 7.29vw, 3.5rem)', marginBottom: 'clamp(3.5rem, 7.29vw, 3.5rem)' }}>
-            <p className="text-white text-right leading-relaxed font-medium text-lg" dir="auto">
+            <p className="text-white text-right leading-relaxed font-medium text-base md:text-lg" dir="auto">
               {computed.datasheetText}
             </p>
           </div>
         </section>
 
         {/* Photo Gallery Section */}
-        <section className="w-full" style={{ marginBottom: 'clamp(2rem, 4.17vw, 4rem)' }}>
+        <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
           <div className="relative bg-[#222] rounded-2xl sm:rounded-3xl shadow-lg overflow-hidden flex flex-col sm:flex-row items-center justify-between" style={{ 
-            padding: 'clamp(1.5rem, 3.13vw, 3rem)',
-            gap: 'clamp(1.5rem, 3.13vw, 3rem)'
+            padding: 'clamp(1rem, 2.08vw, 3rem)',
+            gap: 'clamp(1rem, 2.08vw, 3rem)'
           }}>
-            <h2 className="text-white text-center flex-shrink-0 font-iranyekan  font-bold text-[2.125rem]" dir="auto" style={{ 
-              marginBottom: 'clamp(1rem, 3.13vw, 3rem)'
+            <h2 className="text-white text-center flex-shrink-0 font-iranyekan font-bold" dir="auto" style={{ 
+              marginBottom: 'clamp(0.75rem, 1.56vw, 3rem)',
+              fontSize: 'clamp(1.25rem, 1.88vw, 2.125rem)'
             }}>
               تصویر محصول
             </h2>
             <div className="bg-[#2c2c2c] rounded-2xl sm:rounded-3xl flex-grow w-full" style={{ 
-              padding: 'clamp(1.5rem, 3.13vw, 3rem)'
+              padding: 'clamp(1rem, 2.08vw, 3rem)'
             }}>
               <div className="relative w-full" style={{ 
-                height: 'clamp(250px, 31.25vw, 600px)'
+                height: 'clamp(180px, 23.44vw, 600px)'
               }}>
                 <img
                   alt=""
@@ -717,29 +722,32 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             </div>
           </div>
 
-          <p className="text-white text-right font-medium text-lg" dir="auto" style={{ 
+          <p className="text-white text-right font-medium text-base md:text-lg" dir="auto" style={{ 
             marginTop: 'clamp(3.5rem, 7.29vw, 3.5rem)',
-            lineHeight: 'clamp(2.5rem, 5.21vw, 2.5rem)'
           }}>
             {computed.galleryText}
           </p>
         </section>
         <Divider />
         {/* Similar Products Section */}
-        <section className="w-full" style={{ marginBottom: 'clamp(2rem, 4.17vw, 4rem)' }}>
-          <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1.5rem, 3.13vw, 3rem)' }}>
+        <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
+          <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1rem, 2.08vw, 3rem)' }}>
             <div className="w-full lg:w-1/2">
-              <h2 className="text-white text-right font-iranyekan font-bold text-[1.375rem]" dir="auto" style={{ 
-                marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
+              <h2 className="text-white text-right font-iranyekan font-bold" dir="auto" style={{ 
+                marginBottom: 'clamp(0.75rem, 1.17vw, 1.5rem)',
+                fontSize: 'clamp(1.125rem, 1.41vw, 1.375rem)'
               }}>
                 محصولا مشابه
               </h2>
-              <p className="text-white text-right leading-8 font-iranyekan text-base" dir="auto">
+              <p className="text-white text-right font-iranyekan" dir="auto" style={{ 
+                fontSize: 'clamp(0.875rem, 1.04vw, 1.125rem)',
+                lineHeight: 'clamp(1.5rem, 1.88vw, 2.5rem)'
+              }}>
                 {computed.similarText}
               </p>
             </div>
             <div className="w-full lg:w-1/2">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(0.75rem, 1.56vw, 1.5rem)' }}>
+              <div className="grid grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(0.5rem, 1.17vw, 1.5rem)' }}>
                 <RelatedProductCard 
                   product={related1}
                   imageUrl={(related1 && getWcaPrimaryImageUrl(related1)) || ''}

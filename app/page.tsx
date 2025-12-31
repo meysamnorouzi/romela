@@ -542,15 +542,15 @@ export default function App() {
         }}
       />
       {/* Hero Section with Masked Background */}
-      <div className="relative w-full flex items-center justify-center rounded-[1rem] sm:rounded-[1.5rem] pb-8 sm:pb-12 md:pb-16 pt-32 sm:pt-40 md:pt-52" style={{
+      <div className="relative w-full flex items-center justify-center rounded-[1rem] sm:rounded-[1.5rem] pb-6 sm:pb-8 md:pb-12 lg:pb-16 pt-24 sm:pt-32 md:pt-40 lg:pt-52" style={{
         backgroundImage: `url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
       }}>
         <div className="absolute inset-0 bg-[rgba(0,0,0,0.3)] rounded-[1rem] sm:rounded-[2rem]" />
-        <div className="flex flex-col items-center justify-center z-10 w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="font-bold font-iranyekan leading-normal text-white text-center mb-6 sm:mb-8 md:mb-12 lg:mb-20 px-2" dir="rtl" style={{
+        <div className="flex flex-col items-center justify-center z-10 w-full max-w-[1920px] mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <p className="font-bold font-iranyekan leading-normal text-white text-center mb-4 sm:mb-6 md:mb-8 lg:mb-12 xl:mb-20 px-2" dir="rtl" style={{
             fontSize: 'clamp(1.125rem, 2.86vw, 2.75rem)',
             textShadow: '0px 2px 12px rgba(0,0,0,0.75)',
             maxWidth: '95%',
@@ -580,10 +580,10 @@ export default function App() {
               border: '1px solid rgba(255, 255, 255, 0.18)',
               boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 0 1px rgba(255, 255, 255, 0.1) inset',
               backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.02) 100%)',
-              padding: 'clamp(1rem, 2.08vw, 2rem)',
+              padding: 'clamp(0.75rem, 1.56vw, 2rem)',
             }}
           >
-            <div className="flex flex-col lg:flex-row items-start justify-between gap-4 lg:gap-6 mb-4 sm:mb-6 lg:mb-8">
+            <div className="flex flex-col lg:flex-row items-start justify-between gap-3 sm:gap-4 lg:gap-6 mb-3 sm:mb-4 md:mb-6 lg:mb-8">
               {/* Title and Description */}
               <div className="text-right flex-1">
                 <h2 className="text-white mb-4 text-2xl font-semibold" dir="auto">
@@ -615,7 +615,7 @@ export default function App() {
               </button>
             </div>
             {/* Filters and Search Button */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 md:gap-4 lg:gap-6 items-center">
               {/* Dropdown Filters */}
               <Dropdown
                 id="oilType"
@@ -660,22 +660,22 @@ export default function App() {
       </div>
 
       {/* Container */}
-      <div className="w-full max-w-[1920px] mx-auto xl:px-0 2xl:px-6 sm:px-6" style={{ paddingTop: 'clamp(2rem, 3.13vw, 4rem)', paddingBottom: 'clamp(2rem, 3.13vw, 4rem)' }}>
+      <div className="w-full max-w-[1920px] mx-auto xl:px-0 2xl:px-6 sm:px-6" style={{ paddingTop: 'clamp(1.5rem, 2.6vw, 4rem)', paddingBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
 
         {/* Category Section */}
-        <section style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
+        <section style={{ marginBottom: 'clamp(2.5rem, 4.17vw, 5rem)' }}>
           <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{
-            marginBottom: 'clamp(1.5rem, 2.08vw, 2rem)'
+            marginBottom: 'clamp(1rem, 1.56vw, 2rem)'
           }}>
             دسته‌بندی محصولات Romela Oil
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(1rem, 2.08vw, 2rem)' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(0.75rem, 1.56vw, 2rem)' }}>
 
             {/* Industrial Oils Card (Wide) */}
             <Link
               href={categories.find(c => c.name.toLowerCase().includes('صنعتی')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('صنعتی'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden h-64 lg:col-span-2"
+              className="relative bg-[#343434] rounded-3xl overflow-hidden h-48 sm:h-64 md:h-64 lg:col-span-2"
 
             >
               <div className="absolute bg-[rgba(215,105,105,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
@@ -686,7 +686,7 @@ export default function App() {
                   backgroundPosition: 'left',
                   backgroundRepeat: 'no-repeat',
                 }}>
-                <div className="w-full md:w-[60%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
+                <div className="w-[80%] md:w-[60%] flex flex-col justify-between gap-2 sm:gap-3" style={{ padding: 'clamp(1rem, 1.56vw, 2rem)' }}>
                   <div style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     <h3 className="text-[#E39C9C] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{}}>
                       روغن های صنعتی
@@ -709,7 +709,7 @@ export default function App() {
             {/* Engine Oil Card */}
             <Link
               href={categories.find(c => c.name.toLowerCase().includes('موتور')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('موتور'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden h-64"
+              className="relative bg-[#343434] rounded-3xl overflow-hidden h-48 sm:h-64 md:h-64"
 
             >
               <div className="absolute bg-[rgba(229,160,69,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
@@ -720,7 +720,7 @@ export default function App() {
                   backgroundPosition: 'left',
                   backgroundRepeat: 'no-repeat',
                 }}>
-                <div className="w-full md:w-[70%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
+                <div className="w-[80%] md:w-[70%] flex flex-col justify-between gap-3 sm:gap-4" style={{ padding: 'clamp(1rem, 1.56vw, 2rem)' }}>
                   <h3 className="text-[#FEDE59] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن موتور
                   </h3>
@@ -739,7 +739,7 @@ export default function App() {
             {/* Gear Oil Card (Wide) */}
             <Link
               href={categories.find(c => c.name.toLowerCase().includes('گیربکس')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('گیربکس'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden h-64"
+              className="relative bg-[#343434] rounded-3xl overflow-hidden h-48 sm:h-64 md:h-64"
 
             >
               <div className="absolute bg-[#C9C9C980] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
@@ -750,7 +750,7 @@ export default function App() {
                   backgroundPosition: 'left',
                   backgroundRepeat: 'no-repeat',
                 }}>
-                <div className="w-full md:w-[70%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
+                <div className="w-[80%] md:w-[70%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
                   <h3 className="text-[#E7E7E7] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن گیربکس
                   </h3>
@@ -769,7 +769,7 @@ export default function App() {
             {/* Brake Oil Card */}
             <Link
               href={categories.find(c => c.name.toLowerCase().includes('ترمز')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('ترمز'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden h-64"
+              className="relative bg-[#343434] rounded-3xl overflow-hidden h-48 sm:h-64 md:h-64"
 
             >
               <div className="absolute bg-[rgba(255,35,39,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
@@ -780,7 +780,7 @@ export default function App() {
                   backgroundPosition: 'left',
                   backgroundRepeat: 'no-repeat',
                 }}>
-                <div className="w-full md:w-[70%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
+                <div className="w-[80%] md:w-[70%] flex flex-col justify-between gap-3 sm:gap-4" style={{ padding: 'clamp(1rem, 1.56vw, 2rem)' }}>
                   <h3 className="text-[#FF2023] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن ترمز
                   </h3>
@@ -799,7 +799,7 @@ export default function App() {
             {/* Gear Oil Card (Wide) */}
             <Link
               href={categories.find(c => c.name.toLowerCase().includes('هیدرولیک')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('گیربکس'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden h-64"
+              className="relative bg-[#343434] rounded-3xl overflow-hidden h-48 sm:h-64 md:h-64"
 
             >
               <div className="absolute bg-[#1D36F14D] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
@@ -810,7 +810,7 @@ export default function App() {
                   backgroundPosition: 'left',
                   backgroundRepeat: 'no-repeat',
                 }}>
-                <div className="w-full md:w-[70%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
+                <div className="w-[80%] md:w-[70%] flex flex-col justify-between gap-3" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
                   <h3 className="text-[#738CD2] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن هیدرولیک
                   </h3>
@@ -829,7 +829,7 @@ export default function App() {
             {/* Brake Oil Card */}
             <Link
               href={categories.find(c => c.name.toLowerCase().includes('ترمز')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('ترمز'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden h-64"
+              className="relative bg-[#343434] rounded-3xl overflow-hidden h-48 sm:h-64 md:h-64"
 
             >
               <div className="absolute bg-[#EA770C] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
@@ -841,7 +841,7 @@ export default function App() {
                   backgroundRepeat: 'no-repeat',
                 }}>
                
-                <div className="w-full md:w-[70%] flex flex-col justify-between gap-4" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
+                <div className="w-[80%] md:w-[70%] flex flex-col justify-between gap-3 sm:gap-4" style={{ padding: 'clamp(1rem, 1.56vw, 2rem)' }}>
                   <h3 className="text-[#EA770C] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     گریس
                   </h3>
@@ -860,7 +860,7 @@ export default function App() {
             {/* Special Additives Card */}
             <Link
               href={categories.find(c => c.name.toLowerCase().includes('افزودنی') || c.name.toLowerCase().includes('خاص')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('افزودنی') || c.name.toLowerCase().includes('خاص'))?.id}` : '/products'}
-              className="relative bg-[#343434] rounded-3xl overflow-hidden h-64"
+              className="relative bg-[#343434] rounded-3xl overflow-hidden h-48 sm:h-64 md:h-64"
 
             >
               <div className="absolute bg-[rgba(255,255,255,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
@@ -873,7 +873,7 @@ export default function App() {
                   backgroundRepeat: 'no-repeat',
                 }}
               >
-                <div className="relative z-10 w-full md:w-[70%] flex flex-col justify-between gap-4 order-1 md:order-2" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
+                <div className="relative z-10 w-[80%] md:w-[70%] flex flex-col justify-between gap-4 order-1 md:order-2" style={{ padding: 'clamp(1.5rem, 2.08vw, 2rem)' }}>
                   <h3 className="text-white text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     افزودنی های خاص
                   </h3>
@@ -892,14 +892,14 @@ export default function App() {
         </section>
 
         {/* Introduction Section */}
-        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
+        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(2.5rem, 4.17vw, 5rem)' }}>
           <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{
-            marginBottom: 'clamp(2rem, 2.86vw, 2.75rem)'
+            marginBottom: 'clamp(1.5rem, 2.34vw, 2.75rem)'
           }}>
             معرفی Romela آلمان
           </h2>
 
-          <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1.5rem, 3.13vw, 3rem)' }}>
+          <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1rem, 2.34vw, 3rem)' }}>
             <div className="w-full lg:w-[60%]">
               <p className="text-white text-right text-base sm:text-lg font-medium" dir="auto" style={{
                 lineHeight: 'clamp(1.75rem, 5.21vw, 2.5rem)'
@@ -910,7 +910,7 @@ export default function App() {
                          </p>
             </div>
             <div className="w-full lg:w-[40%]">
-              <div className="bg-[#343434] rounded-3xl h-full flex items-center justify-center" style={{ padding: 'clamp(2rem, 3.13vw, 3rem)' }}>
+              <div className="bg-[#343434] rounded-3xl h-full flex items-center justify-center" style={{ padding: 'clamp(1.5rem, 2.34vw, 3rem)' }}>
                 <div className="w-full flex items-center justify-center" style={{ height: 'clamp(256px, 15.63vw, 300px)' }}>
                   <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage9.src} />
                 </div>
@@ -922,15 +922,15 @@ export default function App() {
         <Divider />
 
         {/* Products Section */}
-        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
+        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(2.5rem, 4.17vw, 5rem)' }}>
           <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{
-            marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
+            marginBottom: 'clamp(1.5rem, 2.34vw, 3rem)'
           }}>
             محصولات Romela Oil
           </h2>
 
           {/* Category Tabs */}
-          <div className="w-full lg:flex lg:justify-center" style={{ marginBottom: 'clamp(2rem, 3.13vw, 3rem)' }}>
+          <div className="w-full lg:flex lg:justify-center" style={{ marginBottom: 'clamp(1.5rem, 2.34vw, 3rem)' }}>
             <div
               className="rounded-full flex flex-nowrap items-center overflow-x-auto lg:overflow-visible no-scrollbar w-full lg:w-fit lg:justify-center"
               style={{
@@ -995,7 +995,7 @@ export default function App() {
           {loadingProducts ? (
             <div className="text-center text-white py-8">در حال بارگذاری محصولات...</div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(1rem, 2.08vw, 2rem)', marginTop: 'clamp(2rem, 7.29vw, 7rem)' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(0.75rem, 1.56vw, 2rem)', marginTop: 'clamp(1.5rem, 5.21vw, 7rem)' }}>
               {currentTabProducts.length > 0 ? (
                 currentTabProducts.slice(0, 4).map((product) => {
                   const productImage = getWcaPrimaryImageUrl(product) || imgMockupAtfZfBackgroundRemoved.src;
@@ -1063,20 +1063,20 @@ export default function App() {
         <Divider />
 
         {/* Statistics Section */}
-        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
+        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(2.5rem, 4.17vw, 5rem)' }}>
           <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{
-            marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
+            marginBottom: 'clamp(1.5rem, 2.34vw, 3rem)'
           }}>
             Romela Oil آمار
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(1rem, 1.56vw, 1.5rem)' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(0.75rem, 1.3vw, 1.5rem)' }}>
             <div
               className="rounded-2xl text-center flex flex-col relative overflow-hidden"
               style={{
                 background: '#FFFFFF1F',
                 border: '1px solid #FCD85633',
-                padding: 'clamp(1.5rem, 2.08vw, 2rem)',
+                padding: 'clamp(1rem, 1.56vw, 2rem)',
                 gap: 'clamp(2.5rem, 5.21vw, 2.5rem)'
               }}
             >
@@ -1093,7 +1093,7 @@ export default function App() {
               style={{
                 background: '#FFFFFF1F',
                 border: '1px solid #FCD85633',
-                padding: 'clamp(1.5rem, 2.08vw, 2rem)',
+                padding: 'clamp(1rem, 1.56vw, 2rem)',
                 gap: 'clamp(2.5rem, 5.21vw, 2.5rem)'
               }}
             >
@@ -1110,7 +1110,7 @@ export default function App() {
               style={{
                 background: '#FFFFFF1F',
                 border: '1px solid #FCD85633',
-                padding: 'clamp(1.5rem, 2.08vw, 2rem)',
+                padding: 'clamp(1rem, 1.56vw, 2rem)',
                 gap: 'clamp(2.5rem, 5.21vw, 2.5rem)'
               }}
             >
@@ -1127,7 +1127,7 @@ export default function App() {
               style={{
                 background: '#FFFFFF1F',
                 border: '1px solid #FCD85633',
-                padding: 'clamp(1.5rem, 2.08vw, 2rem)',
+                padding: 'clamp(1rem, 1.56vw, 2rem)',
                 gap: 'clamp(2.5rem, 5.21vw, 2.5rem)'
               }}
             >
@@ -1145,16 +1145,16 @@ export default function App() {
         <Divider />
 
         {/* Best Selling Products Section */}
-        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(4rem, 5.21vw, 5rem)' }}>
+        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(2.5rem, 4.17vw, 5rem)' }}>
           <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{
-            marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
+            marginBottom: 'clamp(1.5rem, 2.34vw, 3rem)'
           }}>
             محصولات پرفروش
           </h2>
 
           {/* Main Content Container */}
           <div
-            className="rounded-3xl p-4 sm:p-6 md:p-8 lg:p-14 lg:pt-8 md:pt-6 sm:pt-4"
+            className="rounded-3xl p-3 sm:p-4 md:p-6 lg:p-8 xl:p-14"
             style={{
               background: '#2a2a2a',
               border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -1162,7 +1162,7 @@ export default function App() {
             }}
           >
             {/* Tab Navigation */}
-            <div className="w-full lg:flex lg:justify-center" style={{ marginBottom: 'clamp(2rem, 3.13vw, 3rem)' }}>
+            <div className="w-full lg:flex lg:justify-center" style={{ marginBottom: 'clamp(1.5rem, 2.34vw, 3rem)' }}>
               <div
                 className="rounded-full flex flex-nowrap items-center overflow-x-auto lg:overflow-visible no-scrollbar w-full lg:w-fit lg:justify-center"
                 style={{
@@ -1218,11 +1218,11 @@ export default function App() {
             </div>
 
             {/* Content Area: Text + Product Cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: 'clamp(1.5rem, 3.13vw, 3rem)' }}>
+            <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: 'clamp(1rem, 2.34vw, 3rem)' }}>
               {/* Right Side: Text Description */}
               <div className="flex flex-col">
                 <h3 className="font-bold text-white font-iranyekan text-lg sm:text-xl md:text-[1.375rem]" dir="auto" style={{
-                  marginBottom: 'clamp(1rem, 1.56vw, 1.5rem)'
+                  marginBottom: 'clamp(0.75rem, 1.3vw, 1.5rem)'
                 }}>
                   {currentBestsellerCategory ? `${currentBestsellerCategory.name} Romela ` : 'محصولات پرفروش روملا'}
                 </h3>
@@ -1235,7 +1235,7 @@ export default function App() {
               {loadingBestsellers ? (
                 <div className="text-center text-white py-8 font-iranyekan">در حال بارگذاری...</div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(1rem, 1.56vw, 1.5rem)' }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(0.75rem, 1.3vw, 1.5rem)' }}>
                   {currentBestsellerProducts.length > 0 ? (
                     currentBestsellerProducts.map((product) => {
                       const productImage = getWcaPrimaryImageUrl(product) || '/images/image 1.png';
@@ -1247,7 +1247,7 @@ export default function App() {
                           style={{
                             background: '#FFFFFF29',
                             border: '1px solid #FFFFFF33',
-                            padding: 'clamp(1rem, 1.56vw, 1.5rem)'
+                            padding: 'clamp(0.75rem, 1.3vw, 1.5rem)'
                           }}
                         >
                           <h4 className="font-bold text-[#F9BD65] mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>

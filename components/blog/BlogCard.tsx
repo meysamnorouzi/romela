@@ -15,9 +15,9 @@ export function BlogCard({ post }: BlogCardProps) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="bg-dark-lighter rounded-xl overflow-hidden hover:shadow-2xl hover:shadow-gold/20 transition-all duration-300 group"
+      className="bg-[#343434] border border-white/20 rounded-2xl sm:rounded-3xl overflow-hidden hover:border-[#E6A816] transition-all duration-300 group"
     >
-      <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 relative overflow-hidden">
+      <div className="aspect-video bg-[#242424] relative overflow-hidden">
         {imageUrl ? (
           <Image
             src={imageUrl}
@@ -40,16 +40,24 @@ export function BlogCard({ post }: BlogCardProps) {
         )}
       </div>
 
-      <div className="p-6">
-        <h2 className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-gold transition-colors">
+      <div className="p-4 sm:p-6" style={{ padding: 'clamp(1rem, 1.56vw, 1.5rem)' }}>
+        <h2 className="text-white font-bold font-iranyekan mb-3 line-clamp-2 group-hover:text-[#E6A816] transition-colors" style={{ 
+          fontSize: 'clamp(1rem, 1.25vw, 1.25rem)',
+          marginBottom: 'clamp(0.75rem, 0.94vw, 1rem)'
+        }}>
           {post.title}
         </h2>
 
-        <p className="text-gray-400 text-sm mb-4 line-clamp-3">{post.excerpt}</p>
+        <p className="text-gray-300 text-sm mb-4 line-clamp-3 font-iranyekan" style={{ 
+          fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
+          marginBottom: 'clamp(0.75rem, 0.94vw, 1rem)'
+        }}>
+          {post.excerpt}
+        </p>
 
-        <div className="flex items-center justify-between text-sm text-gray-500">
-          <span>{publishedAt ? formatDate(publishedAt.toISOString()) : ''}</span>
-          <span className="text-gold group-hover:text-gold-dark transition-colors">ادامه مطلب →</span>
+        <div className="flex items-center justify-between text-sm" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
+          <span className="text-gray-400 font-iranyekan">{publishedAt ? formatDate(publishedAt.toISOString()) : ''}</span>
+          <span className="text-[#E6A816] group-hover:text-[#F58F4A] transition-colors font-iranyekan">ادامه مطلب </span>
         </div>
       </div>
     </Link>
