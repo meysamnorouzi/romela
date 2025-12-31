@@ -270,7 +270,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
   if (loading && !product) {
     return (
       <div className="bg-[#0e0e0e] min-h-screen w-full xl:px-0 2xl:px-6">
-        <div className="w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-32 lg:pt-80" style={{ 
+        <div className="w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-32 lg:pt-64" style={{ 
           paddingBottom: 'clamp(2rem, 3.13vw, 4rem)'
         }} />
       </div>
@@ -286,7 +286,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
   return (
     <div className="bg-[#0e0e0e] min-h-screen w-full xl:px-0 2xl:px-6 sm:px-6">
       {/* Container */}
-      <div className="w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-32 lg:pt-80" style={{ 
+      <div className="w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-32 lg:pt-64" style={{ 
         paddingBottom: 'clamp(1.5rem, 2.34vw, 4rem)'
       }}>
         {/* Breadcrumb */}
@@ -486,7 +486,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               }}>
                 {computed.introText}
               </p>
-              <div className="flex flex-col md:flex-wrap w-full" style={{ gap: 'clamp(0.5rem, 0.94vw, 1rem)', marginTop: 'clamp(0.75rem, 1.17vw, 1.5rem)' }}>
+              <div className="flex flex-col md:flex-row w-full" style={{ gap: 'clamp(0.5rem, 0.94vw, 1rem)', marginTop: 'clamp(0.75rem, 1.17vw, 1.5rem)' }}>
                 <button className="bg-[#FDBA74] flex items-center justify-center rounded-[50px] sm:rounded-[70px] py-4 w-fll md:w-fit" style={{ 
                   gap: 'clamp(0.5rem, 0.63vw, 0.5rem)',
                   paddingLeft: 'clamp(1rem, 1.56vw, 1.5rem)',
@@ -519,7 +519,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             </div>
 
             <div className="w-full lg:w-1/2">
-              <div className="relative bg-[#343434] rounded-2xl sm:rounded-3xl" style={{ 
+              <div className="relative bg-[#343434] rounded-2xl sm:rounded-3xl h-auto md:h-full flex items-center justify-center" style={{ 
                 padding: 'clamp(1rem, 2.08vw, 3rem)'
               }}>
                 <div className="relative w-full flex items-center justify-center" style={{ 
@@ -547,7 +547,66 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             مدل های مختلف  این محصول
           </h2>
 
-          <div className="overflow-x-auto">
+          {/* Mobile: Card View */}
+          <div className="w-full md:hidden flex flex-col" style={{ gap: 'clamp(1rem, 1.56vw, 1.5rem)' }}>
+            {[0, 1, 2].map((idx) => (
+              <div
+                key={idx}
+                className={clsx(
+                  idx === 0 ? 'bg-[rgba(249,189,101,0.4)]' : 'bg-[#161616]',
+                  'border border-[#3b3b3b] rounded-2xl'
+                )}
+                style={{ padding: 'clamp(1rem, 1.56vw, 1.5rem)' }}
+              >
+                <div className="flex flex-col items-center text-center" style={{ gap: 'clamp(0.75rem, 1.17vw, 1rem)' }}>
+                  {/* Product Image */}
+                  <div className="flex justify-center">
+                    <div className="relative" style={{ 
+                      width: 'clamp(8rem, 10vw, 10rem)',
+                      height: 'clamp(12rem, 15vw, 15rem)'
+                    }}>
+                      <img
+                        alt=""
+                        className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                        src={computed.variants[idx]?.imageUrl || computed.primaryImage}
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Product Name */}
+                  <div>
+                    <p className="text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+                      {computed.variants[idx]?.name || product.name}
+                    </p>
+                    {idx === 0 ? (
+                      <p className="text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)', marginTop: 'clamp(0.25rem, 0.31vw, 0.25rem)' }}>
+                        (انتخاب شده)
+                      </p>
+                    ) : null}
+                  </div>
+                  
+                  {/* Volume and Price */}
+                  <div className="flex flex-col w-full" style={{ gap: 'clamp(0.5rem, 0.78vw, 0.75rem)' }}>
+                    <div className="flex gap-4 items-center">
+                      <span className="text-gray-400 font-iranyekan" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>حجم:</span>
+                      <span className="text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                        {computed.variants[idx]?.volume || '—'}
+                      </span>
+                    </div>
+                    <div className="flex gap-4 items-center">
+                      <span className="text-gray-400 font-iranyekan" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>قیمت:</span>
+                      <span className="text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                        {computed.variants[idx]?.priceText || '—'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop: Table View */}
+          <div className="hidden md:block overflow-x-auto">
             <div className="min-w-full">
               <div className="bg-[#242424] rounded-t-2xl sm:rounded-t-3xl" style={{ padding: 'clamp(0.75rem, 1.25vw, 1rem)' }}>
                 <div className="grid grid-cols-4 text-right text-xs sm:text-sm" style={{ gap: 'clamp(0.5rem, 1.25vw, 1rem)' }}>
