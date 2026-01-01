@@ -39,7 +39,7 @@ export function Header() {
               paddingTop: 'clamp(0.25rem, 0.31vw, 0.25rem)',
               paddingBottom: 'clamp(0.25rem, 0.31vw, 0.25rem)'
             }}>
-              <img src="/images/romela new logo 4.svg" alt="romela-logo" style={{ width: 'clamp(4.5rem, 4.69vw, 4.5rem)' }} />
+              <img src="/images/romela new logo 4.svg" alt="romela-logo" style={{ width: 'clamp(3rem, 4.69vw, 3rem)' }} />
             </div>
           </Link>
 
