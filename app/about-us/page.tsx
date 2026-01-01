@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function AboutUsPage() {
   return (
@@ -26,21 +27,7 @@ export default function AboutUsPage() {
               minHeight: 'clamp(200px, 25vw, 400px)'
             }}>
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-32 h-32 bg-[#E6A816]/20 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-16 h-16 text-[#E6A816]"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                    />
-                  </svg>
-                </div>
+                 <img src="/images/image 9.png" alt="Romela Logo" className="w-[70%] object-contain" />
               </div>
             </div>
             <div dir="rtl">
@@ -65,6 +52,53 @@ export default function AboutUsPage() {
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Partnership Section - همکاری با Romela Oil */}
+        <section className="mb-12 md:mb-16" style={{ marginBottom: 'clamp(3rem, 6.25vw, 6rem)' }}>
+          <h2 className="text-white font-bold font-iranyekan mb-8 text-center" style={{
+            fontSize: 'clamp(1.5rem, 2.08vw, 2rem)',
+            marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
+          }}>
+            همکاری با شرکت Romela Oil آلمان
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+            {[
+              {
+                image: '/images/Group-4-1.png',
+                alt: 'Romela Oil - تصویر 1'
+              },
+              {
+                image: '/images/Group-6-1.png',
+                alt: 'Romela Oil - تصویر 2'
+              },
+              {
+                image: '/images/Group-7.png',
+                alt: 'Romela Oil - تصویر 3'
+              },
+              {
+                image: '/images/Group-8.png',
+                alt: 'Romela Oil - تصویر 4'
+              },
+              {
+                image: '/images/Group-9.png',
+                alt: 'Romela Oil - تصویر 5'
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="relative w-full h-20 bg-[#343434] rounded-[16px] overflow-hidden flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
+              >
+                <Image
+                  src={item.image}
+                  alt={item.alt}
+                  fill
+                  className="object-contain p-4 md:p-6"
+                  sizes="(max-width: 768px) 50vw, 20vw"
+                />
+              </div>
+            ))}
           </div>
         </section>
 
@@ -96,34 +130,43 @@ export default function AboutUsPage() {
             fontSize: 'clamp(1.5rem, 2.08vw, 2rem)',
             marginBottom: 'clamp(2rem, 3.13vw, 3rem)'
           }}>ارزش‌های ما</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8" style={{
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8" style={{
             gap: 'clamp(1.5rem, 2.08vw, 2rem)'
           }}>
             {[
               {
-                title: 'کیفیت',
-                description: 'تعهد به ارائه محصولات با بالاترین کیفیت',
+                title: 'ضمانت اصالت کالا',
+                description: 'محصولات اصلی و دارای استاندارد خودروسازان',
                 icon: (
                   <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 ),
               },
               {
-                title: 'اعتماد',
-                description: 'ساخت روابط پایدار با مشتریان و شرکای تجاری',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                ),
-              },
-              {
-                title: 'نوآوری',
-                description: 'پیشرو در فناوری و توسعه محصولات جدید',
+                title: 'ارسال سریع به سراسر ایران',
+                description: 'تحویل سریع ۱ تا ۳ روزه با بسته‌بندی ایمن',
                 icon: (
                   <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'مشاوره تخصصی رایگان',
+                description: 'انتخاب روغن مناسب بر اساس مدل خودرو و سبک رانندگی شما',
+                icon: (
+                  <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'تضمین قیمت منصفانه',
+                description: 'هم‌قیمت یا ارزان‌تر از نمایندگی‌ها و بازار فیزیکی',
+                icon: (
+                  <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 ),
               },
