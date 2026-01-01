@@ -130,7 +130,7 @@ function ProductTile({ product }: { product: WcaProduct }) {
   const volumeText = volume || '—'
 
   return (
-    <Link href={`/products?slug=${encodeURIComponent(product.slug)}`} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
+    <Link href={`/products/${product.slug}`} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
             <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ height: 'clamp(222px, 18.49vw, 355px)' }}>
         <div className="h-full flex items-center justify-center" style={{
         }} data-name="Mockup ATF-ZF Background Removed">

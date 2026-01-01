@@ -10,9 +10,11 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // Check if a nav item is active, handling nested routes
-  const isActive = (href: string) => {
+  // Only the actual home page item should be active on '/', not items that point to '/' as placeholder
+  const isActive = (href: string, label: string) => {
     if (href === '/') {
-      return pathname === '/'
+      // Only "صفحه اصلی" (Home) should be active on the home page
+      return pathname === '/' && label === 'صفحه اصلی'
     }
     return pathname.startsWith(href)
   }
@@ -53,7 +55,7 @@ export function Header() {
               gap: 'clamp(1.25rem, 1.56vw, 1.25rem)'
             }}>
               {NAVIGATION_ITEMS.map((item) => {
-                const active = isActive(item.href)
+                const active = isActive(item.href, item.label)
                 return (
                   <Link
                     key={item.href}
@@ -156,7 +158,7 @@ export function Header() {
               gap: 'clamp(1rem, 1.25vw, 1rem)'
             }}>
               {NAVIGATION_ITEMS.map((item) => {
-                const active = isActive(item.href)
+                const active = isActive(item.href, item.label)
                 return (
                   <Link
                     key={item.href}

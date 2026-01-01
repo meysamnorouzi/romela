@@ -1000,7 +1000,7 @@ export default function App() {
                 currentTabProducts.slice(0, 4).map((product) => {
                   const productImage = getWcaPrimaryImageUrl(product) || imgMockupAtfZfBackgroundRemoved.src;
                   return (
-                    <Link key={product.id} href={`/products/${product.slug}`} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
+                    <Link key={product.id} href={`/products/${product.slug}`} className='relative cursor-pointer block' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
                       <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ height: 'clamp(222px, 18.49vw, 355px)' }}>
                         <div className="h-full flex items-center justify-center" style={{
                         }} data-name="Mockup ATF-ZF Background Removed">
@@ -1243,7 +1243,7 @@ export default function App() {
                         <Link
                           key={product.id}
                           href={`/products/${product.slug}`}
-                          className="rounded-2xl flex flex-col"
+                          className="rounded-2xl flex flex-col cursor-pointer transition-opacity hover:opacity-90"
                           style={{
                             background: '#FFFFFF29',
                             border: '1px solid #FFFFFF33',
