@@ -57,12 +57,41 @@ function normalizeProductsList(raw: WcaProductsListResponse): WcaProductsListRes
   }
 }
 
+// Helper function to check if a category is the uncategorized category
+function isUncategorizedCategory(category: { id?: number; name?: string; slug?: string }): boolean {
+  // Check by ID (17 is the uncategorized category ID)
+  if (category.id === 17) return true
+  
+  // Check by name
+  if (category.name === 'دسته-بندی-نشده') return true
+  
+  // Check by slug (both decoded and URL-encoded versions)
+  if (!category.slug) return false
+  
+  // Try to decode the slug, but handle cases where it's already decoded
+  try {
+    const decodedSlug = decodeURIComponent(category.slug)
+    if (decodedSlug === 'دسته-بندی-نشده') return true
+  } catch {
+    // If decoding fails, slug might already be decoded
+  }
+  
+  if (category.slug === 'دسته-بندی-نشده') return true
+  
+  return false
+}
+
 function normalizeCategoriesList(raw: WcaCategoriesListResponse): WcaCategoriesListResponse {
+  // Filter out the "دسته-بندی-نشده" (uncategorized) category
+  const filteredCategories = (raw.categories ?? []).filter(
+    (category) => !isUncategorizedCategory(category)
+  )
+  
   return {
     ...raw,
     total: toNumber(raw.total) ?? 0,
     per_page: toNumber(raw.per_page) ?? 20,
-    categories: raw.categories ?? [],
+    categories: filteredCategories,
   }
 }
 
@@ -133,6 +162,8 @@ export async function getWcaCategories(params?: {
       page: params?.page,
       hide_empty: params?.hide_empty,
       parent: params?.parent,
+      include_subcategories: true,
+      include_all: true,
     },
     cache: params?.cache ?? 'no-store',
   })
@@ -166,11 +197,17 @@ export function getWcaPrimaryImageUrl(product: WcaProduct): string | undefined {
 }
 
 export function getWcaCategoryName(product: WcaProduct): string | undefined {
-  return product.categories?.[0]?.name
+  // Filter out "دسته-بندی-نشده" (uncategorized) category
+  const validCategories = (product.categories ?? []).filter(c => !isUncategorizedCategory(c))
+  return validCategories[0]?.name
 }
 
 export async function getWcaAttributes(): Promise<WcaAttributesListResponse> {
-  const raw = await fetchJson<WcaAttributesListResponse>('wca/v1/attributes', {})
+  const raw = await fetchJson<WcaAttributesListResponse>('wca/v1/attributes', {
+    query: {
+      include_all: true,
+    },
+  })
   return {
     ...raw,
     total: toNumber(raw.total) ?? 0,

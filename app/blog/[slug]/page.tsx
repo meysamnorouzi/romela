@@ -1,200 +1,99 @@
 import { getBlogPosts } from '@/lib/api/website'
 import { BlogDetailClient } from '../BlogDetailClient'
 
-// Disable dynamic params - only use pre-generated static params
-// This is required for static export
+// Disable dynamic params
 export const dynamicParams = false
 
-// Static params generation for build-time
+// Generate static params - MUST be async function
 export async function generateStaticParams() {
-  // Known problematic slugs that might not be returned by the API
-  // These MUST be included regardless of API response
+  // Known problematic slugs
   const problematicEncodedSlugs = [
     '%D8%A7%D8%B4%D8%AA%D8%A8%D8%A7%D9%87%D8%A7%D8%AA-%D8%B1%D8%A7%DB%8C%D8%AC-%D8%AF%D8%B1-%D8%A7%D9%86%D8%AA%D8%AE%D8%A7%D8%A8-%D8%B1%D9%88%D8%BA%D9%86-%D9%85%D9%88%D8%AA%D9%88%D8%B1-6',
     '%D8%A7%D8%B4%D8%AA%D8%A8%D8%A7%D9%87%D8%A7%D8%AA-%D8%B1%D8%A7%DB%8C%D8%AC-%D8%AF%D8%B1-%D8%A7%D9%86%D8%AA%D8%AE%D8%A7%D8%A8-%D8%B1%D9%88%D8%BA%D9%86-%D9%85%D9%88%D8%AA%D9%88%D8%B1-7'
   ]
   
-  // Decode problematic slugs first - these will ALWAYS be included
-  const problematicDecodedSlugs: string[] = []
+  const problematicDecodedSlugs = []
   for (const encoded of problematicEncodedSlugs) {
     try {
-      const decoded = decodeURIComponent(encoded)
-      problematicDecodedSlugs.push(decoded)
+      problematicDecodedSlugs.push(decodeURIComponent(encoded))
     } catch (e) {
-      console.error('Failed to decode problematic slug:', encoded, e)
+      console.error('Failed to decode:', encoded)
     }
   }
 
-  const allSlugs: string[] = []
-  const slugSet = new Set<string>()
+  const allSlugs = []
+  const slugSet = new Set()
   
-  // ALWAYS add problematic slugs FIRST, before any API calls
+  // Add problematic slugs first
   for (const decoded of problematicDecodedSlugs) {
     const trimmed = decoded.trim()
     if (trimmed && !slugSet.has(trimmed)) {
       slugSet.add(trimmed)
       allSlugs.push(trimmed)
-      console.log('✓ Pre-added required slug:', trimmed)
     }
   }
 
-  let page = 1
-  const perPage = 100
-  let hasMore = true
-  let consecutiveEmptyPages = 0
-  let lastTotal = 0
-  let apiErrorOccurred = false
-
-  // Fetch all blog posts with pagination
+  // Fetch from API
   try {
-    while (hasMore && consecutiveEmptyPages < 3) {
-      try {
-        console.log(`Fetching blog posts page ${page}...`)
-        const result = await getBlogPosts({ 
-          per_page: perPage, 
-          page: page 
-        })
-        
-        const posts = result.posts || []
-        // Ensure total is a number
-        const totalNum = typeof result.total === 'number' ? result.total : (typeof result.total === 'string' ? parseInt(result.total, 10) : 0)
-        lastTotal = isNaN(totalNum) ? 0 : totalNum
-        
-        if (posts.length === 0) {
-          consecutiveEmptyPages++
-          console.log(`No posts found on page ${page}, consecutive empty pages: ${consecutiveEmptyPages}`)
-        } else {
-          consecutiveEmptyPages = 0
-          // Add all post slugs (use raw slug as-is from API)
-          for (const post of posts) {
-            if (post.slug) {
-              const rawSlug = post.slug.trim()
-              
-              // Add the raw slug (Next.js will handle URL encoding)
-              if (!slugSet.has(rawSlug)) {
-                slugSet.add(rawSlug)
-                allSlugs.push(rawSlug)
-              }
-            }
+    let page = 1
+    let hasMore = true
+    
+    while (hasMore && page <= 100) {
+      const result = await getBlogPosts({ per_page: 100, page })
+      const posts = result.posts || []
+      
+      if (posts.length === 0) break
+      
+      for (const post of posts) {
+        if (post.slug) {
+          const slug = post.slug.trim()
+          if (!slugSet.has(slug)) {
+            slugSet.add(slug)
+            allSlugs.push(slug)
           }
-          console.log(`Added ${posts.length} posts from page ${page}, total slugs: ${allSlugs.length}`)
-        }
-        
-        // Check if there are more pages
-        const total = totalNum
-        const fetched = page * perPage
-        hasMore = posts.length === perPage && (total === 0 || fetched < total)
-        
-        page++
-        
-        // Safety limit to prevent infinite loops
-        if (page > 100) {
-          console.warn('Reached safety limit for blog post pagination')
-          break
-        }
-      } catch (error) {
-        apiErrorOccurred = true
-        console.error(`Error fetching blog posts page ${page}:`, error)
-        consecutiveEmptyPages++
-        if (consecutiveEmptyPages >= 3) {
-          console.warn('Too many consecutive errors, stopping pagination')
-          break
         }
       }
+      
+      hasMore = posts.length === 100
+      page++
     }
   } catch (error) {
-    apiErrorOccurred = true
-    console.error('Critical error during API fetch:', error)
-    // Continue - we still have the problematic slugs added above
+    console.error('Error fetching blog posts:', error)
   }
   
-  // Final check: ensure ALL problematic slugs are included
-  // This is critical for static export
-  for (const problematicDecoded of problematicDecodedSlugs) {
-    const trimmed = problematicDecoded.trim()
+  // Ensure problematic slugs are included
+  for (const decoded of problematicDecodedSlugs) {
+    const trimmed = decoded.trim()
     if (!slugSet.has(trimmed)) {
-      console.warn('⚠️  Problematic slug missing, force-adding:', trimmed)
-      slugSet.add(trimmed)
       allSlugs.push(trimmed)
     }
   }
   
-  // Generate params - Next.js expects decoded slugs, it will handle encoding
-  // But we need to ensure exact matches for problematic slugs
-  const paramsMap = new Map<string, { slug: string }>()
+  const params = allSlugs.map(slug => ({ slug }))
   
-  // Add all slugs to the map (this ensures uniqueness)
-  for (const slug of allSlugs) {
-    const trimmed = slug.trim()
-    if (trimmed) {
-      paramsMap.set(trimmed, { slug: trimmed })
-    }
-  }
+  console.log(`Generated ${params.length} static params`)
   
-  // CRITICAL: Double-check that problematic slugs are included
-  // Next.js might be doing exact string matching, so we need perfect matches
-  for (const problematicDecoded of problematicDecodedSlugs) {
-    const trimmed = problematicDecoded.trim()
-    if (trimmed && !paramsMap.has(trimmed)) {
-      console.warn(`⚠️  Force-adding missing problematic slug: ${trimmed}`)
-      paramsMap.set(trimmed, { slug: trimmed })
-    }
-  }
-  
-  const uniqueParams = Array.from(paramsMap.values())
-  
-  console.log(`\n📊 Static Params Summary:`)
-  console.log(`   Total params generated: ${uniqueParams.length}`)
-  console.log(`   API total (if available): ${lastTotal}`)
-  console.log(`   API errors occurred: ${apiErrorOccurred ? 'YES' : 'NO'}`)
-  console.log(`   Required problematic slugs: ${problematicDecodedSlugs.length}`)
-  
-  // Final verification - check each problematic slug exists
-  for (let i = 0; i < problematicDecodedSlugs.length; i++) {
-    const problematicDecoded = problematicDecodedSlugs[i]
-    const problematicEncoded = problematicEncodedSlugs[i]
-    const trimmed = problematicDecoded.trim()
-    
-    const found = uniqueParams.some(p => {
-      const pSlug = p.slug.trim()
-      return pSlug === trimmed
-    })
-    
-    if (!found) {
-      console.error(`❌ CRITICAL: Required slug NOT found: ${trimmed}`)
-      console.error(`   Encoded: ${problematicEncoded}`)
-      // This should never happen due to the check above, but add it anyway
-      uniqueParams.push({ slug: trimmed })
-    } else {
-      console.log(`✓ Verified: ${trimmed}`)
-      // Also log the encoded version for debugging
-      console.log(`  → Encoded: ${problematicEncoded}`)
-    }
-  }
-  
-  if (uniqueParams.length > 0 && uniqueParams.length <= 20) {
-    console.log(`\n📝 All slugs: ${uniqueParams.map(p => p.slug).join(', ')}`)
-  } else if (uniqueParams.length > 20) {
-    console.log(`\n📝 First 20: ${uniqueParams.map(p => p.slug).slice(0, 20).join(', ')}...`)
-  }
-  
-  // NEVER return empty array
-  if (uniqueParams.length === 0) {
-    console.error('⚠️  WARNING: No params, returning problematic slugs only')
-    return problematicDecodedSlugs.map(slug => ({ slug: slug.trim() }))
-  }
-  
-  return uniqueParams
+  // Always return at least one param
+  return params.length > 0 ? params : [{ slug: 'placeholder' }]
 }
 
-export default function BlogSlugPage({ params }: { params: { slug: string } }) {
-  // Next.js automatically decodes URL params, so params.slug is already decoded
-  // Just pass it directly to the client component
-  // The client component will handle any edge cases
-  const slug = params?.slug || ''
+// Default export - page component
+export default async function BlogSlugPage({ params }: { params: Promise<{ slug: string }> | { slug: string } }) {
+  // Handle both Promise and direct params (Next.js 14+ compatibility)
+  const resolvedParams = params instanceof Promise ? await params : params
+  let slug = resolvedParams?.slug || ''
+  
+  // Ensure slug is decoded (Next.js should do this automatically, but handle edge cases)
+  if (slug && slug.includes('%')) {
+    try {
+      slug = decodeURIComponent(slug)
+    } catch (e) {
+      // If decoding fails, use original
+      console.error('Failed to decode slug:', slug, e)
+    }
+  }
   
   if (!slug) {
-    // This shouldn't happen with dynamicParams = false, but handle it gracefully
     return (
       <div className="py-8 md:py-12">
         <div className="container mx-auto px-4 md:px-6 lg:px-8">
@@ -208,4 +107,3 @@ export default function BlogSlugPage({ params }: { params: { slug: string } }) {
   
   return <BlogDetailClient slug={slug} />
 }
-

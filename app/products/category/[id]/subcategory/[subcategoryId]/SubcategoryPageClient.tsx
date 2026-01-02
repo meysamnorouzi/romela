@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import type { WcaProduct, WcaCategory, WcaAttribute, WcaAttributeTerm } from '@/lib/api/types'
 import { getWcaPrimaryImageUrl, getWcaCategories, getWcaAttributes, getWcaAttributeTerms, getWcaProducts } from '@/lib/api/wca'
 import { LoadingSpinner } from '@/components/ui/Loading'
+import { EmptyProductsState } from '@/components/ui/EmptyProductsState'
 import { stripHtml } from '@/lib/utils/text'
 import { extractStandard, extractVariantsFromFirstHtmlTable } from '@/lib/utils/wca'
 
@@ -745,10 +746,7 @@ export function SubcategoryPageClient({
             </div>
 
             {!loadingProducts && visibleProducts.length === 0 && (
-              <div className="text-center text-[#9A9A9A]" style={{ 
-                marginTop: 'clamp(2rem, 2.34vw, 3rem)',
-                fontSize: 'clamp(0.875rem, 1.04vw, 1rem)'
-              }}>محصولی برای نمایش وجود ندارد</div>
+              <EmptyProductsState />
             )}
           </div>
 

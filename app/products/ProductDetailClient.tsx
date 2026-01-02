@@ -12,8 +12,8 @@ import {
   imgImage9,
 } from './imports/image-placeholders'
 
-import { getWcaPrimaryImageUrl } from '@/lib/api/wca'
-import type { WcaProduct, WcaProductsListResponse, WcaRelatedProductsResponse } from '@/lib/api/types'
+import { getWcaPrimaryImageUrl, getWcaCategories } from '@/lib/api/wca'
+import type { WcaProduct, WcaProductsListResponse, WcaRelatedProductsResponse, WcaCategory } from '@/lib/api/types'
 import { stripHtml } from '@/lib/utils/text'
 import { extractBrands, extractStandard, extractVariantsFromFirstHtmlTable, extractViscosity } from '@/lib/utils/wca'
 
@@ -113,6 +113,8 @@ export function ProductDetailClient({ slug }: { slug: string }) {
   const [product, setProduct] = useState<WcaProduct | null>(null)
   const [relatedProducts, setRelatedProducts] = useState<WcaProduct[]>([])
   const [loading, setLoading] = useState(true)
+  const [parentCategory, setParentCategory] = useState<WcaCategory | null>(null)
+  const [subcategory, setSubcategory] = useState<WcaCategory | null>(null)
 
   const WP_JSON_BASE_URL = (
     process.env.NEXT_PUBLIC_WP_JSON_BASE_URL ||
@@ -154,6 +156,111 @@ export function ProductDetailClient({ slug }: { slug: string }) {
         if (cancelled) return
         setProduct(full)
 
+        // Load category hierarchy
+        if (full.categories && full.categories.length > 0) {
+          try {
+            // Fetch all categories to get parent information
+            const allCategoriesResult = await getWcaCategories({ per_page: 100, page: 1, hide_empty: false })
+            const allCategories = allCategoriesResult.categories || []
+            
+            // Find categories from product in the full categories list to get parent info
+            // Filter out the "دسته-بندی-نشده" (uncategorized) category
+            const isUncategorized = (cat: { id?: number; name?: string; slug?: string }) => {
+              if (cat.id === 17) return true
+              if (cat.name === 'دسته-بندی-نشده') return true
+              if (cat.slug) {
+                try {
+                  const decoded = decodeURIComponent(cat.slug)
+                  if (decoded === 'دسته-بندی-نشده') return true
+                } catch {
+                  // If decoding fails, slug might already be decoded
+                }
+                if (cat.slug === 'دسته-بندی-نشده') return true
+              }
+              return false
+            }
+            const productCategories = full.categories
+              .filter(pc => !isUncategorized(pc))
+              .map(pc => {
+                return allCategories.find(ac => ac.id === pc.id) || pc
+              })
+              .filter(cat => !isUncategorized(cat))
+            
+            // Determine parent and subcategory
+            // A category is a subcategory if it has a parent that matches another category's id
+            let foundParent: WcaCategory | null = null
+            let foundSubcategory: WcaCategory | null = null
+            
+            for (const cat of productCategories) {
+              if (cat.parent && cat.parent !== 0) {
+                // This is a subcategory, find its parent
+                const parent = productCategories.find(c => c.id === cat.parent)
+                if (parent) {
+                  foundParent = parent
+                  foundSubcategory = cat
+                  break
+                } else {
+                  // Parent not in product categories, fetch it
+                  const parentFromAll = allCategories.find(c => c.id === cat.parent)
+                  if (parentFromAll) {
+                    foundParent = parentFromAll
+                    foundSubcategory = cat
+                    break
+                  }
+                }
+              }
+            }
+            
+            // If no subcategory found, check if we have multiple categories and one is parent of another
+            if (!foundSubcategory && productCategories.length >= 2) {
+              for (const cat1 of productCategories) {
+                for (const cat2 of productCategories) {
+                  if (cat2.parent === cat1.id) {
+                    foundParent = cat1
+                    foundSubcategory = cat2
+                    break
+                  }
+                }
+                if (foundSubcategory) break
+              }
+            }
+            
+            // If still no hierarchy found, use first category as parent
+            if (!foundParent && !foundSubcategory && productCategories.length > 0) {
+              // Check if first category has a parent
+              const firstCat = productCategories[0]
+              if (firstCat.parent && firstCat.parent !== 0) {
+                // First category is a subcategory, find its parent
+                const parentFromAll = allCategories.find(c => c.id === firstCat.parent)
+                if (parentFromAll) {
+                  foundParent = parentFromAll
+                  foundSubcategory = firstCat
+                }
+              } else {
+                // First category is a parent, check if second is its child
+                if (productCategories.length > 1) {
+                  const secondCat = productCategories[1]
+                  if (secondCat.parent === firstCat.id) {
+                    foundParent = firstCat
+                    foundSubcategory = secondCat
+                  }
+                }
+              }
+            }
+            
+            if (!cancelled) {
+              setParentCategory(foundParent)
+              setSubcategory(foundSubcategory)
+            }
+          } catch (error) {
+            console.error('Error loading category hierarchy:', error)
+            if (!cancelled) {
+              setParentCategory(null)
+              setSubcategory(null)
+            }
+          }
+        }
+
         try {
           const rel = await fetchJson<WcaRelatedProductsResponse>(
             buildApiUrl(`wca/v1/products/${match.id}/related`, { limit: 3 })
@@ -183,8 +290,31 @@ export function ProductDetailClient({ slug }: { slug: string }) {
     if (!product) return null
 
     const primaryImage = getWcaPrimaryImageUrl(product) || imgMockupAtfXlBackgroundRemoved.src
-    const categoryName = product.categories?.[0]?.name || 'محصولات'
-    const categoryId = product.categories?.[0]?.id || '1'
+    
+    // Determine category name and ID - prefer parent category if available
+    // Filter out "دسته-بندی-نشده" from product categories
+    const isUncategorized = (cat: { id?: number; name?: string; slug?: string }) => {
+      if (cat.id === 17) return true
+      if (cat.name === 'دسته-بندی-نشده') return true
+      if (cat.slug) {
+        try {
+          const decoded = decodeURIComponent(cat.slug)
+          if (decoded === 'دسته-بندی-نشده') return true
+        } catch {
+          // If decoding fails, slug might already be decoded
+        }
+        if (cat.slug === 'دسته-بندی-نشده') return true
+      }
+      return false
+    }
+    const validProductCategories = (product.categories ?? []).filter(c => !isUncategorized(c))
+    const categoryName = parentCategory?.name || validProductCategories[0]?.name || 'محصولات'
+    const categoryId = parentCategory?.id || validProductCategories[0]?.id || 1
+    
+    // Subcategory info
+    const subcategoryName = subcategory?.name || null
+    const subcategoryId = subcategory?.id || null
+    
     const descriptionText = stripHtml(product.short_description || product.description || '').slice(0, 160)
 
     const fullText = stripHtml(product.description || '')
@@ -239,7 +369,24 @@ export function ProductDetailClient({ slug }: { slug: string }) {
       { property: 'Last modified', value: product.date_modified || '—', method: '—' },
       {
         property: 'Categories',
-        value: (product.categories ?? []).map((c) => c.name).filter(Boolean).join(', ') || '—',
+        value: (product.categories ?? [])
+          .filter(c => {
+            if (c.id === 17) return false
+            if (c.name === 'دسته-بندی-نشده') return false
+            if (c.slug) {
+              try {
+                const decoded = decodeURIComponent(c.slug)
+                if (decoded === 'دسته-بندی-نشده') return false
+              } catch {
+                // If decoding fails, slug might already be decoded
+              }
+              if (c.slug === 'دسته-بندی-نشده') return false
+            }
+            return true
+          })
+          .map((c) => c.name)
+          .filter(Boolean)
+          .join(', ') || '—',
         method: '—',
       },
     ]
@@ -248,6 +395,8 @@ export function ProductDetailClient({ slug }: { slug: string }) {
       primaryImage,
       categoryName,
       categoryId,
+      subcategoryName,
+      subcategoryId,
       descriptionText,
       introImageTop,
       introImageBottom,
@@ -265,7 +414,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
       stockCountText,
       techRows,
     }
-  }, [product])
+  }, [product, parentCategory, subcategory])
 
   if (loading && !product) {
     return (
@@ -300,6 +449,14 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             <Link href={`/products/category/${computed.categoryId}`} className="text-[#717171]" dir="auto" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1.125rem)' }}>
               {computed.categoryName}
             </Link>
+            {computed.subcategoryName && computed.subcategoryId ? (
+              <>
+                <span className="text-[#717171]" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1.125rem)' }}> / </span>
+                <Link href={`/products/category/${computed.categoryId}/subcategory/${computed.subcategoryId}`} className="text-[#717171]" dir="auto" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1.125rem)' }}>
+                  {computed.subcategoryName}
+                </Link>
+              </>
+            ) : null}
             <span className="text-[#717171]" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1.125rem)' }}> / </span>
             <span className="text-[#F58F4A] truncate max-w-[150px] sm:max-w-none" dir="auto" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 1.125rem)' }}>
               {product.name}
@@ -403,8 +560,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                   dir="auto"
                   style={{ fontSize: 'clamp(1.5rem, 1.88vw, 2rem)' }}
                 >
-                  <span className='font-black'>{computed.priceText}{' '}</span>
-                  <span className="font-light" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>تومان</span>
+                  <span className='font-black'>تماس بگیرید</span>
                 </span>
               </div>
 
@@ -596,7 +752,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                     <div className="flex gap-4 items-center">
                       <span className="text-gray-400 font-iranyekan" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>قیمت:</span>
                       <span className="text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-                        {computed.variants[idx]?.priceText || '—'}
+                        تماس بگیرید
                       </span>
                     </div>
                   </div>
@@ -652,7 +808,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                       {computed.variants[idx]?.volume || '—'}
                     </div>
                     <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
-                      {computed.variants[idx]?.priceText || '—'}
+                      تماس بگیرید
                     </div>
                     <div className="flex justify-center">
                       <div className="relative" style={{ 

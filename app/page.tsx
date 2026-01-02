@@ -227,6 +227,12 @@ export default function App() {
     'special-additives': 'افزودنی-های-خاص',
   };
 
+  // Helper function to find category ID by name
+  const findCategoryId = (name: string): number | null => {
+    const category = categories.find(c => c.name === name || c.name.includes(name));
+    return category?.id || null;
+  };
+
   // Fetch categories
   useEffect(() => {
     async function loadCategories() {
@@ -673,10 +679,8 @@ export default function App() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(0.75rem, 1.56vw, 2rem)' }}>
 
             {/* Industrial Oils Card (Wide) */}
-            <Link
-              href={categories.find(c => c.name.toLowerCase().includes('صنعتی')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('صنعتی'))?.id}` : '/products'}
+            <div
               className="relative bg-[#343434] rounded-3xl overflow-hidden h-48 sm:h-64 md:h-64 lg:col-span-2"
-
             >
               <div className="absolute bg-[rgba(215,105,105,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full" 
@@ -695,22 +699,24 @@ export default function App() {
                       توربین، کمپرسور، ترانسفورمر، حرارتی، بافت و ...
                     </p>
                   </div>
-                  <div className="flex items-center group" style={{ gap: 'clamp(0.75rem, 1.04vw, 1rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
+                  <Link
+                    href={findCategoryId('روغن صنعتی') ? `/products/category/${findCategoryId('روغن صنعتی')}` : '/products'}
+                    className="flex items-center group"
+                    style={{ gap: 'clamp(0.75rem, 1.04vw, 1rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}
+                  >
                     <span className="text-[#E39C9C] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       مشاهده محصولات
                     </span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(1rem, 1.04vw, 1rem)', height: 'clamp(1rem, 1.04vw, 1rem)' }}>
                       <path d="M3.825 9L9.425 14.6L8 16L0 8L8 0L9.425 1.4L3.825 7H16V9H3.825Z" fill="#E39C9C" />
                     </svg>
-                  </div>
+                  </Link>
                 </div>
               </div>
-            </Link>
+            </div>
             {/* Engine Oil Card */}
-            <Link
-              href={categories.find(c => c.name.toLowerCase().includes('موتور')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('موتور'))?.id}` : '/products'}
+            <div
               className="relative bg-[#343434] rounded-3xl overflow-hidden h-48 sm:h-64 md:h-64"
-
             >
               <div className="absolute bg-[rgba(229,160,69,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full" 
@@ -724,23 +730,25 @@ export default function App() {
                   <h3 className="text-[#FEDE59] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن موتور
                   </h3>
-                  <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
+                  <Link
+                    href={findCategoryId('روغن موتور') ? `/products/category/${findCategoryId('روغن موتور')}` : '/products'}
+                    className="flex items-center group"
+                    style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}
+                  >
                     <span className="text-[#FEDE59] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       مشاهده محصولات
                     </span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(1rem, 1.04vw, 1rem)', height: 'clamp(1rem, 1.04vw, 1rem)' }}>
                       <path d="M3.825 9L9.425 14.6L8 16L0 8L8 0L9.425 1.4L3.825 7H16V9H3.825Z" fill="#FEDE59" />
                     </svg>
-                  </div>
+                  </Link>
                 </div>
               </div>
-            </Link>
+            </div>
 
             {/* Gear Oil Card (Wide) */}
-            <Link
-              href={categories.find(c => c.name.toLowerCase().includes('گیربکس')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('گیربکس'))?.id}` : '/products'}
+            <div
               className="relative bg-[#343434] rounded-3xl overflow-hidden h-48 sm:h-64 md:h-64"
-
             >
               <div className="absolute bg-[#C9C9C980] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full" 
@@ -754,23 +762,25 @@ export default function App() {
                   <h3 className="text-[#E7E7E7] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ paddingTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن گیربکس
                   </h3>
-                  <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
+                  <Link
+                    href={findCategoryId('روغن گیربکس') ? `/products/category/${findCategoryId('روغن گیربکس')}` : '/products'}
+                    className="flex items-center group"
+                    style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}
+                  >
                     <span className="text-[#E7E7E7] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       مشاهده محصولات
                     </span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(1rem, 1.04vw, 1rem)', height: 'clamp(1rem, 1.04vw, 1rem)' }}>
                       <path d="M3.825 9L9.425 14.6L8 16L0 8L8 0L9.425 1.4L3.825 7H16V9H3.825Z" fill="#E7E7E7" />
                     </svg>
-                  </div>
+                  </Link>
                 </div>
               </div>
-            </Link>
+            </div>
 
             {/* Brake Oil Card */}
-            <Link
-              href={categories.find(c => c.name.toLowerCase().includes('ترمز')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('ترمز'))?.id}` : '/products'}
+            <div
               className="relative bg-[#343434] rounded-3xl overflow-hidden h-48 sm:h-64 md:h-64"
-
             >
               <div className="absolute bg-[rgba(255,35,39,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full" 
@@ -784,23 +794,25 @@ export default function App() {
                   <h3 className="text-[#FF2023] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن ترمز
                   </h3>
-                  <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
+                  <Link
+                    href={findCategoryId('روغن ترمز') ? `/products/category/${findCategoryId('روغن ترمز')}` : '/products'}
+                    className="flex items-center group"
+                    style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}
+                  >
                     <span className="text-[#FF2023] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       مشاهده محصولات
                     </span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(1rem, 1.04vw, 1rem)', height: 'clamp(1rem, 1.04vw, 1rem)' }}>
                       <path d="M3.825 9L9.425 14.6L8 16L0 8L8 0L9.425 1.4L3.825 7H16V9H3.825Z" fill="#FF2023" />
                     </svg>
-                  </div>
+                  </Link>
                 </div>
               </div>
-            </Link>
+            </div>
 
-            {/* Gear Oil Card (Wide) */}
-            <Link
-              href={categories.find(c => c.name.toLowerCase().includes('هیدرولیک')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('گیربکس'))?.id}` : '/products'}
+            {/* Hydraulic Oil Card */}
+            <div
               className="relative bg-[#343434] rounded-3xl overflow-hidden h-48 sm:h-64 md:h-64"
-
             >
               <div className="absolute bg-[#1D36F14D] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(12rem, 25vw, 24rem)', height: 'clamp(8rem, 12.5vw, 12rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full" 
@@ -814,23 +826,25 @@ export default function App() {
                   <h3 className="text-[#738CD2] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     روغن هیدرولیک
                   </h3>
-                  <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
+                  <Link
+                    href={findCategoryId('روغن هیدرولیک') ? `/products/category/${findCategoryId('روغن هیدرولیک')}` : '/products'}
+                    className="flex items-center group"
+                    style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}
+                  >
                     <span className="text-[#738CD2] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       مشاهده محصولات
                     </span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(1rem, 1.04vw, 1rem)', height: 'clamp(1rem, 1.04vw, 1rem)' }}>
                       <path d="M3.825 9L9.425 14.6L8 16L0 8L8 0L9.425 1.4L3.825 7H16V9H3.825Z" fill="#738CD2" />
                     </svg>
-                  </div>
+                  </Link>
                 </div>
               </div>
-            </Link>
+            </div>
 
-            {/* Brake Oil Card */}
-            <Link
-              href={categories.find(c => c.name.toLowerCase().includes('ترمز')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('ترمز'))?.id}` : '/products'}
+            {/* Grease Card */}
+            <div
               className="relative bg-[#343434] rounded-3xl overflow-hidden h-48 sm:h-64 md:h-64"
-
             >
               <div className="absolute bg-[#EA770C] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div className="relative flex flex-col md:flex-row h-full" 
@@ -845,23 +859,25 @@ export default function App() {
                   <h3 className="text-[#EA770C] text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     گریس
                   </h3>
-                  <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
+                  <Link
+                    href={findCategoryId('گریس') ? `/products/category/${findCategoryId('گریس')}` : '/products'}
+                    className="flex items-center group"
+                    style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}
+                  >
                     <span className="text-[#EA770C] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       مشاهده محصولات
                     </span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(1rem, 1.04vw, 1rem)', height: 'clamp(1rem, 1.04vw, 1rem)' }}>
                       <path d="M3.825 9L9.425 14.6L8 16L0 8L8 0L9.425 1.4L3.825 7H16V9H3.825Z" fill="#EA770C" />
                     </svg>
-                  </div>
+                  </Link>
                 </div>
               </div>
-            </Link>
+            </div>
 
             {/* Special Additives Card */}
-            <Link
-              href={categories.find(c => c.name.toLowerCase().includes('افزودنی') || c.name.toLowerCase().includes('خاص')) ? `/products/category/${categories.find(c => c.name.toLowerCase().includes('افزودنی') || c.name.toLowerCase().includes('خاص'))?.id}` : '/products'}
+            <div
               className="relative bg-[#343434] rounded-3xl overflow-hidden h-48 sm:h-64 md:h-64"
-
             >
               <div className="absolute bg-[rgba(255,255,255,0.5)] blur-[57px] rounded-full top-1/2 left-1/4 -translate-y-1/2" style={{ width: 'clamp(8rem, 16.67vw, 16rem)', height: 'clamp(4rem, 8.33vw, 8rem)' }} />
               <div
@@ -877,17 +893,21 @@ export default function App() {
                   <h3 className="text-white text-right 3xl:text-3xl text-xl font-bold font-iranyekan" dir="auto" style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.5rem)' }}>
                     افزودنی های خاص
                   </h3>
-                  <div className="flex items-center group" style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}>
+                  <Link
+                    href={findCategoryId('افزودنی') ? `/products/category/${findCategoryId('افزودنی')}` : '/products'}
+                    className="flex items-center group"
+                    style={{ gap: 'clamp(0.5rem, 0.83vw, 0.5rem)', marginTop: 'clamp(0.5rem, 1.04vw, 1rem)' }}
+                  >
                     <span className="text-white text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                       مشاهده محصولات
                     </span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(1rem, 1.04vw, 1rem)', height: 'clamp(1rem, 1.04vw, 1rem)' }}>
                       <path d="M3.825 9L9.425 14.6L8 16L0 8L8 0L9.425 1.4L3.825 7H16V9H3.825Z" fill="#FFFFFF" />
                     </svg>
-                  </div>
+                  </Link>
                 </div>
               </div>
-            </Link>
+            </div>
           </div>
         </section>
 
