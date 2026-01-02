@@ -15,12 +15,19 @@ function toNumber(value: unknown): number | undefined {
   return undefined
 }
 
-function buildUrl(path: string, query?: Record<string, string | number | boolean | undefined>): string {
+function buildUrl(path: string, query?: Record<string, string | number | boolean | undefined | Array<string | number>>): string {
   const url = new URL(`${WP_JSON_BASE_URL}/${path.replace(/^\/+/, '')}`)
   if (query) {
     for (const [key, value] of Object.entries(query)) {
       if (value === undefined) continue
-      url.searchParams.set(key, String(value))
+      if (Array.isArray(value)) {
+        // For arrays, append each value (allows multiple query params with same name)
+        for (const item of value) {
+          url.searchParams.append(key, String(item))
+        }
+      } else {
+        url.searchParams.set(key, String(value))
+      }
     }
   }
   return url.toString()
@@ -29,7 +36,7 @@ function buildUrl(path: string, query?: Record<string, string | number | boolean
 async function fetchJson<T>(
   path: string,
   options?: {
-    query?: Record<string, string | number | boolean | undefined>
+    query?: Record<string, string | number | boolean | undefined | Array<string | number>>
     cache?: RequestCache
   }
 ): Promise<T> {
@@ -105,20 +112,57 @@ export async function getWcaProducts(params?: {
   stock_status?: 'instock' | 'outofstock' | 'onbackorder'
   orderby?: 'date' | 'price' | 'rating' | 'popularity'
   order?: 'ASC' | 'DESC'
+  bestseller?: boolean
+  romela_first?: boolean
+  attribute_id?: number | number[]
+  attribute_term?: number | number[] | Array<number | number[]>
+  // Support multiple attribute pairs: [{attribute_id: 1, attribute_term: [73,79]}, {attribute_id: 5, attribute_term: 75}]
+  attribute_pairs?: Array<{ attribute_id: number; attribute_term: number | number[] }>
 }): Promise<WcaProductsListResponse> {
-  const raw = await fetchJson<WcaProductsListResponse>('wca/v1/products', {
-    query: {
-      per_page: params?.per_page,
-      page: params?.page,
-      category: params?.category,
-      tag: params?.tag,
-      featured: params?.featured,
-      on_sale: params?.on_sale,
-      stock_status: params?.stock_status,
-      orderby: params?.orderby,
-      order: params?.order,
-    },
-  })
+  const query: Record<string, string | number | boolean | undefined | Array<string | number>> = {
+    per_page: params?.per_page,
+    page: params?.page,
+    category: params?.category,
+    tag: params?.tag,
+    featured: params?.featured,
+    on_sale: params?.on_sale,
+    stock_status: params?.stock_status,
+    orderby: params?.orderby,
+    order: params?.order,
+    bestseller: params?.bestseller,
+    romela_first: params?.romela_first,
+  }
+
+  // Handle multiple attribute pairs (multiple attribute_id/attribute_term combinations)
+  if (params?.attribute_pairs && params.attribute_pairs.length > 0) {
+    const attributeIds: number[] = []
+    const attributeTerms: string[] = []
+    
+    for (const pair of params.attribute_pairs) {
+      attributeIds.push(pair.attribute_id)
+      // Convert attribute_term to comma-separated string if array
+      if (Array.isArray(pair.attribute_term)) {
+        attributeTerms.push(pair.attribute_term.join(','))
+      } else {
+        attributeTerms.push(String(pair.attribute_term))
+      }
+    }
+    
+    query.attribute_id = attributeIds
+    query.attribute_term = attributeTerms
+  } else if (params?.attribute_id !== undefined && params?.attribute_term !== undefined) {
+    // Single attribute_id/attribute_term pair (backward compatibility)
+    query.attribute_id = Array.isArray(params.attribute_id) ? params.attribute_id : params.attribute_id
+    
+    if (Array.isArray(params.attribute_term)) {
+      // Multiple terms for single attribute - comma-separated
+      query.attribute_term = params.attribute_term.join(',')
+    } else {
+      query.attribute_term = params.attribute_term
+    }
+  }
+
+  const raw = await fetchJson<WcaProductsListResponse>('wca/v1/products', { query })
 
   return normalizeProductsList(raw)
 }

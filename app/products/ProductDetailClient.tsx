@@ -15,7 +15,7 @@ import {
 import { getWcaPrimaryImageUrl, getWcaCategories } from '@/lib/api/wca'
 import type { WcaProduct, WcaProductsListResponse, WcaRelatedProductsResponse, WcaCategory } from '@/lib/api/types'
 import { stripHtml } from '@/lib/utils/text'
-import { extractBrands, extractStandard, extractVariantsFromFirstHtmlTable, extractViscosity } from '@/lib/utils/wca'
+import { extractBrands, extractStandard, extractVariantsFromFirstHtmlTable, extractViscosity, getVolumeFromAttributes, getStandardFromAttributes, extractDatasheetTable } from '@/lib/utils/wca'
 
 // Divider Component (kept identical)
 function Divider() {
@@ -334,13 +334,14 @@ export function ProductDetailClient({ slug }: { slug: string }) {
     const introImageBottom = allImages[0] || primaryImage
 
     const introText = stripHtml(product.description || '').slice(0, 520) || ' '
-    const datasheetText = stripHtml(product.description || '').slice(520, 1100) || ' '
-    const galleryText = stripHtml(product.description || '').slice(1100, 1650) || ' '
-    const similarText = stripHtml(product.description || '').slice(1650, 2050) || ' '
+    const datasheetText = (product.product_datasheet?.initial_description ? stripHtml(product.product_datasheet.initial_description) : stripHtml(product.description || '').slice(520, 1100)) || ' '
+    const galleryText = (product.additional_description ? stripHtml(product.additional_description) : stripHtml(product.description || '').slice(1100, 1650)) || ' '
+    const similarText = (product.similar_products_description ? stripHtml(product.similar_products_description) : stripHtml(product.description || '').slice(1650, 2050)) || ' '
 
     const variants = extractVariantsFromFirstHtmlTable(product.description || '')
-    const badgeStandard = extractStandard(fullText) || categoryName
-    const badgeVolume = variants[0]?.volume || ''
+    // Get volume and standard from product attributes (preferred) or fallback to text extraction
+    const badgeVolume = getVolumeFromAttributes(product) || variants[0]?.volume || ''
+    const badgeStandard = getStandardFromAttributes(product) || extractStandard(fullText) || categoryName
 
     const viscosity = extractViscosity(product.name) || extractViscosity(fullText) || ''
     const standard = extractStandard(fullText) || ''
@@ -356,40 +357,58 @@ export function ProductDetailClient({ slug }: { slug: string }) {
       typeof product.stock_quantity === 'number' ? product.stock_quantity : product.in_stock ? 1 : 0
     const stockCountText = new Intl.NumberFormat('fa-IR').format(stockCount)
 
-    const techRows = [
-      { property: 'SKU', value: product.sku || '—', method: '—' },
-      { property: 'Type', value: product.type || '—', method: '—' },
-      { property: 'Stock status', value: product.stock_status || '—', method: '—' },
-      {
-        property: 'Stock quantity',
-        value: typeof product.stock_quantity === 'number' ? String(product.stock_quantity) : '—',
-        method: '—',
-      },
-      { property: 'Weight', value: (product as any).weight || '—', method: '—' },
-      { property: 'Last modified', value: product.date_modified || '—', method: '—' },
-      {
-        property: 'Categories',
-        value: (product.categories ?? [])
-          .filter(c => {
-            if (c.id === 17) return false
-            if (c.name === 'دسته-بندی-نشده') return false
-            if (c.slug) {
-              try {
-                const decoded = decodeURIComponent(c.slug)
-                if (decoded === 'دسته-بندی-نشده') return false
-              } catch {
-                // If decoding fails, slug might already be decoded
-              }
-              if (c.slug === 'دسته-بندی-نشده') return false
-            }
-            return true
-          })
-          .map((c) => c.name)
-          .filter(Boolean)
-          .join(', ') || '—',
-        method: '—',
-      },
-    ]
+    // Extract datasheet table from description HTML, or use product_datasheet.table_data if available
+    const extractedDatasheetRows = extractDatasheetTable(product.description || '')
+    const datasheetTableData = product.product_datasheet?.table_data || []
+    const techRows = extractedDatasheetRows.length > 0 
+      ? extractedDatasheetRows.map(row => ({ 
+          property: row.property || '—', 
+          value: row.value || '—', 
+          method: row.method || '—' 
+        }))
+      : datasheetTableData.length > 0
+      ? datasheetTableData.map((row: any) => ({
+          property: row.property || '—',
+          value: row.value || '—',
+          method: row.method || '—',
+        }))
+      : [
+          { property: 'SKU', value: product.sku || '—', method: '—' },
+          { property: 'Type', value: product.type || '—', method: '—' },
+          { property: 'Stock status', value: product.stock_status || '—', method: '—' },
+          {
+            property: 'Stock quantity',
+            value: typeof product.stock_quantity === 'number' ? String(product.stock_quantity) : '—',
+            method: '—',
+          },
+          { property: 'Weight', value: (product as any).weight || '—', method: '—' },
+          { property: 'Last modified', value: product.date_modified || '—', method: '—' },
+          {
+            property: 'Categories',
+            value: (product.categories ?? [])
+              .filter(c => {
+                if (c.id === 17) return false
+                if (c.name === 'دسته-بندی-نشده') return false
+                if (c.slug) {
+                  try {
+                    const decoded = decodeURIComponent(c.slug)
+                    if (decoded === 'دسته-بندی-نشده') return false
+                  } catch {
+                    // If decoding fails, slug might already be decoded
+                  }
+                  if (c.slug === 'دسته-بندی-نشده') return false
+                }
+                return true
+              })
+              .map((c) => c.name)
+              .filter(Boolean)
+              .join(', ') || '—',
+            method: '—',
+          },
+        ]
+
+    // Get datasheet download link
+    const datasheetDownloadLink = product.product_datasheet?.download_link || ''
 
     return {
       primaryImage,
@@ -413,6 +432,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
       priceText,
       stockCountText,
       techRows,
+      datasheetDownloadLink,
     }
   }, [product, parentCategory, subcategory])
 
@@ -556,16 +576,16 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                   قیمت
                 </span>
                 <span
-                  className="text-[#fcfbee] text-right"
+                  className="text-[#fcfbee] text-right font-light"
                   dir="auto"
-                  style={{ fontSize: 'clamp(1.5rem, 1.88vw, 2rem)' }}
+                  style={{ fontSize: 'clamp(1.1rem, 1.88vw, 1.1rem)' }}
                 >
                   <span className='font-black'>تماس بگیرید</span>
                 </span>
               </div>
 
               {/* Stock Counter */}
-              <div className="flex items-center flex-wrap" style={{ gap: 'clamp(0.75rem, 0.94vw, 1rem)' }}>
+              {/* <div className="flex items-center flex-wrap" style={{ gap: 'clamp(0.75rem, 0.94vw, 1rem)' }}>
                 <div className="bg-[rgba(255,255,255,0.12)] flex items-center justify-center rounded-[120px]" style={{ 
                   gap: 'clamp(1rem, 1.17vw, 1.5rem)',
                   height: 'clamp(2.75rem, 2.93vw, 3.6875rem)',
@@ -597,10 +617,10 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                   <span className="text-[#f58f4a]">{computed.stockCountText} عدد</span>
                   <span> در انبار باقی مانده!</span>
                 </p>
-              </div>
+              </div> */}
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row" style={{ gap: 'clamp(0.5rem, 0.94vw, 1rem)' }}>
+              {/* <div className="flex flex-col sm:flex-row" style={{ gap: 'clamp(0.5rem, 0.94vw, 1rem)' }}>
                 <button className="bg-white flex items-center justify-center py-3 sm:py-4 rounded-[50px] sm:rounded-[70px] flex-1 sm:flex-none" style={{ 
                   paddingLeft: 'clamp(1rem, 1.56vw, 2rem)',
                   paddingRight: 'clamp(1rem, 1.56vw, 2rem)'
@@ -617,7 +637,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                     ثبت سفارش
                   </span>
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -643,11 +663,18 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                 {computed.introText}
               </p>
               <div className="flex flex-col md:flex-row w-full" style={{ gap: 'clamp(0.5rem, 0.94vw, 1rem)', marginTop: 'clamp(0.75rem, 1.17vw, 1.5rem)' }}>
-                <button className="bg-[#FDBA74] flex items-center justify-center rounded-[50px] sm:rounded-[70px] py-4 w-fll md:w-fit" style={{ 
-                  gap: 'clamp(0.5rem, 0.63vw, 0.5rem)',
-                  paddingLeft: 'clamp(1rem, 1.56vw, 1.5rem)',
-                  paddingRight: 'clamp(1rem, 1.56vw, 1.5rem)'
-                }}>
+                <a 
+                  href={computed.datasheetDownloadLink || '#'} 
+                  target={computed.datasheetDownloadLink ? '_blank' : undefined}
+                  rel={computed.datasheetDownloadLink ? 'noopener noreferrer' : undefined}
+                  className="bg-[#FDBA74] flex items-center justify-center rounded-[50px] sm:rounded-[70px] py-4 w-fll md:w-fit" 
+                  style={{ 
+                    gap: 'clamp(0.5rem, 0.63vw, 0.5rem)',
+                    paddingLeft: 'clamp(1rem, 1.56vw, 1.5rem)',
+                    paddingRight: 'clamp(1rem, 1.56vw, 1.5rem)',
+                    textDecoration: 'none'
+                  }}
+                >
                   <div style={{ width: 'clamp(1.5rem, 1.56vw, 1.5rem)', height: 'clamp(1.5rem, 1.56vw, 1.5rem)' }}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
                       <path d="M9 12.5H10V10.5H11C11.2833 10.5 11.5208 10.4042 11.7125 10.2125C11.9042 10.0208 12 9.78333 12 9.5V8.5C12 8.21667 11.9042 7.97917 11.7125 7.7875C11.5208 7.59583 11.2833 7.5 11 7.5H9V12.5ZM10 9.5V8.5H11V9.5H10ZM13 12.5H15C15.2833 12.5 15.5208 12.4042 15.7125 12.2125C15.9042 12.0208 16 11.7833 16 11.5V8.5C16 8.21667 15.9042 7.97917 15.7125 7.7875C15.5208 7.59583 15.2833 7.5 15 7.5H13V12.5ZM14 11.5V8.5H15V11.5H14ZM17 12.5H18V10.5H19V9.5H18V8.5H19V7.5H17V12.5ZM8 18C7.45 18 6.97917 17.8042 6.5875 17.4125C6.19583 17.0208 6 16.55 6 16V4C6 3.45 6.19583 2.97917 6.5875 2.5875C6.97917 2.19583 7.45 2 8 2H20C20.55 2 21.0208 2.19583 21.4125 2.5875C21.8042 2.97917 22 3.45 22 4V16C22 16.55 21.8042 17.0208 21.4125 17.4125C21.0208 17.8042 20.55 18 20 18H8ZM4 22C3.45 22 2.97917 21.8042 2.5875 21.4125C2.19583 21.0208 2 20.55 2 20V6H4V20H18V22H4Z" fill="black" />
@@ -656,7 +683,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                   <span className="text-black font-iranyekan font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                     دانلود دیتاشیت
                   </span>
-                </button>
+                </a>
                 <button className="bg-[#FDBA74] flex items-center justify-center rounded-[70px] py-4 w-fll md:w-fit" style={{ 
                   gap: 'clamp(0.5rem, 0.63vw, 0.5rem)',
                   paddingLeft: 'clamp(1.5rem, 1.56vw, 1.5rem)',
@@ -705,11 +732,11 @@ export function ProductDetailClient({ slug }: { slug: string }) {
 
           {/* Mobile: Card View */}
           <div className="w-full md:hidden flex flex-col" style={{ gap: 'clamp(1rem, 1.56vw, 1.5rem)' }}>
-            {[0, 1, 2].map((idx) => (
+            {computed.variants.length > 0 ? computed.variants.map((variant, idx) => (
               <div
                 key={idx}
                 className={clsx(
-                  idx === 0 ? 'bg-[rgba(249,189,101,0.4)]' : 'bg-[#161616]',
+                  idx === 0 ? 'bg-[#161616]' : 'bg-[#161616]',
                   'border border-[#3b3b3b] rounded-2xl'
                 )}
                 style={{ padding: 'clamp(1rem, 1.56vw, 1.5rem)' }}
@@ -724,7 +751,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                       <img
                         alt=""
                         className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                        src={computed.variants[idx]?.imageUrl || computed.primaryImage}
+                        src={variant.imageUrl || computed.primaryImage}
                       />
                     </div>
                   </div>
@@ -732,7 +759,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                   {/* Product Name */}
                   <div>
                     <p className="text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
-                      {computed.variants[idx]?.name || product.name}
+                      {variant.name || product.name}
                     </p>
                     {idx === 0 ? (
                       <p className="text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)', marginTop: 'clamp(0.25rem, 0.31vw, 0.25rem)' }}>
@@ -746,26 +773,38 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                     <div className="flex gap-4 items-center">
                       <span className="text-gray-400 font-iranyekan" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>حجم:</span>
                       <span className="text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-                        {computed.variants[idx]?.volume || '—'}
+                        {variant.volume || '—'}
                       </span>
                     </div>
                     <div className="flex gap-4 items-center">
                       <span className="text-gray-400 font-iranyekan" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>قیمت:</span>
                       <span className="text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-                        تماس بگیرید
+                        {variant.priceText || 'تماس بگیرید'}
                       </span>
                     </div>
                   </div>
+
+                  {/* View More Link */}
+                  <div className="mt-2">
+                    <Link 
+                      href={`/products/${product.slug}`}
+                      className="text-[#f9bd65] font-bold hover:underline" 
+                      dir="auto" 
+                      style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
+                    >
+                      مشاهده بیشتر
+                    </Link>
+                  </div>
                 </div>
               </div>
-            ))}
+            )) : null}
           </div>
 
           {/* Desktop: Table View */}
           <div className="hidden md:block overflow-x-auto">
             <div className="min-w-full">
               <div className="bg-[#242424] rounded-t-2xl sm:rounded-t-3xl" style={{ padding: 'clamp(0.75rem, 1.25vw, 1rem)' }}>
-                <div className="grid grid-cols-4 text-right text-xs sm:text-sm" style={{ gap: 'clamp(0.5rem, 1.25vw, 1rem)' }}>
+                <div className="grid grid-cols-5 text-right text-xs sm:text-sm" style={{ gap: 'clamp(0.5rem, 1.25vw, 1rem)' }}>
 
                   <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                     نام محصول
@@ -779,24 +818,27 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                   <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                     تصویر محصول
                   </div>
+                  <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+                    مشاهده بیشتر
+                  </div>
                 </div>
               </div>
 
-              {[0, 1, 2].map((idx) => (
+              {computed.variants.length > 0 ? computed.variants.map((variant, idx) => (
                 <div
                   key={idx}
                   className={clsx(
-                    idx === 0 ? 'bg-[rgba(249,189,101,0.4)]' : 'bg-[#161616]',
+                    idx === 0 ? 'bg-[#161616]' : 'bg-[#161616]',
                     'border border-[#3b3b3b]',
-                    idx === 2 ? 'rounded-b-3xl' : ''
+                    idx === computed.variants.length - 1 ? 'rounded-b-3xl' : ''
                   )}
                   style={{ padding: 'clamp(1rem, 1.25vw, 1rem)' }}
                 >
-                  <div className="grid grid-cols-4 items-center text-right" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
+                  <div className="grid grid-cols-5 items-center text-right" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
 
                     <div className='text-center'>
                       <p className=" text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
-                        {computed.variants[idx]?.name || product.name}
+                        {variant.name || product.name}
                       </p>
                       {idx === 0 ? (
                         <p className=" text-[#f9bd65]  font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)', marginTop: 'clamp(0.25rem, 0.31vw, 0.25rem)' }}>
@@ -805,10 +847,10 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                       ) : null}
                     </div>
                     <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
-                      {computed.variants[idx]?.volume || '—'}
+                      {variant.volume || '—'}
                     </div>
                     <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
-                      تماس بگیرید
+                      {variant.priceText || 'تماس بگیرید'}
                     </div>
                     <div className="flex justify-center">
                       <div className="relative" style={{ 
@@ -818,13 +860,23 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                         <img
                           alt=""
                           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                          src={computed.variants[idx]?.imageUrl || computed.primaryImage}
+                          src={variant.imageUrl || computed.primaryImage}
                         />
                       </div>
                     </div>
+                    <div className="text-center">
+                      <Link 
+                        href={`/products/${product.slug}`}
+                        className="text-[#f9bd65] font-bold hover:underline" 
+                        dir="auto" 
+                        style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
+                      >
+                        مشاهده بیشتر
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              ))}
+              )) : null}
             </div>
           </div>
         </section>
@@ -842,12 +894,19 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             }}>
               دیتاشیت محصول
             </h2>
-            <button className="bg-[#FDBA74] flex items-center rounded-[50px] sm:rounded-[70px]" style={{ 
-              gap: 'clamp(0.5rem, 0.63vw, 0.5rem)',
-              height: 'clamp(2.75rem, 3.75vw, 3.5rem)',
-              paddingLeft: 'clamp(1rem, 1.56vw, 1.5rem)',
-              paddingRight: 'clamp(1rem, 1.56vw, 1.5rem)'
-            }}>
+            <a 
+              href={computed.datasheetDownloadLink || '#'} 
+              target={computed.datasheetDownloadLink ? '_blank' : undefined}
+              rel={computed.datasheetDownloadLink ? 'noopener noreferrer' : undefined}
+              className="bg-[#FDBA74] flex items-center rounded-[50px] sm:rounded-[70px]" 
+              style={{ 
+                gap: 'clamp(0.5rem, 0.63vw, 0.5rem)',
+                height: 'clamp(2.75rem, 3.75vw, 3.5rem)',
+                paddingLeft: 'clamp(1rem, 1.56vw, 1.5rem)',
+                paddingRight: 'clamp(1rem, 1.56vw, 1.5rem)',
+                textDecoration: 'none'
+              }}
+            >
               <div style={{ width: 'clamp(1.5rem, 1.56vw, 1.5rem)', height: 'clamp(1.5rem, 1.56vw, 1.5rem)' }}>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
                   <path d="M9 12.5H10V10.5H11C11.2833 10.5 11.5208 10.4042 11.7125 10.2125C11.9042 10.0208 12 9.78333 12 9.5V8.5C12 8.21667 11.9042 7.97917 11.7125 7.7875C11.5208 7.59583 11.2833 7.5 11 7.5H9V12.5ZM10 9.5V8.5H11V9.5H10ZM13 12.5H15C15.2833 12.5 15.5208 12.4042 15.7125 12.2125C15.9042 12.0208 16 11.7833 16 11.5V8.5C16 8.21667 15.9042 7.97917 15.7125 7.7875C15.5208 7.59583 15.2833 7.5 15 7.5H13V12.5ZM14 11.5V8.5H15V11.5H14ZM17 12.5H18V10.5H19V9.5H18V8.5H19V7.5H17V12.5ZM8 18C7.45 18 6.97917 17.8042 6.5875 17.4125C6.19583 17.0208 6 16.55 6 16V4C6 3.45 6.19583 2.97917 6.5875 2.5875C6.97917 2.19583 7.45 2 8 2H20C20.55 2 21.0208 2.19583 21.4125 2.5875C21.8042 2.97917 22 3.45 22 4V16C22 16.55 21.8042 17.0208 21.4125 17.4125C21.0208 17.8042 20.55 18 20 18H8ZM4 22C3.45 22 2.97917 21.8042 2.5875 21.4125C2.19583 21.0208 2 20.55 2 20V6H4V20H18V22H4Z" fill="black" />
@@ -856,7 +915,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               <span className="text-black font-iranyekan font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                 دانلود دیتاشیت
               </span>
-            </button>
+            </a>
           </div>
           <div style={{ marginBottom: 'clamp(2rem, 2.08vw, 2rem)' }}>
             <p className="text-white text-right leading-relaxed text-base md:text-lg font-medium" dir="auto" style={{ 

@@ -91,3 +91,88 @@ export function extractBrands(text: string): string[] {
 
   return Array.from(found)
 }
+
+/**
+ * Extract volume from product attributes
+ * Looks for attribute with name "حجم" and returns the first term's name
+ */
+export function getVolumeFromAttributes(product: { attributes?: unknown[] }): string | null {
+  if (!product.attributes || !Array.isArray(product.attributes)) return null
+
+  const volumeAttr = product.attributes.find((attr: any) => {
+    return attr?.name === 'حجم'
+  }) as any
+
+  if (!volumeAttr || !volumeAttr.terms || !Array.isArray(volumeAttr.terms) || volumeAttr.terms.length === 0) {
+    return null
+  }
+
+  return volumeAttr.terms[0]?.name || null
+}
+
+/**
+ * Extract standard from product attributes
+ * Looks for attribute with name "استاندارد" and returns the first term's name
+ */
+export function getStandardFromAttributes(product: { attributes?: unknown[] }): string | null {
+  if (!product.attributes || !Array.isArray(product.attributes)) return null
+
+  const standardAttr = product.attributes.find((attr: any) => {
+    return attr?.name === 'استاندارد'
+  }) as any
+
+  if (!standardAttr || !standardAttr.terms || !Array.isArray(standardAttr.terms) || standardAttr.terms.length === 0) {
+    return null
+  }
+
+  return standardAttr.terms[0]?.name || null
+}
+
+export type DatasheetRow = {
+  property: string
+  value: string
+  method: string
+}
+
+/**
+ * Extract datasheet table from description HTML
+ * Looks for the second table (after the variants table) with technical specifications
+ */
+export function extractDatasheetTable(descriptionHtml: string): DatasheetRow[] {
+  if (!descriptionHtml) return []
+
+  // Find all tables
+  const tableMatches = descriptionHtml.match(/<table[\s\S]*?<\/table>/gi) || []
+  if (tableMatches.length < 2) return [] // Need at least 2 tables (variants + datasheet)
+
+  // Get the second table (datasheet)
+  const tableHtml = tableMatches[1]
+
+  // Prefer tbody rows
+  const tbodyMatch = tableHtml.match(/<tbody[\s\S]*?<\/tbody>/i)
+  const rowsHtml = (tbodyMatch ? tbodyMatch[0] : tableHtml)
+
+  const rowMatches = rowsHtml.match(/<tr[\s\S]*?<\/tr>/gi) || []
+
+  const datasheetRows: DatasheetRow[] = []
+
+  for (const row of rowMatches) {
+    const cells = row.match(/<td[\s\S]*?<\/td>/gi) || []
+    if (cells.length < 3) continue
+
+    // Datasheet table is typically: property | value | method
+    const propertyHtml = cells[0] || ''
+    const valueHtml = cells[1] || ''
+    const methodHtml = cells[2] || ''
+
+    const property = stripHtml(propertyHtml).trim()
+    const value = stripHtml(valueHtml).trim()
+    const method = stripHtml(methodHtml).trim()
+
+    if (!property && !value && !method) continue
+
+    datasheetRows.push({ property, value, method })
+  }
+
+  return datasheetRows
+}

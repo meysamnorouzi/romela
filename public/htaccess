@@ -2,6 +2,12 @@
 
 RewriteEngine On
 
+# Enable URL decoding for proper handling of non-ASCII characters
+AllowEncodedSlashes On
+
+# Set directory index
+DirectoryIndex index.html index.php
+
 # Serve dynamic sitemap
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
 

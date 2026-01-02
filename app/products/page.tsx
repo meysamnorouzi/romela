@@ -10,7 +10,7 @@ import { getWcaPrimaryImageUrl, getWcaCategories, getWcaAttributes, getWcaAttrib
 import { LoadingSpinner } from '@/components/ui/Loading'
 import { EmptyProductsState } from '@/components/ui/EmptyProductsState'
 import { stripHtml } from '@/lib/utils/text'
-import { extractStandard, extractVariantsFromFirstHtmlTable } from '@/lib/utils/wca'
+import { getVolumeFromAttributes, getStandardFromAttributes } from '@/lib/utils/wca'
 import { ProductDetailClient } from './ProductDetailClient'
 
 // Product Name with Tooltip Component
@@ -126,25 +126,31 @@ function ProductCardLoading() {
 function ProductTile({ product }: { product: WcaProduct }) {
   const image = getWcaPrimaryImageUrl(product) || ''
 
-  const textForStandard = stripHtml(product.description || product.short_description || product.name || '')
-  const standard = extractStandard(textForStandard)
+  // Get volume and standard from product attributes
+  const volume = getVolumeFromAttributes(product)
+  const standard = getStandardFromAttributes(product)
 
-  const variants = extractVariantsFromFirstHtmlTable(product.description || '')
-  const volume = variants[0]?.volume || ''
-
-  const standardText = standard ? `دارای استاندارد ${standard}` : 'دارای استاندارد'
-  const volumeText = volume || '—'
+  const standardText = standard ? `دارای استاندارد ${standard}` : null
+  const hasVolumeOrStandard = volume || standard
 
   return (
     <Link href={`/products/${product.slug}`} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
-      <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ height: 'clamp(222px, 18.49vw, 355px)' }}>
-        <div className="h-full flex items-center justify-center" style={{
-        }} data-name="Mockup ATF-ZF Background Removed">
+      <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center overflow-hidden" style={{ 
+        height: 'clamp(222px, 18.49vw, 355px)',
+        minHeight: '222px'
+      }}>
+        <div className="absolute inset-0 flex items-center justify-center" data-name="Mockup ATF-ZF Background Removed">
           {image ? (
             <img
               src={image}
               alt={product.name}
-              className="size-full -mt-24"
+              className="w-full"
+              style={{
+                objectFit: 'contain',
+                height: 'calc(100% + 6rem)',
+                marginTop: '-6rem',
+                maxWidth: '100%'
+              }}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
@@ -162,12 +168,18 @@ function ProductTile({ product }: { product: WcaProduct }) {
             <ProductNameWithTooltip text={product.name} className="text-[#FCFBEE] text-sm" />
           </div>
         </div>
-        <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold' style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-          <p style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>{volumeText}</p>
-          <p className='bg-[#C3C3C3] rounded-full' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>
-            <ProductNameWithTooltip text={standardText} />
-          </p>
-        </div>
+        {hasVolumeOrStandard && (
+          <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold' style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+            {volume && (
+              <p style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>{volume}</p>
+            )}
+            {standard && (
+              <p className='bg-[#C3C3C3] rounded-full' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>
+                <ProductNameWithTooltip text={standardText!} />
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </Link>
   )
@@ -499,6 +511,16 @@ export default function ProductsPage() {
     setSelectedAttributeTerms([...new Set(terms)]) // Remove duplicates
   }, [categoryParam, subcategoryParam, attributeTermParam, attributeTermsParam])
 
+  // Helper function to find attribute_id for a term_id
+  const findAttributeIdForTerm = (termId: number): number | null => {
+    for (const [attrId, terms] of Object.entries(attributeTermsMap)) {
+      if (terms.some(term => term.id === termId)) {
+        return parseInt(attrId, 10)
+      }
+    }
+    return null
+  }
+
   // Load products
   useEffect(() => {
     let cancelled = false
@@ -506,21 +528,59 @@ export default function ProductsPage() {
 
     async function loadProducts() {
       try {
-        const params: Parameters<typeof getWcaProducts>[0] = {
-          per_page: 100,
-          page: 1,
-        }
+        // If we have attribute terms selected, we need to handle them server-side
+        if (selectedAttributeTerms.length > 0) {
+          // Group terms by attribute_id
+          const termsByAttribute: Record<number, number[]> = {}
+          for (const termId of selectedAttributeTerms) {
+            const attrId = findAttributeIdForTerm(termId)
+            if (attrId !== null) {
+              if (!termsByAttribute[attrId]) {
+                termsByAttribute[attrId] = []
+              }
+              termsByAttribute[attrId].push(termId)
+            }
+          }
 
-        // Filter by category or subcategory
-        if (selectedSubcategoryId) {
-          params.category = selectedSubcategoryId
-        } else if (selectedCategoryId) {
-          params.category = selectedCategoryId
-        }
+          // Build attribute pairs for single API call
+          const attributePairs = Object.entries(termsByAttribute).map(([attrId, termIds]) => ({
+            attribute_id: parseInt(attrId, 10),
+            attribute_term: termIds.length === 1 ? termIds[0] : termIds,
+          }))
 
-        const result = await getWcaProducts(params)
-        if (cancelled) return
-        setProducts(result.products ?? [])
+          const params: Parameters<typeof getWcaProducts>[0] = {
+            per_page: 100,
+            page: 1,
+            attribute_pairs: attributePairs,
+          }
+          
+          if (selectedSubcategoryId) {
+            params.category = selectedSubcategoryId
+          } else if (selectedCategoryId) {
+            params.category = selectedCategoryId
+          }
+          
+          const result = await getWcaProducts(params)
+          if (cancelled) return
+          setProducts(result.products ?? [])
+        } else {
+          // No attribute filters, just use category/subcategory
+          const params: Parameters<typeof getWcaProducts>[0] = {
+            per_page: 100,
+            page: 1,
+          }
+
+          // Filter by category or subcategory
+          if (selectedSubcategoryId) {
+            params.category = selectedSubcategoryId
+          } else if (selectedCategoryId) {
+            params.category = selectedCategoryId
+          }
+
+          const result = await getWcaProducts(params)
+          if (cancelled) return
+          setProducts(result.products ?? [])
+        }
       } catch (error) {
         console.error('Error fetching products:', error)
         if (!cancelled) setProducts([])
@@ -534,20 +594,17 @@ export default function ProductsPage() {
     return () => {
       cancelled = true
     }
-  }, [selectedCategoryId, selectedSubcategoryId])
+  }, [selectedCategoryId, selectedSubcategoryId, selectedAttributeTerms, attributeTermsMap])
 
   const visibleProducts = useMemo(() => {
-    let filtered = products.filter((p) =>
-      matchesFilters(p, selectedCategoryId, selectedSubcategoryId, selectedAttributeTerms, attributeTermsMap)
-    )
-
-    const withImage = filtered
+    // Only filter by image presence, attribute filtering is now done server-side
+    const withImage = products
       .map((p) => ({ p, image: getWcaPrimaryImageUrl(p) }))
       .filter((x) => Boolean(x.image))
       .map((x) => x.p)
 
     return withImage
-  }, [products, selectedCategoryId, selectedSubcategoryId, selectedAttributeTerms, attributeTermsMap])
+  }, [products])
 
   // Update URL when filters change (but skip initial load to avoid loop)
   const isInitialLoad = useRef(true)

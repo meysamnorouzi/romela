@@ -7,6 +7,8 @@ import { getWcaCategories, getWcaProducts, getWcaPrimaryImageUrl, getWcaAttribut
 import type { WcaCategory, WcaProduct, WcaAttribute, WcaAttributeTerm } from "@/lib/api/types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { getVolumeFromAttributes, getStandardFromAttributes } from "@/lib/utils/wca";
+import { stripHtml } from "@/lib/utils/text";
 
 // Product Name with Tooltip Component
 function ProductNameWithTooltip({ text, className }: { text: string, className?: string }) {
@@ -331,35 +333,37 @@ export default function App() {
     loadBrands();
   }, []);
 
-  // Fetch products by category for tabs
+  // Fetch products using romela_first API
   useEffect(() => {
     async function loadProductsByCategory() {
       try {
         setLoadingProducts(true);
-        const allProducts: WcaProduct[] = [];
         const categoryMap: Record<string, WcaProduct[]> = {};
 
-        // Fetch products for each category tab
-        for (const [tabId, categorySlug] of Object.entries(categorySlugMap)) {
-          try {
-            // Find category by slug
-            const category = categories.find(cat =>
-              cat.slug === categorySlug ||
-              cat.name.toLowerCase().includes(categorySlug.replace('-', ' '))
-            );
+        // Fetch products using romela_first API
+        const result = await getWcaProducts({
+          per_page: 100,
+          page: 1,
+          romela_first: true,
+        });
+        const allProducts = result.products || [];
 
-            if (category) {
-              const result = await getWcaProducts({
-                per_page: 4,
-                page: 1,
-                category: category.id,
-              });
-              const categoryProducts = result.products || [];
-              categoryMap[tabId] = categoryProducts;
-              allProducts.push(...categoryProducts);
-            }
-          } catch (error) {
-            console.error(`Error fetching products for ${tabId}:`, error);
+        // Organize products by category for tabs
+        for (const [tabId, categorySlug] of Object.entries(categorySlugMap)) {
+          // Find category by slug
+          const category = categories.find(cat =>
+            cat.slug === categorySlug ||
+            cat.name.toLowerCase().includes(categorySlug.replace('-', ' '))
+          );
+
+          if (category) {
+            // Filter products that belong to this category
+            const categoryProducts = allProducts.filter(product =>
+              product.categories?.some(cat => cat.id === category.id)
+            ).slice(0, 4);
+            categoryMap[tabId] = categoryProducts;
+          } else {
+            // Category not found, set empty array
             categoryMap[tabId] = [];
           }
         }
@@ -369,6 +373,12 @@ export default function App() {
       } catch (error) {
         console.error('Error fetching products:', error);
         setProducts([]);
+        // Set empty arrays for all tabs on error
+        const emptyMap: Record<string, WcaProduct[]> = {};
+        for (const tabId of Object.keys(categorySlugMap)) {
+          emptyMap[tabId] = [];
+        }
+        setCategoryProductsMap(emptyMap);
       } finally {
         setLoadingProducts(false);
       }
@@ -379,7 +389,7 @@ export default function App() {
     }
   }, [categories]);
 
-  // Fetch bestseller products by category
+  // Fetch bestseller products using bestseller API
   const [bestsellerProductsMap, setBestsellerProductsMap] = useState<Record<number, WcaProduct[]>>({});
 
   useEffect(() => {
@@ -390,33 +400,35 @@ export default function App() {
         setLoadingBestsellers(true);
         const productsMap: Record<number, WcaProduct[]> = {};
 
-        // Fetch bestseller products for each main category
+        // Fetch bestseller products using bestseller API
+        const result = await getWcaProducts({
+          per_page: 100,
+          page: 1,
+          bestseller: true,
+        });
+        const allBestsellers = result.products || [];
+
+        // Organize bestseller products by category
         for (const category of categories.slice(0, 6)) { // Limit to first 6 categories
-          try {
-            const result = await getWcaProducts({
-              per_page: 3,
-              page: 1,
-              category: category.id,
-              featured: true,
-              orderby: 'popularity',
-              order: 'DESC',
-            });
-            if (result.products && result.products.length > 0) {
-              productsMap[category.id] = result.products;
-            }
-          } catch (error) {
-            console.error(`Error fetching bestsellers for category ${category.id}:`, error);
-          }
+          // Filter products that belong to this category
+          const categoryProducts = allBestsellers.filter(product =>
+            product.categories?.some(cat => cat.id === category.id)
+          ).slice(0, 3);
+          // Always set the array, even if empty, to ensure proper empty state handling
+          productsMap[category.id] = categoryProducts;
         }
 
         setBestsellerProductsMap(productsMap);
-
-        // Also keep the old state for backward compatibility
-        const allBestsellers = Object.values(productsMap).flat();
         setBestsellerProducts(allBestsellers);
       } catch (error) {
         console.error('Error fetching bestsellers:', error);
         setBestsellerProducts([]);
+        // Set empty arrays for all categories on error
+        const emptyMap: Record<number, WcaProduct[]> = {};
+        for (const category of categories.slice(0, 6)) {
+          emptyMap[category.id] = [];
+        }
+        setBestsellerProductsMap(emptyMap);
       } finally {
         setLoadingBestsellers(false);
       }
@@ -484,15 +496,14 @@ export default function App() {
   const currentBestsellerProducts = useMemo(() => {
     if (activeBestsellerTab === null) return [];
 
-    if (bestsellerProductsMap[activeBestsellerTab]) {
+    // Check if we have products for this category in the map
+    if (bestsellerProductsMap[activeBestsellerTab] !== undefined) {
       return bestsellerProductsMap[activeBestsellerTab].slice(0, 3);
     }
 
-    // Fallback: filter from all bestsellers
-    return bestsellerProducts.filter(product =>
-      product.categories?.some(cat => cat.id === activeBestsellerTab)
-    ).slice(0, 3);
-  }, [activeBestsellerTab, bestsellerProducts, bestsellerProductsMap]);
+    // If category not in map yet, return empty array (will show loading or empty state)
+    return [];
+  }, [activeBestsellerTab, bestsellerProductsMap]);
 
   // Get current category for bestseller section
   const currentBestsellerCategory = useMemo(() => {
@@ -1013,71 +1024,78 @@ export default function App() {
           </div>
 
           {loadingProducts ? (
-            <div className="text-center text-white py-8">در حال بارگذاری محصولات...</div>
+            <div className="text-center text-white py-8 font-iranyekan">در حال بارگذاری محصولات...</div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(0.75rem, 1.56vw, 2rem)', marginTop: 'clamp(1.5rem, 5.21vw, 7rem)' }}>
+            <>
               {currentTabProducts.length > 0 ? (
-                currentTabProducts.slice(0, 4).map((product) => {
-                  const productImage = getWcaPrimaryImageUrl(product) || imgMockupAtfZfBackgroundRemoved.src;
-                  return (
-                    <Link key={product.id} href={`/products/${product.slug}`} className='relative cursor-pointer block' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
-                      <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ height: 'clamp(222px, 18.49vw, 355px)' }}>
-                        <div className="h-full flex items-center justify-center" style={{
-                        }} data-name="Mockup ATF-ZF Background Removed">
-                          {productImage ? (
-                            <img
-                              src={productImage}
-                              alt={product.name}
-                              className="size-full -mt-24"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center">
-                              <LoadingSpinner size="lg" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(0.75rem, 1.56vw, 2rem)', marginTop: 'clamp(1.5rem, 5.21vw, 7rem)' }}>
+                  {currentTabProducts.slice(0, 4).map((product) => {
+                    const productImage = getWcaPrimaryImageUrl(product) || imgMockupAtfZfBackgroundRemoved.src;
+                    
+                    // Get volume and standard from product attributes
+                    const volume = getVolumeFromAttributes(product);
+                    const standard = getStandardFromAttributes(product);
+                    const standardText = standard ? `دارای استاندارد ${standard}` : null;
+                    const hasVolumeOrStandard = volume || standard;
+                    
+                    return (
+                      <Link key={product.id} href={`/products/${product.slug}`} className='relative cursor-pointer block' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
+                        <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center overflow-hidden" style={{ 
+                          height: 'clamp(222px, 18.49vw, 355px)',
+                          minHeight: '222px'
+                        }}>
+                          <div className="absolute inset-0 flex items-center justify-center" data-name="Mockup ATF-ZF Background Removed">
+                            {productImage ? (
+                              <img
+                                src={productImage}
+                                alt={product.name}
+                                className="w-full"
+                                style={{
+                                  objectFit: 'contain',
+                                  height: 'calc(100% + 6rem)',
+                                  marginTop: '-6rem',
+                                  maxWidth: '100%'
+                                }}
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center">
+                                <LoadingSpinner size="lg" />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <div className='w-full flex flex-col items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
+                          <div className="bg-[#e6a816ca] z-10 flex h-fit items-center justify-center rounded-[120px]" style={{
+                            padding: 'clamp(1rem, 1.25vw, 1rem)',
+                            width: '90%'
+                          }}>
+                            <div className="justify-center relative w-full">
+                              <ProductNameWithTooltip text={product.name} className="text-[#FCFBEE] text-sm" />
+                            </div>
+                          </div>
+                          {hasVolumeOrStandard && (
+                            <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold' style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                              {volume && (
+                                <p style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>{volume}</p>
+                              )}
+                              {standard && (
+                                <p className='bg-[#C3C3C3] rounded-full' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>
+                                  <ProductNameWithTooltip text={standardText!} />
+                                </p>
+                              )}
                             </div>
                           )}
                         </div>
-                      </div>
-                      <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
-                        <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
-                          <div className="justify-center relative w-full">
-                            <ProductNameWithTooltip text={product.name} className="text-[#FCFBEE] text-sm" />
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })
+                      </Link>
+                    );
+                  })}
+                </div>
               ) : (
-                // Fallback to mock data if no products found
-                Array.from({ length: 4 }).map((_, index) => (
-                  <div key={index} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
-                    <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ height: 'clamp(222px, 18.49vw, 355px)' }}>
-                      <div className="h-full flex items-center justify-center" style={{
-                      }} data-name="Mockup ATF-ZF Background Removed">
-                        {imgMockupAtfZfBackgroundRemoved.src ? (
-                          <img
-                            src={imgMockupAtfZfBackgroundRemoved.src}
-                            alt="Mockup ATF-ZF Background Removed"
-                            className="size-full -mt-24"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <LoadingSpinner size="lg" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className='w-full flex items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
-                      <div className="bg-[#e6a816ca] z-10 flex items-center justify-center rounded-[120px]" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)', width: '90%' }}>
-                        <div className="justify-center relative w-full">
-                          <ProductNameWithTooltip text="روغن گیربکس فول سینتتیک Romela ATF-ZF" className="text-[#FCFBEE] text-base" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))
+                <div className="text-center text-white py-12 font-iranyekan" style={{ marginTop: 'clamp(1.5rem, 5.21vw, 7rem)' }}>
+                  <p style={{ fontSize: 'clamp(1rem, 1.25vw, 1.25rem)' }}>محصولی برای نمایش وجود ندارد</p>
+                </div>
               )}
-            </div>
+            </>
           )}
         </section>
         <Divider />
@@ -1255,81 +1273,38 @@ export default function App() {
               {loadingBestsellers ? (
                 <div className="text-center text-white py-8 font-iranyekan">در حال بارگذاری...</div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(0.75rem, 1.3vw, 1.5rem)' }}>
+                <>
                   {currentBestsellerProducts.length > 0 ? (
-                    currentBestsellerProducts.map((product) => {
-                      const productImage = getWcaPrimaryImageUrl(product) || '/images/image 1.png';
-                      return (
-                        <Link
-                          key={product.id}
-                          href={`/products/${product.slug}`}
-                          className="rounded-2xl flex flex-col cursor-pointer transition-opacity hover:opacity-90"
-                          style={{
-                            background: '#FFFFFF29',
-                            border: '1px solid #FFFFFF33',
-                            padding: 'clamp(0.75rem, 1.3vw, 1.5rem)'
-                          }}
-                        >
-                          <h4 className="font-bold text-[#F9BD65] mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
-                            <ProductNameWithTooltip text={product.name} className="font-bold text-[#F9BD65] font-iranyekan text-base" />
-                          </h4>
-                          <div className="flex-1 flex items-center justify-center font-iranyekan text-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                            <img src={productImage} alt={product.name} style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
-                          </div>
-                        </Link>
-                      );
-                    })
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(0.75rem, 1.3vw, 1.5rem)' }}>
+                      {currentBestsellerProducts.map((product) => {
+                        const productImage = getWcaPrimaryImageUrl(product) || '/images/image 1.png';
+                        return (
+                          <Link
+                            key={product.id}
+                            href={`/products/${product.slug}`}
+                            className="rounded-2xl flex flex-col cursor-pointer transition-opacity hover:opacity-90"
+                            style={{
+                              background: '#FFFFFF29',
+                              border: '1px solid #FFFFFF33',
+                              padding: 'clamp(0.75rem, 1.3vw, 1.5rem)'
+                            }}
+                          >
+                            <h4 className="font-bold text-[#F9BD65] mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
+                              <ProductNameWithTooltip text={product.name} className="font-bold text-[#F9BD65] font-iranyekan text-base" />
+                            </h4>
+                            <div className="flex-1 flex items-center justify-center font-iranyekan text-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
+                              <img src={productImage} alt={product.name} style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
                   ) : (
-                    // Fallback to mock data if no products found
-                    <>
-                      <div
-                        className="rounded-2xl flex flex-col"
-                        style={{
-                          background: '#FFFFFF29',
-                          border: '1px solid #FFFFFF33',
-                          padding: 'clamp(1rem, 1.56vw, 1.5rem)'
-                        }}
-                      >
-                        <h4 className="font-bold text-[#F9BD65] mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
-                          <ProductNameWithTooltip text="Romela Drive 0w-20" className="font-bold text-[#F9BD65] text-base" />
-                        </h4>
-                        <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                          <img src="/images/image 1.png" alt="" style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
-                        </div>
-                      </div>
-                      <div
-                        className="rounded-2xl flex flex-col"
-                        style={{
-                          background: '#FFFFFF29',
-                          border: '1px solid #FFFFFF33',
-                          padding: 'clamp(1rem, 1.56vw, 1.5rem)'
-                        }}
-                      >
-                        <h4 className="mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
-                          <ProductNameWithTooltip text="Romela Drive 5w-30" className="font-bold text-[#F9BD65] text-base" />
-                        </h4>
-                        <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                          <img src="/images/image 1.png" alt="" style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
-                        </div>
-                      </div>
-                      <div
-                        className="rounded-2xl flex flex-col"
-                        style={{
-                          background: '#FFFFFF29',
-                          border: '1px solid #FFFFFF33',
-                          padding: 'clamp(1rem, 1.56vw, 1.5rem)'
-                        }}
-                      >
-                        <h4 className="font-bold text-[#F9BD65] mb-4 text-center" dir="auto" style={{ fontSize: 'clamp(1.125rem, 1.25vw, 1.25rem)' }}>
-                          <ProductNameWithTooltip text="Romela Drive 10w-40" className="font-bold text-[#F9BD65] text-base" />
-                        </h4>
-                        <div className="flex-1 flex items-center justify-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                          <img src="/images/image 1.png" alt="" style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
-                        </div>
-                      </div>
-                    </>
+                    <div className="text-center text-white py-12 font-iranyekan">
+                      <p style={{ fontSize: 'clamp(1rem, 1.25vw, 1.25rem)' }}>محصولی برای نمایش وجود ندارد</p>
+                    </div>
                   )}
-                </div>
+                </>
               )}
             </div>
           </div>
