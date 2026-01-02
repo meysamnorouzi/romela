@@ -13,4 +13,5 @@ RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
 # Pretty URLs for client-rendered detail pages
 RewriteRule ^products/([^/]+)/?$ /products?slug=$1 [L,QSA]
-RewriteRule ^blog/([^/]+)/?$ /blog?slug=$1 [L,QSA]
+# Blog URLs - handle URL-encoded characters (B flag escapes backreferences)
+RewriteRule ^blog/(.+?)/?$ /blog?slug=$1 [B,L,QSA]

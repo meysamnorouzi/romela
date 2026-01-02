@@ -135,7 +135,7 @@ function ProductTile({ product }: { product: WcaProduct }) {
 
   return (
     <Link href={`/products/${product.slug}`} className='relative' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
-      <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center overflow-hidden" style={{ 
+      <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ 
         height: 'clamp(222px, 18.49vw, 355px)',
         minHeight: '222px'
       }}>

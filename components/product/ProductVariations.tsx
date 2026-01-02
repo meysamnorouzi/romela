@@ -48,7 +48,7 @@ export function ProductVariations({ product, currentSlug, variations }: ProductV
     },
   ]
 
-  const displayVariations = variations
+  const displayVariations = variations ?? defaultVariations
 
   return (
     <section className="py-12 md:py-16 bg-dark">
