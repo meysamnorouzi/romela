@@ -63,14 +63,14 @@ function CategoryChip({
   return (
     <Link
       href={href}
-      className="rounded-[999px] px-12 flex items-center shrink-0 text-white transition-colors py-1"
+      className="rounded-[999px] md:px-12 px-4 flex items-center shrink-0 text-white transition-colors py-1"
       style={{
         gap: 'clamp(0.75rem, 0.94vw, 0.75rem)',
         background: 'radial-gradient(circle at left, #595959 0%, #353535 62%)'
       }}
     >
-      <span className="leading-none whitespace-nowrap font-iranyekan text-base font-bold">{category.name}</span>
-      <div className="relative flex items-center justify-center overflow-hidden h-16 w-16">
+      <span className="leading-none whitespace-nowrap font-iranyekan md:text-base font-bold text-sm">{category.name}</span>
+      <div className="relative flex items-center justify-center overflow-hidden md:h-16 md:w-16 h-10 w-10">
         {icon && <Image src={icon} alt={category.name} fill className="object-contain w-full h-full" />}
       </div>
     </Link>
@@ -734,7 +734,7 @@ export default function ProductsPage() {
           {showRightButton && (
             <button
               type="button"
-              className="rounded-full bg-[#FDBA7433] flex items-center justify-center text-[#E2951A] py-7 px-4"
+              className="rounded-full bg-[#FDBA7433] flex items-center justify-center text-[#E2951A] md:py-7 md:px-4 py-4 px-3"
               onClick={() => {
                 chipRowRef.current?.scrollBy({ left: 240, behavior: 'smooth' })
               }}
@@ -773,7 +773,7 @@ export default function ProductsPage() {
           {showLeftButton && (
             <button
               type="button"
-              className="rounded-full bg-[#FDBA7433] flex items-center justify-center text-[#E2951A] py-7 px-4"
+              className="rounded-full bg-[#FDBA7433] flex items-center justify-center text-[#E2951A] md:py-7 md:px-4 py-4 px-3"
               onClick={() => {
                 chipRowRef.current?.scrollBy({ left: -240, behavior: 'smooth' })
               }}
