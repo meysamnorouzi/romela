@@ -20,7 +20,7 @@ export function ProductVariations({ product, currentSlug, variations }: ProductV
   const defaultVariations = [
     {
       id: 1,
-      name: `${product.name} (انتخاب شده)`,
+      name: `${product.name}`,
       price: product.price,
       volume: '۱ لیتر',
       slug: product.slug,

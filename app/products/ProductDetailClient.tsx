@@ -761,11 +761,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                     <p className="text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                       {variant.name || product.name}
                     </p>
-                    {idx === 0 ? (
-                      <p className="text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)', marginTop: 'clamp(0.25rem, 0.31vw, 0.25rem)' }}>
-                        (انتخاب شده)
-                      </p>
-                    ) : null}
+                 
                   </div>
                   
                   {/* Volume and Price */}
@@ -840,11 +836,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                       <p className=" text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                         {variant.name || product.name}
                       </p>
-                      {idx === 0 ? (
-                        <p className=" text-[#f9bd65]  font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)', marginTop: 'clamp(0.25rem, 0.31vw, 0.25rem)' }}>
-                          (انتخاب شده)
-                        </p>
-                      ) : null}
+                  
                     </div>
                     <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                       {variant.volume || '—'}
