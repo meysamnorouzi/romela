@@ -72,8 +72,8 @@ function RelatedProductCard({
   }, [product?.name])
 
   return (
-    <div className="bg-[rgba(255,255,255,0.16)] border border-white rounded-3xl text-center flex items-center justify-center h-64" style={{ padding: 'clamp(1rem, 1.25vw, 1rem)' }}>
-      <div className="relative w-full" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
+    <div className="bg-[rgba(255,255,255,0.16)] border border-white rounded-3xl text-center flex items-center justify-center " style={{ padding: 'clamp(1rem, 1.25vw, 1rem)' }}>
+      <div className="relative w-full">
         <div className="relative group w-full">
           <h3 
             ref={nameRef}
