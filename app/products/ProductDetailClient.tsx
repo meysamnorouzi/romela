@@ -12,8 +12,8 @@ import {
   imgImage9,
 } from './imports/image-placeholders'
 
-import { getWcaPrimaryImageUrl, getWcaCategories } from '@/lib/api/wca'
-import type { WcaProduct, WcaProductsListResponse, WcaRelatedProductsResponse, WcaCategory } from '@/lib/api/types'
+import { getWcaPrimaryImageUrl, getWcaCategories, getWcaProductBySlug, getWcaRelatedProducts } from '@/lib/api/wca'
+import type { WcaProduct, WcaRelatedProductsResponse, WcaCategory } from '@/lib/api/types'
 import { stripHtml } from '@/lib/utils/text'
 import { extractBrands, extractStandard, extractVariantsFromFirstHtmlTable, extractViscosity, getVolumeFromAttributes, getStandardFromAttributes, extractDatasheetTable } from '@/lib/utils/wca'
 
@@ -116,43 +116,14 @@ export function ProductDetailClient({ slug }: { slug: string }) {
   const [parentCategory, setParentCategory] = useState<WcaCategory | null>(null)
   const [subcategory, setSubcategory] = useState<WcaCategory | null>(null)
 
-  const WP_JSON_BASE_URL = (
-    process.env.NEXT_PUBLIC_WP_JSON_BASE_URL ||
-    process.env.NEXT_PUBLIC_WORDPRESS_URL ||
-    'https://admin.padradarasoil.com/wp-json'
-  ).replace(/\/+$/, '')
-
-  function buildApiUrl(path: string, query?: Record<string, string | number | boolean | undefined>) {
-    const url = new URL(`${WP_JSON_BASE_URL}/${path.replace(/^\/+/, '')}`)
-    if (query) {
-      for (const [k, v] of Object.entries(query)) {
-        if (v === undefined) continue
-        url.searchParams.set(k, String(v))
-      }
-    }
-    return url.toString()
-  }
-
-  async function fetchJson<T>(url: string): Promise<T> {
-    const res = await fetch(url, { headers: { Accept: 'application/json' }, cache: 'no-store' })
-    if (!res.ok) throw new Error(`Request failed (${res.status})`)
-    return res.json() as Promise<T>
-  }
-
   useEffect(() => {
     let cancelled = false
     setLoading(true)
 
     async function load() {
       try {
-        // API supports slug filtering in list endpoint
-        const list = await fetchJson<WcaProductsListResponse>(
-          buildApiUrl('wca/v1/products', { per_page: 1, page: 1, slug })
-        )
-        const match = list.products?.[0]
-        if (!match?.id) throw new Error('Product not found')
-
-        const full = await fetchJson<WcaProduct>(buildApiUrl(`wca/v1/products/${match.id}`, { include_variations: true }))
+        const full = await getWcaProductBySlug(slug, { include_variations: true })
+        if (!full) throw new Error('Product not found')
         if (cancelled) return
         setProduct(full)
 
@@ -262,11 +233,9 @@ export function ProductDetailClient({ slug }: { slug: string }) {
         }
 
         try {
-          const rel = await fetchJson<WcaRelatedProductsResponse>(
-            buildApiUrl(`wca/v1/products/${match.id}/related`, { limit: 3 })
-          )
+          const rel = await getWcaRelatedProducts(full.id, { limit: 3 })
           if (cancelled) return
-          setRelatedProducts(rel.related_products ?? [])
+          setRelatedProducts(rel?.related_products ?? [])
         } catch {
           if (!cancelled) setRelatedProducts([])
         }

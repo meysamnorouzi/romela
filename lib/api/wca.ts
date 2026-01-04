@@ -215,16 +215,13 @@ export async function getWcaCategories(params?: {
   return normalizeCategoriesList(raw)
 }
 
-export async function getWcaProductBySlug(slug: string): Promise<WcaProduct | null> {
-  // The API doesn't reliably filter by slug via querystring.
-  // Best-practice here is to fetch with a high per_page (max 100) and match client-side.
+export async function getWcaProductBySlug(slug: string, params?: { include_variations?: boolean }): Promise<WcaProduct | null> {
   try {
-    const { products } = await getWcaProducts({ per_page: 100, page: 1 })
-    const match = (products ?? []).find((p) => p.slug === slug)
-    if (!match) return null
-
-    // Fetch full details (and variations if available)
-    return await getWcaProduct(match.id, { include_variations: true })
+    return await fetchJson<WcaProduct>(`wca/v1/products/slug/${slug}`, {
+      query: {
+        include_variations: params?.include_variations,
+      },
+    })
   } catch (error) {
     console.error('Error fetching product by slug:', error)
     return null
