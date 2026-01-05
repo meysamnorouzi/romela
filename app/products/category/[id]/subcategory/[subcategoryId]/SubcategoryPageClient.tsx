@@ -139,12 +139,12 @@ function ProductTile({ product }: { product: WcaProduct }) {
             <img
               src={image}
               alt={product.name}
-              className="w-full"
+              className="h-full"
               style={{
                 objectFit: 'contain',
                 height: 'calc(100% + 6rem)',
                 marginTop: '-6rem',
-                maxWidth: '100%'
+                maxWidth: '90%'
               }}
             />
           ) : (
@@ -166,7 +166,7 @@ function ProductTile({ product }: { product: WcaProduct }) {
         {hasVolumeOrStandard && (
           <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold' style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
             {volume && (
-              <p style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>{volume}</p>
+              <p className='text-nowrap' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>{volume}</p>
             )}
             {standard && (
               <div className='bg-[#C3C3C3] rounded-full' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>
@@ -788,7 +788,7 @@ export function SubcategoryPageClient({
         }}>
           {/* Products grid */}
           <div dir="rtl">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-6" style={{ 
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6" style={{ 
               columnGap: 'clamp(0.5rem, 1.3vw, 1.5rem) sm:clamp(0.75rem, 1.95vw, 2.5rem)',
               rowGap: 'clamp(1rem, 2.6vw, 2.5rem) sm:clamp(1.5rem, 3.91vw, 4rem)'
             }}>

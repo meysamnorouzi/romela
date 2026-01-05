@@ -1049,12 +1049,12 @@ export default function App() {
                               <img
                                 src={productImage}
                                 alt={product.name}
-                                className="w-full"
+                                className="h-full"
                                 style={{
                                   objectFit: 'contain',
                                   height: 'calc(100% + 6rem)',
                                   marginTop: '-6rem',
-                                  maxWidth: '100%'
+                                  maxWidth: '90%'
                                 }}
                               />
                             ) : (
@@ -1076,7 +1076,7 @@ export default function App() {
                           {hasVolumeOrStandard && (
                             <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold' style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                               {volume && (
-                                <p style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>{volume}</p>
+                                <p className='text-nowrap' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>{volume}</p>
                               )}
                               {standard && (
                                 <p className='bg-[#C3C3C3] rounded-full' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>
