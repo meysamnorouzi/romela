@@ -7,15 +7,12 @@ import Link from "next/link";
 import svgPaths from './imports/svg-efqwtho29q'
 import {
   imgMockupAtfXlBackgroundRemoved,
-  imgImage1,
-  imgImage2,
-  imgImage9,
 } from './imports/image-placeholders'
 
 import { getWcaPrimaryImageUrl, getWcaCategories, getWcaProductBySlug, getWcaRelatedProducts } from '@/lib/api/wca'
 import type { WcaProduct, WcaRelatedProductsResponse, WcaCategory } from '@/lib/api/types'
 import { stripHtml } from '@/lib/utils/text'
-import { extractBrands, extractStandard, extractVariantsFromFirstHtmlTable, extractViscosity, getVolumeFromAttributes, getStandardFromAttributes, extractDatasheetTable } from '@/lib/utils/wca'
+import { extractBrands, extractStandard, extractViscosity, getVolumeFromAttributes, getStandardFromAttributes, extractDatasheetTable } from '@/lib/utils/wca'
 
 // Divider Component (kept identical)
 function Divider() {
@@ -307,9 +304,31 @@ export function ProductDetailClient({ slug }: { slug: string }) {
     const galleryText = (product.additional_description ? stripHtml(product.additional_description) : stripHtml(product.description || '').slice(1100, 1650)) || ' '
     const similarText = (product.similar_products_description ? stripHtml(product.similar_products_description) : stripHtml(product.description || '').slice(1650, 2050)) || ' '
 
-    const variants = extractVariantsFromFirstHtmlTable(product.description || '')
-    // Get volume and standard from product attributes (preferred) or fallback to text extraction
-    const badgeVolume = getVolumeFromAttributes(product) || variants[0]?.volume || ''
+    // Use product_models from API, convert to variant format
+    const productModels = product.product_models || []
+    const variants = productModels.map((model: any) => {
+      // Format price if available
+      let priceText = model.priceText || 'تماس بگیرید'
+      if (model.price && !model.priceText) {
+        const priceRial = Number(model.price || 0)
+        const isRial = String(model.price || '').includes('ریال')
+        const priceToman = Number.isFinite(priceRial) && priceRial > 0 
+          ? Math.round(isRial ? priceRial / 10 : priceRial) 
+          : 0
+        priceText = priceToman > 0 ? new Intl.NumberFormat('fa-IR').format(priceToman) : 'تماس بگیرید'
+      }
+      
+      return {
+        name: model.name || product.name,
+        volume: model.volume || '',
+        priceText: priceText,
+        imageUrl: model.imageUrl || model.image || primaryImage,
+        slug: model.slug || product.slug
+      }
+    })
+    
+    // Get volume and standard from product attributes (preferred) or fallback to first model
+    const badgeVolume = getVolumeFromAttributes(product) || (productModels.length > 0 ? (productModels[0] as any)?.volume : '') || ''
     const badgeStandard = getStandardFromAttributes(product) || extractStandard(fullText) || categoryName
 
     const viscosity = extractViscosity(product.name) || extractViscosity(fullText) || ''
@@ -690,7 +709,8 @@ export function ProductDetailClient({ slug }: { slug: string }) {
 
         <Divider />
 
-        {/* Product Variants Section */}
+        {/* Product Variants Section - Only show if product_models exist */}
+        {computed.variants.length > 0 && (
         <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
           <h2 className="text-white font-iranyekan font-bold" dir="auto" style={{ 
             marginBottom: 'clamp(1rem, 2.08vw, 3rem)',
@@ -841,6 +861,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             </div>
           </div>
         </section>
+        )}
 
         <Divider />
 
@@ -991,12 +1012,12 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                 <RelatedProductCard 
                   product={related2}
                   imageUrl={(related2 && getWcaPrimaryImageUrl(related2)) || ''}
-                  fallbackImage={imgImage1.src}
+                  fallbackImage={computed.primaryImage}
                 />
                 <RelatedProductCard 
                   product={related3}
                   imageUrl={(related3 && getWcaPrimaryImageUrl(related3)) || ''}
-                  fallbackImage={imgImage2.src}
+                  fallbackImage={computed.primaryImage}
                 />
               </div>
             </div>

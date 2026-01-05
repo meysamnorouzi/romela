@@ -263,6 +263,16 @@ export interface WcaProductDatasheet {
   }>
 }
 
+export interface WcaProductModel {
+  name?: string
+  volume?: string
+  price?: string
+  priceText?: string
+  imageUrl?: string
+  image?: string
+  slug?: string
+}
+
 export interface WcaProduct {
   id: number
   name: string
@@ -299,7 +309,7 @@ export interface WcaProduct {
   meta?: WcaProductMeta
   related_ids?: Array<number | string>
   variations?: unknown[]
-  product_models?: unknown[]
+  product_models?: WcaProductModel[]
   product_datasheet?: WcaProductDatasheet
   additional_description?: string
   similar_products_description?: string
