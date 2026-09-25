@@ -1,23 +1,22 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { NAVIGATION_ITEMS } from '@/lib/constants'
+import { NAVIGATION_ITEMS, SOCIAL_LINKS } from '@/lib/constants'
 
 export function Footer() {
   const socialLinks = [
-    { label: 'اینستاگرام', href: '#' },
-    { label: 'تلگرام', href: '#' },
-    { label: 'لینکدین', href: '#' },
-    { label: 'واتساپ', href: '#' },
+    SOCIAL_LINKS.instagram,
+    SOCIAL_LINKS.telegram,
+    SOCIAL_LINKS.whatsapp,
   ]
 
   return (
     <footer className="relative w-full bg-[#0e0e0e] xl:px-4 2xl:px-6">
       {/* Main Footer Container */}
-      <div className="w-full max-w-[1920px] mx-auto xl:px-0 2xl:px-6 sm:px-6" style={{ 
+      <div className="w-full max-w-[1920px] mx-auto" style={{ 
         paddingTop: 'clamp(1.5rem, 3.13vw, 4rem)', 
         paddingBottom: 'clamp(1.5rem, 3.13vw, 4rem)',
-        paddingLeft: 'clamp(0.5rem, 1.56vw, 3rem)',
-        paddingRight: 'clamp(0.5rem, 1.56vw, 3rem)'
+        paddingLeft: 'clamp(1rem, 1.56vw, 3rem)',
+        paddingRight: 'clamp(1rem, 1.56vw, 3rem)'
       }}>
      <div className="2xl:px-16 xl:px-4">
          {/* Background Box with Border */}
@@ -62,13 +61,15 @@ export function Footer() {
               <ul style={{ gap: 'clamp(0.5rem, 0.78vw, 0.75rem)' }} className="flex flex-col">
                 {socialLinks.map((link) => (
                   <li key={link.label}>
-                    <Link
+                    <a
                       href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-white hover:text-[#fcd856] transition-colors text-right block font-iranyekan"
                       style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
                     >
                       {link.label}
-                    </Link>
+                    </a>
                   </li>
                 ))}
                 <li>
@@ -126,7 +127,7 @@ export function Footer() {
             </div>
             
             {/* Logo Section - Full width on mobile, first column on desktop */}
-            <div className="md:col-span-2 lg:col-span-1 order-1 lg:order-1">
+            <div className="md:col-span-2 lg:col-span-1 order-first lg:order-none">
               <div className="bg-white rounded-3xl flex items-center justify-center h-full" style={{ 
                 padding: 'clamp(1.5rem, 2.08vw, 2rem)',
                 minHeight: 'clamp(200px, 15.63vw, 300px)'
@@ -149,7 +150,7 @@ export function Footer() {
         </div>
      </div>
       </div>
-      <div className="w-full max-w-[1920px] mx-auto xl:px-0 2xl:px-6" style={{ 
+      <div className="w-full max-w-[1920px] mx-auto" style={{ 
         paddingTop: 'clamp(2rem, 3.13vw, 4rem)',
         paddingLeft: 'clamp(1rem, 1.56vw, 3rem)',
         paddingRight: 'clamp(1rem, 1.56vw, 3rem)'

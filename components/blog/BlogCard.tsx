@@ -3,6 +3,7 @@ import Image from 'next/image'
 import type { WebsitePost } from '@/lib/api/types'
 import { formatDate } from '@/lib/utils/format'
 import { getPublishedDate } from '@/lib/api/website'
+import { stripHtml } from '@/lib/utils/text'
 
 interface BlogCardProps {
   post: WebsitePost
@@ -52,7 +53,7 @@ export function BlogCard({ post }: BlogCardProps) {
           fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
           marginBottom: 'clamp(0.75rem, 0.94vw, 1rem)'
         }}>
-          {post.excerpt}
+          {stripHtml(post.excerpt || post.content || '')}
         </p>
 
         <div className="flex items-center justify-between text-sm" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>

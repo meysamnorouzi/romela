@@ -1,9 +1,24 @@
+export const SOCIAL_LINKS = {
+  instagram: {
+    label: 'اینستاگرام',
+    href: 'https://www.instagram.com/romela_official',
+  },
+  telegram: {
+    label: 'تلگرام',
+    href: 'https://t.me/RomelaOfficial',
+  },
+  whatsapp: {
+    label: 'واتساپ',
+    href: 'https://wa.me/989004600100',
+  },
+} as const
+
 export const NAVIGATION_ITEMS = [
   { label: 'صفحه اصلی', href: '/' },
   { label: 'محصولات', href: '/products' },
   { label: 'مقالات', href: '/blog' },
-  { label: 'شرایط فروش', href: '/' },
-  { label: 'نمایندگی', href: '/' },
+  { label: 'شرایط فروش', href: '/sales-conditions' },
+  { label: 'نمایندگی', href: '/dealers' },
   { label: 'درباره ما', href: '/about-us' },
   { label: 'تماس با ما', href: '/contact-us' },
 

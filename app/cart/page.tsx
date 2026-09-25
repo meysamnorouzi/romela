@@ -5,19 +5,20 @@ import { CartItem } from '@/components/cart/CartItem'
 import { CartSummary } from '@/components/cart/CartSummary'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
+import { PAGE_TITLE_TOP_SIMPLE_CLASS } from '@/lib/page-layout'
 
 export default function CartPage() {
   const { items } = useCart()
 
   return (
-    <div className="py-6 sm:py-8 md:py-12">
-      <div className="container mx-auto px-4 sm:px-6 md:px-8">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 sm:mb-8">
+    <div className={PAGE_TITLE_TOP_SIMPLE_CLASS}>
+      <div className="container mx-auto">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-6 sm:mb-8">
           سبد خرید
         </h1>
 
         {items.length === 0 ? (
-          <div className="bg-dark-lighter rounded-xl p-12 text-center">
+          <div className="bg-dark-lighter rounded-xl p-8 sm:p-12 text-center">
             <svg
               className="w-24 h-24 mx-auto text-gray-600 mb-6"
               fill="none"

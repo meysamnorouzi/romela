@@ -22,10 +22,10 @@ export function Header() {
   return (
     <header
       className='fixed left-0 top-0 w-full z-50 bg-transparent'
-      style={{ 
-        paddingLeft: 'clamp(0.5rem, 1.56vw, 1.5rem)',
-        paddingRight: 'clamp(0.5rem, 1.56vw, 1.5rem)',
-        paddingTop: 'clamp(0.75rem, 1.25vw, 1rem)'
+      style={{
+        paddingLeft: 'clamp(1rem, 1.56vw, 1.5rem)',
+        paddingRight: 'clamp(1rem, 1.56vw, 1.5rem)',
+        paddingTop: 'calc(clamp(0.75rem, 1.25vw, 1rem) + env(safe-area-inset-top, 0px))',
       }}
     >
       {/* Content Container */} 
@@ -34,14 +34,14 @@ export function Header() {
           paddingBottom: 'clamp(1rem, 1.25vw, 1rem)',
         }}>
           {/* Logo - Far Right (RTL) */}
-          <Link href="/" className="flex-shrink-0" style={{ marginLeft: 'clamp(1.5rem, 1.56vw, 1.5rem)' }} onClick={() => setIsMobileMenuOpen(false)}>
-            <div className="bg-white rounded-3xl flex flex-col items-center justify-center shadow-lg" style={{ 
-              paddingLeft: 'clamp(2rem, 2.08vw, 2rem)',
-              paddingRight: 'clamp(2rem, 2.08vw, 2rem)',
+          <Link href="/" className="flex-shrink-0" style={{ marginLeft: 'clamp(0.5rem, 1.56vw, 1.5rem)' }} onClick={() => setIsMobileMenuOpen(false)}>
+            <div className="bg-white rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center shadow-lg" style={{ 
+              paddingLeft: 'clamp(0.75rem, 2.08vw, 2rem)',
+              paddingRight: 'clamp(0.75rem, 2.08vw, 2rem)',
               paddingTop: 'clamp(0.25rem, 0.31vw, 0.25rem)',
               paddingBottom: 'clamp(0.25rem, 0.31vw, 0.25rem)'
             }}>
-              <img src="/images/romela new logo 4.svg" alt="romela-logo" style={{ width: 'clamp(3rem, 4.69vw, 3rem)' }} />
+              <img src="/images/romela new logo 4.svg" alt="romela-logo" style={{ width: 'clamp(2.25rem, 4.69vw, 3rem)' }} />
             </div>
           </Link>
 
@@ -150,8 +150,8 @@ export function Header() {
         {isMobileMenuOpen && (
           <div className="lg:hidden" style={{ 
             marginTop: 'clamp(1rem, 1.25vw, 1rem)',
-            marginLeft: 'clamp(1rem, 1.56vw, 3rem)',
-            marginRight: 'clamp(1rem, 1.56vw, 3rem)'
+            marginLeft: 0,
+            marginRight: 0
           }}>
             <div className="bg-[#FFFFFF14] backdrop-blur-md rounded-3xl flex flex-col items-center shadow-xl border border-[rgba(255,255,255,0.1)]" style={{ 
               padding: 'clamp(1.5rem, 1.56vw, 1.5rem)',

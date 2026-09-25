@@ -10,6 +10,7 @@ import { formatToman } from '@/lib/utils/format'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import Link from 'next/link'
+import { PAGE_TITLE_TOP_SIMPLE_CLASS } from '@/lib/page-layout'
 
 const checkoutSchema = z.object({
   firstName: z.string().min(2, 'نام باید حداقل ۲ کاراکتر باشد'),
@@ -58,9 +59,9 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="py-8 md:py-12">
-        <div className="container mx-auto px-4 md:px-6 lg:px-8">
-          <div className="bg-dark-lighter rounded-xl p-12 text-center">
+      <div className={PAGE_TITLE_TOP_SIMPLE_CLASS}>
+        <div className="container mx-auto">
+          <div className="bg-dark-lighter rounded-xl p-8 sm:p-12 text-center">
             <p className="text-2xl text-gray-400 mb-6">سبد خرید شما خالی است</p>
             <Link href="/products">
               <Button variant="primary" size="lg">
@@ -74,9 +75,9 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="py-6 sm:py-8 md:py-12">
-      <div className="container mx-auto px-4 sm:px-6 md:px-8">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 sm:mb-8">
+    <div className={PAGE_TITLE_TOP_SIMPLE_CLASS}>
+      <div className="container mx-auto">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-6 sm:mb-8">
           تسویه حساب
         </h1>
 
@@ -84,7 +85,7 @@ export default function CheckoutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Order Form */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="bg-dark-lighter rounded-xl p-6 md:p-8">
+              <div className="bg-dark-lighter rounded-xl p-4 sm:p-6 md:p-8">
                 <h2 className="text-2xl font-bold text-white mb-6">اطلاعات تماس</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input
@@ -112,7 +113,7 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              <div className="bg-dark-lighter rounded-xl p-6 md:p-8">
+              <div className="bg-dark-lighter rounded-xl p-4 sm:p-6 md:p-8">
                 <h2 className="text-2xl font-bold text-white mb-6">آدرس ارسال</h2>
                 <div className="space-y-4">
                   <Input
@@ -149,7 +150,7 @@ export default function CheckoutPage() {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-dark-lighter rounded-xl p-6 md:p-8 sticky top-32">
+              <div className="bg-dark-lighter rounded-xl p-4 sm:p-6 md:p-8 sticky top-32">
                 <h2 className="text-2xl font-bold text-white mb-6">خلاصه سفارش</h2>
                 
                 {/* Order Items */}

@@ -1,18 +1,18 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { CompanyCredentials } from '@/components/about/CompanyCredentials'
+import { PAGE_BLEED_CLASS, PAGE_BOTTOM_PADDING_TALL_STYLE, PAGE_TITLE_TOP_CLASS } from '@/lib/page-layout'
 
 export default function AboutUsPage() {
   return (
-    <div className="bg-[#0e0e0e] min-h-screen w-full relative xl:px-0 2xl:px-6 sm:px-6">
-      <div className="relative w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-24 md:pt-32" style={{
-        paddingBottom: 'clamp(3rem, 10.42vw, 5rem)'
-      }}>
+    <div className={PAGE_BLEED_CLASS}>
+      <div className={PAGE_TITLE_TOP_CLASS} style={PAGE_BOTTOM_PADDING_TALL_STYLE}>
         {/* Title */}
         <h1 className="text-center text-white font-bold tracking-wide font-iranyekan text-xl sm:text-[2.125rem]  mb-6 md:mb-10">درباره ما</h1>
 
         {/* Breadcrumb */}
-        <div className="flex justify-start mb-14">
-          <div className="font-bold text-[#9A9A9A]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+        <div className="flex justify-start mb-10 sm:mb-14 min-w-0">
+          <div className="font-bold text-[#9A9A9A] flex flex-wrap items-center" style={{ fontSize: 'clamp(0.875rem, 1.25vw, 1.125rem)' }}>
             <Link href="/" className="hover:text-[#717171]">صفحه اصلی</Link>
             <span style={{ marginLeft: 'clamp(0.7rem, 0.83vw, 0.7rem)', marginRight: 'clamp(0.7rem, 0.83vw, 0.7rem)' }}>/</span>
             <span className="text-[#F58F4A]">درباره ما</span>
@@ -37,7 +37,7 @@ export default function AboutUsPage() {
               }}>
                 معرفی Romela آلمان
               </h2>
-              <div className="text-white/90 space-y-4 text-justify" style={{
+              <div className="text-white/90 space-y-4 text-right" style={{
                 fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
                 lineHeight: '1.8'
               }}>
@@ -63,7 +63,7 @@ export default function AboutUsPage() {
           }}>
             همکاری با شرکت Romela Oil آلمان
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 justify-items-center">
             {[
               {
                 image: '/images/Group-4-1.png',
@@ -88,7 +88,7 @@ export default function AboutUsPage() {
             ].map((item, index) => (
               <div
                 key={index}
-                className="relative w-full h-20 bg-[#343434] rounded-[16px] overflow-hidden flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
+                className={`relative w-full h-20 bg-[#343434] rounded-[16px] overflow-hidden flex items-center justify-center hover:opacity-80 transition-opacity duration-300 ${index === 4 ? 'col-span-2 max-w-[50%] md:col-span-1 md:max-w-none' : ''}`}
               >
                 <Image
                   src={item.image}
@@ -102,6 +102,8 @@ export default function AboutUsPage() {
           </div>
         </section>
 
+        <CompanyCredentials />
+
         {/* Mission Section */}
         <section className="bg-[#363636B2] rounded-[22px] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.45)] mb-12 md:mb-16" style={{
           padding: 'clamp(2rem, 3.13vw, 3rem)',
@@ -111,7 +113,7 @@ export default function AboutUsPage() {
             fontSize: 'clamp(1.5rem, 2.08vw, 2rem)',
             marginBottom: 'clamp(1.5rem, 2.08vw, 2rem)'
           }}>ماموریت پاد راد صنعت موتور ارس</h2>
-          <div className="text-white/90 space-y-4 text-justify" dir="rtl" style={{
+          <div className="text-white/90 space-y-4 text-right" dir="rtl" style={{
             fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
             lineHeight: '1.8'
           }}>

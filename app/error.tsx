@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { Button } from '@/components/ui/Button'
+import { PAGE_TITLE_TOP_SIMPLE_CLASS } from '@/lib/page-layout'
 
 export default function Error({
   error,
@@ -15,7 +16,7 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12">
+    <div className={`min-h-screen flex items-center justify-center ${PAGE_TITLE_TOP_SIMPLE_CLASS}`}>
       <div className="text-center">
         <h1 className="text-4xl md:text-6xl font-bold text-red-500 mb-4">خطا</h1>
         <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">

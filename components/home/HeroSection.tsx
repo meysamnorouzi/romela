@@ -48,14 +48,6 @@ export function HeroSection() {
               </p>
             </div>
 
-            {/* Oil Selection Guide Button */}
-            <div className="mb-8 flex justify-end">
-              <button className="bg-gray-800/90 hover:bg-gray-700/90 text-white px-7 py-3.5 rounded-full flex items-center gap-2.5 text-sm font-medium transition-all border border-gray-600/60 shadow-md">
-                <span className="w-6 h-6 rounded-full bg-white/25 flex items-center justify-center text-xs font-bold">?</span>
-                راهنمای انتخاب روغن
-              </button>
-            </div>
-
             {/* Dropdown Filters and Search Button */}
             <div className="flex flex-col md:flex-row items-stretch md:items-center gap-5">
               {/* Dropdown Filters */}

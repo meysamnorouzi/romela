@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import '@/styles/globals.css'
@@ -90,6 +90,12 @@ export const metadata: Metadata = {
   },
 }
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -97,12 +103,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa" dir="rtl">
-      <body className="min-h-screen">
-        <Header />
-        {/* Reserve space for the fixed header on all pages.
-            Home page cancels this with a negative top margin on its hero wrapper. */}
-        <main className="min-h-screen px-4 sm:px-6 pt-6">{children}</main>
-        <Footer />
+      <body className="min-h-screen-safe">
+        <div className="site-shell min-h-screen-safe">
+          <Header />
+          {/* Reserve space for the fixed header on all pages.
+              Home cancels main pt-6 with -mt-6 on its root wrapper. */}
+          <main className="min-h-screen-safe w-full max-w-full overflow-x-clip px-4 sm:px-6 pt-6">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   )

@@ -56,17 +56,41 @@ async function fetchJson<T>(
   return response.json() as Promise<T>
 }
 
+function decodeMaybe(value?: string): string {
+  if (!value) return ''
+  try {
+    return decodeURIComponent(value)
+  } catch {
+    return value
+  }
+}
+
+function normalizeHtml(value: unknown): string {
+  if (typeof value === 'string') return value
+  if (value && typeof value === 'object' && 'rendered' in value) {
+    const rendered = (value as { rendered?: unknown }).rendered
+    return typeof rendered === 'string' ? rendered : ''
+  }
+  return ''
+}
+
 function normalizeTerm(raw: WebsiteTerm): WebsiteTerm {
   return {
     ...raw,
     id: toNumber(raw.id) ?? raw.id,
+    slug: decodeMaybe(raw.slug),
   }
 }
 
 function normalizePost(raw: WebsitePost): WebsitePost {
+  const loose = raw as WebsitePost & { title?: unknown; excerpt?: unknown; content?: unknown }
   return {
     ...raw,
     id: toNumber(raw.id) ?? raw.id,
+    slug: decodeMaybe(raw.slug),
+    title: normalizeHtml(loose.title) || raw.title,
+    excerpt: normalizeHtml(loose.excerpt) || raw.excerpt,
+    content: normalizeHtml(loose.content),
     date_unix: toNumber(raw.date_unix) ?? raw.date_unix,
     comment_count: toNumber(raw.comment_count) ?? raw.comment_count,
     categories: raw.categories?.map(normalizeTerm),

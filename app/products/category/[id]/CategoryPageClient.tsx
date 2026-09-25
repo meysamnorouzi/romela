@@ -11,6 +11,7 @@ import { LoadingSpinner } from '@/components/ui/Loading'
 import { EmptyProductsState } from '@/components/ui/EmptyProductsState'
 import { stripHtml } from '@/lib/utils/text'
 import { getVolumeFromAttributes, getStandardFromAttributes } from '@/lib/utils/wca'
+import { PAGE_BLEED_CLASS, PAGE_BOTTOM_PADDING_STYLE, PAGE_TITLE_TOP_CLASS } from '@/lib/page-layout'
 
 // Product Name with Tooltip Component
 function ProductNameWithTooltip({ text, className }: { text: string, className?: string }) {
@@ -714,12 +715,10 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
   }, [subcategories])
 
   return (
-    <div className="bg-[#0e0e0e] min-h-screen w-full relative xl:px-0 2xl:px-6 sm:px-6">
-      <div className="relative w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-24 md:pt-32" style={{ 
-        paddingBottom: 'clamp(2rem, 6.25vw, 5rem)'
-      }}>
+    <div className={PAGE_BLEED_CLASS}>
+      <div className={PAGE_TITLE_TOP_CLASS} style={PAGE_BOTTOM_PADDING_STYLE}>
         {/* Title */}
-        <h1 className="text-center text-white font-bold tracking-wide font-iranyekan text-xl sm:text-[2.125rem]  mb-6 md:mb-10" style={{ 
+        <h1 className="text-center text-white font-bold tracking-wide font-iranyekan text-xl sm:text-[2.125rem] leading-snug px-1 mb-6 md:mb-10" style={{ 
         }}>
           {selectedSubcategory 
             ? ` لیست محصولات ${selectedSubcategory.name} `
@@ -728,8 +727,8 @@ export function CategoryPageClient({ categoryId }: { categoryId: number }) {
               : 'لیست محصولات'}
         </h1>
         {/* Breadcrumb */}
-        <div className="flex justify-start mb-8 sm:mb-10 md:mb-14">
-          <div className="font-bold text-[#9A9A9A]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+        <div className="flex justify-start mb-8 sm:mb-10 md:mb-14 min-w-0">
+          <div className="font-bold text-[#9A9A9A] flex flex-wrap items-center" style={{ fontSize: 'clamp(0.875rem, 1.25vw, 1.125rem)' }}>
             <Link href="/" className="hover:text-[#F58F4A]">صفحه اصلی</Link>
             <span style={{ marginLeft: 'clamp(0.5rem, 0.63vw, 0.5rem)', marginRight: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>/</span>
             <Link href="/products" className="hover:text-[#F58F4A]">محصولات</Link>

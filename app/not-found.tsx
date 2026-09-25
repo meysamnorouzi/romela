@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
+import { PAGE_TITLE_TOP_SIMPLE_CLASS } from '@/lib/page-layout'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center py-12">
+    <div className={`min-h-screen flex items-center justify-center ${PAGE_TITLE_TOP_SIMPLE_CLASS}`}>
       <div className="text-center">
         <h1 className="text-6xl md:text-8xl font-bold text-gold mb-4">404</h1>
         <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">

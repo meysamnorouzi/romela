@@ -109,10 +109,9 @@ export function generateOrganizationSchema(): OrganizationSchema {
       availableLanguage: ['fa', 'en'],
     },
     sameAs: [
-      // Add social media links when available
-      // 'https://www.facebook.com/romela-oil',
-      // 'https://www.instagram.com/romela-oil',
-      // 'https://www.linkedin.com/company/romela-oil',
+      'https://www.instagram.com/romela_official',
+      'https://t.me/RomelaOfficial',
+      'https://wa.me/989004600100',
     ],
   }
 }

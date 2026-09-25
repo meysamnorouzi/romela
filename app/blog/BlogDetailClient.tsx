@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { BlogCard } from '@/components/blog/BlogCard'
+import { WordPressContent } from '@/components/blog/WordPressContent'
 import { estimateReadingTimeMinutesFromHtml, stripHtml } from '@/lib/utils/text'
 import { formatDate } from '@/lib/utils/format'
 import type { WebsitePost } from '@/lib/api/types'
 import { getModifiedDate, getPublishedDate, getBlogPostBySlug, getBlogPosts } from '@/lib/api/website'
 import { generateArticleSchema } from '@/lib/utils/seo'
+import { PAGE_BLEED_CLASS, PAGE_TITLE_TOP_DETAIL_CLASS } from '@/lib/page-layout'
 
 // Divider Component
 function Divider() {
@@ -105,8 +107,8 @@ export function BlogDetailClient({ slug }: { slug: string }) {
 
   if (loading && !post) {
     return (
-      <div className="bg-[#0e0e0e] min-h-screen w-full xl:px-0 2xl:px-6 sm:px-6">
-        <div className="w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-32 lg:pt-64">
+      <div className={PAGE_BLEED_CLASS}>
+        <div className={PAGE_TITLE_TOP_DETAIL_CLASS}>
           <div className="bg-[#343434] rounded-2xl sm:rounded-3xl" style={{ 
             padding: 'clamp(2rem, 3.13vw, 4rem)',
             minHeight: 'clamp(20rem, 25vw, 30rem)'
@@ -119,13 +121,13 @@ export function BlogDetailClient({ slug }: { slug: string }) {
   if (!post) return null
 
   return (
-    <div className="bg-[#0e0e0e] min-h-screen w-full xl:px-0 2xl:px-6 sm:px-6">
+    <div className={PAGE_BLEED_CLASS}>
       {articleSchema ? (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       ) : null}
 
       {/* Container */}
-      <div className="w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-32 lg:pt-64" style={{ 
+      <div className={PAGE_TITLE_TOP_DETAIL_CLASS} style={{ 
         paddingBottom: 'clamp(1.5rem, 2.34vw, 4rem)'
       }}>
         {/* Breadcrumb */}
@@ -193,7 +195,6 @@ export function BlogDetailClient({ slug }: { slug: string }) {
                 ) : null}
               </div>
 
-              {/* Categories and Tags */}
               {(post.categories?.length || post.tags?.length) ? (
                 <div className="flex flex-wrap" style={{ gap: 'clamp(0.5rem, 0.78vw, 1rem)' }}>
                   {(post.categories ?? []).map((c) => (
@@ -222,30 +223,20 @@ export function BlogDetailClient({ slug }: { slug: string }) {
                   ))}
                 </div>
               ) : null}
-
-              {/* Excerpt */}
-              {post.excerpt ? (
-                <p className="text-[#FCFBEE] text-right font-light leading-relaxed font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-                  {stripHtml(post.excerpt)}
-                </p>
-              ) : null}
             </div>
           </div>
         </div>
 
         <Divider />
 
-        {/* Article Content Section */}
         <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
-          <div 
-            className="text-[#FCFBEE] text-right font-iranyekan leading-relaxed prose prose-invert max-w-none" 
-            dir="auto"
-            style={{ 
-              fontSize: 'clamp(0.875rem, 1.17vw, 1.125rem)',
-              lineHeight: 'clamp(1.75rem, 2.34vw, 2.5rem)'
-            }}
-            dangerouslySetInnerHTML={{ __html: post.content }} 
-          />
+          {post.content?.trim() ? (
+            <WordPressContent html={post.content} />
+          ) : (
+            <p className="text-[#FCFBEE] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.17vw, 1.125rem)' }}>
+              محتوایی برای این مقاله ثبت نشده است.
+            </p>
+          )}
         </section>
 
         {relatedPosts.length > 0 ? (

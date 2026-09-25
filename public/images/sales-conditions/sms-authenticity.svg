@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+  <defs>
+    <linearGradient id="bg3" x1="400" y1="0" x2="400" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#161616"/>
+      <stop offset="1" stop-color="#222"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#2d2d2d"/>
+      <stop offset="1" stop-color="#1a1a1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg3)"/>
+  <circle cx="400" cy="300" r="200" fill="#E6A816" opacity="0.04"/>
+  <rect x="260" y="60" width="280" height="480" rx="36" fill="#343434" stroke="#555" stroke-width="3"/>
+  <rect x="280" y="100" width="240" height="400" rx="20" fill="url(#screen)"/>
+  <rect x="300" y="130" width="200" height="130" rx="10" fill="#252525" stroke="#E6A816" stroke-width="2"/>
+  <rect x="318" y="150" width="52" height="52" rx="6" fill="#fff"/>
+  <rect x="326" y="158" width="10" height="10" fill="#1a1a1a"/>
+  <rect x="340" y="158" width="10" height="10" fill="#1a1a1a"/>
+  <rect x="326" y="172" width="10" height="10" fill="#1a1a1a"/>
+  <rect x="340" y="172" width="10" height="10" fill="#1a1a1a"/>
+  <rect x="326" y="186" width="10" height="10" fill="#1a1a1a"/>
+  <rect x="340" y="186" width="10" height="10" fill="#1a1a1a"/>
+  <rect x="384" y="150" width="100" height="8" rx="4" fill="#E6A816"/>
+  <rect x="384" y="168" width="80" height="6" rx="3" fill="#666"/>
+  <rect x="384" y="184" width="90" height="6" rx="3" fill="#666"/>
+  <rect x="300" y="290" width="200" height="44" rx="22" fill="#E6A816" opacity="0.2" stroke="#E6A816" stroke-width="2"/>
+  <text x="400" y="318" text-anchor="middle" fill="#F9BD65" font-family="Arial,sans-serif" font-size="16" font-weight="700">SMS VERIFY</text>
+  <circle cx="400" cy="380" r="36" fill="#E6A816"/>
+  <path d="M386 380 L398 392 L418 368" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="100" y="200" width="90" height="130" rx="8" fill="#343434" stroke="#E6A816" stroke-width="1.5"/>
+  <text x="145" y="255" text-anchor="middle" fill="#E6A816" font-family="Arial,sans-serif" font-size="11" font-weight="700">ROMELA</text>
+  <text x="145" y="275" text-anchor="middle" fill="#888" font-family="Arial,sans-serif" font-size="9">SEAL</text>
+  <rect x="610" y="220" width="90" height="110" rx="8" fill="#343434" stroke="#4A9EFF" stroke-width="1.5" opacity="0.8"/>
+  <text x="655" y="270" text-anchor="middle" fill="#4A9EFF" font-family="Arial,sans-serif" font-size="10" font-weight="600">AUTH</text>
+  <text x="655" y="288" text-anchor="middle" fill="#666" font-family="Arial,sans-serif" font-size="9">CODE</text>
+</svg>

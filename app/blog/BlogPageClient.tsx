@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { BlogCard } from '@/components/blog/BlogCard'
+import { PAGE_BLEED_CLASS, PAGE_BOTTOM_PADDING_STYLE, PAGE_TITLE_TOP_CLASS } from '@/lib/page-layout'
 import type {
   WebsitePost,
   WebsitePostsListResponse,
@@ -19,6 +20,15 @@ import type {
    category_slug?: string
  }
  
+ function decodeCategorySlug(slug?: string) {
+   if (!slug) return ''
+   try {
+     return decodeURIComponent(slug)
+   } catch {
+     return slug
+   }
+ }
+
  function buildQueryString(params: Record<string, string | undefined>) {
    const qp = new URLSearchParams()
    for (const [k, v] of Object.entries(params)) {
@@ -85,7 +95,10 @@ import type {
           buildApiUrl('website/v1/categories', { per_page: 100, page: 1, hide_empty: true })
         )
         if (cancelled) return
-        setCategories((raw.categories ?? []) as WebsiteTerm[])
+        setCategories(((raw.categories ?? []) as WebsiteTerm[]).map((c) => ({
+          ...c,
+          slug: decodeCategorySlug(c.slug),
+        })))
       } catch {
         // ignore
       }
@@ -144,18 +157,16 @@ import type {
   }, [q, categorySlug, perPage, safePage])
  
    return (
-     <div className="bg-[#0e0e0e] min-h-screen w-full xl:px-0 2xl:px-6 sm:px-6">
-       <div className="relative w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-24 md:pt-32" style={{ 
-         paddingBottom: 'clamp(2rem, 6.25vw, 5rem)'
-       }}>
+     <div className={PAGE_BLEED_CLASS}>
+       <div className={PAGE_TITLE_TOP_CLASS} style={PAGE_BOTTOM_PADDING_STYLE}>
          {/* Title */}
          <h1 className="text-center text-white font-bold tracking-wide font-iranyekan text-xl sm:text-[2.125rem] mb-6 md:mb-10">
            مقالات
          </h1>
          
          {/* Breadcrumb */}
-         <div className="flex justify-start mb-8 sm:mb-10 md:mb-14">
-           <div className="font-bold text-[#9A9A9A]" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+         <div className="flex justify-start mb-8 sm:mb-10 md:mb-14 min-w-0">
+           <div className="font-bold text-[#9A9A9A] flex flex-wrap items-center" style={{ fontSize: 'clamp(0.875rem, 1.25vw, 1.125rem)' }}>
              <Link href="/" className="hover:text-[#F58F4A]">صفحه اصلی</Link>
              <span style={{ marginLeft: 'clamp(0.7rem, 0.83vw, 0.7rem)', marginRight: 'clamp(0.7rem, 0.83vw, 0.7rem)' }}>/</span>
              <span className="text-[#F58F4A]">مقالات</span>
@@ -164,23 +175,23 @@ import type {
 
          {/* Search and Filters */}
          <div className="flex flex-col gap-4 sm:gap-6 mb-8 sm:mb-10 md:mb-14">
-           <form action="/blog" method="get" className="flex flex-col md:flex-row gap-3">
+           <form action="/blog" method="get" className="flex flex-col sm:flex-row gap-3">
              <input
                name="q"
                defaultValue={q}
                placeholder="...جستجو در مقالات"
-               className="flex-1 bg-[#343434] text-right border border-white/20 rounded-full px-6 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#F58F4A] transition-all font-iranyekan"
+               className="flex-1 min-w-0 w-full bg-[#343434] text-right border border-white/20 rounded-full px-6 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#F58F4A] transition-all font-iranyekan"
                dir="auto"
              />
              {categorySlug ? <input type="hidden" name="category_slug" value={categorySlug} /> : null}
              <button 
                type="submit" 
-               className="bg-[#E6A816] text-white px-6 py-3 rounded-full font-bold font-iranyekan hover:bg-[#F58F4A] transition-colors md:w-40"
+               className="bg-[#E6A816] text-white px-6 py-3 rounded-full font-bold font-iranyekan hover:bg-[#F58F4A] transition-colors w-full sm:w-40"
              >
                جستجو
              </button>
              {(q || categorySlug) && (
-               <Link href="/blog" className="md:w-40">
+               <Link href="/blog" className="w-full sm:w-40">
                  <button 
                    type="button" 
                    className="w-full border border-white/20 text-white px-6 py-3 rounded-full font-bold font-iranyekan hover:bg-white/10 transition-colors"

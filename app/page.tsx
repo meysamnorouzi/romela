@@ -544,7 +544,7 @@ export default function App() {
   };
 
   return (
-    <div className="bg-[#0e0e0e] min-h-screen w-full relative">
+    <div className="home-page bg-[#0e0e0e] min-h-screen-safe w-full relative -mt-6">
       {/* Structured Data (JSON-LD) */}
       <script
         type="application/ld+json"
@@ -559,7 +559,7 @@ export default function App() {
         }}
       />
       {/* Hero Section with Masked Background */}
-      <div className="relative w-full flex items-center justify-center rounded-[1rem] sm:rounded-[1.5rem] pb-6 sm:pb-8 md:pb-12 lg:pb-16 pt-24 sm:pt-32 md:pt-40 lg:pt-52" style={{
+      <div className="home-hero relative w-full flex items-center justify-center rounded-[1rem] sm:rounded-[1.5rem] pb-6 sm:pb-8 md:pb-12 lg:pb-16 pt-24 sm:pt-32 md:pt-40 lg:pt-52" style={{
         backgroundImage: `url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -603,33 +603,13 @@ export default function App() {
             <div className="flex flex-col lg:flex-row items-start justify-between gap-3 sm:gap-4 lg:gap-6 mb-3 sm:mb-4 md:mb-6 lg:mb-8">
               {/* Title and Description */}
               <div className="text-right flex-1">
-                <h2 className="text-white mb-4 text-2xl font-semibold" dir="auto">
+                <h2 className="text-white mb-3 sm:mb-4 text-xl sm:text-2xl font-semibold" dir="auto">
                   جستجو روغن مناسب کاربری شما
                 </h2>
-                <p className="text-[#FFFFFFCC] leading-relaxed text-base" dir="auto">
+                <p className="text-[#FFFFFFCC] leading-relaxed text-sm sm:text-base" dir="auto">
                   برای تجربه عملکرد بهتر موتور، روغن سازگار با نیازهای فنی خودروی خود را همینجا جستجو کنید.
                 </p>
               </div>
-              {/* Guide Button */}
-              <button
-                className="flex items-center gap-2 rounded-[120px] transition-all hover:opacity-90 shrink-0"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.3)',
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  height: 'clamp(2.5rem, 3.13vw, 3rem)',
-                  paddingLeft: 'clamp(1.5rem, 2.08vw, 2rem)',
-                  paddingRight: 'clamp(1.5rem, 2.08vw, 2rem)',
-                }}
-              >
-                <svg width="11" height="18" viewBox="0 0 11 18" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 'clamp(0.6875rem, 0.73vw, 0.6875rem)', height: 'clamp(1.125rem, 1.25vw, 1.125rem)' }}>
-                  <path d="M3.70046 12.3415C3.71736 11.2683 3.84409 10.4228 4.08064 9.80488C4.3341 9.17073 4.76498 8.57724 5.37327 8.02439C6.09985 7.35772 6.55607 6.9187 6.74194 6.70732C7.29954 6.08943 7.57834 5.44715 7.57834 4.78049C7.57834 4.0813 7.40937 3.55285 7.07143 3.19512C6.73349 2.82114 6.22657 2.63415 5.55069 2.63415C4.9086 2.63415 4.39324 2.82927 4.00461 3.21951C3.63287 3.5935 3.43856 4.10569 3.42166 4.7561H0C0.0168971 3.27642 0.515361 2.11382 1.49539 1.26829C2.47542 0.422764 3.82719 0 5.55069 0C7.27419 0 8.60906 0.406504 9.5553 1.21951C10.5184 2.03252 11 3.17886 11 4.65854C11 5.3252 10.8479 5.95935 10.5438 6.56098C10.2565 7.1626 9.80031 7.76423 9.17511 8.36585C8.85407 8.64228 8.3894 9.07317 7.78111 9.65854C7.42627 10 7.17281 10.3821 7.02074 10.8049C6.86866 11.2114 6.78418 11.7236 6.76728 12.3415H3.70046ZM3.21889 15.9756C3.21889 15.4228 3.41321 14.9593 3.80184 14.5854C4.20737 14.2114 4.70584 14.0244 5.29723 14.0244C5.88863 14.0244 6.37865 14.2114 6.76728 14.5854C7.17281 14.9593 7.37558 15.4228 7.37558 15.9756C7.37558 16.5447 7.17281 17.0244 6.76728 17.4146C6.37865 17.8049 5.88863 18 5.29723 18C4.70584 18 4.20737 17.8049 3.80184 17.4146C3.41321 17.0244 3.21889 16.5447 3.21889 15.9756Z" fill="#FCFBEE" />
-                </svg>
-                <span className="text-[#fcfbee] font-bold text-base" dir="auto">
-                  راهنمای انتخاب روغن
-                </span>
-              </button>
             </div>
             {/* Filters and Search Button */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 md:gap-4 lg:gap-6 items-center">
@@ -677,7 +657,7 @@ export default function App() {
       </div>
 
       {/* Container */}
-      <div className="w-full max-w-[1920px] mx-auto xl:px-0 2xl:px-6 sm:px-6" style={{ paddingTop: 'clamp(1.5rem, 2.6vw, 4rem)', paddingBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
+      <div className="w-full max-w-[1920px] mx-auto xl:px-4 2xl:px-16" style={{ paddingTop: 'clamp(1.5rem, 2.6vw, 4rem)', paddingBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
 
         {/* Category Section */}
         <section style={{ marginBottom: 'clamp(2.5rem, 4.17vw, 5rem)' }}>
@@ -923,7 +903,7 @@ export default function App() {
         </section>
 
         {/* Introduction Section */}
-        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(2.5rem, 4.17vw, 5rem)' }}>
+        <section style={{ marginBottom: 'clamp(2.5rem, 4.17vw, 5rem)' }}>
           <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{
             marginBottom: 'clamp(1.5rem, 2.34vw, 2.75rem)'
           }}>
@@ -953,7 +933,7 @@ export default function App() {
         <Divider />
 
         {/* Products Section */}
-        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(2.5rem, 4.17vw, 5rem)' }}>
+        <section style={{ marginBottom: 'clamp(2.5rem, 4.17vw, 5rem)' }}>
           <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{
             marginBottom: 'clamp(1.5rem, 2.34vw, 3rem)'
           }}>
@@ -1101,7 +1081,7 @@ export default function App() {
         <Divider />
 
         {/* Statistics Section */}
-        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(2.5rem, 4.17vw, 5rem)' }}>
+        <section style={{ marginBottom: 'clamp(2.5rem, 4.17vw, 5rem)' }}>
           <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{
             marginBottom: 'clamp(1.5rem, 2.34vw, 3rem)'
           }}>
@@ -1183,7 +1163,7 @@ export default function App() {
         <Divider />
 
         {/* Best Selling Products Section */}
-        <section className="2xl:px-16 xl:px-4 sm:px-6" style={{ marginBottom: 'clamp(2.5rem, 4.17vw, 5rem)' }}>
+        <section style={{ marginBottom: 'clamp(2.5rem, 4.17vw, 5rem)' }}>
           <h2 className="font-iranyekan text-white text-center font-bold text-xl sm:text-2xl md:text-[2.125rem]" dir="auto" style={{
             marginBottom: 'clamp(1.5rem, 2.34vw, 3rem)'
           }}>

@@ -13,6 +13,7 @@ import { getWcaPrimaryImageUrl, getWcaCategories, getWcaProductBySlug, getWcaRel
 import type { WcaProduct, WcaRelatedProductsResponse, WcaCategory } from '@/lib/api/types'
 import { stripHtml } from '@/lib/utils/text'
 import { extractBrands, extractStandard, extractViscosity, getVolumeFromAttributes, getStandardFromAttributes, extractDatasheetTable } from '@/lib/utils/wca'
+import { PAGE_BLEED_CLASS, PAGE_TITLE_TOP_DETAIL_CLASS } from '@/lib/page-layout'
 
 // Divider Component (kept identical)
 function Divider() {
@@ -395,8 +396,9 @@ export function ProductDetailClient({ slug }: { slug: string }) {
           },
         ]
 
-    // Get datasheet download link
+    // Get datasheet and catalog download links
     const datasheetDownloadLink = product.product_datasheet?.download_link || ''
+    const catalogDownloadLink = product.product_datasheet?.catalog_download_link || ''
 
     return {
       primaryImage,
@@ -421,13 +423,14 @@ export function ProductDetailClient({ slug }: { slug: string }) {
       stockCountText,
       techRows,
       datasheetDownloadLink,
+      catalogDownloadLink,
     }
   }, [product, parentCategory, subcategory])
 
   if (loading && !product) {
     return (
-      <div className="bg-[#0e0e0e] min-h-screen w-full xl:px-0 2xl:px-6">
-        <div className="w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-32 lg:pt-64" style={{ 
+      <div className={PAGE_BLEED_CLASS}>
+        <div className={PAGE_TITLE_TOP_DETAIL_CLASS} style={{ 
           paddingBottom: 'clamp(2rem, 3.13vw, 4rem)'
         }} />
       </div>
@@ -441,9 +444,9 @@ export function ProductDetailClient({ slug }: { slug: string }) {
   const related3 = relatedProducts[2]
 
   return (
-    <div className="bg-[#0e0e0e] min-h-screen w-full xl:px-0 2xl:px-6 sm:px-6">
+    <div className={PAGE_BLEED_CLASS}>
       {/* Container */}
-      <div className="w-full max-w-[1920px] mx-auto 2xl:px-16 xl:px-4 pt-32 lg:pt-64" style={{ 
+      <div className={PAGE_TITLE_TOP_DETAIL_CLASS} style={{ 
         paddingBottom: 'clamp(1.5rem, 2.34vw, 4rem)'
       }}>
         {/* Breadcrumb */}
@@ -672,11 +675,18 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                     دانلود دیتاشیت
                   </span>
                 </a>
-                <button className="bg-[#FDBA74] flex items-center justify-center rounded-[70px] py-4 w-fll md:w-fit" style={{ 
-                  gap: 'clamp(0.5rem, 0.63vw, 0.5rem)',
-                  paddingLeft: 'clamp(1.5rem, 1.56vw, 1.5rem)',
-                  paddingRight: 'clamp(1.5rem, 1.56vw, 1.5rem)'
-                }}>
+                <a 
+                  href={computed.catalogDownloadLink || '#'} 
+                  target={computed.catalogDownloadLink ? '_blank' : undefined}
+                  rel={computed.catalogDownloadLink ? 'noopener noreferrer' : undefined}
+                  className="bg-[#FDBA74] flex items-center justify-center rounded-[70px] py-4 w-fll md:w-fit" 
+                  style={{ 
+                    gap: 'clamp(0.5rem, 0.63vw, 0.5rem)',
+                    paddingLeft: 'clamp(1.5rem, 1.56vw, 1.5rem)',
+                    paddingRight: 'clamp(1.5rem, 1.56vw, 1.5rem)',
+                    textDecoration: 'none'
+                  }}
+                >
                   <div style={{ width: 'clamp(1.5rem, 1.56vw, 1.5rem)', height: 'clamp(1.5rem, 1.56vw, 1.5rem)' }}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
                       <path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97917 19.8042 4.5875 19.4125C4.19583 19.0208 4 18.55 4 18V15H6V18H18V15H20V18C20 18.55 19.8042 19.0208 19.4125 19.4125C19.0208 19.8042 18.55 20 18 20H6Z" fill="black" />
@@ -685,7 +695,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                   <span className="text-black font-iranyekan font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
                     دانلود کاتالوگ
                   </span>
-                </button>
+                </a>
               </div>
             </div>
 

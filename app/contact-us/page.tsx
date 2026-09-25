@@ -14,6 +14,7 @@ const DarkMap = dynamic(() => import("@/components/contact/DarkMap"), {
   ssr: false,
 })
 import { Toast } from "@/components/ui/Toast";
+import { SOCIAL_LINKS } from '@/lib/constants'
 
 const contactSchema = z.object({
   name: z.string().min(2, 'نام باید حداقل ۲ کاراکتر باشد'),
@@ -84,7 +85,7 @@ export default function ContactUsPage() {
       />
       <div className='w-full 2xl:mb-96 mb-8 sm:mb-16'>
      <div className="relative w-full overflow-hidden rounded-[1rem] sm:rounded-[1.5rem]" style={{
-      backgroundImage: "url('/images/image 24.png')",
+      backgroundImage: "url('/images/contact%20us.jpg')",
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
@@ -92,7 +93,7 @@ export default function ContactUsPage() {
     }}>
    <div className="absolute inset-0 bg-[#0000004D] z-10 rounded-[1rem] sm:rounded-[1.5rem]"/>
       {/* Content Container */}
-      <div className="relative z-10 container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-16 sm:py-20 md:py-24 lg:py-80">
+      <div className="relative z-10 container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 pt-[calc(var(--site-header-offset)+0.5rem)] pb-16 sm:pb-20 md:pb-24 lg:pt-80 lg:pb-80">
 
         <div className='w-full bg-white/20 backdrop-blur-md rounded-xl py-4 sm:py-6 md:py-12 lg:py-16 px-3 sm:px-4 md:px-8 lg:px-16 xl:px-24 border border-white/10'>
           {/* Contact Cards and Form Grid */}
@@ -348,10 +349,33 @@ export default function ContactUsPage() {
 
                   {/* Social Icons */}
                   <div className="flex items-center gap-3 sm:gap-4 md:gap-5 lg:gap-6">
-                    <img src="/images/whatsapp-whats-app-svgrepo-com.svg" alt="" />
-                    <img src="/images/linkedin-round-svgrepo-com.svg" alt="" />
-                    <img src="/images/telegram-svgrepo-com.svg" alt="" />
-                    <img src="/images/instagram-svgrepo-com.svg" alt="" />
+                    <a
+                      href={SOCIAL_LINKS.whatsapp.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={SOCIAL_LINKS.whatsapp.label}
+                      className="hover:opacity-80 transition-opacity"
+                    >
+                      <img src="/images/whatsapp-whats-app-svgrepo-com.svg" alt="واتساپ" className="w-7 h-7 sm:w-8 sm:h-8" />
+                    </a>
+                    <a
+                      href={SOCIAL_LINKS.telegram.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={SOCIAL_LINKS.telegram.label}
+                      className="hover:opacity-80 transition-opacity"
+                    >
+                      <img src="/images/telegram-svgrepo-com.svg" alt="تلگرام" className="w-7 h-7 sm:w-8 sm:h-8" />
+                    </a>
+                    <a
+                      href={SOCIAL_LINKS.instagram.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={SOCIAL_LINKS.instagram.label}
+                      className="hover:opacity-80 transition-opacity"
+                    >
+                      <img src="/images/instagram-svgrepo-com.svg" alt="اینستاگرام" className="w-7 h-7 sm:w-8 sm:h-8" />
+                    </a>
                   </div>
                 </div>
               </div>

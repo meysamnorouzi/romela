@@ -254,6 +254,7 @@ export interface WcaProductMeta {
 
 export interface WcaProductDatasheet {
   download_link?: string
+  catalog_download_link?: string
   initial_description?: string
   final_description?: string
   table_data?: Array<{
@@ -363,6 +364,35 @@ export interface WcaAttributeTermsResponse {
     label: string
   }
   terms: WcaAttributeTerm[]
+}
+
+export interface PsgListResponse {
+  items: string[]
+}
+
+export interface PsgSelection {
+  vehicle_type: string
+  brand: string
+  model: string
+  year: string
+}
+
+export interface PsgGuideProductItem {
+  product: WcaProduct
+  description: string
+  summary: string
+}
+
+export interface PsgGuideCategoryGroup {
+  id: number
+  name: string
+  products: PsgGuideProductItem[]
+}
+
+export interface PsgGuideResultsResponse {
+  selection: PsgSelection
+  categories: PsgGuideCategoryGroup[]
+  total: number
 }
 
 export interface CartItem {
