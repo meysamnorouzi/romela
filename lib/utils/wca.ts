@@ -115,17 +115,33 @@ export function getVolumeFromAttributes(product: { attributes?: unknown[] }): st
  * Looks for attribute with name "استاندارد" and returns the first term's name
  */
 export function getStandardFromAttributes(product: { attributes?: unknown[] }): string | null {
-  if (!product.attributes || !Array.isArray(product.attributes)) return null
+  const names = getAttributeTermNames(product, 'استاندارد')
+  return names[0] || null
+}
 
-  const standardAttr = product.attributes.find((attr: any) => {
-    return attr?.name === 'استاندارد'
+/**
+ * Term names for a product attribute. Matches the attribute label or slug.
+ */
+export function getAttributeTermNames(
+  product: { attributes?: unknown[] },
+  attributeNames: string | string[]
+): string[] {
+  if (!product.attributes || !Array.isArray(product.attributes)) return []
+
+  const wanted = (Array.isArray(attributeNames) ? attributeNames : [attributeNames])
+    .map((name) => name.trim())
+    .filter(Boolean)
+
+  const attr = product.attributes.find((item: any) => {
+    const name = String(item?.name || '').trim()
+    const slug = String(item?.slug || '').trim()
+    return wanted.some((candidate) => name === candidate || slug === candidate || slug === `pa_${candidate}`)
   }) as any
 
-  if (!standardAttr || !standardAttr.terms || !Array.isArray(standardAttr.terms) || standardAttr.terms.length === 0) {
-    return null
-  }
-
-  return standardAttr.terms[0]?.name || null
+  const terms = Array.isArray(attr?.terms) ? attr.terms : Array.isArray(attr?.options) ? attr.options : []
+  return terms
+    .map((term: any) => String(typeof term === 'string' ? term : term?.name || '').trim())
+    .filter(Boolean)
 }
 
 export type DatasheetRow = {

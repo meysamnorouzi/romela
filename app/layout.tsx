@@ -3,8 +3,6 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { CallButton } from '@/components/layout/CallButton'
 import '@/styles/globals.css'
-import 'swiper/css'
-import 'swiper/css/navigation'
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://romela-oil.com'
 const siteName = 'Romela Oil Germany'
@@ -38,9 +36,11 @@ export const metadata: Metadata = {
     telephone: false,
   },
   icons: {
-    icon: '/images/romela new logo 4.svg',
-    shortcut: '/images/romela new logo 4.svg',
-    apple: '/images/romela new logo 4.svg',
+    icon: [
+      { url: '/images/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/images/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    apple: '/images/apple-touch-icon.png',
   },
   manifest: '/manifest.json',
   openGraph: {
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     description: siteDescription,
     images: [
       {
-        url: '/images/romela new logo 4.svg',
+        url: '/images/og-cover.jpg',
         width: 1200,
         height: 630,
         alt: 'Romela Oil Germany Logo',
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: `${siteName} - روغن روملا آلمان`,
     description: siteDescription,
-    images: ['/images/romela new logo 4.svg'],
+    images: ['/images/og-cover.jpg'],
   },
   robots: {
     index: true,
@@ -104,6 +104,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa" dir="rtl">
+      <head>
+        <link
+          rel="preload"
+          href="/fonts/iranyekan/woff2/IRANYekanX-Bold.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/iransans/woff2/IRANSansX-Regular.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="min-h-screen-safe">
         {/* Clip overflow in an LTR box. Clipping an RTL box pins content to the right. */}
         <div className="site-shell min-h-screen-safe" dir="ltr">

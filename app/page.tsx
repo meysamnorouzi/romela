@@ -546,6 +546,7 @@ export default function App() {
 
   return (
     <div className="home-page bg-[#0e0e0e] min-h-screen-safe w-full relative -mt-6">
+      <link rel="preload" as="image" href="/images/hero-wave.webp" fetchPriority="high" />
       {/* Structured Data (JSON-LD) */}
       <script
         type="application/ld+json"
@@ -561,7 +562,7 @@ export default function App() {
       />
       {/* Hero Section with Masked Background */}
       <div className="home-hero relative w-full flex items-center justify-center rounded-[1rem] sm:rounded-[1.5rem] pb-6 sm:pb-8 md:pb-12 lg:pb-16 pt-24 sm:pt-32 md:pt-40 lg:pt-52" style={{
-        backgroundImage: `url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')`,
+        backgroundImage: `url('/images/hero-wave.webp')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -924,7 +925,7 @@ export default function App() {
             <div className="w-full lg:w-[40%]">
               <div className="bg-[#343434] rounded-3xl h-full flex items-center justify-center" style={{ padding: 'clamp(1.5rem, 2.34vw, 3rem)' }}>
                 <div className="w-full flex items-center justify-center" style={{ height: 'clamp(256px, 15.63vw, 300px)' }}>
-                  <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage9.src} />
+                  <img alt="" loading="lazy" decoding="async" className="w-full h-full object-contain pointer-events-none" src={imgImage9.src} />
                 </div>
               </div>
             </div>
@@ -1248,7 +1249,7 @@ export default function App() {
                   {currentBestsellerProducts.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(0.75rem, 1.3vw, 1.5rem)' }}>
                       {currentBestsellerProducts.map((product) => {
-                        const productImage = getWcaPrimaryImageUrl(product) || '/images/image 1.png';
+                        const productImage = getWcaPrimaryImageUrl(product) || '/images/product-placeholder.webp';
                         return (
                           <Link
                             key={product.id}
@@ -1264,7 +1265,7 @@ export default function App() {
                               <ProductNameWithTooltip text={product.name} className="font-bold text-[#F9BD65] font-iranyekan text-base" />
                             </h4>
                             <div className="flex-1 flex items-center justify-center font-iranyekan text-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                              <img src={productImage} alt={product.name} style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
+                              <img src={productImage} alt={product.name} loading="lazy" decoding="async" style={{ width: 'clamp(6rem, 8.33vw, 8rem)', height: 'auto' }} />
                             </div>
                           </Link>
                         );

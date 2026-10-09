@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import Image from 'next/image'
 import type { WebsitePost } from '@/lib/api/types'
 import { formatDate } from '@/lib/utils/format'
@@ -14,8 +13,8 @@ export function BlogCard({ post }: BlogCardProps) {
   const publishedAt = getPublishedDate(post)
 
   return (
-    <Link
-      href={{ pathname: '/blog', query: { slug: post.slug } }}
+    <a
+      href={`/blog/?slug=${encodeURIComponent(post.slug)}`}
       className="bg-[#343434] border border-white/20 rounded-2xl sm:rounded-3xl overflow-hidden hover:border-[#E6A816] transition-all duration-300 group"
     >
       <div className="aspect-video bg-[#242424] relative overflow-hidden">
@@ -61,6 +60,6 @@ export function BlogCard({ post }: BlogCardProps) {
           <span className="text-[#E6A816] group-hover:text-[#F58F4A] transition-colors font-iranyekan">ادامه مطلب </span>
         </div>
       </div>
-    </Link>
+    </a>
   )
 }

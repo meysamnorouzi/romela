@@ -77,6 +77,7 @@ export default function ContactUsPage() {
 
   return (
     <>
+      <link rel="preload" as="image" href="/images/contact-us.webp" fetchPriority="high" />
       <Toast
         message="پیام شما با موفقیت ارسال شد. در اسرع وقت با شما تماس خواهیم گرفت."
         type="success"
@@ -85,7 +86,7 @@ export default function ContactUsPage() {
       />
       <div className='w-full 2xl:mb-96 mb-8 sm:mb-16'>
      <div className="contact-hero relative w-full overflow-hidden md:rounded-[1.5rem]" style={{
-      backgroundImage: "url('/images/contact%20us.jpg')",
+      backgroundImage: "url('/images/contact-us.webp')",
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       minHeight: '100vh'

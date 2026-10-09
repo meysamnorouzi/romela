@@ -12,7 +12,7 @@ import {
 import { getWcaPrimaryImageUrl, getWcaCategories, getWcaProductBySlug, getWcaRelatedProducts } from '@/lib/api/wca'
 import type { WcaProduct, WcaRelatedProductsResponse, WcaCategory } from '@/lib/api/types'
 import { stripHtml } from '@/lib/utils/text'
-import { extractBrands, extractStandard, extractViscosity, getVolumeFromAttributes, getStandardFromAttributes, extractDatasheetTable } from '@/lib/utils/wca'
+import { extractBrands, extractStandard, extractViscosity, getAttributeTermNames, getVolumeFromAttributes, getStandardFromAttributes, extractDatasheetTable } from '@/lib/utils/wca'
 import { PAGE_BLEED_CLASS, PAGE_TITLE_TOP_DETAIL_CLASS } from '@/lib/page-layout'
 import { WordPressContent } from '@/components/blog/WordPressContent'
 import { formatToman } from '@/lib/utils/format'
@@ -21,6 +21,27 @@ function datasheetHtml(value?: string | null): string {
   return (value || '')
     .replace(/<h[1-6][^>]*>\s*(?:<br\s*\/?>|&nbsp;|\u00a0)*\s*<\/h[1-6]>/gi, '')
     .trim()
+}
+
+function ProductShowcaseImage({
+  src,
+  priority = false,
+}: {
+  src: string
+  priority?: boolean
+}) {
+  return (
+    <div className="relative flex w-full items-center justify-center self-stretch bg-[#343434] rounded-2xl sm:rounded-3xl py-[7.5%] lg:w-1/2 lg:min-h-[28rem] lg:py-0">
+      <img
+        alt=""
+        src={src}
+        decoding="async"
+        fetchPriority={priority ? 'high' : 'low'}
+        loading={priority ? 'eager' : 'lazy'}
+        className="pointer-events-none h-auto w-[90%] object-contain lg:absolute lg:left-1/2 lg:top-[10%] lg:h-[80%] lg:w-auto lg:max-w-[90%] lg:-translate-x-1/2"
+      />
+    </div>
+  )
 }
 
 function displayPrice(price?: string | number | null, priceText?: string | null): string {
@@ -114,6 +135,8 @@ function RelatedProductCard({
             alt=""
             className="w-full h-full object-contain pointer-events-none"
             src={imageUrl || fallbackImage}
+            loading="lazy"
+            decoding="async"
           />
         </div>
       </div>
@@ -338,9 +361,10 @@ export function ProductDetailClient({ slug }: { slug: string }) {
     const badgeVolume = getVolumeFromAttributes(product) || (productModels.length > 0 ? (productModels[0] as any)?.volume : '') || ''
     const badgeStandard = getStandardFromAttributes(product) || extractStandard(fullText) || categoryName
 
-    const viscosity = extractViscosity(product.name) || extractViscosity(fullText) || ''
-    const standard = extractStandard(fullText) || ''
-    const brands = extractBrands(fullText)
+    const standard = getAttributeTermNames(product, 'استاندارد').join(', ') || extractStandard(fullText) || ''
+    const viscosity = getAttributeTermNames(product, 'ویسکوزیته').join(', ') || extractViscosity(product.name) || extractViscosity(fullText) || ''
+    const brandTerms = getAttributeTermNames(product, ['برند خودرو', 'برند-خودرو'])
+    const brands = brandTerms.length ? brandTerms : extractBrands(fullText)
 
     const priceText = displayPrice(product.price)
 
@@ -481,16 +505,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
         {/* Product Header Section */}
         <div className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
           <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1rem, 2.08vw, 3rem)' }}>
-            {/* Product Image */}
-            <div className="w-full lg:w-1/2 bg-[#343434] rounded-2xl sm:rounded-3xl flex items-center justify-center" style={{ padding: 'clamp(0.75rem, 1.56vw, 2rem)' }}>
-              <div className="relative w-full" style={{ maxWidth: 'clamp(10rem, 15.63vw, 18rem)' }}>
-                <img
-                  alt=""
-                  className="w-full object-contain pointer-events-none"
-                  src={computed.primaryImage}
-                />
-              </div>
-            </div>
+            <ProductShowcaseImage src={computed.primaryImage} priority />
 
             {/* Product Info */}
             <div className="w-full lg:w-1/2 flex flex-col" style={{ gap: 'clamp(1rem, 1.3vw, 1.5rem)' }}>
@@ -536,29 +551,34 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                 {computed.descriptionText || ' '}
               </p>
 
-              {/* Product Specs */}
-              <div
-                className="text-[#f58f4a] text-right"
-                dir="auto"
-                style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
-              >
-                <ul className="list-disc list-inside flex flex-col font-light" style={{ gap: 'clamp(0.375rem, 0.47vw, 0.5rem)' }}>
-                  <li>
-                    <span>استاندارد: </span>
-                    <span className="font-black">{computed.standard || '—'}</span>
-                  </li>
-                  <li>
-                    <span>ویسکوزیته: </span>
-                    <span className="font-black">{computed.viscosity || '—'}</span>
-                  </li>
-                  <li>
-                    برند های قابل استفاده:{' '}
-                    <span className="font-black">
-                      {computed.brands.length ? computed.brands.join(', ') : '—'}
-                    </span>
-                  </li>
-                </ul>
-              </div>
+              {(computed.standard || computed.viscosity || computed.brands.length > 0) ? (
+                <div
+                  className="text-[#f58f4a] text-right"
+                  dir="auto"
+                  style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
+                >
+                  <ul className="list-disc list-inside flex flex-col font-light" style={{ gap: 'clamp(0.375rem, 0.47vw, 0.5rem)' }}>
+                    {computed.standard ? (
+                      <li>
+                        <span>استاندارد: </span>
+                        <span className="font-black">{computed.standard}</span>
+                      </li>
+                    ) : null}
+                    {computed.viscosity ? (
+                      <li>
+                        <span>ویسکوزیته: </span>
+                        <span className="font-black">{computed.viscosity}</span>
+                      </li>
+                    ) : null}
+                    {computed.brands.length > 0 ? (
+                      <li>
+                        برند های قابل استفاده:{' '}
+                        <span className="font-black">{computed.brands.join(', ')}</span>
+                      </li>
+                    ) : null}
+                  </ul>
+                </div>
+              ) : null}
 
               {computed.priceText ? (
                 <div className="flex items-center flex-wrap" style={{ gap: 'clamp(0.75rem, 0.94vw, 1rem)' }}>
@@ -703,21 +723,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               </div>
             </div>
 
-            <div className="w-full lg:w-1/2">
-              <div className="relative bg-[#343434] rounded-2xl sm:rounded-3xl h-auto md:h-full flex items-center justify-center" style={{ 
-                padding: 'clamp(1rem, 2.08vw, 3rem)'
-              }}>
-                <div className="relative w-full flex items-center justify-center" style={{ 
-                  height: 'clamp(150px, 11.72vw, 300px)'
-                }}>
-                  <img
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                    src={computed.introImageTop}
-                  />
-                </div>
-              </div>
-            </div>
+            <ProductShowcaseImage src={computed.introImageTop} />
           </div>
         </section>
 
@@ -755,6 +761,8 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                         alt=""
                         className="absolute inset-0 w-full h-full object-contain pointer-events-none"
                         src={variant.imageUrl || computed.primaryImage}
+                        loading="lazy"
+                        decoding="async"
                       />
                     </div>
                   </div>
@@ -862,6 +870,8 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                           alt=""
                           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
                           src={variant.imageUrl || computed.primaryImage}
+                          loading="lazy"
+                          decoding="async"
                         />
                       </div>
                     </div>
@@ -990,7 +1000,9 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                 <img
                   alt=""
                   className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                  src={'/images/detail.png'}
+                  src={'/images/product-detail.webp'}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>

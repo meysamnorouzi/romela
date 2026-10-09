@@ -27,7 +27,7 @@ export default function AboutUsPage() {
               minHeight: 'clamp(200px, 25vw, 400px)'
             }}>
               <div className="absolute inset-0 flex items-center justify-center">
-                 <img src="/images/image 9.png" alt="Romela Logo" className="w-[70%] object-contain" />
+                 <img src="/images/romela-mark.webp" alt="Romela Logo" loading="lazy" decoding="async" className="w-[70%] object-contain" />
               </div>
             </div>
             <div dir="rtl">
@@ -66,23 +66,23 @@ export default function AboutUsPage() {
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 justify-items-center">
             {[
               {
-                image: '/images/Group-4-1.png',
+                image: '/images/partner-1.webp',
                 alt: 'Romela Oil - تصویر 1'
               },
               {
-                image: '/images/Group-6-1.png',
+                image: '/images/partner-2.webp',
                 alt: 'Romela Oil - تصویر 2'
               },
               {
-                image: '/images/Group-7.png',
+                image: '/images/partner-3.webp',
                 alt: 'Romela Oil - تصویر 3'
               },
               {
-                image: '/images/Group-8.png',
+                image: '/images/partner-4.webp',
                 alt: 'Romela Oil - تصویر 4'
               },
               {
-                image: '/images/Group-9.png',
+                image: '/images/partner-5.webp',
                 alt: 'Romela Oil - تصویر 5'
               },
             ].map((item, index) => (

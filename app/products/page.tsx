@@ -63,7 +63,7 @@ function CategoryChip({
   selected?: boolean
   onClick: () => void
 }) {
-  const icon = category.image || '/images/image 8.svg'
+  const icon = category.image?.trim() || '/images/romela-logo-white.webp'
   return (
     <button
       type="button"
@@ -377,6 +377,9 @@ export default function ProductsPage() {
   const [loadingCategories, setLoadingCategories] = useState(true)
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(() => positiveId(sp.get('category')))
   const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<number | null>(() => positiveId(sp.get('subcategory')))
+  const [subcategoriesByParent, setSubcategoriesByParent] = useState<Record<number, WcaCategory[]>>({})
+  const subcategoriesByParentRef = useRef(subcategoriesByParent)
+  subcategoriesByParentRef.current = subcategoriesByParent
   const [attributes, setAttributes] = useState<WcaAttribute[]>([])
   const [attributeTermsMap, setAttributeTermsMap] = useState<Record<number, WcaAttributeTerm[]>>({})
   const [loadingAttributes, setLoadingAttributes] = useState(true)
@@ -440,6 +443,35 @@ export default function ProductsPage() {
       cancelled = true
     }
   }, [])
+
+  // One layer down: a selected category is replaced by its subcategories.
+  useEffect(() => {
+    if (!selectedCategoryId) return
+    const parentId = selectedCategoryId
+    if (Object.prototype.hasOwnProperty.call(subcategoriesByParentRef.current, parentId)) return
+
+    let cancelled = false
+    async function loadSubcategories() {
+      try {
+        const result = await getWcaCategories({
+          per_page: 100,
+          page: 1,
+          hide_empty: true,
+          parent: parentId,
+        })
+        if (cancelled) return
+        setSubcategoriesByParent((prev) => ({ ...prev, [parentId]: result.categories || [] }))
+      } catch (error) {
+        console.error('Error fetching subcategories:', error)
+        if (!cancelled) setSubcategoriesByParent((prev) => ({ ...prev, [parentId]: [] }))
+      }
+    }
+
+    loadSubcategories()
+    return () => {
+      cancelled = true
+    }
+  }, [selectedCategoryId])
 
   // Load attributes
   useEffect(() => {
@@ -592,9 +624,28 @@ export default function ProductsPage() {
     if (current !== next) window.history.replaceState(window.history.state, '', next)
   }, [selectedCategoryId, selectedSubcategoryId, selectedAttributeTerms, slug])
 
-  const selectCategory = (categoryId: number) => {
-    setSelectedCategoryId((current) => current === categoryId ? null : categoryId)
+  const loadedChildren = selectedCategoryId != null ? subcategoriesByParent[selectedCategoryId] : undefined
+  const showingChildren = Boolean(loadedChildren && loadedChildren.length > 0)
+  const sliderCategories = showingChildren ? loadedChildren! : categories
+  const sliderKey = `${showingChildren ? selectedCategoryId : 'root'}:${sliderCategories.map((category) => category.id).join(',')}`
+
+  const showAllProducts = () => {
+    setSelectedCategoryId(null)
     setSelectedSubcategoryId(null)
+  }
+
+  const selectCategory = (categoryId: number) => {
+    if (selectedCategoryId === categoryId) {
+      setSelectedCategoryId(null)
+      setSelectedSubcategoryId(null)
+      return
+    }
+    setSelectedCategoryId(categoryId)
+    setSelectedSubcategoryId(null)
+  }
+
+  const selectSubcategory = (subcategoryId: number) => {
+    setSelectedSubcategoryId((current) => current === subcategoryId ? null : subcategoryId)
   }
 
   const handleAttributeTermToggle = (termId: number) => {
@@ -628,6 +679,7 @@ export default function ProductsPage() {
 
     const scrollContainer = chipRowRef.current
     if (scrollContainer) {
+      scrollContainer.scrollLeft = 0
       // Initial check after a small delay to ensure layout is complete
       setTimeout(checkScroll, 100)
       scrollContainer.addEventListener('scroll', checkScroll)
@@ -641,7 +693,7 @@ export default function ProductsPage() {
       }
       window.removeEventListener('resize', checkScroll)
     }
-  }, [categories])
+  }, [sliderKey])
 
   // Apply sticky positioning for large screens
   useEffect(() => {
@@ -688,7 +740,7 @@ export default function ProductsPage() {
             <span className="text-[#F58F4A]">محصولات</span>
           </div>
         </div>
-        {/* Category slider. Clicking filters this page and keeps the same chips. */}
+        {/* Category slider. A selected category is replaced by its subcategories. */}
         <div className="flex items-center" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
           {showRightButton && (
             <button
@@ -716,15 +768,20 @@ export default function ProductsPage() {
               paddingBottom: 'clamp(0.25rem, 0.31vw, 0.25rem)'
             }}
           >
+            <CategoryChip
+              category={{ id: 0, name: 'همه محصولات', slug: 'all', image: '/images/romela-logo-white.webp' }}
+              selected={selectedCategoryId == null}
+              onClick={showAllProducts}
+            />
             {loadingCategories ? (
               <div className="text-[#9A9A9A]" style={{ fontSize: 'clamp(0.8125rem, 0.94vw, 0.8125rem)' }}>در حال بارگذاری...</div>
             ) : (
-              categories.map((c) => (
+              sliderCategories.map((c) => (
                 <CategoryChip
                   key={c.id}
                   category={c}
-                  selected={selectedCategoryId === c.id}
-                  onClick={() => selectCategory(c.id)}
+                  selected={showingChildren ? selectedSubcategoryId === c.id : selectedCategoryId === c.id}
+                  onClick={() => showingChildren ? selectSubcategory(c.id) : selectCategory(c.id)}
                 />
               ))
             )}

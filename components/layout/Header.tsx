@@ -42,7 +42,15 @@ export function Header() {
               paddingTop: 'clamp(0.25rem, 0.31vw, 0.25rem)',
               paddingBottom: 'clamp(0.25rem, 0.31vw, 0.25rem)'
             }}>
-              <img src="/images/romela new logo 4.svg" alt="romela-logo" style={{ width: 'clamp(2.25rem, 4.69vw, 3rem)' }} />
+              <img
+                src="/images/romela-logo.webp"
+                alt="Romela"
+                width={432}
+                height={444}
+                decoding="async"
+                fetchPriority="high"
+                style={{ width: 'clamp(2.25rem, 4.69vw, 3rem)', height: 'auto' }}
+              />
             </div>
           </Link>
 

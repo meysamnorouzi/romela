@@ -11,13 +11,13 @@ export function ProductGallery({ product, images }: ProductGalleryProps) {
   
   // If no images, use placeholder
   if (productImages.length === 0) {
-    productImages.push('/placeholder-product.jpg')
+    productImages.push('/images/product-fallback.webp')
   }
 
   // Add more placeholder images for gallery
   const galleryImages = [
     ...productImages,
-    ...Array.from({ length: Math.max(0, 3 - productImages.length) }, () => '/placeholder-product.jpg'),
+    ...Array.from({ length: Math.max(0, 3 - productImages.length) }, () => '/images/product-fallback.webp'),
   ].slice(0, 3)
 
   return (

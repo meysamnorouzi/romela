@@ -56,7 +56,7 @@ function CategoryChip({
   category: WcaCategory
   href: string
 }) {
-  const icon = category.image || '/images/image 8.svg'
+  const icon = category.image?.trim() || '/images/romela-logo-white.webp'
   return (
     <Link
     href={href}

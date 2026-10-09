@@ -147,7 +147,7 @@ export function Footer() {
                   height: 'clamp(8rem, 10.42vw, 12rem)' 
                 }}>
                   <Image
-                    src="/images/romela new logo 4.svg"
+                    src="/images/romela-logo.webp"
                     alt="Romela Logo"
                     fill
                     className="object-contain"
@@ -166,7 +166,7 @@ export function Footer() {
         paddingRight: 'clamp(1rem, 1.56vw, 3rem)'
       }}>
         <div className="2xl:px-16 xl:px-4">
-        <img src="/images/Group 50.svg" alt="Footer Background" className="w-full h-full object-cover" />
+        <img src="/images/Group 50.svg" alt="Footer Background" loading="lazy" decoding="async" className="w-full h-full object-cover" />
         </div>
       </div>
     </footer>

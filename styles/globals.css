@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Leaflet CSS */
-@import 'leaflet/dist/leaflet.css';
-
 /* IranSans Font Face Declarations */
 @font-face {
   font-family: 'IranSans';
