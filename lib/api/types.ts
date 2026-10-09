@@ -261,6 +261,7 @@ export interface WcaProductDatasheet {
     property?: string
     value?: string
     method?: string
+    standard?: string
   }>
 }
 

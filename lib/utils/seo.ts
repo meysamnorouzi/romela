@@ -104,6 +104,7 @@ export function generateOrganizationSchema(): OrganizationSchema {
     description: 'نمایندگی رسمی محصولات Romela Oil Germany',
     contactPoint: {
       '@type': 'ContactPoint',
+      telephone: '+989199848946',
       contactType: 'customer service',
       areaServed: 'IR',
       availableLanguage: ['fa', 'en'],

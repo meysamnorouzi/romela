@@ -11,7 +11,21 @@ DirectoryIndex index.html index.php
 # Serve dynamic sitemap
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
-# Pretty URLs for client-rendered detail pages
-RewriteRule ^products/([^/]+)/?$ /products?slug=$1 [L,QSA]
-# Blog URLs - handle URL-encoded characters (B flag escapes backreferences)
-RewriteRule ^blog/(.+?)/?$ /blog?slug=$1 [B,L,QSA]
+# Product folders only exist for products present at the last build.
+# A product added later has no folder, so Apache 404s. Send that URL to the
+# products page, which loads the product in the browser. External redirect,
+# same as blog: an internal rewrite never reaches the client router.
+# Do not rewrite Next's client payload (/products/index.txt). A 301 on that
+# file sends the browser to /products/?slug=index.txt and reloads forever.
+RewriteCond %{THE_REQUEST} !\s/+products/index\.(html|txt)/?([?\s]|$) [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^products/([^/]+)/?$ /products/?slug=$1 [R=301,L,QSA,NE,B]
+# Blog detail is client-rendered on /blog/?slug=
+# Clicking another article fetches /blog/index.txt?slug=...
+# Matching that file redirects to /blog/?slug=index.txt and the page reloads in a loop.
+# THE_REQUEST still matches when the query string is present (LiteSpeed includes it).
+RewriteCond %{THE_REQUEST} !\s/+blog/index\.(html|txt)/?([?\s]|$) [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^blog/([^/]+)/?$ /blog/?slug=$1 [R=301,L,QSA,NE,B]

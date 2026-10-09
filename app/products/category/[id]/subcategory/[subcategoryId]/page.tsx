@@ -100,10 +100,13 @@ export async function generateStaticParams() {
     }
 
     console.log(`✅ Generated ${subcategoryParams.length} static params for subcategories`)
+    if (subcategoryParams.length === 0) {
+      return [{ id: '35', subcategoryId: '35' }]
+    }
     return subcategoryParams
   } catch (error) {
     console.error('❌ Error generating static params for subcategories:', error)
-    return []
+    return [{ id: '35', subcategoryId: '35' }]
   }
 }
 

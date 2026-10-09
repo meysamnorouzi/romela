@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { CallButton } from '@/components/layout/CallButton'
 import '@/styles/globals.css'
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -104,13 +105,15 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <body className="min-h-screen-safe">
-        <div className="site-shell min-h-screen-safe">
+        {/* Clip overflow in an LTR box. Clipping an RTL box pins content to the right. */}
+        <div className="site-shell min-h-screen-safe" dir="ltr">
           <Header />
           {/* Reserve space for the fixed header on all pages.
               Home cancels main pt-6 with -mt-6 on its root wrapper. */}
-          <main className="min-h-screen-safe w-full max-w-full overflow-x-clip px-4 sm:px-6 pt-6">{children}</main>
+          <main dir="rtl" className="min-h-screen-safe w-full max-w-full px-4 sm:px-6 pt-6">{children}</main>
           <Footer />
         </div>
+        <CallButton />
       </body>
     </html>
   )

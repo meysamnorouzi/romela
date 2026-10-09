@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { NAVIGATION_ITEMS, SOCIAL_LINKS } from '@/lib/constants'
+import { CONTACT_PHONE, NAVIGATION_ITEMS, SOCIAL_LINKS } from '@/lib/constants'
 
 export function Footer() {
   const socialLinks = [
@@ -10,7 +10,7 @@ export function Footer() {
   ]
 
   return (
-    <footer className="relative w-full bg-[#0e0e0e] xl:px-4 2xl:px-6">
+    <footer dir="rtl" className="relative w-full bg-[#0e0e0e] xl:px-4 2xl:px-6">
       {/* Main Footer Container */}
       <div className="w-full max-w-[1920px] mx-auto" style={{ 
         paddingTop: 'clamp(1.5rem, 3.13vw, 4rem)', 
@@ -101,6 +101,16 @@ export function Footer() {
                 </p>
                 <p className="text-white font-iranyekan" dir="rtl" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
                   تلفن: ۳۶۱۰۸۵۰۰-۰۲۶
+                </p>
+                <p className="text-white font-iranyekan" style={{ fontSize: 'clamp(0.75rem, 0.94vw, 0.875rem)' }}>
+                  موبایل:{' '}
+                  <a
+                    href={CONTACT_PHONE.href}
+                    dir="ltr"
+                    className="hover:text-[#fcd856] transition-colors"
+                  >
+                    {CONTACT_PHONE.display}
+                  </a>
                 </p>
               </div>
             </div>

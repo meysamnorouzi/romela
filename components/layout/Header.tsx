@@ -21,6 +21,7 @@ export function Header() {
 
   return (
     <header
+      dir="rtl"
       className='fixed left-0 top-0 w-full z-50 bg-transparent'
       style={{
         paddingLeft: 'clamp(1rem, 1.56vw, 1.5rem)',

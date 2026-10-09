@@ -5,6 +5,7 @@ import type {
   WebsiteTermsListResponse,
   WebsiteTerm,
 } from './types'
+import { fetchWithRetry } from './fetch-retry'
 
 const WP_JSON_BASE_URL = (
   process.env.NEXT_PUBLIC_WP_JSON_BASE_URL ||
@@ -41,7 +42,7 @@ async function fetchJson<T>(
     query?: Record<string, string | number | boolean | undefined>
   }
 ): Promise<T> {
-  const response = await fetch(buildUrl(path, options?.query), {
+  const response = await fetchWithRetry(buildUrl(path, options?.query), {
     headers: {
       Accept: 'application/json',
     },
@@ -225,7 +226,7 @@ export async function getBlogPostBySlug(slug: string): Promise<WebsitePost | nul
     const isClient = typeof window !== 'undefined'
     const cacheMode: RequestCache = isClient ? 'no-store' : 'force-cache'
     
-    const response = await fetch(fullUrl, {
+    const response = await fetchWithRetry(fullUrl, {
       headers: {
         Accept: 'application/json',
       },

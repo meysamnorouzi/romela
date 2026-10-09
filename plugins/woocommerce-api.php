@@ -118,8 +118,9 @@ class WooCommerce_API {
             'permission_callback' => '__return_true',
         ]);
         
-        // Get single product by slug
-        register_rest_route('wca/v1', '/products/slug/(?P<slug>[a-zA-Z0-9-]+)', [
+        // Get single product by slug. [^/]+ keeps Persian and percent-encoded slugs;
+        // [a-zA-Z0-9-]+ never matches them, so WordPress returns rest_no_route.
+        register_rest_route('wca/v1', '/products/slug/(?P<slug>[^/]+)', [
             'methods' => 'GET',
             'callback' => [$this, 'get_product_by_slug'],
             'permission_callback' => '__return_true',
@@ -688,30 +689,16 @@ class WooCommerce_API {
      * Get single product by slug
      */
     public function get_product_by_slug($request) {
-        $slug = sanitize_text_field($request->get_param('slug'));
+        $slug = $this->normalize_product_slug($request->get_param('slug'));
         // Default to true for variable products, allow override
         $include_variations = $request->get_param('include_variations') !== 'false';
         
-        if (empty($slug)) {
+        if ($slug === '') {
             return new WP_Error('missing_slug', 'Product slug is required', ['status' => 400]);
         }
         
-        // Get product by slug
-        $args = [
-            'post_type' => 'product',
-            'post_status' => 'publish',
-            'name' => $slug,
-            'posts_per_page' => 1,
-        ];
-        
-        $query = new WP_Query($args);
-        
-        if (!$query->have_posts()) {
-            return new WP_Error('not_found', 'Product not found', ['status' => 404]);
-        }
-        
-        $post = $query->posts[0];
-        $product = wc_get_product($post->ID);
+        $product_id = $this->find_product_id_by_slug($slug);
+        $product = $product_id ? wc_get_product($product_id) : null;
         
         if (!$product) {
             return new WP_Error('not_found', 'Product not found', ['status' => 404]);
@@ -723,6 +710,43 @@ class WooCommerce_API {
         }
         
         return $this->core->format_product_data($product, $include_variations);
+    }
+
+    /**
+     * Decode a product slug without stripping percent-encoded octets.
+     * sanitize_text_field() removes %xx sequences, which is how WordPress stores Persian slugs.
+     */
+    private function normalize_product_slug($slug) {
+        $slug = trim(rawurldecode((string) $slug));
+        if (strpos($slug, '%') !== false) {
+            $slug = trim(rawurldecode($slug));
+        }
+        return trim($slug, "/ \t\n\r\0\x0B");
+    }
+
+    /**
+     * Match both the decoded slug and the percent-encoded post_name WordPress saves.
+     */
+    private function find_product_id_by_slug($slug) {
+        $encoded = sanitize_title($slug);
+        $candidates = array_values(array_unique(array_filter([
+            $slug,
+            $encoded,
+            strtolower($encoded),
+        ], 'strlen')));
+
+        global $wpdb;
+        foreach ($candidates as $name) {
+            $post_id = $wpdb->get_var($wpdb->prepare(
+                "SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_type = 'product' AND post_status = 'publish' LIMIT 1",
+                $name
+            ));
+            if ($post_id) {
+                return (int) $post_id;
+            }
+        }
+
+        return 0;
     }
     
     /**

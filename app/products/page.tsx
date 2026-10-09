@@ -3,10 +3,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { useSearchParams, usePathname } from 'next/navigation'
 
 import type { WcaProduct, WcaProductsListResponse, WcaCategory, WcaAttribute, WcaAttributeTerm } from '@/lib/api/types'
 import { getWcaPrimaryImageUrl, getWcaCategories, getWcaAttributes, getWcaAttributeTerms, getWcaProducts } from '@/lib/api/wca'
+import { ProductListImage } from '@/components/product/ProductListImage'
 import { LoadingSpinner } from '@/components/ui/Loading'
 import { EmptyProductsState } from '@/components/ui/EmptyProductsState'
 import { stripHtml } from '@/lib/utils/text'
@@ -55,26 +56,31 @@ const svgPaths = {
 
 function CategoryChip({
   category,
-  href,
+  selected,
+  onClick,
 }: {
   category: WcaCategory
-  href: string
+  selected?: boolean
+  onClick: () => void
 }) {
   const icon = category.image || '/images/image 8.svg'
   return (
-    <Link
-      href={href}
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={selected}
       className="rounded-[999px] md:px-12 px-4 flex items-center shrink-0 text-white transition-colors py-1"
       style={{
         gap: 'clamp(0.75rem, 0.94vw, 0.75rem)',
-        background: 'radial-gradient(circle at left, #595959 0%, #353535 62%)'
+        background: 'radial-gradient(circle at left, #595959 0%, #353535 62%)',
+        boxShadow: selected ? '0 0 0 2px #E6A816' : undefined,
       }}
     >
       <span className="leading-none whitespace-nowrap font-iranyekan md:text-base font-bold text-sm">{category.name}</span>
       <div className="relative flex items-center justify-center overflow-hidden md:h-16 md:w-16 h-10 w-10">
         {icon && <Image src={icon} alt={category.name} fill className="object-contain w-full h-full" />}
       </div>
-    </Link>
+    </button>
   )
 }
 
@@ -142,17 +148,7 @@ function ProductTile({ product }: { product: WcaProduct }) {
       }}>
         <div className="absolute inset-0 flex items-center justify-center" data-name="Mockup ATF-ZF Background Removed">
           {image ? (
-            <img
-              src={image}
-              alt={product.name}
-              className="h-full"
-              style={{
-                objectFit: 'contain',
-                height: 'calc(100% + 6rem)',
-                marginTop: '-6rem',
-                maxWidth: '90%'
-              }}
-            />
+            <ProductListImage src={image} alt={product.name} />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
               <LoadingSpinner size="lg" />
@@ -352,26 +348,46 @@ function matchesFilters(
   return true
 }
 
+function slugFromProductPath(pathname: string): string {
+  const match = pathname.match(/^\/products\/([^/]+)\/?$/)
+  if (!match) return ''
+  let value = match[1]
+  try {
+    value = decodeURIComponent(value)
+  } catch {
+    // already decoded
+  }
+  if (value === 'category') return ''
+  return value.trim()
+}
+
+function positiveId(value: string | null): number | null {
+  const id = Number(value)
+  return Number.isFinite(id) && id > 0 ? id : null
+}
+
 export default function ProductsPage() {
-  const router = useRouter()
   const pathname = usePathname()
   const sp = useSearchParams()
-  const slug = (sp.get('slug') ?? '').trim()
-  const categoryParam = sp.get('category')
-  const subcategoryParam = sp.get('subcategory')
-  const attributeTermParam = sp.get('attribute_term')
-  const attributeTermsParam = sp.get('attribute_terms') // Support multiple terms
+  const slug = (sp.get('slug') ?? '').trim() || slugFromProductPath(pathname)
 
   const [products, setProducts] = useState<WcaProduct[]>([])
   const [loadingProducts, setLoadingProducts] = useState(true)
   const [categories, setCategories] = useState<WcaCategory[]>([])
   const [loadingCategories, setLoadingCategories] = useState(true)
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null)
-  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<number | null>(null)
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(() => positiveId(sp.get('category')))
+  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<number | null>(() => positiveId(sp.get('subcategory')))
   const [attributes, setAttributes] = useState<WcaAttribute[]>([])
   const [attributeTermsMap, setAttributeTermsMap] = useState<Record<number, WcaAttributeTerm[]>>({})
   const [loadingAttributes, setLoadingAttributes] = useState(true)
-  const [selectedAttributeTerms, setSelectedAttributeTerms] = useState<number[]>([])
+  const [selectedAttributeTerms, setSelectedAttributeTerms] = useState<number[]>(() => {
+    const terms: string[] = []
+    const single = sp.get('attribute_term')
+    const many = sp.get('attribute_terms')
+    if (single) terms.push(...single.split(','))
+    if (many) terms.push(...many.split(','))
+    return [...new Set(terms.map((id) => Number(id.trim())).filter((id) => Number.isFinite(id) && id > 0))]
+  })
 
   const chipRowRef = useRef<HTMLDivElement | null>(null)
   const [showRightButton, setShowRightButton] = useState(false)
@@ -478,110 +494,65 @@ export default function ProductsPage() {
     }
   }, [])
 
-  // Initialize filters from URL parameters
+  const attributeTermsMapRef = useRef(attributeTermsMap)
+  attributeTermsMapRef.current = attributeTermsMap
+  const productCacheRef = useRef<Map<string, WcaProduct[]>>(new Map())
+
+  const attributeFilterKey = selectedAttributeTerms.slice().sort((a, b) => a - b).join(',')
+  const attributeFilterReady = selectedAttributeTerms.every((termId) =>
+    Object.values(attributeTermsMap).some((terms) => terms.some((term) => term.id === termId))
+  )
+
+  // Load products for the current filter. Keep the previous grid until the new list arrives.
   useEffect(() => {
-    if (categoryParam) {
-      const categoryId = parseInt(categoryParam, 10)
-      if (!isNaN(categoryId)) {
-        setSelectedCategoryId(categoryId)
-      }
-    } else {
-      setSelectedCategoryId(null)
-    }
-    if (subcategoryParam) {
-      const subcategoryId = parseInt(subcategoryParam, 10)
-      if (!isNaN(subcategoryId)) {
-        setSelectedSubcategoryId(subcategoryId)
-      }
-    } else {
-      setSelectedSubcategoryId(null)
+    if (selectedAttributeTerms.length > 0 && !attributeFilterReady) return
+
+    const cacheKey = `${selectedCategoryId ?? ''}|${selectedSubcategoryId ?? ''}|${attributeFilterKey}`
+    const cached = productCacheRef.current.get(cacheKey)
+    if (cached) {
+      setProducts(cached)
+      setLoadingProducts(false)
+      return
     }
 
-    // Support both single attribute_term and multiple attribute_terms
-    const terms: number[] = []
-    if (attributeTermParam) {
-      const termId = parseInt(attributeTermParam, 10)
-      if (!isNaN(termId)) {
-        terms.push(termId)
-      }
-    }
-    if (attributeTermsParam) {
-      const termIds = attributeTermsParam.split(',').map(id => parseInt(id.trim(), 10)).filter(id => !isNaN(id))
-      terms.push(...termIds)
-    }
-    setSelectedAttributeTerms([...new Set(terms)]) // Remove duplicates
-  }, [categoryParam, subcategoryParam, attributeTermParam, attributeTermsParam])
-
-  // Helper function to find attribute_id for a term_id
-  const findAttributeIdForTerm = (termId: number): number | null => {
-    for (const [attrId, terms] of Object.entries(attributeTermsMap)) {
-      if (terms.some(term => term.id === termId)) {
-        return parseInt(attrId, 10)
-      }
-    }
-    return null
-  }
-
-  // Load products
-  useEffect(() => {
     let cancelled = false
     setLoadingProducts(true)
 
     async function loadProducts() {
       try {
-        // If we have attribute terms selected, we need to handle them server-side
+        const params: Parameters<typeof getWcaProducts>[0] = {
+          per_page: 100,
+          page: 1,
+        }
+
+        if (selectedSubcategoryId) params.category = selectedSubcategoryId
+        else if (selectedCategoryId) params.category = selectedCategoryId
+
         if (selectedAttributeTerms.length > 0) {
-          // Group terms by attribute_id
           const termsByAttribute: Record<number, number[]> = {}
           for (const termId of selectedAttributeTerms) {
-            const attrId = findAttributeIdForTerm(termId)
-            if (attrId !== null) {
-              if (!termsByAttribute[attrId]) {
-                termsByAttribute[attrId] = []
+            let attrId: number | null = null
+            for (const [id, terms] of Object.entries(attributeTermsMapRef.current)) {
+              if (terms.some((term) => term.id === termId)) {
+                attrId = Number(id)
+                break
               }
-              termsByAttribute[attrId].push(termId)
             }
+            if (attrId == null) continue
+            termsByAttribute[attrId] = termsByAttribute[attrId] || []
+            termsByAttribute[attrId].push(termId)
           }
-
-          // Build attribute pairs for single API call
-          const attributePairs = Object.entries(termsByAttribute).map(([attrId, termIds]) => ({
-            attribute_id: parseInt(attrId, 10),
+          params.attribute_pairs = Object.entries(termsByAttribute).map(([attrId, termIds]) => ({
+            attribute_id: Number(attrId),
             attribute_term: termIds.length === 1 ? termIds[0] : termIds,
           }))
-
-          const params: Parameters<typeof getWcaProducts>[0] = {
-            per_page: 100,
-            page: 1,
-            attribute_pairs: attributePairs,
-          }
-          
-          if (selectedSubcategoryId) {
-            params.category = selectedSubcategoryId
-          } else if (selectedCategoryId) {
-            params.category = selectedCategoryId
-          }
-          
-          const result = await getWcaProducts(params)
-          if (cancelled) return
-          setProducts(result.products ?? [])
-        } else {
-          // No attribute filters, just use category/subcategory
-          const params: Parameters<typeof getWcaProducts>[0] = {
-            per_page: 100,
-            page: 1,
-          }
-
-          // Filter by category or subcategory
-          if (selectedSubcategoryId) {
-            params.category = selectedSubcategoryId
-          } else if (selectedCategoryId) {
-            params.category = selectedCategoryId
-          }
-
-          const result = await getWcaProducts(params)
-          if (cancelled) return
-          setProducts(result.products ?? [])
         }
+
+        const result = await getWcaProducts(params)
+        if (cancelled) return
+        const list = result.products ?? []
+        productCacheRef.current.set(cacheKey, list)
+        setProducts(list)
       } catch (error) {
         console.error('Error fetching products:', error)
         if (!cancelled) setProducts([])
@@ -595,7 +566,7 @@ export default function ProductsPage() {
     return () => {
       cancelled = true
     }
-  }, [selectedCategoryId, selectedSubcategoryId, selectedAttributeTerms, attributeTermsMap])
+  }, [selectedCategoryId, selectedSubcategoryId, attributeFilterKey, attributeFilterReady, selectedAttributeTerms])
 
   const visibleProducts = useMemo(() => {
     // Only filter by image presence, attribute filtering is now done server-side
@@ -607,35 +578,24 @@ export default function ProductsPage() {
     return withImage
   }, [products])
 
-  // Update URL when filters change (but skip initial load to avoid loop)
-  const isInitialLoad = useRef(true)
+  // Reflect the filter in the address bar without a Next.js navigation.
+  // router.replace reloads this static page and flashes the empty state.
   useEffect(() => {
-    if (isInitialLoad.current) {
-      isInitialLoad.current = false
-      return
-    }
-
+    if (slug) return
     const params = new URLSearchParams()
+    if (selectedCategoryId) params.set('category', String(selectedCategoryId))
+    if (selectedSubcategoryId) params.set('subcategory', String(selectedSubcategoryId))
+    if (selectedAttributeTerms.length > 0) params.set('attribute_terms', selectedAttributeTerms.join(','))
+    const search = params.toString()
+    const next = search ? `${window.location.pathname}?${search}` : window.location.pathname
+    const current = `${window.location.pathname}${window.location.search}`
+    if (current !== next) window.history.replaceState(window.history.state, '', next)
+  }, [selectedCategoryId, selectedSubcategoryId, selectedAttributeTerms, slug])
 
-    // Update category param
-    if (selectedCategoryId) {
-      params.set('category', selectedCategoryId.toString())
-    }
-
-    // Update subcategory param
-    if (selectedSubcategoryId) {
-      params.set('subcategory', selectedSubcategoryId.toString())
-    }
-
-    // Update attribute terms param
-    if (selectedAttributeTerms.length > 0) {
-      params.set('attribute_terms', selectedAttributeTerms.join(','))
-    }
-
-    // Update URL without causing navigation
-    const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
-    router.replace(newUrl, { scroll: false })
-  }, [selectedCategoryId, selectedSubcategoryId, selectedAttributeTerms, pathname, router])
+  const selectCategory = (categoryId: number) => {
+    setSelectedCategoryId((current) => current === categoryId ? null : categoryId)
+    setSelectedSubcategoryId(null)
+  }
 
   const handleAttributeTermToggle = (termId: number) => {
     setSelectedAttributeTerms((prev) => {
@@ -728,7 +688,7 @@ export default function ProductsPage() {
             <span className="text-[#F58F4A]">محصولات</span>
           </div>
         </div>
-        {/* Category chips row */}
+        {/* Category slider. Clicking filters this page and keeps the same chips. */}
         <div className="flex items-center" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
           {showRightButton && (
             <button
@@ -763,7 +723,8 @@ export default function ProductsPage() {
                 <CategoryChip
                   key={c.id}
                   category={c}
-                  href={`/products/category/${c.id}`}
+                  selected={selectedCategoryId === c.id}
+                  onClick={() => selectCategory(c.id)}
                 />
               ))
             )}
@@ -807,13 +768,17 @@ export default function ProductsPage() {
           gap: 'clamp(0.75rem, 1.3vw, 1.5rem) sm:clamp(1rem, 1.95vw, 2.5rem)'
         }}>
           {/* Products grid */}
-          <div dir="rtl">
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6" style={{
-              columnGap: 'clamp(0.5rem, 1.3vw, 1.5rem) sm:clamp(0.75rem, 1.95vw, 2.5rem)',
-              rowGap: 'clamp(1rem, 2.6vw, 2.5rem) sm:clamp(1.5rem, 3.91vw, 4rem)'
-            }}>
-              {loadingProducts
-                ? Array.from({ length: 9 }).map((_, i) => <ProductCardLoading key={`pl-${i}`} />)
+          <div dir="rtl" className="relative">
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 transition-opacity duration-200"
+              style={{
+                columnGap: 'clamp(0.5rem, 1.3vw, 1.5rem) sm:clamp(0.75rem, 1.95vw, 2.5rem)',
+                rowGap: 'clamp(1rem, 2.6vw, 2.5rem) sm:clamp(1.5rem, 3.91vw, 4rem)',
+                opacity: loadingProducts && visibleProducts.length > 0 ? 0.45 : 1,
+              }}
+            >
+              {loadingProducts && visibleProducts.length === 0
+                ? Array.from({ length: 6 }).map((_, i) => <ProductCardLoading key={`pl-${i}`} />)
                 : visibleProducts.map((p) => <ProductTile key={p.id} product={p} />)}
             </div>
 

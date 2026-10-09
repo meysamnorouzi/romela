@@ -160,6 +160,9 @@ export async function generateStaticParams() {
       }))
     
     console.log(`\n✅ Generated ${params.length} static params for categories`)
+    if (params.length === 0) {
+      return [{ id: '35' }, { id: '43' }]
+    }
     
     // Log category IDs for debugging
     if (params.length <= 100) {
@@ -182,7 +185,7 @@ export async function generateStaticParams() {
     return params
   } catch (error) {
     console.error('❌ Error generating static params for categories:', error)
-    return []
+    return [{ id: '35' }, { id: '43' }]
   }
 }
 

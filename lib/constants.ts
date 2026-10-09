@@ -1,3 +1,8 @@
+export const CONTACT_PHONE = {
+  display: '۰۹۱۹ ۹۸۴ ۸۹۴۶',
+  href: 'tel:+989199848946',
+} as const
+
 export const SOCIAL_LINKS = {
   instagram: {
     label: 'اینستاگرام',

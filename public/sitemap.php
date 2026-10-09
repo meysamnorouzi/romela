@@ -93,7 +93,7 @@ for ($i = 0; $i < 50; $i++) {
   $page++;
 }
 
-// Blog posts: /blog/{slug}/
+// Blog posts: /blog/?slug={slug} (static host has no per-post HTML file)
 $page = 1;
 $per = 100;
 for ($i = 0; $i < 50; $i++) {
@@ -113,7 +113,7 @@ for ($i = 0; $i < 50; $i++) {
     }
 
     $urls[] = [
-      'loc' => $SITE . '/blog/' . $p['slug'] . '/',
+      'loc' => $SITE . '/blog/?slug=' . rawurlencode($p['slug']),
       'lastmod' => $last,
     ];
   }

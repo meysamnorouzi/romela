@@ -15,7 +15,7 @@ export function BlogCard({ post }: BlogCardProps) {
 
   return (
     <Link
-      href={`/blog/${post.slug}/`}
+      href={{ pathname: '/blog', query: { slug: post.slug } }}
       className="bg-[#343434] border border-white/20 rounded-2xl sm:rounded-3xl overflow-hidden hover:border-[#E6A816] transition-all duration-300 group"
     >
       <div className="aspect-video bg-[#242424] relative overflow-hidden">

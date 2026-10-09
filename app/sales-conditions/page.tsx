@@ -289,7 +289,7 @@ export default function SalesConditionsPage() {
             ارتباط با پاد راد صنعت موتور ارس برای اخذ نمایندگی
           </h2>
 
-          <div className="space-y-6 max-w-2xl">
+          <div className="space-y-6 max-w-2xl mx-auto w-full">
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0 mt-1 text-[#E6A816]">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>

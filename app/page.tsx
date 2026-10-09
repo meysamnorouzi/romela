@@ -7,6 +7,7 @@ import { getWcaCategories, getWcaProducts, getWcaPrimaryImageUrl, getWcaAttribut
 import type { WcaCategory, WcaProduct, WcaAttribute, WcaAttributeTerm } from "@/lib/api/types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ProductListImage } from "@/components/product/ProductListImage";
 import { getVolumeFromAttributes, getStandardFromAttributes } from "@/lib/utils/wca";
 import { stripHtml } from "@/lib/utils/text";
 
@@ -1026,17 +1027,7 @@ export default function App() {
                         }}>
                           <div className="absolute inset-0 flex items-center justify-center" data-name="Mockup ATF-ZF Background Removed">
                             {productImage ? (
-                              <img
-                                src={productImage}
-                                alt={product.name}
-                                className="h-full"
-                                style={{
-                                  objectFit: 'contain',
-                                  height: 'calc(100% + 6rem)',
-                                  marginTop: '-6rem',
-                                  maxWidth: '90%'
-                                }}
-                              />
+                              <ProductListImage src={productImage} alt={product.name} />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center">
                                 <LoadingSpinner size="lg" />
