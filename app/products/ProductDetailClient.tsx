@@ -321,6 +321,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
     const subcategoryName = subcategory?.name || null
     const subcategoryId = subcategory?.id || null
     
+    const descriptionHtml = datasheetHtml(product.short_description)
     const descriptionText = stripHtml(product.short_description || product.description || '').slice(0, 160)
 
     const fullText = stripHtml(product.description || '')
@@ -339,11 +340,14 @@ export function ProductDetailClient({ slug }: { slug: string }) {
     const introImageTop = allImages[1] || primaryImage
     const introImageBottom = allImages[0] || primaryImage
 
+    const introHtml = datasheetHtml(product.description)
     const introText = stripHtml(product.description || '').slice(0, 520) || ' '
     const datasheetIntro = datasheetHtml(product.product_datasheet?.initial_description)
     const datasheetOutro = datasheetHtml(product.product_datasheet?.final_description)
-    const galleryText = (product.additional_description ? stripHtml(product.additional_description) : stripHtml(product.description || '').slice(1100, 1650)) || ' '
-    const similarText = (product.similar_products_description ? stripHtml(product.similar_products_description) : stripHtml(product.description || '').slice(1650, 2050)) || ' '
+    const galleryHtml = datasheetHtml(product.additional_description)
+    const galleryText = galleryHtml || introHtml ? '' : (stripHtml(product.description || '').slice(1100, 1650) || '')
+    const similarHtml = datasheetHtml(product.similar_products_description)
+    const similarText = similarHtml || introHtml ? '' : (stripHtml(product.description || '').slice(1650, 2050) || '')
 
     // Use product_models from API, convert to variant format
     const productModels = product.product_models || []
@@ -432,13 +436,17 @@ export function ProductDetailClient({ slug }: { slug: string }) {
       categoryId,
       subcategoryName,
       subcategoryId,
+      descriptionHtml,
       descriptionText,
       introImageTop,
       introImageBottom,
+      introHtml,
       introText,
       datasheetIntro,
       datasheetOutro,
+      galleryHtml,
       galleryText,
+      similarHtml,
       similarText,
       variants,
       badgeStandard,
@@ -543,13 +551,17 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               </div>
 
               {/* Product Description */}
-              <p
-                className="text-[#FCFBEE] text-right font-light leading-relaxed"
-                dir="auto"
-                style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
-              >
-                {computed.descriptionText || ' '}
-              </p>
+              {computed.descriptionHtml ? (
+                <WordPressContent html={computed.descriptionHtml} className="font-light text-right" />
+              ) : (
+                <p
+                  className="text-[#FCFBEE] text-right font-light leading-relaxed"
+                  dir="auto"
+                  style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
+                >
+                  {computed.descriptionText || ' '}
+                </p>
+              )}
 
               {(computed.standard || computed.viscosity || computed.brands.length > 0) ? (
                 <div
@@ -671,12 +683,16 @@ export function ProductDetailClient({ slug }: { slug: string }) {
           <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1rem, 2.08vw, 3rem)' }}>
 
             <div className="w-full lg:w-1/2">
-              <p className="text-white text-right font-medium" dir="auto" style={{ 
-                lineHeight: 'clamp(1.5rem, 3.91vw, 2.5rem)',
-                fontSize: 'clamp(0.875rem, 1.17vw, 1.5rem)'
-              }}>
-                {computed.introText}
-              </p>
+              {computed.introHtml ? (
+                <WordPressContent html={computed.introHtml} className="font-medium" />
+              ) : (
+                <p className="text-white text-right font-medium" dir="auto" style={{ 
+                  lineHeight: 'clamp(1.5rem, 3.91vw, 2.5rem)',
+                  fontSize: 'clamp(0.875rem, 1.17vw, 1.5rem)'
+                }}>
+                  {computed.introText}
+                </p>
+              )}
               <div className="flex flex-col md:flex-row w-full" style={{ gap: 'clamp(0.5rem, 0.94vw, 1rem)', marginTop: 'clamp(0.75rem, 1.17vw, 1.5rem)' }}>
                 <a 
                   href={computed.datasheetDownloadLink || '#'} 
@@ -1008,11 +1024,17 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             </div>
           </div>
 
-          <p className="text-white text-right font-medium text-base md:text-lg" dir="auto" style={{ 
-            marginTop: 'clamp(3.5rem, 7.29vw, 3.5rem)',
-          }}>
-            {computed.galleryText}
-          </p>
+          {computed.galleryHtml ? (
+            <div style={{ marginTop: 'clamp(3.5rem, 7.29vw, 3.5rem)' }}>
+              <WordPressContent html={computed.galleryHtml} className="font-medium" />
+            </div>
+          ) : computed.galleryText.trim() ? (
+            <p className="text-white text-right font-medium text-base md:text-lg" dir="auto" style={{ 
+              marginTop: 'clamp(3.5rem, 7.29vw, 3.5rem)',
+            }}>
+              {computed.galleryText}
+            </p>
+          ) : null}
         </section>
         <Divider />
         {/* Similar Products Section */}
@@ -1025,12 +1047,16 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               }}>
                 محصولا مشابه
               </h2>
-              <p className="text-white text-right font-iranyekan" dir="auto" style={{ 
-                fontSize: 'clamp(0.875rem, 1.04vw, 1.125rem)',
-                lineHeight: 'clamp(1.5rem, 1.88vw, 2.5rem)'
-              }}>
-                {computed.similarText}
-              </p>
+              {computed.similarHtml ? (
+                <WordPressContent html={computed.similarHtml} className="font-iranyekan" />
+              ) : computed.similarText.trim() ? (
+                <p className="text-white text-right font-iranyekan" dir="auto" style={{ 
+                  fontSize: 'clamp(0.875rem, 1.04vw, 1.125rem)',
+                  lineHeight: 'clamp(1.5rem, 1.88vw, 2.5rem)'
+                }}>
+                  {computed.similarText}
+                </p>
+              ) : null}
             </div>
             <div className="w-full lg:w-1/2">
               <div className="grid grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(0.5rem, 1.17vw, 1.5rem)' }}>
