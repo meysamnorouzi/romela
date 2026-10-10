@@ -771,6 +771,11 @@ a {
   text-align-last: right !important;
 }
 
+.wp-editor-content.product-copy h2,
+.wp-editor-content.product-copy h2 * {
+  color: #deb887 !important;
+}
+
 .wp-editor-content.product-copy ul,
 .wp-editor-content.product-copy ol,
 .wp-editor-content.product-copy .wp-block-list {
