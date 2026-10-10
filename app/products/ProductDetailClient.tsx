@@ -995,7 +995,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
           ) : null}
         </section>
 
-        {/* Photo Gallery Section */}
+        {/* Photo Gallery Section — تصویر محصول box hidden
         <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
           <div className="relative bg-[#222] rounded-2xl sm:rounded-3xl shadow-lg overflow-hidden flex flex-col sm:flex-row items-center justify-between" style={{ 
             padding: 'clamp(1rem, 2.08vw, 3rem)',
@@ -1023,19 +1023,20 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               </div>
             </div>
           </div>
-
-          {computed.galleryHtml ? (
-            <div style={{ marginTop: 'clamp(3.5rem, 7.29vw, 3.5rem)' }}>
-              <WordPressContent html={computed.galleryHtml} dir="rtl" className="product-copy font-medium" />
-            </div>
-          ) : computed.galleryText.trim() ? (
-            <p className="product-copy text-white font-medium text-base md:text-lg" dir="rtl" style={{ 
-              marginTop: 'clamp(3.5rem, 7.29vw, 3.5rem)',
-            }}>
-              {computed.galleryText}
-            </p>
-          ) : null}
         </section>
+        */}
+
+        {(computed.galleryHtml || computed.galleryText.trim()) ? (
+          <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
+            {computed.galleryHtml ? (
+              <WordPressContent html={computed.galleryHtml} dir="rtl" className="product-copy font-medium" />
+            ) : (
+              <p className="product-copy text-white font-medium text-base md:text-lg" dir="rtl">
+                {computed.galleryText}
+              </p>
+            )}
+          </section>
+        ) : null}
         <Divider />
         {/* Similar Products Section */}
         <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>

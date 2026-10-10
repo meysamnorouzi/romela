@@ -771,9 +771,19 @@ a {
   text-align-last: right !important;
 }
 
+/* Same hue as #deb887: h2 is the darker grade, h3 is the lighter grade. */
 .wp-editor-content.product-copy h2,
-.wp-editor-content.product-copy h2 * {
-  color: #deb887 !important;
+.wp-editor-content.product-copy h2 *,
+.wp-editor-content.blog-copy h2,
+.wp-editor-content.blog-copy h2 * {
+  color: #cc9247 !important;
+}
+
+.wp-editor-content.product-copy h3,
+.wp-editor-content.product-copy h3 *,
+.wp-editor-content.blog-copy h3,
+.wp-editor-content.blog-copy h3 * {
+  color: #e8d4bb !important;
 }
 
 .wp-editor-content.product-copy ul,

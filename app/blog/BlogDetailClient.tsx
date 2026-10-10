@@ -234,7 +234,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
 
         <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
           {post.content?.trim() ? (
-            <WordPressContent html={post.content} />
+            <WordPressContent html={post.content} className="blog-copy" />
           ) : (
             <p className="text-[#FCFBEE] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.17vw, 1.125rem)' }}>
               محتوایی برای این مقاله ثبت نشده است.
