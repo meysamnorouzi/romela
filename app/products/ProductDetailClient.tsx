@@ -552,11 +552,11 @@ export function ProductDetailClient({ slug }: { slug: string }) {
 
               {/* Product Description */}
               {computed.descriptionHtml ? (
-                <WordPressContent html={computed.descriptionHtml} className="font-light text-right" />
+                <WordPressContent html={computed.descriptionHtml} dir="rtl" className="product-copy font-light" />
               ) : (
                 <p
-                  className="text-[#FCFBEE] text-right font-light leading-relaxed"
-                  dir="auto"
+                  className="product-copy text-[#FCFBEE] font-light leading-relaxed"
+                  dir="rtl"
                   style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
                 >
                   {computed.descriptionText || ' '}
@@ -684,9 +684,9 @@ export function ProductDetailClient({ slug }: { slug: string }) {
 
             <div className="w-full lg:w-1/2">
               {computed.introHtml ? (
-                <WordPressContent html={computed.introHtml} className="font-medium" />
+                <WordPressContent html={computed.introHtml} dir="rtl" className="product-copy font-medium" />
               ) : (
-                <p className="text-white text-right font-medium" dir="auto" style={{ 
+                <p className="product-copy text-white font-medium" dir="rtl" style={{ 
                   lineHeight: 'clamp(1.5rem, 3.91vw, 2.5rem)',
                   fontSize: 'clamp(0.875rem, 1.17vw, 1.5rem)'
                 }}>
@@ -947,7 +947,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
           </div>
           {computed.datasheetIntro ? (
             <div style={{ marginBottom: 'clamp(2rem, 2.08vw, 2rem)' }}>
-              <WordPressContent html={computed.datasheetIntro} className="font-medium" />
+              <WordPressContent html={computed.datasheetIntro} dir="rtl" className="product-copy font-medium" />
             </div>
           ) : null}
 
@@ -990,7 +990,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
           </div>
           {computed.datasheetOutro ? (
             <div style={{ marginTop: 'clamp(3.5rem, 7.29vw, 3.5rem)', marginBottom: 'clamp(3.5rem, 7.29vw, 3.5rem)' }}>
-              <WordPressContent html={computed.datasheetOutro} className="font-medium" />
+              <WordPressContent html={computed.datasheetOutro} dir="rtl" className="product-copy font-medium" />
             </div>
           ) : null}
         </section>
@@ -1026,10 +1026,10 @@ export function ProductDetailClient({ slug }: { slug: string }) {
 
           {computed.galleryHtml ? (
             <div style={{ marginTop: 'clamp(3.5rem, 7.29vw, 3.5rem)' }}>
-              <WordPressContent html={computed.galleryHtml} className="font-medium" />
+              <WordPressContent html={computed.galleryHtml} dir="rtl" className="product-copy font-medium" />
             </div>
           ) : computed.galleryText.trim() ? (
-            <p className="text-white text-right font-medium text-base md:text-lg" dir="auto" style={{ 
+            <p className="product-copy text-white font-medium text-base md:text-lg" dir="rtl" style={{ 
               marginTop: 'clamp(3.5rem, 7.29vw, 3.5rem)',
             }}>
               {computed.galleryText}
@@ -1048,9 +1048,9 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                 محصولا مشابه
               </h2>
               {computed.similarHtml ? (
-                <WordPressContent html={computed.similarHtml} className="font-iranyekan" />
+                <WordPressContent html={computed.similarHtml} dir="rtl" className="product-copy font-iranyekan" />
               ) : computed.similarText.trim() ? (
-                <p className="text-white text-right font-iranyekan" dir="auto" style={{ 
+                <p className="product-copy text-white font-iranyekan" dir="rtl" style={{ 
                   fontSize: 'clamp(0.875rem, 1.04vw, 1.125rem)',
                   lineHeight: 'clamp(1.5rem, 1.88vw, 2.5rem)'
                 }}>
