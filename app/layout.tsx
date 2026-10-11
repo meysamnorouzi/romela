@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { CallButton } from '@/components/layout/CallButton'
+import { ScrollToTop } from '@/components/layout/ScrollToTop'
 import '@/styles/globals.css'
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://romela-oil.com'
@@ -126,7 +127,11 @@ export default function RootLayout({
           <Header />
           {/* Reserve space for the fixed header on all pages.
               Home cancels main pt-6 with -mt-6 on its root wrapper. */}
-          <main dir="rtl" className="min-h-screen-safe w-full max-w-full px-4 sm:px-6 pt-6">{children}</main>
+          <main dir="rtl" className="min-h-screen-safe w-full max-w-full px-4 sm:px-6 pt-6">
+            {children}
+            {/* After page content so this runs once the new page (and the contact map) has mounted. */}
+            <ScrollToTop />
+          </main>
           <Footer />
         </div>
         <CallButton />

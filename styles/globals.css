@@ -227,6 +227,8 @@ body {
 /* Reserve both edges so an RTL scrollbar on the left cannot shove content right. */
 html {
   scrollbar-gutter: stable both-edges;
+  /* Stop the browser from keeping a mid-page anchor when a new route replaces the old one. */
+  overflow-anchor: none;
 }
 
 /* Keeps scroll-to-top reliable on iOS Safari (overflow on html/body breaks it).
