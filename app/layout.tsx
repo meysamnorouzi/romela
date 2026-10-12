@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import Script from 'next/script'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { CallButton } from '@/components/layout/CallButton'
@@ -106,6 +107,9 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <head>
+        <Script id="scroll-restoration" strategy="beforeInteractive">
+          {`try{history.scrollRestoration="manual"}catch(e){}`}
+        </Script>
         <link
           rel="preload"
           href="/fonts/iranyekan/woff2/IRANYekanX-Bold.woff2"
