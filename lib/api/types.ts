@@ -315,6 +315,7 @@ export interface WcaProduct {
   product_datasheet?: WcaProductDatasheet
   additional_description?: string
   similar_products_description?: string
+  detail_cover_image?: string
 }
 
 export interface WcaProductsListResponse {

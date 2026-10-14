@@ -26,19 +26,47 @@ function datasheetHtml(value?: string | null): string {
 function ProductShowcaseImage({
   src,
   priority = false,
+  prominent = false,
 }: {
   src: string
   priority?: boolean
+  prominent?: boolean
 }) {
   return (
-    <div className="relative flex w-full items-center justify-center self-stretch bg-[#343434] rounded-2xl sm:rounded-3xl py-[7.5%] lg:w-1/2 lg:min-h-[28rem] lg:py-0">
+    <div
+      className={clsx(
+        'relative flex w-full items-center justify-center self-stretch bg-[#343434] rounded-2xl sm:rounded-3xl lg:py-0',
+        prominent
+          ? 'py-[4%] lg:w-[62%] lg:min-h-[40rem]'
+          : 'py-[7.5%] lg:w-1/2 lg:min-h-[28rem]',
+      )}
+    >
       <img
         alt=""
         src={src}
         decoding="async"
         fetchPriority={priority ? 'high' : 'low'}
         loading={priority ? 'eager' : 'lazy'}
-        className="pointer-events-none h-auto w-[90%] object-contain lg:absolute lg:left-1/2 lg:top-[10%] lg:h-[80%] lg:w-auto lg:max-w-[90%] lg:-translate-x-1/2"
+        className={clsx(
+          'pointer-events-none h-auto object-contain lg:absolute lg:left-1/2 lg:w-auto lg:-translate-x-1/2',
+          prominent
+            ? 'w-full lg:top-[2%] lg:h-[96%] lg:max-w-full'
+            : 'w-[90%] lg:top-[10%] lg:h-[80%] lg:max-w-[90%]',
+        )}
+      />
+    </div>
+  )
+}
+
+function ProductCoverImage({ src, alt }: { src: string; alt: string }) {
+  return (
+    <div className="relative aspect-[4/3] w-full self-stretch overflow-hidden rounded-2xl bg-[#343434] sm:rounded-3xl lg:aspect-auto lg:min-h-[28rem] lg:w-1/2">
+      <img
+        alt={alt}
+        src={src}
+        decoding="async"
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover"
       />
     </div>
   )
@@ -337,8 +365,8 @@ export function ProductDetailClient({ slug }: { slug: string }) {
       )
     )
 
-    const introImageTop = allImages[1] || primaryImage
     const introImageBottom = allImages[0] || primaryImage
+    const detailCoverImage = (product.detail_cover_image || '').trim()
 
     const introHtml = datasheetHtml(product.description)
     const introText = stripHtml(product.description || '').slice(0, 520) || ' '
@@ -438,8 +466,8 @@ export function ProductDetailClient({ slug }: { slug: string }) {
       subcategoryId,
       descriptionHtml,
       descriptionText,
-      introImageTop,
       introImageBottom,
+      detailCoverImage,
       introHtml,
       introText,
       datasheetIntro,
@@ -513,10 +541,10 @@ export function ProductDetailClient({ slug }: { slug: string }) {
         {/* Product Header Section */}
         <div className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
           <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1rem, 2.08vw, 3rem)' }}>
-            <ProductShowcaseImage src={computed.primaryImage} priority />
+            <ProductShowcaseImage src={computed.primaryImage} priority prominent />
 
             {/* Product Info */}
-            <div className="w-full lg:w-1/2 flex flex-col" style={{ gap: 'clamp(1rem, 1.3vw, 1.5rem)' }}>
+            <div className="w-full lg:min-w-0 lg:flex-1 flex flex-col" style={{ gap: 'clamp(1rem, 1.3vw, 1.5rem)' }}>
               <div className='flex flex-wrap items-center' style={{ gap: 'clamp(0.75rem, 0.94vw, 1rem)' }}>
 
                 {/* Product Title */}
@@ -682,7 +710,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
 
           <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1rem, 2.08vw, 3rem)' }}>
 
-            <div className="w-full lg:w-1/2">
+            <div className={clsx('w-full', computed.detailCoverImage && 'lg:w-1/2')}>
               {computed.introHtml ? (
                 <WordPressContent html={computed.introHtml} dir="rtl" className="product-copy font-medium" />
               ) : (
@@ -739,7 +767,9 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               </div>
             </div>
 
-            <ProductShowcaseImage src={computed.introImageTop} />
+            {computed.detailCoverImage ? (
+              <ProductCoverImage src={computed.detailCoverImage} alt={product.name} />
+            ) : null}
           </div>
         </section>
 

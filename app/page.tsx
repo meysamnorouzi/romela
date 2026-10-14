@@ -7,8 +7,7 @@ import { getWcaCategories, getWcaProducts, getWcaPrimaryImageUrl, getWcaAttribut
 import type { WcaCategory, WcaProduct, WcaAttribute, WcaAttributeTerm } from "@/lib/api/types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ProductListImage } from "@/components/product/ProductListImage";
-import { getVolumeFromAttributes, getStandardFromAttributes } from "@/lib/utils/wca";
+import { HomeProductsSlider } from "@/components/home/HomeProductsSlider";
 import { stripHtml } from "@/lib/utils/text";
 
 // Product Name with Tooltip Component
@@ -56,16 +55,11 @@ import {
   img1,
   imgImage6,
   imgImage3,
-  imgMockupAtfXlBackgroundRemoved,
-  imgMockupAtfZfBackgroundRemoved,
-  imgMockupAtfVmBackgroundRemoved,
   imgImage1,
   imgImage4,
 } from "./imports/image-placeholders";
 import { imgVibrantColorsWaterCreateAbstractWavePatternGeneratedByAi2, img, imgRectangle45, imgRectangle42, imgRectangle43, imgRectangle44 } from "./imports/svg-65x1p";
 import { generateOrganizationSchema, generateWebSiteSchema } from "@/lib/utils/seo";
-import { LoadingSpinner } from "@/components/ui/Loading";
-
 // Divider Component
 function Divider() {
   return (
@@ -203,7 +197,7 @@ export default function App() {
   const [brand, setBrand] = useState("");
 
   // Active tab state
-  const [activeTab, setActiveTab] = useState("gearbox-oil");
+  const [activeTab, setActiveTab] = useState("engine-oil");
   const [activeBestsellerTab, setActiveBestsellerTab] = useState<number | null>(null);
 
   // API data states
@@ -361,7 +355,7 @@ export default function App() {
             // Filter products that belong to this category
             const categoryProducts = allProducts.filter(product =>
               product.categories?.some(cat => cat.id === category.id)
-            ).slice(0, 4);
+            ).slice(0, 12);
             categoryMap[tabId] = categoryProducts;
           } else {
             // Category not found, set empty array
@@ -1010,58 +1004,7 @@ export default function App() {
           ) : (
             <>
               {currentTabProducts.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(0.75rem, 1.56vw, 2rem)', marginTop: 'clamp(1.5rem, 5.21vw, 7rem)' }}>
-                  {currentTabProducts.slice(0, 4).map((product) => {
-                    const productImage = getWcaPrimaryImageUrl(product) || imgMockupAtfZfBackgroundRemoved.src;
-                    
-                    // Get volume and standard from product attributes
-                    const volume = getVolumeFromAttributes(product);
-                    const standard = getStandardFromAttributes(product);
-                    const standardText = standard ? `دارای استاندارد ${standard}` : null;
-                    const hasVolumeOrStandard = volume || standard;
-                    
-                    return (
-                      <Link key={product.id} href={`/products/${product.slug}`} className='relative cursor-pointer block' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
-                        <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ 
-                          height: 'clamp(222px, 18.49vw, 355px)',
-                          minHeight: '222px'
-                        }}>
-                          <div className="absolute inset-0 flex items-center justify-center" data-name="Mockup ATF-ZF Background Removed">
-                            {productImage ? (
-                              <ProductListImage src={productImage} alt={product.name} />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center">
-                                <LoadingSpinner size="lg" />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <div className='w-full flex flex-col items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
-                          <div className="bg-[#e6a816ca] z-10 flex h-fit items-center justify-center rounded-[120px]" style={{
-                            padding: 'clamp(1rem, 1.25vw, 1rem)',
-                            width: '90%'
-                          }}>
-                            <div className="justify-center relative w-full">
-                              <ProductNameWithTooltip text={product.name} className="text-[#FCFBEE] text-sm" />
-                            </div>
-                          </div>
-                          {hasVolumeOrStandard && (
-                            <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold' style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-                              {volume && (
-                                <p className='text-nowrap' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>{volume}</p>
-                              )}
-                              {standard && (
-                                <p className='bg-[#C3C3C3] rounded-full' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>
-                                  <ProductNameWithTooltip text={standardText!} />
-                                </p>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
+                <HomeProductsSlider key={activeTab} products={currentTabProducts} />
               ) : (
                 <div className="text-center text-white py-12 font-iranyekan" style={{ marginTop: 'clamp(1.5rem, 5.21vw, 7rem)' }}>
                   <p style={{ fontSize: 'clamp(1rem, 1.25vw, 1.25rem)' }}>محصولی برای نمایش وجود ندارد</p>

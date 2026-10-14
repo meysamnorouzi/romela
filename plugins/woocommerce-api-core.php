@@ -335,6 +335,18 @@ class WooCommerce_API_Core {
             $data['additional_description'] = '';
             $data['similar_products_description'] = '';
         }
+
+        // Detail cover image (left card on the product introduction section)
+        try {
+            if (class_exists('Product_Detail_Cover_Image')) {
+                $cover_image = Product_Detail_Cover_Image::get_instance();
+                $data['detail_cover_image'] = $cover_image->get_product_detail_cover_image($product_id);
+            } else {
+                $data['detail_cover_image'] = '';
+            }
+        } catch (Exception $e) {
+            $data['detail_cover_image'] = '';
+        }
         
         // Featured flags (if Product Featured Flags plugin is active)
         try {

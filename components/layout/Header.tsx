@@ -2,12 +2,25 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, type MouseEvent } from 'react'
 import { NAVIGATION_ITEMS } from '@/lib/constants'
 
 export function Header() {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  const normalizePath = (path: string) => {
+    if (path.length > 1 && path.endsWith('/')) return path.slice(0, -1)
+    return path
+  }
+
+  const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    setIsMobileMenuOpen(false)
+    if (normalizePath(pathname) === normalizePath(href)) {
+      event.preventDefault()
+      window.location.reload()
+    }
+  }
 
   // Check if a nav item is active, handling nested routes
   // Only the actual home page item should be active on '/', not items that point to '/' as placeholder
@@ -35,7 +48,7 @@ export function Header() {
           paddingBottom: 'clamp(1rem, 1.25vw, 1rem)',
         }}>
           {/* Logo - Far Right (RTL) */}
-          <Link href="/" className="flex-shrink-0" style={{ marginLeft: 'clamp(0.5rem, 1.56vw, 1.5rem)' }} onClick={() => setIsMobileMenuOpen(false)}>
+          <Link href="/" className="flex-shrink-0" style={{ marginLeft: 'clamp(0.5rem, 1.56vw, 1.5rem)' }} onClick={(event) => handleNavClick(event, '/')}>
             <div className="bg-white rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center shadow-lg" style={{ 
               paddingLeft: 'clamp(0.75rem, 2.08vw, 2rem)',
               paddingRight: 'clamp(0.75rem, 2.08vw, 2rem)',
@@ -69,6 +82,7 @@ export function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={(event) => handleNavClick(event, item.href)}
                     className="font-bold transition-all whitespace-nowrap"
                     style={{
                       fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
@@ -172,7 +186,7 @@ export function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(event) => handleNavClick(event, item.href)}
                     className="font-bold transition-all whitespace-nowrap w-full text-center"
                     style={{
                       fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',

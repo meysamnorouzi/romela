@@ -913,6 +913,27 @@ a {
   }
 }
 
+/* Home product slider. LTR scroll origin, snap disabled only while we animate. */
+.home-products-scroller {
+  scroll-behavior: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+.home-products-scroller.is-animating {
+  scroll-snap-type: none;
+}
+
+.home-product-slide {
+  scroll-snap-align: start;
+}
+
+.home-products-scroller img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
 /* Product image container responsive fix for tablet and mobile only */
 /* Desktop uses inline styles, so this only affects mobile/tablet */
 @media (max-width: 1023px) {
