@@ -33,14 +33,7 @@ function ProductShowcaseImage({
   prominent?: boolean
 }) {
   return (
-    <div
-      className={clsx(
-        'relative flex w-full items-center justify-center self-stretch bg-[#343434] rounded-2xl sm:rounded-3xl lg:py-0',
-        prominent
-          ? 'py-[4%] lg:w-[62%] lg:min-h-[40rem]'
-          : 'py-[7.5%] lg:w-1/2 lg:min-h-[28rem]',
-      )}
-    >
+    <div className="relative flex w-full items-center justify-center self-stretch bg-[#343434] rounded-2xl sm:rounded-3xl py-[7.5%] lg:w-1/2 lg:min-h-[28rem] lg:py-0">
       <img
         alt=""
         src={src}
@@ -48,10 +41,10 @@ function ProductShowcaseImage({
         fetchPriority={priority ? 'high' : 'low'}
         loading={priority ? 'eager' : 'lazy'}
         className={clsx(
-          'pointer-events-none h-auto object-contain lg:absolute lg:left-1/2 lg:w-auto lg:-translate-x-1/2',
+          'pointer-events-none h-auto w-[90%] object-contain lg:absolute lg:left-1/2 lg:w-auto lg:-translate-x-1/2',
           prominent
-            ? 'w-full lg:top-[2%] lg:h-[96%] lg:max-w-full'
-            : 'w-[90%] lg:top-[10%] lg:h-[80%] lg:max-w-[90%]',
+            ? 'lg:top-[2%] lg:h-[96%] lg:max-w-[96%]'
+            : 'lg:top-[10%] lg:h-[80%] lg:max-w-[90%]',
         )}
       />
     </div>
@@ -544,7 +537,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             <ProductShowcaseImage src={computed.primaryImage} priority prominent />
 
             {/* Product Info */}
-            <div className="w-full lg:min-w-0 lg:flex-1 flex flex-col" style={{ gap: 'clamp(1rem, 1.3vw, 1.5rem)' }}>
+            <div className="w-full lg:w-1/2 flex flex-col" style={{ gap: 'clamp(1rem, 1.3vw, 1.5rem)' }}>
               <div className='flex flex-wrap items-center' style={{ gap: 'clamp(0.75rem, 0.94vw, 1rem)' }}>
 
                 {/* Product Title */}
