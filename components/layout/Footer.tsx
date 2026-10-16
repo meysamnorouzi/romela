@@ -72,15 +72,6 @@ export function Footer() {
                     </a>
                   </li>
                 ))}
-                <li>
-                  <Link
-                    href="#"
-                    className="text-white hover:text-[#fcd856] transition-colors text-right block font-iranyekan"
-                    style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
-                  >
-                    سوالات متداول
-                  </Link>
-                </li>
               </ul>
             </div>
 

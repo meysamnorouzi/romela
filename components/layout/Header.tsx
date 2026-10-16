@@ -1,12 +1,18 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { NAVIGATION_ITEMS } from '@/lib/constants'
 
+function normalizePath(path: string) {
+  if (!path || path === '/') return '/'
+  return path.replace(/\/$/, '')
+}
+
 export function Header() {
   const pathname = usePathname()
+  const router = useRouter()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // Check if a nav item is active, handling nested routes
@@ -16,7 +22,33 @@ export function Header() {
       // Only "صفحه اصلی" (Home) should be active on the home page
       return pathname === '/' && label === 'صفحه اصلی'
     }
-    return pathname.startsWith(href)
+    const current = normalizePath(pathname)
+    const target = normalizePath(href)
+    return current === target || current.startsWith(`${target}/`)
+  }
+
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    setIsMobileMenuOpen(false)
+
+    const current = normalizePath(pathname)
+    const target = normalizePath(href)
+    const destination = href === '/' ? '/' : `${target}/`
+
+    // Already on this page → refresh
+    if (current === target) {
+      e.preventDefault()
+      window.location.assign(destination)
+      return
+    }
+
+    // Nested route (e.g. /blog/slug → /blog) → go to list page
+    if (target !== '/' && current.startsWith(`${target}/`)) {
+      e.preventDefault()
+      router.push(destination)
+    }
   }
 
   return (
@@ -60,6 +92,7 @@ export function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={(e) => handleNavClick(e, item.href)}
                     className="font-bold transition-all whitespace-nowrap"
                     style={{
                       fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
@@ -163,7 +196,7 @@ export function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(e) => handleNavClick(e, item.href)}
                     className="font-bold transition-all whitespace-nowrap w-full text-center"
                     style={{
                       fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
