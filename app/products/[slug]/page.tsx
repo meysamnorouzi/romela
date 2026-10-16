@@ -103,10 +103,8 @@ export async function generateStaticParams() {
     console.log(`\n📝 First 20: ${uniqueParams.map(p => p.slug).slice(0, 20).join(', ')}...`)
   }
   
-  // NEVER return empty array
   if (uniqueParams.length === 0) {
-    console.error('⚠️  WARNING: No params generated')
-    return []
+    throw new Error('No product pages could be generated because the WordPress API did not return any products. Run the build again once admin.padradarasoil.com is reachable.')
   }
   
   return uniqueParams

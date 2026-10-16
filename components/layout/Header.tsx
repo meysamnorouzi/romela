@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { usePathname } from 'next/navigation'
+import { useState, type MouseEvent } from 'react'
 import { NAVIGATION_ITEMS } from '@/lib/constants'
 
 function normalizePath(path: string) {
@@ -10,9 +10,13 @@ function normalizePath(path: string) {
   return path.replace(/\/$/, '')
 }
 
+function toDestination(href: string) {
+  if (href === '/') return '/'
+  return `${normalizePath(href)}/`
+}
+
 export function Header() {
   const pathname = usePathname()
-  const router = useRouter()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // Check if a nav item is active, handling nested routes
@@ -27,32 +31,30 @@ export function Header() {
     return current === target || current.startsWith(`${target}/`)
   }
 
-  const handleNavClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    href: string
-  ) => {
+  const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
     setIsMobileMenuOpen(false)
 
     const current = normalizePath(pathname)
     const target = normalizePath(href)
-    const destination = href === '/' ? '/' : `${target}/`
+    const destination = toDestination(href)
 
-    // Already on this page → refresh
+    // Same page → hard reload from top of page
     if (current === target) {
-      e.preventDefault()
+      event.preventDefault()
       window.location.assign(destination)
       return
     }
 
-    // Nested route (e.g. /blog/slug → /blog) → go to list page
+    // Nested route (e.g. /blog/slug → /blog) → go to section list from top
     if (target !== '/' && current.startsWith(`${target}/`)) {
-      e.preventDefault()
-      router.push(destination)
+      event.preventDefault()
+      window.location.assign(destination)
     }
   }
 
   return (
     <header
+      dir="rtl"
       className='fixed left-0 top-0 w-full z-50 bg-transparent'
       style={{
         paddingLeft: 'clamp(1rem, 1.56vw, 1.5rem)',
@@ -66,14 +68,22 @@ export function Header() {
           paddingBottom: 'clamp(1rem, 1.25vw, 1rem)',
         }}>
           {/* Logo - Far Right (RTL) */}
-          <Link href="/" className="flex-shrink-0" style={{ marginLeft: 'clamp(0.5rem, 1.56vw, 1.5rem)' }} onClick={() => setIsMobileMenuOpen(false)}>
+          <Link href="/" className="flex-shrink-0" style={{ marginLeft: 'clamp(0.5rem, 1.56vw, 1.5rem)' }} onClick={(event) => handleNavClick(event, '/')}>
             <div className="bg-white rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center shadow-lg" style={{ 
               paddingLeft: 'clamp(0.75rem, 2.08vw, 2rem)',
               paddingRight: 'clamp(0.75rem, 2.08vw, 2rem)',
               paddingTop: 'clamp(0.25rem, 0.31vw, 0.25rem)',
               paddingBottom: 'clamp(0.25rem, 0.31vw, 0.25rem)'
             }}>
-              <img src="/images/romela new logo 4.svg" alt="romela-logo" style={{ width: 'clamp(2.25rem, 4.69vw, 3rem)' }} />
+              <img
+                src="/images/romela-logo.webp"
+                alt="Romela"
+                width={432}
+                height={444}
+                decoding="async"
+                fetchPriority="high"
+                style={{ width: 'clamp(2.25rem, 4.69vw, 3rem)', height: 'auto' }}
+              />
             </div>
           </Link>
 
@@ -92,7 +102,7 @@ export function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    onClick={(e) => handleNavClick(e, item.href)}
+                    onClick={(event) => handleNavClick(event, item.href)}
                     className="font-bold transition-all whitespace-nowrap"
                     style={{
                       fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',
@@ -196,7 +206,7 @@ export function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    onClick={(e) => handleNavClick(e, item.href)}
+                    onClick={(event) => handleNavClick(event, item.href)}
                     className="font-bold transition-all whitespace-nowrap w-full text-center"
                     style={{
                       fontSize: 'clamp(0.875rem, 1.04vw, 1rem)',

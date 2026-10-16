@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Leaflet CSS */
-@import 'leaflet/dist/leaflet.css';
-
 /* IranSans Font Face Declarations */
 @font-face {
   font-family: 'IranSans';
@@ -227,12 +224,46 @@ body {
   direction: rtl;
 }
 
+/* Reserve both edges so an RTL scrollbar on the left cannot shove content right. */
+html {
+  scrollbar-gutter: stable both-edges;
+  /* Stop the browser from keeping a mid-page anchor when a new route replaces the old one. */
+  overflow-anchor: none;
+}
+
 /* Keeps scroll-to-top reliable on iOS Safari (overflow on html/body breaks it).
-   Use 100% not 100vw — 100vw includes the scrollbar and shifts RTL content right. */
+   Use 100% not 100vw — 100vw includes the scrollbar and shifts RTL content right.
+   This box is dir=ltr so the clip does not use the RTL scroll origin. */
 .site-shell {
   max-width: 100%;
   overflow-x: hidden;
   overflow-x: clip;
+}
+
+/* Full-bleed on mobile. Width includes both paddings and only the start
+   margin is set, because RTL drops the end margin when width is definite. */
+.contact-hero {
+  background-position: center top;
+  border-radius: 0;
+  width: calc(100% + 2rem);
+  margin-inline-start: -1rem;
+  margin-top: -1.5rem;
+}
+
+@media (min-width: 640px) and (max-width: 767px) {
+  .contact-hero {
+    width: calc(100% + 3rem);
+    margin-inline-start: -1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .contact-hero {
+    background-position: center;
+    width: 100%;
+    margin-inline-start: 0;
+    margin-top: 0;
+  }
 }
 
 html {
@@ -373,6 +404,30 @@ a {
 /* Extra 1rem breathing room below fixed header for page titles */
 .page-title-offset {
   padding-top: calc(var(--site-header-offset) + var(--page-title-extra));
+}
+
+/* Right-aligned Persian copy leaves the spare space on the left.
+   Center it on phone and tablet; wide two-column rows stay right-aligned. */
+@media (max-width: 1023px) {
+  .page-title-offset h1,
+  .page-title-offset h2,
+  .page-title-offset h3,
+  .page-title-offset p,
+  .page-title-offset li,
+  .page-title-offset .text-right:not(input):not(textarea),
+  .page-title-offset-detail h1,
+  .page-title-offset-detail h2,
+  .page-title-offset-detail h3,
+  .page-title-offset-detail p,
+  .page-title-offset-detail li,
+  .page-title-offset-detail .text-right:not(input):not(textarea) {
+    text-align: center;
+  }
+
+  .page-title-offset .justify-start,
+  .page-title-offset-detail .justify-start {
+    justify-content: center;
+  }
 }
 
 @media (min-width: 768px) {
@@ -681,6 +736,203 @@ a {
 .wp-editor-content .has-text-align-right { text-align: right; }
 .wp-editor-content .has-text-align-left { text-align: left; }
 .wp-editor-content .has-text-align-center { text-align: center; }
+
+/* Product detail paragraphs: Persian copy stays RTL and justified */
+.product-copy,
+.wp-editor-content.product-copy {
+  direction: rtl;
+  text-align: justify;
+  text-align-last: right;
+  text-justify: inter-word;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.wp-editor-content.product-copy p,
+.wp-editor-content.product-copy li,
+.wp-editor-content.product-copy .wp-block-paragraph,
+.wp-editor-content.product-copy .has-text-align-left,
+.wp-editor-content.product-copy .has-text-align-center,
+.wp-editor-content.product-copy .has-text-align-right,
+.wp-editor-content.product-copy [style*='text-align'] {
+  direction: rtl !important;
+  text-align: justify !important;
+  text-align-last: right !important;
+  text-justify: inter-word;
+}
+
+.wp-editor-content.product-copy h1,
+.wp-editor-content.product-copy h2,
+.wp-editor-content.product-copy h3,
+.wp-editor-content.product-copy h4,
+.wp-editor-content.product-copy h5,
+.wp-editor-content.product-copy h6,
+.wp-editor-content.product-copy .wp-block-heading {
+  direction: rtl !important;
+  text-align: right !important;
+  text-align-last: right !important;
+}
+
+/* Same hue as #deb887: h2 is the darker grade, h3 is the lighter grade. */
+.wp-editor-content.product-copy h2,
+.wp-editor-content.product-copy h2 *,
+.wp-editor-content.blog-copy h2,
+.wp-editor-content.blog-copy h2 * {
+  color: #cc9247 !important;
+}
+
+.wp-editor-content.product-copy h3,
+.wp-editor-content.product-copy h3 *,
+.wp-editor-content.blog-copy h3,
+.wp-editor-content.blog-copy h3 * {
+  color: #e8d4bb !important;
+}
+
+.wp-editor-content.product-copy ul,
+.wp-editor-content.product-copy ol,
+.wp-editor-content.product-copy .wp-block-list {
+  direction: rtl;
+  padding-inline-start: 1.5em;
+  padding-inline-end: 0;
+}
+
+.call-cta {
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+}
+
+.call-cta:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #0e0e0e, 0 0 0 4px #fcd856;
+}
+
+.call-cta-face {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 9999px;
+  background: #fcd856;
+  color: #1a1408;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 10px 28px rgba(0, 0, 0, 0.42),
+    0 0 22px rgba(252, 216, 86, 0.28);
+  animation: call-cta-breathe 3.4s ease-in-out infinite;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease;
+}
+
+.call-cta-icon {
+  transform-origin: 50% 60%;
+  animation: call-cta-ring-shake 3.4s ease-in-out infinite;
+}
+
+.call-cta:hover .call-cta-face {
+  transform: translateY(-3px) scale(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 16px 34px rgba(0, 0, 0, 0.48),
+    0 0 30px rgba(252, 216, 86, 0.42);
+  animation-play-state: paused;
+}
+
+.call-cta:active .call-cta-face {
+  transform: scale(0.96);
+}
+
+.call-cta-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 1.5px solid rgba(252, 216, 86, 0.7);
+  pointer-events: none;
+  animation: call-cta-ring 2.8s cubic-bezier(0.16, 0.84, 0.44, 1) infinite;
+}
+
+.call-cta-ring-delayed {
+  animation-delay: 1.4s;
+}
+
+@keyframes call-cta-breathe {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.045);
+  }
+}
+
+@keyframes call-cta-ring-shake {
+  0%, 58%, 100% {
+    transform: rotate(0deg);
+  }
+  66% {
+    transform: rotate(-16deg);
+  }
+  74% {
+    transform: rotate(14deg);
+  }
+  82% {
+    transform: rotate(-8deg);
+  }
+  90% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes call-cta-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70% {
+    opacity: 0.12;
+  }
+  100% {
+    transform: scale(1.85);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .call-cta-face,
+  .call-cta-icon,
+  .call-cta-ring {
+    animation: none;
+  }
+
+  .call-cta-ring {
+    opacity: 0;
+  }
+}
+
+/* Home product slider. LTR scroll origin, snap disabled only while we animate. */
+.home-products-scroller {
+  scroll-behavior: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+.home-products-scroller.is-animating {
+  scroll-snap-type: none;
+}
+
+.home-product-slide {
+  scroll-snap-align: start;
+}
+
+.home-products-scroller img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
 
 /* Product image container responsive fix for tablet and mobile only */
 /* Desktop uses inline styles, so this only affects mobile/tablet */

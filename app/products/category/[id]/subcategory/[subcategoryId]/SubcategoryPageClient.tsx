@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 import type { WcaProduct, WcaCategory, WcaAttribute, WcaAttributeTerm } from '@/lib/api/types'
 import { getWcaPrimaryImageUrl, getWcaCategories, getWcaAttributes, getWcaAttributeTerms, getWcaProducts } from '@/lib/api/wca'
+import { ProductListImage } from '@/components/product/ProductListImage'
 import { LoadingSpinner } from '@/components/ui/Loading'
 import { EmptyProductsState } from '@/components/ui/EmptyProductsState'
 import { stripHtml } from '@/lib/utils/text'
@@ -55,7 +56,7 @@ function CategoryChip({
   category: WcaCategory
   href: string
 }) {
-  const icon = category.image || '/images/image 8.svg'
+  const icon = category.image?.trim() || '/images/romela-logo-white.webp'
   return (
     <Link
     href={href}
@@ -137,17 +138,7 @@ function ProductTile({ product }: { product: WcaProduct }) {
       }}>
         <div className="absolute inset-0 flex items-center justify-center" data-name="Mockup ATF-ZF Background Removed">
           {image ? (
-            <img
-              src={image}
-              alt={product.name}
-              className="h-full"
-              style={{
-                objectFit: 'contain',
-                height: 'calc(100% + 6rem)',
-                marginTop: '-6rem',
-                maxWidth: '90%'
-              }}
-            />
+            <ProductListImage src={image} alt={product.name} />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
               <LoadingSpinner size="lg" />

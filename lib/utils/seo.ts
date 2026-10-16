@@ -100,10 +100,11 @@ export function generateOrganizationSchema(): OrganizationSchema {
     '@type': 'Organization',
     name: 'Romela Oil Germany',
     url: baseUrl,
-    logo: `${baseUrl}/images/romela new logo 4.svg`,
+    logo: `${baseUrl}/images/apple-touch-icon.png`,
     description: 'نمایندگی رسمی محصولات Romela Oil Germany',
     contactPoint: {
       '@type': 'ContactPoint',
+      telephone: '+989199848946',
       contactType: 'customer service',
       areaServed: 'IR',
       availableLanguage: ['fa', 'en'],
@@ -238,7 +239,7 @@ export function generateArticleSchema(article: {
       name: 'Romela Oil Germany',
       logo: {
         '@type': 'ImageObject',
-        url: `${baseUrl}/images/romela new logo 4.svg`,
+        url: `${baseUrl}/images/apple-touch-icon.png`,
       },
     },
   }

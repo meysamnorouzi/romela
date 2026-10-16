@@ -14,7 +14,7 @@ const DarkMap = dynamic(() => import("@/components/contact/DarkMap"), {
   ssr: false,
 })
 import { Toast } from "@/components/ui/Toast";
-import { SOCIAL_LINKS } from '@/lib/constants'
+import { CONTACT_PHONE, SOCIAL_LINKS } from '@/lib/constants'
 
 const contactSchema = z.object({
   name: z.string().min(2, 'نام باید حداقل ۲ کاراکتر باشد'),
@@ -77,6 +77,7 @@ export default function ContactUsPage() {
 
   return (
     <>
+      <link rel="preload" as="image" href="/images/contact-us.webp" fetchPriority="high" />
       <Toast
         message="پیام شما با موفقیت ارسال شد. در اسرع وقت با شما تماس خواهیم گرفت."
         type="success"
@@ -84,14 +85,13 @@ export default function ContactUsPage() {
         onClose={() => setShowSuccessToast(false)}
       />
       <div className='w-full 2xl:mb-96 mb-8 sm:mb-16'>
-     <div className="relative w-full overflow-hidden rounded-[1rem] sm:rounded-[1.5rem]" style={{
-      backgroundImage: "url('/images/contact%20us.jpg')",
+     <div className="contact-hero relative w-full overflow-hidden md:rounded-[1.5rem]" style={{
+      backgroundImage: "url('/images/contact-us.webp')",
       backgroundSize: 'cover',
-      backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       minHeight: '100vh'
     }}>
-   <div className="absolute inset-0 bg-[#0000004D] z-10 rounded-[1rem] sm:rounded-[1.5rem]"/>
+   <div className="absolute inset-0 bg-[#0000004D] z-10 rounded-none md:rounded-[1.5rem]"/>
       {/* Content Container */}
       <div className="relative z-10 container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 pt-[calc(var(--site-header-offset)+0.5rem)] pb-16 sm:pb-20 md:pb-24 lg:pt-80 lg:pb-80">
 
@@ -242,6 +242,20 @@ export default function ContactUsPage() {
                       ۰۲۶-۳۶۱۰۸۵۰۰
                     </p>
                   </div>
+
+                  <a
+                    href={CONTACT_PHONE.href}
+                    className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+                  >
+                    <div className="flex-shrink-0">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M15.6197 8.85323C14.9237 10.3028 13.9749 11.6615 12.7734 12.8631C11.5718 14.0646 10.2131 15.0134 8.76352 15.7094C8.63883 15.7693 8.57648 15.7992 8.49759 15.8222C8.21724 15.904 7.87298 15.8453 7.63555 15.6752C7.56874 15.6274 7.51158 15.5702 7.39727 15.4559C7.04767 15.1063 6.87286 14.9315 6.69708 14.8172C6.03419 14.3862 5.17961 14.3862 4.51672 14.8172C4.34094 14.9315 4.16614 15.1063 3.81653 15.4559L3.62167 15.6508C3.09022 16.1822 2.8245 16.448 2.68016 16.7333C2.39309 17.3009 2.39309 17.9712 2.68016 18.5387C2.8245 18.8241 3.09022 19.0898 3.62167 19.6213L3.7793 19.7789C4.30892 20.3085 4.57374 20.5733 4.93377 20.7756C5.33327 21 5.95376 21.1614 6.41199 21.16C6.82493 21.1588 7.10716 21.0787 7.6716 20.9185C10.705 20.0575 13.5674 18.433 15.9553 16.045C18.3433 13.6571 19.9678 10.7947 20.8288 7.76131C20.989 7.19687 21.0691 6.91464 21.0703 6.5017C21.0717 6.04347 20.9103 5.42298 20.6859 5.02348C20.4836 4.66345 20.2188 4.39863 19.6892 3.86901L19.5316 3.71138C19.0001 3.17993 18.7344 2.91421 18.449 2.76987C17.8815 2.4828 17.2112 2.4828 16.6436 2.76987C16.3583 2.91421 16.0925 3.17993 15.5611 3.71138L15.3662 3.90625C15.0166 4.25585 14.8418 4.43065 14.7275 4.60643C14.2965 5.26932 14.2965 6.1239 14.7275 6.78679C14.8418 6.96257 15.0166 7.13738 15.3662 7.48698C15.4805 7.60129 15.5377 7.65845 15.5855 7.72526C15.7555 7.96269 15.8142 8.30695 15.7325 8.5873C15.7095 8.6662 15.6796 8.72854 15.6197 8.85323Z" stroke="white" stroke-width="1.38889" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </div>
+                    <span className="text-xs sm:text-sm md:text-base font-bold text-white font-iranyekan" dir="ltr">
+                      {CONTACT_PHONE.display}
+                    </span>
+                  </a>
 
                   {/* Hours */}
                   <div className="flex items-start gap-3">

@@ -12,6 +12,7 @@ import type {
   WebsiteTerm,
   WebsiteTermsListResponse,
 } from '@/lib/api/types'
+import { getPublishedDate } from '@/lib/api/website'
  
  type BlogSearchParams = {
    page?: string
@@ -138,7 +139,9 @@ import type {
 
         const t = Number((raw as any).total ?? 0)
         setTotal(Number.isFinite(t) ? t : 0)
-        setPosts((((raw as any).posts ?? []) as WebsitePost[]) || [])
+        const nextPosts = ((((raw as any).posts ?? []) as WebsitePost[]) || [])
+        nextPosts.sort((a, b) => (getPublishedDate(b)?.getTime() ?? 0) - (getPublishedDate(a)?.getTime() ?? 0))
+        setPosts(nextPosts)
       } catch {
         if (cancelled) return
         setTotal(0)

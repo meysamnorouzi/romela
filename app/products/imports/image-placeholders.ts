@@ -8,10 +8,10 @@ const createPlaceholderImage = (src: string) => ({
   blurDataURL: '',
 });
 
-export const imgMockupAtfXlBackgroundRemoved = createPlaceholderImage('/images/mockup-atf-zf.png');
-export const imgImg2889N1 = createPlaceholderImage('/images/image 9.png');
-export const imgImage1 = createPlaceholderImage('/images/image 9.png');
-export const imgImage2 = createPlaceholderImage('/images/image 9.png');
-export const imgImage9 = createPlaceholderImage('/images/image 9.png');
-export const imgImage25 = createPlaceholderImage('/images/image 9.png');
-export const imgScreenshot20251215At1246271 = createPlaceholderImage('/images/image 9.png');
+export const imgMockupAtfXlBackgroundRemoved = createPlaceholderImage('/images/product-fallback.webp');
+export const imgImg2889N1 = createPlaceholderImage('/images/romela-mark.webp');
+export const imgImage1 = createPlaceholderImage('/images/romela-mark.webp');
+export const imgImage2 = createPlaceholderImage('/images/romela-mark.webp');
+export const imgImage9 = createPlaceholderImage('/images/romela-mark.webp');
+export const imgImage25 = createPlaceholderImage('/images/romela-mark.webp');
+export const imgScreenshot20251215At1246271 = createPlaceholderImage('/images/romela-mark.webp');

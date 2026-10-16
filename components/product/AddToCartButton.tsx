@@ -21,7 +21,7 @@ export function AddToCartButton({ product, quantity = 1 }: AddToCartButtonProps)
       name: product.name,
       price: parseFloat(product.price || '0'),
       quantity,
-      image: product.images?.[0]?.src || '/placeholder-product.jpg',
+      image: product.images?.[0]?.src || '/images/product-fallback.webp',
       slug: product.slug,
       stock_quantity: product.stock_quantity,
     })

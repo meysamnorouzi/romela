@@ -1,3 +1,8 @@
+export const CONTACT_PHONE = {
+  display: '۰۹۱۹ ۹۸۴ ۸۹۴۶',
+  href: 'tel:+989199848946',
+} as const
+
 export const SOCIAL_LINKS = {
   instagram: {
     label: 'اینستاگرام',
@@ -28,43 +33,43 @@ export const PRODUCT_CATEGORIES = [
   {
     id: 'engine-oil',
     title: 'روغن موتور',
-    image: '/images/406618088_4cf1da23-4ada-498f-9987-8e38474b39b9 1.svg',
+    image: '/images/category-engine.webp',
     description: 'روغن موتور با کیفیت بالا',
   },
   {
     id: 'gearbox-oil',
     title: 'روغن گیربکس',
-    image: '/images/image 2.svg',
+    image: '/images/category-gearbox.webp',
     description: 'روغن گیربکس فول سینتتیک',
   },
   {
     id: 'industrial-oil',
     title: 'روغن های صنعتی',
-    image: '/images/image 8.svg',
+    image: '/images/category-industrial.webp',
     description: 'توربین، کمپرسور، ترانسفورمر، حرارتی، یافت و...',
   },
   {
     id: 'hydraulic-oil',
     title: 'روغن هیدرولیک',
-    image: '/images/image 6.svg',
+    image: '/images/category-hydraulic.webp',
     description: 'روغن هیدرولیک با کیفیت',
   },
   {
     id: 'grease',
     title: 'گریس',
-    image: '/images/image 3.svg',
+    image: '/images/category-grease.webp',
     description: 'گریس صنعتی',
   },
   {
     id: 'brake-fluid',
     title: 'روغن ترمز',
-    image: '/images/image 5.svg',
+    image: '/images/category-brake.webp',
     description: 'روغن ترمز استاندارد',
   },
   {
     id: 'special-additives',
     title: 'افزودنی های خاص',
-    image: '/images/image 7.svg',
+    image: '/images/category-additives.webp',
     description: 'افزودنی های خاص',
   },
 ] as const

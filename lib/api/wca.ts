@@ -1,4 +1,5 @@
 import type { WcaCategory, WcaProduct, WcaProductsListResponse, WcaCategoriesListResponse, WcaRelatedProductsResponse, WcaAttributesListResponse, WcaAttributeTermsResponse } from './types'
+import { fetchWithRetry } from './fetch-retry'
 
 const WP_JSON_BASE_URL = (
   process.env.NEXT_PUBLIC_WP_JSON_BASE_URL ||
@@ -40,7 +41,7 @@ async function fetchJson<T>(
     cache?: RequestCache
   }
 ): Promise<T> {
-  const response = await fetch(buildUrl(path, options?.query), {
+  const response = await fetchWithRetry(buildUrl(path, options?.query), {
     headers: {
       Accept: 'application/json',
     },
@@ -215,9 +216,24 @@ export async function getWcaCategories(params?: {
   return normalizeCategoriesList(raw)
 }
 
+function decodeSlug(slug: string): string {
+  let value = slug.trim()
+  for (let i = 0; i < 2 && value.includes('%'); i += 1) {
+    try {
+      const next = decodeURIComponent(value)
+      if (next === value) break
+      value = next
+    } catch {
+      break
+    }
+  }
+  return value
+}
+
 export async function getWcaProductBySlug(slug: string, params?: { include_variations?: boolean }): Promise<WcaProduct | null> {
   try {
-    return await fetchJson<WcaProduct>(`wca/v1/products/slug/${slug}`, {
+    // Pass the decoded slug. URL() encodes it once; pre-encoding would turn % into %25.
+    return await fetchJson<WcaProduct>(`wca/v1/products/slug/${decodeSlug(slug)}`, {
       query: {
         include_variations: params?.include_variations,
       },

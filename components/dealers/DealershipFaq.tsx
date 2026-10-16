@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useState, type ReactNode } from 'react'
 
 export type FaqItem = {
@@ -30,25 +29,8 @@ function ChevronIcon({ open }: { open: boolean }) {
   )
 }
 
-function FaqIllustration() {
-  return (
-    <div
-      className="relative mx-auto w-full max-w-[300px] aspect-[4/3] overflow-hidden rounded-[20px] border border-white/10 bg-[#343434] shadow-[0_30px_70px_rgba(0,0,0,0.45)] lg:max-w-none"
-      aria-hidden
-    >
-      <Image
-        src="/images/sales-conditions/dealership-faq.svg"
-        alt=""
-        fill
-        className="object-cover"
-        sizes="(max-width: 1024px) 300px, 40vw"
-      />
-    </div>
-  )
-}
-
 export function DealershipFaq({ items }: { items: FaqItem[] }) {
-  const [openId, setOpenId] = useState<string>(items[0]?.id ?? '')
+  const [openId, setOpenId] = useState<string>('')
 
   return (
     <section className="mt-14 md:mt-16 pt-10 md:pt-12 border-t border-white/10" dir="rtl">
@@ -59,12 +41,7 @@ export function DealershipFaq({ items }: { items: FaqItem[] }) {
         سوالات متداول در ارتباط با اعطا نمایندگی
       </h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[minmax(200px,1fr)_minmax(0,1.4fr)] gap-10 lg:gap-14 items-start">
-        <div className="hidden sm:flex justify-center lg:justify-center lg:order-2">
-          <FaqIllustration />
-        </div>
-
-        <div className="space-y-3 lg:order-1" dir="rtl">
+      <div className="w-full space-y-3" dir="rtl">
           {items.map((item) => {
             const isOpen = openId === item.id
             return (
@@ -94,7 +71,6 @@ export function DealershipFaq({ items }: { items: FaqItem[] }) {
               </div>
             )
           })}
-        </div>
       </div>
     </section>
   )

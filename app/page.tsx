@@ -7,7 +7,7 @@ import { getWcaCategories, getWcaProducts, getWcaPrimaryImageUrl, getWcaAttribut
 import type { WcaCategory, WcaProduct, WcaAttribute, WcaAttributeTerm } from "@/lib/api/types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { getVolumeFromAttributes, getStandardFromAttributes } from "@/lib/utils/wca";
+import { HomeProductsSlider } from "@/components/home/HomeProductsSlider";
 import { stripHtml } from "@/lib/utils/text";
 
 // Product Name with Tooltip Component
@@ -55,16 +55,11 @@ import {
   img1,
   imgImage6,
   imgImage3,
-  imgMockupAtfXlBackgroundRemoved,
-  imgMockupAtfZfBackgroundRemoved,
-  imgMockupAtfVmBackgroundRemoved,
   imgImage1,
   imgImage4,
 } from "./imports/image-placeholders";
 import { imgVibrantColorsWaterCreateAbstractWavePatternGeneratedByAi2, img, imgRectangle45, imgRectangle42, imgRectangle43, imgRectangle44 } from "./imports/svg-65x1p";
 import { generateOrganizationSchema, generateWebSiteSchema } from "@/lib/utils/seo";
-import { LoadingSpinner } from "@/components/ui/Loading";
-
 // Divider Component
 function Divider() {
   return (
@@ -202,7 +197,7 @@ export default function App() {
   const [brand, setBrand] = useState("");
 
   // Active tab state
-  const [activeTab, setActiveTab] = useState("gearbox-oil");
+  const [activeTab, setActiveTab] = useState("engine-oil");
   const [activeBestsellerTab, setActiveBestsellerTab] = useState<number | null>(null);
 
   // API data states
@@ -360,7 +355,7 @@ export default function App() {
             // Filter products that belong to this category
             const categoryProducts = allProducts.filter(product =>
               product.categories?.some(cat => cat.id === category.id)
-            ).slice(0, 4);
+            ).slice(0, 12);
             categoryMap[tabId] = categoryProducts;
           } else {
             // Category not found, set empty array
@@ -545,6 +540,7 @@ export default function App() {
 
   return (
     <div className="home-page bg-[#0e0e0e] min-h-screen-safe w-full relative -mt-6">
+      <link rel="preload" as="image" href="/images/hero-wave.webp" fetchPriority="high" />
       {/* Structured Data (JSON-LD) */}
       <script
         type="application/ld+json"
@@ -560,7 +556,7 @@ export default function App() {
       />
       {/* Hero Section with Masked Background */}
       <div className="home-hero relative w-full flex items-center justify-center rounded-[1rem] sm:rounded-[1.5rem] pb-6 sm:pb-8 md:pb-12 lg:pb-16 pt-24 sm:pt-32 md:pt-40 lg:pt-52" style={{
-        backgroundImage: `url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')`,
+        backgroundImage: `url('/images/hero-wave.webp')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -923,7 +919,7 @@ export default function App() {
             <div className="w-full lg:w-[40%]">
               <div className="bg-[#343434] rounded-3xl h-full flex items-center justify-center" style={{ padding: 'clamp(1.5rem, 2.34vw, 3rem)' }}>
                 <div className="w-full flex items-center justify-center" style={{ height: 'clamp(256px, 15.63vw, 300px)' }}>
-                  <img alt="" className="w-full h-full object-contain pointer-events-none" src={imgImage9.src} />
+                  <img alt="" loading="lazy" decoding="async" className="w-full h-full object-contain pointer-events-none" src={imgImage9.src} />
                 </div>
               </div>
             </div>
@@ -1008,68 +1004,7 @@ export default function App() {
           ) : (
             <>
               {currentTabProducts.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 'clamp(0.75rem, 1.56vw, 2rem)', marginTop: 'clamp(1.5rem, 5.21vw, 7rem)' }}>
-                  {currentTabProducts.slice(0, 4).map((product) => {
-                    const productImage = getWcaPrimaryImageUrl(product) || imgMockupAtfZfBackgroundRemoved.src;
-                    
-                    // Get volume and standard from product attributes
-                    const volume = getVolumeFromAttributes(product);
-                    const standard = getStandardFromAttributes(product);
-                    const standardText = standard ? `دارای استاندارد ${standard}` : null;
-                    const hasVolumeOrStandard = volume || standard;
-                    
-                    return (
-                      <Link key={product.id} href={`/products/${product.slug}`} className='relative cursor-pointer block' style={{ marginTop: 'clamp(4rem, 5.21vw, 4rem)' }}>
-                        <div className="relative bg-[#343434] rounded-[24px] w-full flex items-center justify-center" style={{ 
-                          height: 'clamp(222px, 18.49vw, 355px)',
-                          minHeight: '222px'
-                        }}>
-                          <div className="absolute inset-0 flex items-center justify-center" data-name="Mockup ATF-ZF Background Removed">
-                            {productImage ? (
-                              <img
-                                src={productImage}
-                                alt={product.name}
-                                className="h-full"
-                                style={{
-                                  objectFit: 'contain',
-                                  height: 'calc(100% + 6rem)',
-                                  marginTop: '-6rem',
-                                  maxWidth: '90%'
-                                }}
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center">
-                                <LoadingSpinner size="lg" />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <div className='w-full flex flex-col items-center justify-center z-10' style={{ marginTop: 'clamp(-1.25rem, -2.6vw, -1.25rem)' }}>
-                          <div className="bg-[#e6a816ca] z-10 flex h-fit items-center justify-center rounded-[120px]" style={{
-                            padding: 'clamp(1rem, 1.25vw, 1rem)',
-                            width: '90%'
-                          }}>
-                            <div className="justify-center relative w-full">
-                              <ProductNameWithTooltip text={product.name} className="text-[#FCFBEE] text-sm" />
-                            </div>
-                          </div>
-                          {hasVolumeOrStandard && (
-                            <div className='flex items-center bg-[#DEDEDE] rounded-full text-black font-bold' style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-                              {volume && (
-                                <p className='text-nowrap' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>{volume}</p>
-                              )}
-                              {standard && (
-                                <p className='bg-[#C3C3C3] rounded-full' style={{ paddingLeft: 'clamp(1rem, 1.25vw, 1rem)', paddingRight: 'clamp(1rem, 1.25vw, 1rem)', paddingTop: 'clamp(0.5rem, 0.63vw, 0.5rem)', paddingBottom: 'clamp(0.5rem, 0.63vw, 0.5rem)' }}>
-                                  <ProductNameWithTooltip text={standardText!} />
-                                </p>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
+                <HomeProductsSlider key={activeTab} products={currentTabProducts} />
               ) : (
                 <div className="text-center text-white py-12 font-iranyekan" style={{ marginTop: 'clamp(1.5rem, 5.21vw, 7rem)' }}>
                   <p style={{ fontSize: 'clamp(1rem, 1.25vw, 1.25rem)' }}>محصولی برای نمایش وجود ندارد</p>
@@ -1257,7 +1192,7 @@ export default function App() {
                   {currentBestsellerProducts.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(0.75rem, 1.3vw, 1.5rem)' }}>
                       {currentBestsellerProducts.map((product) => {
-                        const productImage = getWcaPrimaryImageUrl(product) || '/images/image 1.png';
+                        const productImage = getWcaPrimaryImageUrl(product) || '/images/product-placeholder.webp';
                         return (
                           <Link
                             key={product.id}
@@ -1273,7 +1208,7 @@ export default function App() {
                               <ProductNameWithTooltip text={product.name} className="font-bold text-[#F9BD65] font-iranyekan text-base" />
                             </h4>
                             <div className="flex-1 flex items-center justify-center font-iranyekan text-center" style={{ marginBottom: 'clamp(1rem, 1.25vw, 1rem)' }}>
-                              <img src={productImage} alt={product.name} style={{ width: 'clamp(6rem, 8.33vw, 8rem)' }} />
+                              <img src={productImage} alt={product.name} loading="lazy" decoding="async" style={{ width: 'clamp(6rem, 8.33vw, 8rem)', height: 'auto' }} />
                             </div>
                           </Link>
                         );

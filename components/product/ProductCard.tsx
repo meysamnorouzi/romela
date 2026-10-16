@@ -9,7 +9,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const imageUrl = product.images?.[0]?.src || '/placeholder-product.jpg'
+  const imageUrl = product.images?.[0]?.src || '/images/product-fallback.webp'
   const price = product.price ? parseFloat(product.price) : 0
 
   return (

@@ -12,8 +12,66 @@ import {
 import { getWcaPrimaryImageUrl, getWcaCategories, getWcaProductBySlug, getWcaRelatedProducts } from '@/lib/api/wca'
 import type { WcaProduct, WcaRelatedProductsResponse, WcaCategory } from '@/lib/api/types'
 import { stripHtml } from '@/lib/utils/text'
-import { extractBrands, extractStandard, extractViscosity, getVolumeFromAttributes, getStandardFromAttributes, extractDatasheetTable } from '@/lib/utils/wca'
+import { extractBrands, extractStandard, extractViscosity, getAttributeTermNames, getVolumeFromAttributes, getStandardFromAttributes, extractDatasheetTable } from '@/lib/utils/wca'
 import { PAGE_BLEED_CLASS, PAGE_TITLE_TOP_DETAIL_CLASS } from '@/lib/page-layout'
+import { WordPressContent } from '@/components/blog/WordPressContent'
+import { formatToman } from '@/lib/utils/format'
+
+function datasheetHtml(value?: string | null): string {
+  return (value || '')
+    .replace(/<h[1-6][^>]*>\s*(?:<br\s*\/?>|&nbsp;|\u00a0)*\s*<\/h[1-6]>/gi, '')
+    .trim()
+}
+
+function ProductShowcaseImage({
+  src,
+  priority = false,
+  prominent = false,
+}: {
+  src: string
+  priority?: boolean
+  prominent?: boolean
+}) {
+  return (
+    <div className="relative flex w-full items-center justify-center self-stretch bg-[#343434] rounded-2xl sm:rounded-3xl py-[7.5%] lg:w-1/2 lg:min-h-[28rem] lg:py-0">
+      <img
+        alt=""
+        src={src}
+        decoding="async"
+        fetchPriority={priority ? 'high' : 'low'}
+        loading={priority ? 'eager' : 'lazy'}
+        className={clsx(
+          'pointer-events-none h-auto w-[90%] object-contain lg:absolute lg:left-1/2 lg:w-auto lg:-translate-x-1/2',
+          prominent
+            ? 'lg:top-[2%] lg:h-[96%] lg:max-w-[96%]'
+            : 'lg:top-[10%] lg:h-[80%] lg:max-w-[90%]',
+        )}
+      />
+    </div>
+  )
+}
+
+function ProductCoverImage({ src, alt }: { src: string; alt: string }) {
+  return (
+    <div className="relative aspect-[4/3] w-full self-stretch overflow-hidden rounded-2xl bg-[#343434] sm:rounded-3xl lg:aspect-auto lg:min-h-[28rem] lg:w-1/2">
+      <img
+        alt={alt}
+        src={src}
+        decoding="async"
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+    </div>
+  )
+}
+
+function displayPrice(price?: string | number | null, priceText?: string | null): string {
+  const labeled = (priceText || '').trim()
+  if (labeled && labeled !== 'تماس بگیرید' && labeled !== 'قیمت تماس بگیرید') return labeled
+  const numeric = Number(String(price ?? '').replace(/[^\d.]/g, ''))
+  if (!Number.isFinite(numeric) || numeric <= 0) return ''
+  return formatToman(numeric)
+}
 
 // Divider Component (kept identical)
 function Divider() {
@@ -98,6 +156,8 @@ function RelatedProductCard({
             alt=""
             className="w-full h-full object-contain pointer-events-none"
             src={imageUrl || fallbackImage}
+            loading="lazy"
+            decoding="async"
           />
         </div>
       </div>
@@ -282,6 +342,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
     const subcategoryName = subcategory?.name || null
     const subcategoryId = subcategory?.id || null
     
+    const descriptionHtml = datasheetHtml(product.short_description)
     const descriptionText = stripHtml(product.short_description || product.description || '').slice(0, 160)
 
     const fullText = stripHtml(product.description || '')
@@ -297,32 +358,25 @@ export function ProductDetailClient({ slug }: { slug: string }) {
       )
     )
 
-    const introImageTop = allImages[1] || primaryImage
     const introImageBottom = allImages[0] || primaryImage
+    const detailCoverImage = (product.detail_cover_image || '').trim()
 
+    const introHtml = datasheetHtml(product.description)
     const introText = stripHtml(product.description || '').slice(0, 520) || ' '
-    const datasheetText = (product.product_datasheet?.initial_description ? stripHtml(product.product_datasheet.initial_description) : stripHtml(product.description || '').slice(520, 1100)) || ' '
-    const galleryText = (product.additional_description ? stripHtml(product.additional_description) : stripHtml(product.description || '').slice(1100, 1650)) || ' '
-    const similarText = (product.similar_products_description ? stripHtml(product.similar_products_description) : stripHtml(product.description || '').slice(1650, 2050)) || ' '
+    const datasheetIntro = datasheetHtml(product.product_datasheet?.initial_description)
+    const datasheetOutro = datasheetHtml(product.product_datasheet?.final_description)
+    const galleryHtml = datasheetHtml(product.additional_description)
+    const galleryText = galleryHtml || introHtml ? '' : (stripHtml(product.description || '').slice(1100, 1650) || '')
+    const similarHtml = datasheetHtml(product.similar_products_description)
+    const similarText = similarHtml || introHtml ? '' : (stripHtml(product.description || '').slice(1650, 2050) || '')
 
     // Use product_models from API, convert to variant format
     const productModels = product.product_models || []
     const variants = productModels.map((model: any) => {
-      // Format price if available
-      let priceText = model.priceText || 'تماس بگیرید'
-      if (model.price && !model.priceText) {
-        const priceRial = Number(model.price || 0)
-        const isRial = String(model.price || '').includes('ریال')
-        const priceToman = Number.isFinite(priceRial) && priceRial > 0 
-          ? Math.round(isRial ? priceRial / 10 : priceRial) 
-          : 0
-        priceText = priceToman > 0 ? new Intl.NumberFormat('fa-IR').format(priceToman) : 'تماس بگیرید'
-      }
-      
       return {
         name: model.name || product.name,
         volume: model.volume || '',
-        priceText: priceText,
+        priceText: displayPrice(model.price, model.priceText),
         imageUrl: model.imageUrl || model.image || primaryImage,
         slug: model.slug || product.slug
       }
@@ -332,15 +386,12 @@ export function ProductDetailClient({ slug }: { slug: string }) {
     const badgeVolume = getVolumeFromAttributes(product) || (productModels.length > 0 ? (productModels[0] as any)?.volume : '') || ''
     const badgeStandard = getStandardFromAttributes(product) || extractStandard(fullText) || categoryName
 
-    const viscosity = extractViscosity(product.name) || extractViscosity(fullText) || ''
-    const standard = extractStandard(fullText) || ''
-    const brands = extractBrands(fullText)
+    const standard = getAttributeTermNames(product, 'استاندارد').join(', ') || extractStandard(fullText) || ''
+    const viscosity = getAttributeTermNames(product, 'ویسکوزیته').join(', ') || extractViscosity(product.name) || extractViscosity(fullText) || ''
+    const brandTerms = getAttributeTermNames(product, ['برند خودرو', 'برند-خودرو'])
+    const brands = brandTerms.length ? brandTerms : extractBrands(fullText)
 
-    const priceRial = Number(product.price || 0)
-    const isRial = (product.price_html || '').includes('ریال')
-    const priceToman =
-      Number.isFinite(priceRial) && priceRial > 0 ? Math.round(isRial ? priceRial / 10 : priceRial) : 0
-    const priceText = priceToman > 0 ? new Intl.NumberFormat('fa-IR').format(priceToman) : 'تماس بگیرید'
+    const priceText = displayPrice(product.price)
 
     const stockCount =
       typeof product.stock_quantity === 'number' ? product.stock_quantity : product.in_stock ? 1 : 0
@@ -359,7 +410,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
       ? datasheetTableData.map((row: any) => ({
           property: row.property || '—',
           value: row.value || '—',
-          method: row.method || '—',
+          method: row.method || row.standard || '—',
         }))
       : [
           { property: 'SKU', value: product.sku || '—', method: '—' },
@@ -406,12 +457,17 @@ export function ProductDetailClient({ slug }: { slug: string }) {
       categoryId,
       subcategoryName,
       subcategoryId,
+      descriptionHtml,
       descriptionText,
-      introImageTop,
       introImageBottom,
+      detailCoverImage,
+      introHtml,
       introText,
-      datasheetText,
+      datasheetIntro,
+      datasheetOutro,
+      galleryHtml,
       galleryText,
+      similarHtml,
       similarText,
       variants,
       badgeStandard,
@@ -478,16 +534,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
         {/* Product Header Section */}
         <div className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
           <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1rem, 2.08vw, 3rem)' }}>
-            {/* Product Image */}
-            <div className="w-full lg:w-1/2 bg-[#343434] rounded-2xl sm:rounded-3xl flex items-center justify-center" style={{ padding: 'clamp(0.75rem, 1.56vw, 2rem)' }}>
-              <div className="relative w-full" style={{ maxWidth: 'clamp(10rem, 15.63vw, 18rem)' }}>
-                <img
-                  alt=""
-                  className="w-full object-contain pointer-events-none"
-                  src={computed.primaryImage}
-                />
-              </div>
-            </div>
+            <ProductShowcaseImage src={computed.primaryImage} priority prominent />
 
             {/* Product Info */}
             <div className="w-full lg:w-1/2 flex flex-col" style={{ gap: 'clamp(1rem, 1.3vw, 1.5rem)' }}>
@@ -525,55 +572,65 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               </div>
 
               {/* Product Description */}
-              <p
-                className="text-[#FCFBEE] text-right font-light leading-relaxed"
-                dir="auto"
-                style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
-              >
-                {computed.descriptionText || ' '}
-              </p>
-
-              {/* Product Specs */}
-              <div
-                className="text-[#f58f4a] text-right"
-                dir="auto"
-                style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
-              >
-                <ul className="list-disc list-inside flex flex-col font-light" style={{ gap: 'clamp(0.375rem, 0.47vw, 0.5rem)' }}>
-                  <li>
-                    <span>استاندارد: </span>
-                    <span className="font-black">{computed.standard || '—'}</span>
-                  </li>
-                  <li>
-                    <span>ویسکوزیته: </span>
-                    <span className="font-black">{computed.viscosity || '—'}</span>
-                  </li>
-                  <li>
-                    برند های قابل استفاده:{' '}
-                    <span className="font-black">
-                      {computed.brands.length ? computed.brands.join(', ') : '—'}
-                    </span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Price */}
-              <div className="flex items-center flex-wrap" style={{ gap: 'clamp(0.75rem, 0.94vw, 1rem)' }}>
-                <span
-                  className="text-[#fcfbee] text-right font-light"
-                  dir="auto"
-                  style={{ fontSize: 'clamp(1.125rem, 1.41vw, 1.5rem)' }}
+              {computed.descriptionHtml ? (
+                <WordPressContent html={computed.descriptionHtml} dir="rtl" className="product-copy font-light" />
+              ) : (
+                <p
+                  className="product-copy text-[#FCFBEE] font-light leading-relaxed"
+                  dir="rtl"
+                  style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
                 >
-                  قیمت
-                </span>
-                <span
-                  className="text-[#fcfbee] text-right font-light"
+                  {computed.descriptionText || ' '}
+                </p>
+              )}
+
+              {(computed.standard || computed.viscosity || computed.brands.length > 0) ? (
+                <div
+                  className="text-[#f58f4a] text-right"
                   dir="auto"
-                  style={{ fontSize: 'clamp(1.1rem, 1.88vw, 1.1rem)' }}
+                  style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}
                 >
-                  <span className='font-black'>تماس بگیرید</span>
-                </span>
-              </div>
+                  <ul className="list-disc list-inside flex flex-col font-light" style={{ gap: 'clamp(0.375rem, 0.47vw, 0.5rem)' }}>
+                    {computed.standard ? (
+                      <li>
+                        <span>استاندارد: </span>
+                        <span className="font-black">{computed.standard}</span>
+                      </li>
+                    ) : null}
+                    {computed.viscosity ? (
+                      <li>
+                        <span>ویسکوزیته: </span>
+                        <span className="font-black">{computed.viscosity}</span>
+                      </li>
+                    ) : null}
+                    {computed.brands.length > 0 ? (
+                      <li>
+                        برند های قابل استفاده:{' '}
+                        <span className="font-black">{computed.brands.join(', ')}</span>
+                      </li>
+                    ) : null}
+                  </ul>
+                </div>
+              ) : null}
+
+              {computed.priceText ? (
+                <div className="flex items-center flex-wrap" style={{ gap: 'clamp(0.75rem, 0.94vw, 1rem)' }}>
+                  <span
+                    className="text-[#fcfbee] text-right font-light"
+                    dir="auto"
+                    style={{ fontSize: 'clamp(1.125rem, 1.41vw, 1.5rem)' }}
+                  >
+                    قیمت
+                  </span>
+                  <span
+                    className="text-[#fcfbee] text-right font-light"
+                    dir="auto"
+                    style={{ fontSize: 'clamp(1.1rem, 1.88vw, 1.1rem)' }}
+                  >
+                    <span className="font-black">{computed.priceText}</span>
+                  </span>
+                </div>
+              ) : null}
 
               {/* Stock Counter */}
               {/* <div className="flex items-center flex-wrap" style={{ gap: 'clamp(0.75rem, 0.94vw, 1rem)' }}>
@@ -646,13 +703,17 @@ export function ProductDetailClient({ slug }: { slug: string }) {
 
           <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1rem, 2.08vw, 3rem)' }}>
 
-            <div className="w-full lg:w-1/2">
-              <p className="text-white text-right font-medium" dir="auto" style={{ 
-                lineHeight: 'clamp(1.5rem, 3.91vw, 2.5rem)',
-                fontSize: 'clamp(0.875rem, 1.17vw, 1.5rem)'
-              }}>
-                {computed.introText}
-              </p>
+            <div className={clsx('w-full', computed.detailCoverImage && 'lg:w-1/2')}>
+              {computed.introHtml ? (
+                <WordPressContent html={computed.introHtml} dir="rtl" className="product-copy font-medium" />
+              ) : (
+                <p className="product-copy text-white font-medium" dir="rtl" style={{ 
+                  lineHeight: 'clamp(1.5rem, 3.91vw, 2.5rem)',
+                  fontSize: 'clamp(0.875rem, 1.17vw, 1.5rem)'
+                }}>
+                  {computed.introText}
+                </p>
+              )}
               <div className="flex flex-col md:flex-row w-full" style={{ gap: 'clamp(0.5rem, 0.94vw, 1rem)', marginTop: 'clamp(0.75rem, 1.17vw, 1.5rem)' }}>
                 <a 
                   href={computed.datasheetDownloadLink || '#'} 
@@ -699,21 +760,9 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               </div>
             </div>
 
-            <div className="w-full lg:w-1/2">
-              <div className="relative bg-[#343434] rounded-2xl sm:rounded-3xl h-auto md:h-full flex items-center justify-center" style={{ 
-                padding: 'clamp(1rem, 2.08vw, 3rem)'
-              }}>
-                <div className="relative w-full flex items-center justify-center" style={{ 
-                  height: 'clamp(150px, 11.72vw, 300px)'
-                }}>
-                  <img
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                    src={computed.introImageTop}
-                  />
-                </div>
-              </div>
-            </div>
+            {computed.detailCoverImage ? (
+              <ProductCoverImage src={computed.detailCoverImage} alt={product.name} />
+            ) : null}
           </div>
         </section>
 
@@ -751,6 +800,8 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                         alt=""
                         className="absolute inset-0 w-full h-full object-contain pointer-events-none"
                         src={variant.imageUrl || computed.primaryImage}
+                        loading="lazy"
+                        decoding="async"
                       />
                     </div>
                   </div>
@@ -771,12 +822,14 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                         {variant.volume || '—'}
                       </span>
                     </div>
-                    <div className="flex gap-4 items-center">
-                      <span className="text-gray-400 font-iranyekan" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>قیمت:</span>
-                      <span className="text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
-                        {variant.priceText || 'تماس بگیرید'}
-                      </span>
-                    </div>
+                    {variant.priceText ? (
+                      <div className="flex gap-4 items-center">
+                        <span className="text-gray-400 font-iranyekan" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>قیمت:</span>
+                        <span className="text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.04vw, 1rem)' }}>
+                          {variant.priceText}
+                        </span>
+                      </div>
+                    ) : null}
                   </div>
 
                   {/* View More Link */}
@@ -799,7 +852,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
           <div className="hidden md:block overflow-x-auto">
             <div className="min-w-full">
               <div className="bg-[#242424] rounded-t-2xl sm:rounded-t-3xl" style={{ padding: 'clamp(0.75rem, 1.25vw, 1rem)' }}>
-                <div className="grid grid-cols-5 text-right text-xs sm:text-sm" style={{ gap: 'clamp(0.5rem, 1.25vw, 1rem)' }}>
+                <div className={`grid text-right text-xs sm:text-sm ${computed.variants.some((variant) => variant.priceText) ? 'grid-cols-5' : 'grid-cols-4'}`} style={{ gap: 'clamp(0.5rem, 1.25vw, 1rem)' }}>
 
                   <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                     نام محصول
@@ -807,9 +860,11 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                   <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                     حجم
                   </div>
-                  <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
-                    قیمت
-                  </div>
+                  {computed.variants.some((variant) => variant.priceText) ? (
+                    <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+                      قیمت
+                    </div>
+                  ) : null}
                   <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                     تصویر محصول
                   </div>
@@ -829,7 +884,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                   )}
                   style={{ padding: 'clamp(1rem, 1.25vw, 1rem)' }}
                 >
-                  <div className="grid grid-cols-5 items-center text-right" style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
+                  <div className={`grid items-center text-right ${computed.variants.some((variant) => variant.priceText) ? 'grid-cols-5' : 'grid-cols-4'}`} style={{ gap: 'clamp(1rem, 1.25vw, 1rem)' }}>
 
                     <div className='text-center'>
                       <p className=" text-[#f9bd65] font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
@@ -840,9 +895,11 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                     <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                       {variant.volume || '—'}
                     </div>
-                    <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
-                      {variant.priceText || 'تماس بگیرید'}
-                    </div>
+                    {computed.variants.some((item) => item.priceText) ? (
+                      <div className="text-[#f9bd65] text-center font-bold" dir="auto" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
+                        {variant.priceText || '—'}
+                      </div>
+                    ) : null}
                     <div className="flex justify-center">
                       <div className="relative" style={{ 
                         width: 'clamp(6rem, 6.19vw, 6.1875rem)',
@@ -852,6 +909,8 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                           alt=""
                           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
                           src={variant.imageUrl || computed.primaryImage}
+                          loading="lazy"
+                          decoding="async"
                         />
                       </div>
                     </div>
@@ -909,13 +968,11 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               </span>
             </a>
           </div>
-          <div style={{ marginBottom: 'clamp(2rem, 2.08vw, 2rem)' }}>
-            <p className="text-white text-right leading-relaxed text-base md:text-lg font-medium" dir="auto" style={{ 
-              marginBottom: 'clamp(3.5rem, 7.29vw, 3.5rem)'
-            }}>
-              {computed.datasheetText}
-            </p>
-          </div>
+          {computed.datasheetIntro ? (
+            <div style={{ marginBottom: 'clamp(2rem, 2.08vw, 2rem)' }}>
+              <WordPressContent html={computed.datasheetIntro} dir="rtl" className="product-copy font-medium" />
+            </div>
+          ) : null}
 
           <div className="overflow-x-auto">
             <div className="min-w-full">
@@ -954,14 +1011,14 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               ))}
             </div>
           </div>
-          <div style={{ marginTop: 'clamp(3.5rem, 7.29vw, 3.5rem)', marginBottom: 'clamp(3.5rem, 7.29vw, 3.5rem)' }}>
-            <p className="text-white text-right leading-relaxed font-medium text-base md:text-lg" dir="auto">
-              {computed.datasheetText}
-            </p>
-          </div>
+          {computed.datasheetOutro ? (
+            <div style={{ marginTop: 'clamp(3.5rem, 7.29vw, 3.5rem)', marginBottom: 'clamp(3.5rem, 7.29vw, 3.5rem)' }}>
+              <WordPressContent html={computed.datasheetOutro} dir="rtl" className="product-copy font-medium" />
+            </div>
+          ) : null}
         </section>
 
-        {/* Photo Gallery Section */}
+        {/* Photo Gallery Section — تصویر محصول box hidden
         <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
           <div className="relative bg-[#222] rounded-2xl sm:rounded-3xl shadow-lg overflow-hidden flex flex-col sm:flex-row items-center justify-between" style={{ 
             padding: 'clamp(1rem, 2.08vw, 3rem)',
@@ -982,18 +1039,27 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                 <img
                   alt=""
                   className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                  src={'/images/detail.png'}
+                  src={'/images/product-detail.webp'}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>
           </div>
-
-          <p className="text-white text-right font-medium text-base md:text-lg" dir="auto" style={{ 
-            marginTop: 'clamp(3.5rem, 7.29vw, 3.5rem)',
-          }}>
-            {computed.galleryText}
-          </p>
         </section>
+        */}
+
+        {(computed.galleryHtml || computed.galleryText.trim()) ? (
+          <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
+            {computed.galleryHtml ? (
+              <WordPressContent html={computed.galleryHtml} dir="rtl" className="product-copy font-medium" />
+            ) : (
+              <p className="product-copy text-white font-medium text-base md:text-lg" dir="rtl">
+                {computed.galleryText}
+              </p>
+            )}
+          </section>
+        ) : null}
         <Divider />
         {/* Similar Products Section */}
         <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
@@ -1005,12 +1071,16 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               }}>
                 محصولا مشابه
               </h2>
-              <p className="text-white text-right font-iranyekan" dir="auto" style={{ 
-                fontSize: 'clamp(0.875rem, 1.04vw, 1.125rem)',
-                lineHeight: 'clamp(1.5rem, 1.88vw, 2.5rem)'
-              }}>
-                {computed.similarText}
-              </p>
+              {computed.similarHtml ? (
+                <WordPressContent html={computed.similarHtml} dir="rtl" className="product-copy font-iranyekan" />
+              ) : computed.similarText.trim() ? (
+                <p className="product-copy text-white font-iranyekan" dir="rtl" style={{ 
+                  fontSize: 'clamp(0.875rem, 1.04vw, 1.125rem)',
+                  lineHeight: 'clamp(1.5rem, 1.88vw, 2.5rem)'
+                }}>
+                  {computed.similarText}
+                </p>
+              ) : null}
             </div>
             <div className="w-full lg:w-1/2">
               <div className="grid grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(0.5rem, 1.17vw, 1.5rem)' }}>

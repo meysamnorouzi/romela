@@ -143,6 +143,8 @@ class Website_API {
             $item = $this->format_term($term);
             if ($posts_per > 0) {
                 $latest = get_posts([
+                    'orderby' => 'date',
+                    'order' => 'DESC',
                     'post_type' => 'post',
                     'post_status' => 'publish',
                     'numberposts' => $posts_per,
@@ -174,6 +176,8 @@ class Website_API {
             'post_status' => 'publish',
             'paged' => $page,
             'posts_per_page' => $per_page,
+            'orderby' => 'date',
+            'order' => 'DESC',
             'ignore_sticky_posts' => true,
             'no_found_rows' => false,
         ];

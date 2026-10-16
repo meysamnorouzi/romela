@@ -57,6 +57,8 @@ export default function DarkMap({ latitude, longitude, address, className = '' }
       zoom: 15,
       zoomControl: true,
       attributionControl: false,
+      // Keyboard mode focuses the map container, which scrolls the page down to it.
+      keyboard: false,
     })
 
     // Use CartoDB Dark Matter tile layer for dark theme
@@ -72,7 +74,12 @@ export default function DarkMap({ latitude, longitude, address, className = '' }
     }).addTo(map)
 
     // Add popup with address
-    marker.bindPopup(address).openPopup()
+    // Focusing the map, autopanning, and the popup's href="#close" all scroll the window to the map.
+    const container = map.getContainer()
+    container.focus = () => container
+    marker.bindPopup(address, { autoPan: false }).openPopup()
+    container.querySelector('.leaflet-popup-close-button')?.removeAttribute('href')
+    container.blur()
 
     mapRef.current = map
 

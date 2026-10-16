@@ -12,7 +12,7 @@ export function HeroSection() {
     <section 
       className="relative w-full min-h-screen flex flex-col"
       style={{
-        backgroundImage: "url('/images/vibrant-colors-water-create-abstract-wave-pattern-generated-by-ai 2.png')",
+        backgroundImage: "url('/images/hero-wave.webp')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

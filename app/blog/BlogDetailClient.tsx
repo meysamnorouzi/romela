@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { BlogCard } from '@/components/blog/BlogCard'
@@ -31,8 +30,13 @@ function Divider() {
   )
 }
 
+function leaveMissingPost() {
+  // Full document load. router.replace fetches /blog/index.txt and the host
+  // redirects that file back to ?slug=index.txt, which reloads forever.
+  window.location.replace('/blog/')
+}
+
 export function BlogDetailClient({ slug }: { slug: string }) {
-  const router = useRouter()
   const [post, setPost] = useState<WebsitePost | null>(null)
   const [relatedPosts, setRelatedPosts] = useState<WebsitePost[]>([])
   const [loading, setLoading] = useState(true)
@@ -42,9 +46,8 @@ export function BlogDetailClient({ slug }: { slug: string }) {
     setLoading(true)
 
     async function load() {
-      if (!slug) {
-        console.error('No slug provided')
-        router.replace('/blog')
+      if (!slug || slug === 'index.txt' || slug === 'index.html') {
+        leaveMissingPost()
         return
       }
 
@@ -56,7 +59,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
         
         if (!p) {
           console.warn('Blog post not found for slug:', slug)
-          router.replace('/blog')
+          leaveMissingPost()
           return
         }
         
@@ -77,7 +80,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
         console.error('Slug that failed:', slug)
         if (cancelled) return
         setPost(null)
-        router.replace('/blog')
+        leaveMissingPost()
       } finally {
         if (!cancelled) setLoading(false)
       }
@@ -88,7 +91,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
     return () => {
       cancelled = true
     }
-  }, [slug, router])
+  }, [slug])
 
   const publishedAt = post ? getPublishedDate(post) : null
   const readingTimeMinutes = post ? estimateReadingTimeMinutesFromHtml(post.content) : 1
@@ -231,7 +234,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
 
         <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
           {post.content?.trim() ? (
-            <WordPressContent html={post.content} />
+            <WordPressContent html={post.content} className="blog-copy" />
           ) : (
             <p className="text-[#FCFBEE] text-right font-iranyekan" dir="auto" style={{ fontSize: 'clamp(0.875rem, 1.17vw, 1.125rem)' }}>
               محتوایی برای این مقاله ثبت نشده است.

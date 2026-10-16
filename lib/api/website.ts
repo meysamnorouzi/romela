@@ -5,6 +5,7 @@ import type {
   WebsiteTermsListResponse,
   WebsiteTerm,
 } from './types'
+import { fetchWithRetry } from './fetch-retry'
 
 const WP_JSON_BASE_URL = (
   process.env.NEXT_PUBLIC_WP_JSON_BASE_URL ||
@@ -41,7 +42,7 @@ async function fetchJson<T>(
     query?: Record<string, string | number | boolean | undefined>
   }
 ): Promise<T> {
-  const response = await fetch(buildUrl(path, options?.query), {
+  const response = await fetchWithRetry(buildUrl(path, options?.query), {
     headers: {
       Accept: 'application/json',
     },
@@ -156,7 +157,7 @@ export async function getBlogPosts(params?: {
   const normalized = normalizeListResponse(raw)
   return {
     ...normalized,
-    posts: (normalized.posts ?? []).map(normalizePost),
+    posts: sortPostsByNewest((normalized.posts ?? []).map(normalizePost)),
   }
 }
 
@@ -181,7 +182,7 @@ export async function searchBlogPosts(params: {
   return {
     ...normalized,
     query: raw.query,
-    posts: (raw.posts ?? []).map(normalizePost),
+    posts: sortPostsByNewest((raw.posts ?? []).map(normalizePost)),
   }
 }
 
@@ -225,7 +226,7 @@ export async function getBlogPostBySlug(slug: string): Promise<WebsitePost | nul
     const isClient = typeof window !== 'undefined'
     const cacheMode: RequestCache = isClient ? 'no-store' : 'force-cache'
     
-    const response = await fetch(fullUrl, {
+    const response = await fetchWithRetry(fullUrl, {
       headers: {
         Accept: 'application/json',
       },
@@ -298,6 +299,14 @@ export async function getBlogTags(params?: {
     per_page: normalized.per_page,
     tags: (raw.tags ?? []).map(normalizeTerm),
   }
+}
+
+export function sortPostsByNewest(posts: WebsitePost[]): WebsitePost[] {
+  return [...posts].sort((a, b) => {
+    const aTime = getPublishedDate(a)?.getTime() ?? 0
+    const bTime = getPublishedDate(b)?.getTime() ?? 0
+    return bTime - aTime
+  })
 }
 
 export function getPublishedDate(post: WebsitePost): Date | null {
