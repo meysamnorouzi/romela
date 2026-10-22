@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { AboutFaq } from '@/components/about/AboutFaq'
 import { CompanyCredentials } from '@/components/about/CompanyCredentials'
 import { PAGE_BLEED_CLASS, PAGE_BOTTOM_PADDING_TALL_STYLE, PAGE_TITLE_TOP_CLASS } from '@/lib/page-layout'
 
@@ -125,6 +126,8 @@ export default function AboutUsPage() {
             </p>
           </div>
         </section>
+
+        <AboutFaq />
 
         {/* Values Section */}
         <section>
