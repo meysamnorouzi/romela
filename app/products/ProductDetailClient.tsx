@@ -495,10 +495,6 @@ export function ProductDetailClient({ slug }: { slug: string }) {
 
   if (!product || !computed) return null
 
-  const related1 = relatedProducts[0]
-  const related2 = relatedProducts[1]
-  const related3 = relatedProducts[2]
-
   return (
     <div className={PAGE_BLEED_CLASS}>
       {/* Container */}
@@ -1060,49 +1056,46 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             )}
           </section>
         ) : null}
-        <Divider />
-        {/* Similar Products Section */}
-        <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
-          <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1rem, 2.08vw, 3rem)' }}>
-            <div className="w-full lg:w-1/2">
-              <h2 className="text-white text-right font-iranyekan font-bold" dir="auto" style={{ 
-                marginBottom: 'clamp(0.75rem, 1.17vw, 1.5rem)',
-                fontSize: 'clamp(1.125rem, 1.41vw, 1.375rem)'
-              }}>
-                محصولا مشابه
-              </h2>
-              {computed.similarHtml ? (
-                <WordPressContent html={computed.similarHtml} dir="rtl" className="product-copy font-iranyekan" />
-              ) : computed.similarText.trim() ? (
-                <p className="product-copy text-white font-iranyekan" dir="rtl" style={{ 
-                  fontSize: 'clamp(0.875rem, 1.04vw, 1.125rem)',
-                  lineHeight: 'clamp(1.5rem, 1.88vw, 2.5rem)'
-                }}>
-                  {computed.similarText}
-                </p>
-              ) : null}
-            </div>
-            <div className="w-full lg:w-1/2">
-              <div className="grid grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(0.5rem, 1.17vw, 1.5rem)' }}>
-                <RelatedProductCard 
-                  product={related1}
-                  imageUrl={(related1 && getWcaPrimaryImageUrl(related1)) || ''}
-                  fallbackImage={computed.primaryImage}
-                />
-                <RelatedProductCard 
-                  product={related2}
-                  imageUrl={(related2 && getWcaPrimaryImageUrl(related2)) || ''}
-                  fallbackImage={computed.primaryImage}
-                />
-                <RelatedProductCard 
-                  product={related3}
-                  imageUrl={(related3 && getWcaPrimaryImageUrl(related3)) || ''}
-                  fallbackImage={computed.primaryImage}
-                />
+        {relatedProducts.length > 0 ? (
+          <>
+            <Divider />
+            {/* Similar Products Section */}
+            <section className="w-full" style={{ marginBottom: 'clamp(1.5rem, 2.6vw, 4rem)' }}>
+              <div className="flex flex-col lg:flex-row" style={{ gap: 'clamp(1rem, 2.08vw, 3rem)' }}>
+                <div className="w-full lg:w-1/2">
+                  <h2 className="text-white text-right font-iranyekan font-bold" dir="auto" style={{ 
+                    marginBottom: 'clamp(0.75rem, 1.17vw, 1.5rem)',
+                    fontSize: 'clamp(1.125rem, 1.41vw, 1.375rem)'
+                  }}>
+                    محصولا مشابه
+                  </h2>
+                  {computed.similarHtml ? (
+                    <WordPressContent html={computed.similarHtml} dir="rtl" className="product-copy font-iranyekan" />
+                  ) : computed.similarText.trim() ? (
+                    <p className="product-copy text-white font-iranyekan" dir="rtl" style={{ 
+                      fontSize: 'clamp(0.875rem, 1.04vw, 1.125rem)',
+                      lineHeight: 'clamp(1.5rem, 1.88vw, 2.5rem)'
+                    }}>
+                      {computed.similarText}
+                    </p>
+                  ) : null}
+                </div>
+                <div className="w-full lg:w-1/2">
+                  <div className="grid grid-cols-2 md:grid-cols-3" style={{ gap: 'clamp(0.5rem, 1.17vw, 1.5rem)' }}>
+                    {relatedProducts.map((related) => (
+                      <RelatedProductCard
+                        key={related.id}
+                        product={related}
+                        imageUrl={getWcaPrimaryImageUrl(related) || ''}
+                        fallbackImage={computed.primaryImage}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </section>
+            </section>
+          </>
+        ) : null}
       </div>
     </div>
   )
